@@ -1,0 +1,24 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "dependencies": [
+        "acetree",
+        "breakpad",
+        "ffmpeg-fake",
+        "framelesshelper",
+        "qastool",
+        "qnrbf",
+        "sdl2",
+        "libsndfile",
+        "libsamplerate",
+        "quazip",
+        "zlib"
+    ],
+    "vcpkg-configuration": {
+        "overlay-ports": [
+            "../vcpkg/ports"
+        ],
+        "overlay-triplets": [
+            "../vcpkg/triplets"
+        ]
+    }
+}
