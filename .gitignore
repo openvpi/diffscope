@@ -89,7 +89,7 @@ cache
 .vs
 out/
 CMakeSettings.json
-/vcpkg
+# /vcpkg
 /data
 /*.natvis
 

@@ -12,7 +12,7 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
 endif()
 
-if(DIFFSCOPE_LIBRARIES_IN_PLACE)
+if(BUILD_LIBRARIES_IN_PLACE)
     add_subdirectory(libs)
     
     include(libs/choruskit/cmake/ChorusKitAPI.cmake)

@@ -22,27 +22,21 @@ Linux (Tested on Ubuntu)
 
 You need to install Qt libraries first. (Tested on Qt 5.15.2 only)
 
-#### Windows
+#### Clone Repository
 
+Via HTTPS
 ```sh
-git clone https://github.com/microsoft/vcpkg.git
-cd /D vcpkg
-bootstrap-vcpkg.bat
-
-set QT_DIR=<dir> # directory `Qt5Config.cmake` locates
-set Qt5_DIR=%QT_DIR%
-set VCPKG_KEEP_ENV_VARS=QT_DIR;Qt5_DIR
-
-vcpkg install ^
-    --x-manifest-root=../scripts/vcpkg-manifest ^
-    --x-install-root=./installed ^
-    --triplet=x64-windows
+git clone --recursive https://github.com/openvpi/diffscope
 ```
 
-#### Unix
+Via SSH
+```sh
+git clone --recursive git@github.com:openvpi/diffscope.git
+```
+
+#### Install VCPKG Packages
 
 ```sh
-git clone https://github.com/microsoft/vcpkg.git
 cd vcpkg
 ./bootstrap-vcpkg.sh
 
@@ -56,8 +50,9 @@ export VCPKG_KEEP_ENV_VARS=QT_DIR;Qt5_DIR
     --triplet=<triplet>
 
 # triplet:
-#   Mac:   `x64-osx` or `arm64-osx`
-#   Linux: `x64-linux` or `arm64-linux`
+#   Windows:  `x64-windows` 
+#   Mac:      `x64-osx` or `arm64-osx`
+#   Linux:    `x64-linux` or `arm64-linux`
 ```
 
 ### Build & Install
