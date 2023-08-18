@@ -6,7 +6,7 @@ DiffSinger Editor developed by OpenVPI.
 
 + Microsoft Windows (Vista ~ 11)
 + Apple Mac OSX (11+)
-+ Linux (Tested on Ubuntu)
++ GNU/Linux (Tested on Ubuntu)
 
 ## Requirements
 

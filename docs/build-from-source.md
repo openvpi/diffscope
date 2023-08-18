@@ -36,7 +36,7 @@
 
 Via HTTPS
 ```sh
-git clone --recursive https://github.com/openvpi/diffscope
+git clone --recursive https://github.com/openvpi/diffscope.git
 ```
 
 Via SSH
