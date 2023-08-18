@@ -3,9 +3,10 @@
 DiffSinger Editor developed by OpenVPI.
 
 ## Supported Platforms
-Microsoft Windows (Vista ~ 11)
-Apple Mac OSX (11+)
-Linux (Tested on Ubuntu)
+
++ Microsoft Windows (Vista ~ 11)
++ Apple Mac OSX (11+)
++ Linux (Tested on Ubuntu)
 
 ## Build From Source
 

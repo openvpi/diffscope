@@ -1,9 +1,16 @@
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Libraries/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Libraries/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Libraries/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CK_BUILD_RUNTIME_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CK_BUILD_LIBRARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CK_BUILD_LIBRARY_DIR})
+set(CMAKE_BUILD_SHARE_DIR ${CK_BUILD_SHARE_DIR})
 
 # set(QTMEDIATE_INSTALL off)
 add_subdirectory(qtmediate)
 
 # set(CHORUSKIT_INSTALL off)
 add_subdirectory(choruskit)
+
+add_dependencies(ChorusKit_UpdateTranslations choruskit_lupdate_task)
+add_dependencies(ChorusKit_UpdateTranslations qtmediate_lupdate_task)
+
+add_dependencies(ChorusKit_ReleaseTranslations choruskit_lrelease_task)
+add_dependencies(ChorusKit_ReleaseTranslations qtmediate_lrelease_task)
