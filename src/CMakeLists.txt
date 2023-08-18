@@ -37,4 +37,6 @@ ck_add_definition(CONFIG_ENABLE_BREAKPAD ${DIFFSCOPE_ENABLE_BREAKPAD})
 # ----------------------------------
 add_subdirectory(app)
 
+add_subdirectory(share)
+
 ck_finish_build_system()

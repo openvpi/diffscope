@@ -1,0 +1,17 @@
+{
+    "Prefix": "..",
+    "Libraries": "lib",
+    "Share": "share",
+    "Plugins": [
+        "lib/ChorusKit/plugins"
+    ],
+    "Translations": [
+        "share/ChorusKit/translations"
+    ],
+    "Themes": [
+        "share/ChorusKit/themes"
+    ],
+    "AppFont": {
+        "Size": 12
+    }
+}
