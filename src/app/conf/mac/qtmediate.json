@@ -3,9 +3,11 @@
     "Libraries": "Frameworks",
     "Share": "Resources",
     "Plugins": [
-        "Frameworks/ChorusKit/plugins"
+        "Frameworks/qtmediate/plugins"
     ],
     "Translations": [
+        "Resources/Qt/translations",
+        "Resources/qtmediate/translations",
         "Resources/ChorusKit/translations"
     ],
     "Themes": [

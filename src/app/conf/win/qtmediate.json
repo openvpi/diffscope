@@ -3,9 +3,11 @@
     "Libraries": "lib",
     "Share": "share",
     "Plugins": [
-        "lib/ChorusKit/plugins"
+        "lib/qtmediate/plugins"
     ],
     "Translations": [
+        "share/Qt/translations",
+        "share/qtmediate/translations",
         "share/ChorusKit/translations"
     ],
     "Themes": [

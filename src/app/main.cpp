@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QDebug>
 #include <QNetworkProxyFactory>
 
 #include <extensionsystem/pluginmanager.h>
@@ -22,9 +23,9 @@ public:
         allowRoot = false;
         pluginIID = QString("org.ChorusKit.%1.Plugin").arg(APP_NAME);
         splashSettingPath = qAppExt->appShareDir() + "/config.json";
-        userSettingPath = qAppExt->appDataDir();
-        systemSettingPath = qAppExt->appShareDir();
-        
+        userSettingsPath = qAppExt->appDataDir();
+        systemSettingsPath = qAppExt->appShareDir();
+
         pluginPaths << qAppExt->appPluginsDir();
     }
 
@@ -37,6 +38,10 @@ public:
     }
 
     void beforeLoadPlugin(QSplashScreen *screen) override {
+        // Set global settings path
+        QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, userSettingsPath);
+        QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, systemSettingsPath);
+
         // Make sure we honor the system's proxy settings
         QNetworkProxyFactory::setUseSystemConfiguration(true);
 
@@ -62,14 +67,14 @@ public:
         // Set ILoader settings path
         Core::ILoader &loader = *Core::ILoader::instance();
         loader.setSettingsPath(QSettings::UserScope,
-                               QString("%1/%2.settings.json").arg(userSettingPath, qApp->applicationName()));
+                               QString("%1/%2.settings.json").arg(userSettingsPath, qApp->applicationName()));
         loader.setSettingsPath(QSettings::SystemScope,
-                               QString("%1/%2.settings.json").arg(systemSettingPath, qApp->applicationName()));
+                               QString("%1/%2.settings.json").arg(systemSettingsPath, qApp->applicationName()));
 
         // Add initial routine to loader object pool
         auto initRoutine = new Core::InitialRoutine(screen);
         loader.addObject("choruskit_init_routine", initRoutine);
-        QObject::connect(initRoutine, &Core::InitialRoutine::done, [&] {
+        QObject::connect(initRoutine, &Core::InitialRoutine::done, initRoutine, [&] {
             loader.removeObject(initRoutine); //
             delete initRoutine;
         });
