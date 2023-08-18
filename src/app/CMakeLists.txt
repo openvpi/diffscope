@@ -21,33 +21,32 @@ set(APP_CONFIG_PADDING 20)
 set(_config_file ${CMAKE_CURRENT_BINARY_DIR}/config.json)
 configure_file(config.json.in ${_config_file} @ONLY)
 
-# Copy files to share dir
 if(APPLE)
-    ck_add_shared_files(
-        SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST .
-    )
-
-    ck_add_shared_files(
-        SKIP_BUILD
-        SRC share/doc/* DEST doc
-    )
+    set(_app_res_dir .)
+    set(_app_doc_dir doc)
 else()
-    ck_add_shared_files(
-        SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${PROJECT_NAME}
-    )
-
-    ck_add_shared_files(
-        SKIP_BUILD
-        SRC share/doc/* DEST doc/${PROJECT_NAME}
-    )
+    set(_app_res_dir ${PROJECT_NAME})
+    set(_app_doc_dir doc/${PROJECT_NAME})
 endif()
 
+# Deploy docs
+ck_add_shared_files(
+    SKIP_BUILD
+    SRC share/doc/* DEST ${_app_doc_dir}
+)
+
+# Deploy resources
+ck_add_shared_files(
+    SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${_app_res_dir}
+)
+
+# Deploy config files
 ck_add_shared_files(
     SRC conf/${CK_PLATFORM_LOWER}/* DEST ${CK_BUILD_QT_CONF_DIR}
 )
 
 if(WIN32)
-    # Add windows icons
+    # Deploy windows icons
     ck_add_shared_files(
         SKIP_BUILD
         SRC share/win-icons/* DEST ${PROJECT_NAME}/icons
@@ -89,6 +88,7 @@ if(WIN32)
                     --no-system-d3d-compiler
                     --no-virtualkeyboard
                     --no-compiler-runtime
+                    --no-opengl-sw
                     --libdir "${CK_BUILD_RUNTIME_DIR}"
                     --plugindir "${CK_BUILD_LIBRARY_DIR}/Qt/plugins"
                     --verbose 0

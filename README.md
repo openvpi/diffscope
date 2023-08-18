@@ -8,9 +8,7 @@ DiffSinger Editor developed by OpenVPI.
 + Apple Mac OSX (11+)
 + Linux (Tested on Ubuntu)
 
-## Build From Source
-
-### Requirements
+## Requirements
 
 | Component | Requirement |               Detailed               |
 |:---------:|:-----------:|:------------------------------------:|
@@ -19,53 +17,46 @@ DiffSinger Editor developed by OpenVPI.
 |   CMake   |   \>=3.17   |        >=3.20 is recommended         |
 <!-- |  Python   |   \>=3.8    |                  /                   | -->
 
-### Setup Environment
+## Build From Source
 
-You need to install Qt libraries first. (Tested on Qt 5.15.2 only)
+[Build from source](docs/build-from-source.md)
 
-#### Clone Repository
+## Dependencies
 
-Via HTTPS
-```sh
-git clone --recursive https://github.com/openvpi/diffscope
-```
+### Open-source Libraries
 
-Via SSH
-```sh
-git clone --recursive git@github.com:openvpi/diffscope.git
-```
++ [Qt 5.15.2](https://www.qt.io/)
+    + GNU LGPL v2.1 or later
++ [vcpkg](https://github.com/microsoft/vcpkg)
+    + MIT License
++ [FFmpeg](https://github.com/FFmpeg/FFmpeg)
+    + GNU LGPL v2.1 or later
++ [lame](https://lame.sourceforge.io/)
+    + GNU LGPL v2.0
++ [SDL](https://github.com/libsdl-org/SDL)
+    + Zlib License
++ [QuaZip](https://github.com/stachenov/quazip)
+    + GNU LGPL v2.1
++ [fluentui-system-icons](https://github.com/microsoft/fluentui-system-icons)
+    + MIT License
++ [SndFile](https://github.com/libsndfile/libsndfile)
+    + GNU LGPL v2.1 or later
 
-#### Install VCPKG Packages
+### Related Projects
 
-```sh
-cd vcpkg
-./bootstrap-vcpkg.sh
++ [FramelessHelper](https://github.com/wangwenx190/framelesshelper)
+    + MIT License
++ [qastool](https://github.com/SineStriker/qt-json-autogen)
+    + Apache 2.0 License
++ [QNrbf](https://github.com/SineStriker/QNrbf)
+    + GNU LGPL v2.1 or later
++ [AceTreeModel](https://github.com/SineStriker/AceTreeModel)
+    + Apache 2.0 License
++ [ChorusKit](https://github.com/SineStriker/choruskit)
+    + GNU LGPL v2.1
++ [qtmediate](https://github.com/SineStriker/qtmediate)
+    + GNU LGPL v2.1
 
-export QT_DIR=<dir> # directory `Qt5Config.cmake` locates
-export Qt5_DIR=$QT_DIR
-export VCPKG_KEEP_ENV_VARS=QT_DIR;Qt5_DIR
+## License
 
-./vcpkg install \
-    --x-manifest-root=../scripts/vcpkg-manifest \
-    --x-install-root=./installed \
-    --triplet=<triplet>
-
-# triplet:
-#   Windows:  `x64-windows` 
-#   Mac:      `x64-osx` or `arm64-osx`
-#   Linux:    `x64-linux` or `arm64-linux`
-```
-
-### Build & Install
-
-```sh
-cmake -B build -G Ninja \
-    -DCMAKE_INSTALL_PREFIX=<dir> \ # install directory
-    -DCMAKE_PREFIX_PATH=<dir> \ # directory `Qt5Config.cmake` locates
-    -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
-    -DCMAKE_BUILD_TYPE=Release
-
-cmake --build build --target all
-
-cmake --build build --target install
-```
+DiffScope is licensed under the Apache 2.0 License.
