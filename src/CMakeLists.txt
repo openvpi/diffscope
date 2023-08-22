@@ -1,6 +1,6 @@
 set(_init_options)
 
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
+if(${CMAKE_BUILD_TYPE} STREQUAL Debug OR ${CMAKE_BUILD_TYPE} STREQUAL RelWithDebInfo)
     list(APPEND _init_options CONSOLE)
 endif()
 

@@ -40,12 +40,12 @@ ck_add_shared_files(
     SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${_app_res_dir}
 )
 
-# Deploy config files
-ck_add_shared_files(
-    SRC conf/${CK_PLATFORM_LOWER}/* DEST ${CK_BUILD_QT_CONF_DIR}
-)
-
 if(WIN32)
+    # Deploy config files
+    ck_add_shared_files(
+        SRC conf/${CK_PLATFORM_LOWER}/* DEST ${CK_BUILD_QT_CONF_DIR}
+    )
+
     # Deploy windows icons
     ck_add_shared_files(
         SKIP_BUILD
@@ -89,6 +89,7 @@ if(WIN32)
                     --no-virtualkeyboard
                     --no-compiler-runtime
                     --no-opengl-sw
+                    --no-angle
                     --libdir "${CK_BUILD_RUNTIME_DIR}"
                     --plugindir "${CK_BUILD_LIBRARY_DIR}/Qt/plugins"
                     --verbose 0

@@ -30,14 +30,23 @@ public:
     }
 
     bool preprocessArguments(QStringList &arguments, int *code) override {
+        // Skip if show help
+        const auto &realArgs = QApplication::arguments();
+        const auto &realArgsSet = QSet<QString>(realArgs.begin(), realArgs.end());
+        if (realArgsSet.contains("-h") || realArgsSet.contains("--help")) {
+            return true;
+        }
+
+        // Create app data path and temp path
         if (!qAppExt->createDataAndTempDirs()) {
             *code = -1;
             return false;
         }
+        
         return true;
     }
 
-    void beforeLoadPlugin(QSplashScreen *screen) override {
+    void beforeLoadPlugins(QSplashScreen *screen) override {
         // Set global settings path
         QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, userSettingsPath);
         QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, systemSettingsPath);
@@ -80,7 +89,7 @@ public:
         });
     }
 
-    void afterLoadPlugin() override {
+    void afterLoadPlugins() override {
         // Do nothing
     }
 };
