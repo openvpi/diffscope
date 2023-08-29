@@ -15,11 +15,13 @@ DiffSinger Editor developed by OpenVPI.
 |    Qt     |  \>=5.15.2  |   Core, Gui, Widgets, Svg, Network   |
 | Compiler  |  \>=C++17   |        MSVC 2019, GCC, Clang         |
 |   CMake   |   \>=3.17   |        >=3.20 is recommended         |
-<!-- |  Python   |   \>=3.8    |                  /                   | -->
+|  Python   |   \>=3.8    |                  /                   |
 
 ## Build From Source
 
-[Build from source](docs/build-from-source.md)
+This application uses Microsoft VCPKG to handle its dependencies on third-party libraries other than Qt, which you can choose to install in advance, but we recommend using the VCPKG package manager as a submodule of this repository.
+
++ [Build From Source](docs/build-from-source.md)
 
 ## Dependencies
 
@@ -56,6 +58,12 @@ DiffSinger Editor developed by OpenVPI.
     + GNU LGPL v2.1
 + [qtmediate](https://github.com/SineStriker/qtmediate)
     + GNU LGPL v2.1
+
+<!-- ### Special Thanks
+
++ [wangwenx190](https://github.com/wangwenx190)
+
++ [MapleSpe](https://github.com/maplespe) -->
 
 ## License
 

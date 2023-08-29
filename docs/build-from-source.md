@@ -69,6 +69,8 @@ export VCPKG_KEEP_ENV_VARS=QT_DIR;Qt5_DIR
 
 ### Build & Install
 
+If you have installed the required libraries specified in `scripts/vcpkg-manifest/vcpkg.json`, you can skip setting `CMAKE_TOOLCHAIN_FILE` so long as you make sure CMake can find them.
+
 ```sh
 cmake -B build -G Ninja \
     -DCMAKE_INSTALL_PREFIX=<dir> \  # install directory
