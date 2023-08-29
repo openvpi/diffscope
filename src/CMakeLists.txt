@@ -1,3 +1,4 @@
+# Set initialization options
 set(_init_options)
 
 if(${CMAKE_BUILD_TYPE} STREQUAL Debug OR ${CMAKE_BUILD_TYPE} STREQUAL RelWithDebInfo)
@@ -8,6 +9,10 @@ if(DIFFSCOPE_ENABLE_DEVEL)
     list(APPEND _init_options DEVEL)
 endif()
 
+# Set variables before adding `ChorusKitAPI`
+set(CK_RUN_SCRIPTS_VERBOSE on)
+
+# Add `ChorusKitAPI`
 if(BUILD_LIBRARIES_IN_PLACE)
     include(../libs/choruskit/cmake/ChorusKitAPI.cmake)
 else()
@@ -41,6 +46,6 @@ add_subdirectory(app)
 add_subdirectory(libs)
 
 # add_subdirectory(plugins)
-# add_subdirectory(share)
 
+# add_subdirectory(share)
 ck_finish_build_system()

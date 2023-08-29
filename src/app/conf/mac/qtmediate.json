@@ -6,7 +6,6 @@
         "Frameworks/qtmediate/plugins"
     ],
     "Translations": [
-        "Resources/Qt/translations",
         "Resources/qtmediate/translations",
         "Resources/ChorusKit/translations"
     ],

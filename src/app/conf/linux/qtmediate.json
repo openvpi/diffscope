@@ -6,7 +6,6 @@
         "lib/qtmediate/plugins"
     ],
     "Translations": [
-        "share/Qt/translations",
         "share/qtmediate/translations",
         "share/ChorusKit/translations"
     ],
