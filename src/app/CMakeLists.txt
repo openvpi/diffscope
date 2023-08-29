@@ -40,12 +40,12 @@ ck_add_shared_files(
     SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${_app_res_dir}
 )
 
-if(WIN32)
-    # Deploy config files
-    ck_add_shared_files(
-        SRC conf/${CK_PLATFORM_LOWER}/* DEST ${CK_BUILD_QT_CONF_DIR}
-    )
+# Deploy config files
+ck_add_shared_files(
+    SRC conf/${CK_PLATFORM_LOWER}/* DEST ${CK_BUILD_QT_CONF_DIR}
+)
 
+if(WIN32)
     # Deploy windows icons
     ck_add_shared_files(
         SKIP_BUILD

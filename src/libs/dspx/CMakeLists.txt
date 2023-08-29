@@ -1,1 +1,1 @@
-project(CkDspxFile LANGUAGES CXX)
+project(dspxmodel LANGUAGES CXX)
