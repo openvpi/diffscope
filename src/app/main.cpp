@@ -7,7 +7,6 @@
 #include <QBreakpadHandler.h>
 
 #include <QMAppExtension.h>
-#include <QMConsole.h>
 #include <QMDecoratorV2.h>
 #include <QMSystem.h>
 
@@ -42,7 +41,7 @@ public:
             *code = -1;
             return false;
         }
-        
+
         return true;
     }
 

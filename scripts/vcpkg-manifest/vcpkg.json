@@ -10,8 +10,7 @@
         "sdl2",
         "libsndfile",
         "libsamplerate",
-        "quazip",
-        "zlib"
+        "quazip"
     ],
     "vcpkg-configuration": {
         "overlay-ports": [
