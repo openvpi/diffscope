@@ -21,7 +21,8 @@ ck_init_build_system(${PROJECT_NAME}
 )
 
 if(BUILD_LIBRARIES_IN_PLACE)
-    add_subdirectory(../libs libs)
+    set(EXTERNAL_BUILD_MAIN_DIR ${CMAKE_BINARY_DIR}/out-Libraries)
+    add_subdirectory(../libs ../libs)
 endif()
 
 # ----------------------------------
@@ -37,8 +38,9 @@ ck_add_definition(CONFIG_ENABLE_BREAKPAD ${DIFFSCOPE_ENABLE_BREAKPAD})
 # ----------------------------------
 add_subdirectory(app)
 
-add_subdirectory(plugins)
+add_subdirectory(libs)
 
-add_subdirectory(share)
+# add_subdirectory(plugins)
+# add_subdirectory(share)
 
 ck_finish_build_system()
