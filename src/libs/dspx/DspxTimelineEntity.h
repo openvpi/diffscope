@@ -41,7 +41,7 @@ namespace Dspx {
     class DSPXMODEL_EXPORT DspxTimeSignatureEntity : public AceTreeEntity {
         Q_OBJECT
         Q_PROPERTY(int barIndex READ barIndex WRITE setBarIndex NOTIFY barIndexChanged)
-        Q_PROPERTY(SVSBase::MusicTimeSignature value READ value WRITE setValue NOTIFY valueChanged)
+        Q_PROPERTY(SVS::MusicTimeSignature value READ value WRITE setValue NOTIFY valueChanged)
         Q_PROPERTY(int numerator READ numerator)
         Q_PROPERTY(int denominator READ denominator)
     public:
@@ -58,8 +58,8 @@ namespace Dspx {
         int numerator() const;
         int denominator() const;
 
-        SVSBase::MusicTimeSignature value() const;
-        void setValue(const SVSBase::MusicTimeSignature &value);
+        SVS::MusicTimeSignature value() const;
+        void setValue(const SVS::MusicTimeSignature &value);
 
     protected:
         void doInitialize() override;

@@ -58,7 +58,7 @@ namespace Dspx {
 
             addPropertyNotifier("v", [this, q](ACE_A) {
                 Q_UNUSED(oldValue)
-                auto v = value.value<SVSBase::MusicTimeSignature>();
+                auto v = value.value<SVS::MusicTimeSignature>();
                 // Cache point value
                 num = v.numerator();
                 den = v.denominator();
@@ -79,8 +79,8 @@ namespace Dspx {
         auto obj = value.toObject();
         setBarIndex(obj.value("index").toInt());
 
-        auto v = SVSBase::MusicTimeSignature(obj.value("numerator").toInt(), obj.value("denominator").toInt());
-        setValue(v.isValid() ? v : SVSBase::MusicTimeSignature());
+        auto v = SVS::MusicTimeSignature(obj.value("numerator").toInt(), obj.value("denominator").toInt());
+        setValue(v.isValid() ? v : SVS::MusicTimeSignature());
         return true;
     }
     QJsonValue DspxTimeSignatureEntity::write() const {
@@ -103,11 +103,11 @@ namespace Dspx {
     int DspxTimeSignatureEntity::denominator() const {
         return static_cast<DspxTimeSignatureEntityExtra *>(extra())->den;
     }
-    SVSBase::MusicTimeSignature DspxTimeSignatureEntity::value() const {
+    SVS::MusicTimeSignature DspxTimeSignatureEntity::value() const {
         auto extra = static_cast<DspxTimeSignatureEntityExtra *>(this->extra());
         return {extra->num, extra->den};
     }
-    void DspxTimeSignatureEntity::setValue(const SVSBase::MusicTimeSignature &value) {
+    void DspxTimeSignatureEntity::setValue(const SVS::MusicTimeSignature &value) {
         if (!value.isValid())
             return;
         treeItem()->setAttribute("v", QVariant::fromValue(value));
@@ -117,7 +117,7 @@ namespace Dspx {
         setValue({});
     }
     void DspxTimeSignatureEntity::doSetup() {
-        auto v = treeItem()->attribute("v").value<SVSBase::MusicTimeSignature>();
+        auto v = treeItem()->attribute("v").value<SVS::MusicTimeSignature>();
         auto extra = static_cast<DspxTimeSignatureEntityExtra *>(this->extra());
 
         // Get cache
