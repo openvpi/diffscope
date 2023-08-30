@@ -65,14 +65,17 @@ export VCPKG_KEEP_ENV_VARS=QT_DIR;Qt5_DIR
 
 ### Build & Install
 
-If you have installed the required libraries specified in `scripts/vcpkg-manifest/vcpkg.json`, you can skip setting `CMAKE_TOOLCHAIN_FILE` so long as you make sure CMake can find them.
+If you have installed the required libraries specified in `scripts/vcpkg-manifest/vcpkg.json`, you can skip setting VCPKG variables so long as you make sure CMake can find them.
+
+ChorusKit buildsystem is able to deploy the shared libraries to build directory and install directory automatically, this functionality is especially useful on Windows.
 
 ```sh
 cmake -B build -G Ninja \
     -DCMAKE_INSTALL_PREFIX=<dir> \  # install directory
     -DCMAKE_PREFIX_PATH=<dir> \     # directory `Qt5Config.cmake` locates
     -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
-    -DCMAKE_BUILD_TYPE:STRING=Release
+    -DVCPKG_APPLOCAL_DEPS:BOOL=FALSE \
+    -DCMAKE_BUILD_TYPE:STRING=Release \
     -DBUILD_LIBRARIES_IN_PLACE:BOOL=TRUE
 
 cmake --build build --target all
