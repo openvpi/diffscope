@@ -10,6 +10,6 @@ ck_add_library(${PROJECT_NAME} SHARED AUTOGEN
 
 ck_target_components(${PROJECT_NAME}
     SOURCES ${_src}
-    LINKS acetree CkSVSBase
+    LINKS acetree ChorusKit::SVSBasic
     AUTO_INCLUDE_CURRENT
 )

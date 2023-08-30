@@ -20,7 +20,7 @@ class MyLoaderConfiguration : public LoaderConfiguration {
 public:
     MyLoaderConfiguration() {
         allowRoot = false;
-        pluginIID = QString("org.ChorusKit.%1.Plugin").arg(APP_NAME);
+        pluginIID = "org.ChorusKit." APP_NAME ".Plugin";
         splashSettingPath = qAppExt->appShareDir() + "/config.json";
         userSettingsPath = qAppExt->appDataDir();
         systemSettingsPath = qAppExt->appShareDir();

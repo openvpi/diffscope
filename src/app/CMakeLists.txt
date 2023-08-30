@@ -9,7 +9,7 @@ ck_configure_application(
 ck_target_components(${PROJECT_NAME}
     SOURCES main.cpp
     QT_LINKS Core Widgets
-    LINKS_PRIVATE CkLoader CkAppCore qBreakpad
+    LINKS_PRIVATE ChorusKit::Loader ChorusKit::AppCore ChorusKit::qBreakpad
     INCLUDE_PRIVATE ${CK_BUILD_INCLUDE_DIR}
 )
 

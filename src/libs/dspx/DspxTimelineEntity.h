@@ -4,7 +4,7 @@
 #include <AceTreeObjectEntity.h>
 #include <AceTreeStandardEntity.h>
 
-#include <SVSBase/MusicTimeline.h>
+#include <SVSBasic/MusicTimeline.h>
 
 #include "DspxGlobal.h"
 

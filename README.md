@@ -50,6 +50,8 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
     + MIT License
 + [qastool](https://github.com/SineStriker/qt-json-autogen)
     + Apache 2.0 License
++ [FFmpeg-fake](https://github.com/SineStriker/ffmpeg-fake)
+    + GNU LGPL v2.1 or later
 + [QNrbf](https://github.com/SineStriker/QNrbf)
     + GNU LGPL v2.1 or later
 + [AceTreeModel](https://github.com/SineStriker/AceTreeModel)
