@@ -24,7 +24,7 @@ namespace Dspx {
 #define ADD_PROPERTY(L, KEY, V) L.setAttributeSpec(KEY, V)
 #define ADD_DY_DATA(L, KEY, V)  L.setDynamicDataSpec(KEY, V)
 
-    static void initDspxEntitiesSchema() {
+    void initDspxEntitiesSchema() {
         // Base
         {
             auto &busCtl = SCHEMA(BusControl);
@@ -201,8 +201,6 @@ namespace Dspx {
         struct initializer {
             initializer() {
                 initDspxEntitiesSchema();
-
-                qDebug() << "Dspx initialized";
             }
             ~initializer() {
             }

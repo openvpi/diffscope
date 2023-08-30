@@ -9,13 +9,9 @@
 ### Mirrors
 
 + Official: https://download.qt.io/official_releases/online_installers
-
 + SJTU: https://mirror.sjtu.edu.cn/qt/official_releases/online_installers
-
 + Tsinghua: https://mirrors.tuna.tsinghua.edu.cn/qt/official_releases/online_installers
-
 + Aliyun: https://mirrors.aliyun.com/qt/official_releases/online_installers
-
 + USTC: https://mirrors.ustc.edu.cn/qtproject/official_releases/online_installers
 
 ### Installer Options
