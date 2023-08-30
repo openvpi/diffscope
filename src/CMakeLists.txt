@@ -1,17 +1,3 @@
-# Set initialization options
-set(_init_options)
-
-if(${CMAKE_BUILD_TYPE} STREQUAL Debug OR ${CMAKE_BUILD_TYPE} STREQUAL RelWithDebInfo)
-    list(APPEND _init_options CONSOLE)
-endif()
-
-if(DIFFSCOPE_ENABLE_DEVEL)
-    list(APPEND _init_options DEVEL)
-endif()
-
-# Set variables before adding `ChorusKitAPI`
-set(CK_RUN_SCRIPTS_VERBOSE on)
-
 # Add `ChorusKitAPI`
 if(BUILD_LIBRARIES_IN_PLACE)
     include(../libs/choruskit/cmake/ChorusKitAPI.cmake)
@@ -22,7 +8,6 @@ endif()
 ck_init_build_system(${PROJECT_NAME}
     ROOT ..
     VENDOR "OpenVPI"
-    ${_init_options}
 )
 
 if(BUILD_LIBRARIES_IN_PLACE)
