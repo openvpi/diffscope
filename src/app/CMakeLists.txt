@@ -3,7 +3,7 @@ ck_configure_application(
     ICNS app.icns
     NAME ${PROJECT_NAME}
     VERSION ${PROJECT_VERSION}
-    DESCRIPTION "DiffSinger Editor"
+    DESCRIPTION ${PROJECT_NAME}
 )
 
 ck_target_components(${PROJECT_NAME}

@@ -16,11 +16,13 @@
 
 #include "choruskit_config.h"
 
+static const char APP_PLUGIN_IID[] = "org.ChorusKit." APP_NAME ".Plugin";
+
 class MyLoaderConfiguration : public LoaderConfiguration {
 public:
     MyLoaderConfiguration() {
         allowRoot = false;
-        pluginIID = "org.ChorusKit." APP_NAME ".Plugin";
+        pluginIID = APP_PLUGIN_IID;
         splashSettingPath = qAppExt->appShareDir() + "/config.json";
         userSettingsPath = qAppExt->appDataDir();
         systemSettingsPath = qAppExt->appShareDir();

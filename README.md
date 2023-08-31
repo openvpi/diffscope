@@ -60,6 +60,8 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
     + GNU LGPL v2.1
 + [qtmediate](https://github.com/SineStriker/qtmediate)
     + GNU LGPL v2.1
++ [fluentui-system-icons-modified](https://github.com/CrSjimo/fluentui-system-icons-modified)
+    + MIT License
 
 <!-- ### Special Thanks
 

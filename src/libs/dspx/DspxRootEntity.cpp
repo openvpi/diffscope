@@ -25,6 +25,12 @@ namespace Dspx {
 #define ADD_DY_DATA(L, KEY, V)  L.setDynamicDataSpec(KEY, V)
 
     void initDspxEntitiesSchema() {
+        // Make sure to initialize once
+        static bool is_initialized = false;
+        if (is_initialized)
+            return;
+        is_initialized = true;
+
         // Base
         {
             auto &busCtl = SCHEMA(BusControl);
