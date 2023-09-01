@@ -9,3 +9,7 @@
 [submodule "choruskit"]
 	path = libs/choruskit
 	url = ../../SineStriker/choruskit.git
+
+[submodule "talcs"]
+	path = libs/talcs
+	url = ../../CrSjimo/talcs.git
