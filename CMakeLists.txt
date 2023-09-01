@@ -5,10 +5,12 @@ project(DiffScope
     LANGUAGES CXX
 )
 
+# Build options
 option(DIFFSCOPE_ENABLE_DEVEL "Develop mode" off)
 option(DIFFSCOPE_ENABLE_BREAKPAD "Use breakpad handler" off)
+option(DIFFSCOPE_BUILD_TESTS "Build test cases" on)
 
-# Develop options:
+# Develop options
 #   BUILD_LIBRARIES_IN_PLACE
 
 if(MSVC)

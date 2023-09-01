@@ -33,4 +33,8 @@ add_subdirectory(libs)
 # add_subdirectory(plugins)
 
 # add_subdirectory(share)
+if(DIFFSCOPE_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
+
 ck_finish_build_system()
