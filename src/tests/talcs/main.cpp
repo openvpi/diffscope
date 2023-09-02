@@ -33,6 +33,8 @@
 
 #include <QProgressBar>
 
+using namespace talcs;
+
 int main(int argc, char **argv) {
     qputenv("QT_ENABLE_HIGHDPI_SCALING", "1");
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
