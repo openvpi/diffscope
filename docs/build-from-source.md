@@ -46,6 +46,9 @@ Use msys terminal (Git Bash) on Windows
 
 ```sh
 cd vcpkg
+
+# If you clone for the first time, you need to run this
+# command to download `vcpkg` executable
 ./bootstrap-vcpkg.sh
 
 export QT_DIR=<dir> # directory `Qt5Config.cmake` locates
