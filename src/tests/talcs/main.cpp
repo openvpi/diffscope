@@ -153,7 +153,7 @@ int main(int argc, char **argv) {
     auto reloadFile = [&](const QString &fileName) {
         if(fileName.isEmpty()) return;
         device->lock();
-        mixer.removeAllSource();
+        mixer.removeAllSources();
         for(auto ptr: trackSrcList) delete ptr;
         for(auto ptr: srcIoList) delete ptr;
         for(auto ptr: srcFileList) delete ptr;
