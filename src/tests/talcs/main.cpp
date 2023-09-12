@@ -27,7 +27,7 @@
 #include <cmath>
 
 #include "format/AudioFormatIO.h"
-#include "format/TransportAudioSourceWriter.h"
+#include "format/AudioSourceWriter.h"
 #include "source/AudioFormatInputSource.h"
 #include "source/AudioSourceClipSeries.h"
 
@@ -374,9 +374,12 @@ int main(int argc, char **argv) {
 
         auto curBufSize = transportSrc.bufferSize();
         auto curSampleRate = device->sampleRate();
-        auto curPos = transportSrc.position();
 
         transportSrc.close();
+
+        TransportAudioSourceStateSaver saver(&transportSrc);
+        transportSrc.setPosition(0);
+        transportSrc.setLoopingRange(-1, -1);
 
         QFile exportFile(exportFileName);
         AudioFormatIO exportIO(&exportFile);
@@ -391,21 +394,25 @@ int main(int argc, char **argv) {
         dlgLayout->addWidget(exportProgressBar);
         dlg.setLayout(dlgLayout);
         QThread thread;
-        TransportAudioSourceWriter writer(&transportSrc, &exportIO, 0, effectiveLength);
+        AudioSourceWriter writer(&transportSrc, &exportIO, effectiveLength);
         writer.moveToThread(&thread);
-        QObject::connect(&thread, &QThread::started, &writer, &TransportAudioSourceWriter::start);
-        QObject::connect(&writer, &TransportAudioSourceWriter::percentageUpdated, exportProgressBar, &QProgressBar::setValue);
-        QObject::connect(&writer, &TransportAudioSourceWriter::completed, &dlg, &QDialog::accept);
+        QObject::connect(&thread, &QThread::started, &writer, &AudioSourceWriter::start);
+        QObject::connect(&writer, &AudioSourceWriter::blockProcessed, exportProgressBar, [=](qint64 sampleCountProcessed){
+            exportProgressBar->setValue(sampleCountProcessed * 100 / effectiveLength);
+        });
         QObject::connect(&dlg, &QDialog::rejected, &thread, [&](){
             writer.interrupt();
         });
-        QObject::connect(&writer, &TransportAudioSourceWriter::interrupted, &mainWindow, [&]{
-            QMessageBox::warning(&mainWindow, "Export", "Exporting is interrupted.");
+        QObject::connect(&writer, &AudioSourceWriter::finished, &mainWindow, [&]{
+            if(writer.status() == talcs::AudioSourceProcessorBase::Interrupted)
+                QMessageBox::warning(&mainWindow, "Export", "Exporting is interrupted.");
+            else
+                dlg.accept();
         });
+        transportSrc.play();
         thread.start();
         dlg.exec();
         transportSrc.close();
-        transportSrc.setPosition(curPos);
         leftLevelMeter->reset();
         rightLevelMeter->reset();
         thread.quit();
