@@ -11,7 +11,8 @@
         "libsndfile",
         "libsamplerate",
         "quazip",
-        "boost-math"
+        "boost-math",
+        "soundtouch"
     ],
     "vcpkg-configuration": {
         "overlay-ports": [
