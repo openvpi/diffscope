@@ -150,6 +150,8 @@ int main(int argc, char **argv) {
 
     qint64 effectiveLength = 0;
 
+    QDialog *trackControlDlg = nullptr;
+
     auto reloadFile = [&](const QString &fileName) {
         if(fileName.isEmpty()) return;
         device->lock();
@@ -161,6 +163,16 @@ int main(int argc, char **argv) {
         srcIoList.clear();
         trackSrcList.clear();
 
+        if(trackControlDlg)
+            trackControlDlg->accept();
+        trackControlDlg = new QDialog;
+        trackControlDlg->setModal(false);
+        trackControlDlg->setWindowFlag(Qt::WindowCloseButtonHint, false);
+        trackControlDlg->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+        QObject::connect(trackControlDlg, &QDialog::finished, trackControlDlg, &QObject::deleteLater);
+        auto trackControlDlgLayout = new QVBoxLayout;
+        trackControlDlg->setLayout(trackControlDlgLayout);
+
         fileNameLabel->setText(fileName);
         QFile f(fileName);
         f.open(QFile::ReadOnly);
@@ -171,6 +183,7 @@ int main(int argc, char **argv) {
             srcFileList.append(audioFile);
             srcIoList.append(new AudioFormatIO(audioFile));
         }
+        int trkCnt = 0;
         for(const auto &trackSpec: doc.object().value("tracks").toArray()) {
             auto clipSeries = new AudioSourceClipSeries;
             auto trackSrc = new PositionableMixerAudioSource;
@@ -194,6 +207,21 @@ int main(int argc, char **argv) {
             }
             effectiveLength = std::max(effectiveLength, clipSeries->effectiveLength());
             mixer.addSource(trackSrc);
+
+            auto trackLayout = new QHBoxLayout;
+            auto trackNameLabel = new QLabel("Track" + QString::number(trkCnt++));
+            auto trackMute = new QCheckBox("Mute");
+            auto trackSolo = new QCheckBox("Solo");
+            QObject::connect(trackMute, &QCheckBox::clicked, trackSrc, [=](bool clicked){
+                trackSrc->setSilentFlags(clicked ? -1 : 0);
+            });
+            QObject::connect(trackSolo, &QCheckBox::clicked, trackSrc, [=, &mixer](bool clicked){
+                mixer.setSourceSolo(trackSrc, clicked);
+            });
+            trackLayout->addWidget(trackNameLabel);
+            trackLayout->addWidget(trackMute);
+            trackLayout->addWidget(trackSolo);
+            trackControlDlgLayout->addLayout(trackLayout);
         }
         device->unlock();
         qint64 audioLength = effectiveLength;
@@ -201,6 +229,7 @@ int main(int argc, char **argv) {
         loopingStartSlider->setRange(0, audioLength - 1);
         loopingEndSlider->setRange(0, audioLength);
         loopingEndSlider->setValue(audioLength);
+        trackControlDlg->show();
     };
 
     auto restartDevice = [&](){
