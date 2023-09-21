@@ -166,8 +166,6 @@ int main(int argc, char **argv) {
         if(trackControlDlg)
             trackControlDlg->accept();
         trackControlDlg = new QDialog;
-        trackControlDlg->setModal(false);
-        trackControlDlg->setWindowFlag(Qt::WindowCloseButtonHint, false);
         trackControlDlg->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
         QObject::connect(trackControlDlg, &QDialog::finished, trackControlDlg, &QObject::deleteLater);
         auto trackControlDlgLayout = new QVBoxLayout;
