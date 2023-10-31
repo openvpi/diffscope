@@ -12,7 +12,8 @@
         "libsamplerate",
         "quazip",
         "boost-math",
-        "soundtouch"
+        "rpclib",
+        "interval-tree"
     ],
     "vcpkg-configuration": {
         "overlay-ports": [
