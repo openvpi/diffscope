@@ -31,12 +31,12 @@ private:
 class ObjectWrapper {
 public:
     static QJSValue wrap(QObject *obj, QJSEngine *engine, const QStringList &includedKeys = {}, const QStringList &excludedKeys = {});
-    static void seal(const QJSValue &wrapped, QJSEngine *engine);
 
     template<class Obj, class Ret, class FuncClass, class... Args>
-    static void bindSignal(Obj *obj, Ret (FuncClass::*func) (Args...), const QJSValue &wrapped, const QString &name) {
+    static void bindSignal(Obj *obj, Ret (FuncClass::*func) (Args...), QJSValue wrapped, const QString &name) {
         QString key = "on" + name;
         key[2] = key[2].toUpper();
+        wrapped.setProperty(key, QJSValue::NullValue);
         QObject::connect(obj, func, [=](Args... args) {
             QJSValueList argList = {args...};
             auto cb = wrapped.property(key);

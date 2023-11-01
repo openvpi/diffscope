@@ -34,7 +34,3 @@ QJSValue ObjectWrapper::wrap(QObject *obj, QJSEngine *engine, const QStringList 
 
     return wrapped;
 }
-
-void ObjectWrapper::seal(const QJSValue &wrapped, QJSEngine *engine) {
-    engine->globalObject().property("Object").property("seal").call({wrapped});
-}
