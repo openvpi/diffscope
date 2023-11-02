@@ -1,4 +1,22 @@
-btn.onClicked = () => {
-    let t = parseInt(btn.text);
-    btn.text = String(t + 1);
-}
+(()=> {
+    $.registry.registerScript(class {
+        static manifest() {
+            return {
+                id: "test"
+            }
+        }
+
+        constructor(project) {
+            this.project = project;
+        }
+
+        prepare() {
+            return this.project.window.question("Test?");
+        }
+
+        main() {
+            this.project.window.alert("Test.");
+        }
+    })
+
+})()
