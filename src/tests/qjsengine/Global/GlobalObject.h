@@ -7,6 +7,7 @@
 class QJSEngine;
 
 class GlobalRegistryObject;
+class GlobalStorageObject;
 class GlobalObjectPrivate;
 
 class GlobalObject : public QObject {
@@ -21,6 +22,7 @@ public:
     QJSEngine *engine() const;
     QJSValue load(const QString &scriptFilename);
     GlobalRegistryObject *registry() const;
+    GlobalStorageObject *storage() const;
 
     QJSValue jsRegistry() const;
     QJSValue jsStorage() const;

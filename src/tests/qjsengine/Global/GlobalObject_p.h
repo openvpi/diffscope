@@ -4,12 +4,15 @@
 #include <QJSEngine>
 
 #include "GlobalRegistryObject.h"
+#include "GlobalStorageObject.h"
 
 class GlobalObjectPrivate {
 public:
     QJSEngine *engine;
 
     GlobalRegistryObject *registry;
+    GlobalStorageObject *storage;
+
     QJSValue registryObject;
     QJSValue storageObject;
 };

@@ -2,12 +2,17 @@
     $.registry.registerScript(class {
         static manifest() {
             return {
-                id: "test"
+                id: "test",
+                name: "Test",
             }
         }
 
+        /**
+         * @param {$.Project} project
+         */
         constructor(project) {
             this.project = project;
+            $.storage.setItem("a", "b");
         }
 
         prepare() {
@@ -15,7 +20,7 @@
         }
 
         main() {
-            this.project.window.alert("Test.");
+            this.project.window.alert($.storage.getItem("a"));
         }
     })
 

@@ -7,6 +7,7 @@
 
 #include "../Global/GlobalObject.h"
 #include "../Global/GlobalRegistryObject.h"
+#include "../Global/GlobalStorageObject.h"
 #include "ProjectWindowObject.h"
 
 ProjectObject::ProjectObject(QWidget *window) : QObject(window), d(new ProjectObjectPrivate{window}) {
@@ -38,6 +39,7 @@ QJSValue ProjectObject::invoke(const QString &id, int index) {
     auto ret = script.property("main").callWithInstance(script);
     if (ret.isError())
         return ret;
+    jsGlobal->storage()->update();
     return QJSValue::UndefinedValue;
 }
 

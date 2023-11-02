@@ -4,6 +4,8 @@
 #include <QFile>
 #include <QJSEngine>
 
+#include "GlobalStorageObject.h"
+
 static GlobalObject *m_instance = nullptr;
 
 GlobalObject::GlobalObject(QObject *parent) : QObject(parent), d(new GlobalObjectPrivate) {
@@ -11,6 +13,8 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent), d(new GlobalObjec
     d->engine = new QJSEngine(this);
     d->registry = new GlobalRegistryObject(this);
     d->registryObject = d->engine->newQObject(d->registry);
+    d->storage = new GlobalStorageObject(this, "D:/a.json"); // TODO file name
+    d->storageObject = d->engine->newQObject(d->storage);
     d->engine->globalObject().setProperty("$", d->engine->newQObject(this));
 }
 
@@ -38,6 +42,10 @@ QJSValue GlobalObject::load(const QString &scriptFilename) {
 
 GlobalRegistryObject *GlobalObject::registry() const {
     return d->registry;
+}
+
+GlobalStorageObject *GlobalObject::storage() const {
+    return d->storage;
 }
 
 QJSValue GlobalObject::jsRegistry() const {
