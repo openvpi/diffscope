@@ -1,10 +1,11 @@
 #ifndef DIFFSCOPE_DIALOG_H
 #define DIFFSCOPE_DIALOG_H
 
-#include <QObject>
 #include <QJSValue>
+#include <QObject>
 
-class DialogPrivate;
+class QDialog;
+class QVBoxLayout;
 
 class Dialog : public QObject {
     Q_OBJECT
@@ -21,7 +22,9 @@ public slots:
     void close(bool accepted);
 
 private:
-    QScopedPointer<DialogPrivate> d;
+    QDialog *m_dlg;
+    QVBoxLayout *m_dlgLayout;
+    QJSValue m_content = QJSValue::NullValue;
 };
 
 #endif // DIFFSCOPE_DIALOG_H

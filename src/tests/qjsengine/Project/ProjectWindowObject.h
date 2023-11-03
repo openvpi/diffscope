@@ -1,11 +1,10 @@
 #ifndef DIFFSCOPE_PROJECTWINDOWOBJECT_H
 #define DIFFSCOPE_PROJECTWINDOWOBJECT_H
 
-#include <QObject>
 #include <QJSValue>
+#include <QObject>
 
 class ProjectObject;
-class ProjectWindowObjectPrivate;
 
 class ProjectWindowObject : public QObject {
     Q_OBJECT
@@ -24,7 +23,7 @@ public slots:
     QJSValue createWidget(const QString &tag);
 
 private:
-    QScopedPointer<ProjectWindowObjectPrivate> d;
+    ProjectObject *m_project;
 };
 
 #endif // DIFFSCOPE_PROJECTWINDOWOBJECT_H

@@ -1,21 +1,20 @@
 #include "GlobalObject.h"
-#include "GlobalObject_p.h"
 
 #include <QFile>
 #include <QJSEngine>
 
+#include "GlobalRegistryObject.h"
 #include "GlobalStorageObject.h"
 
 static GlobalObject *m_instance = nullptr;
 
-GlobalObject::GlobalObject(QObject *parent) : QObject(parent), d(new GlobalObjectPrivate) {
+GlobalObject::GlobalObject(QObject *parent)
+    : QObject(parent), m_engine(new QJSEngine(this)), m_registry(new GlobalRegistryObject(this)),
+      m_registryObject(m_engine->newQObject(m_registry)),
+      m_storage(new GlobalStorageObject(this, "D:/a.json")), // TODO file name
+      m_storageObject(m_engine->newQObject(m_storage)) {
     m_instance = this;
-    d->engine = new QJSEngine(this);
-    d->registry = new GlobalRegistryObject(this);
-    d->registryObject = d->engine->newQObject(d->registry);
-    d->storage = new GlobalStorageObject(this, "D:/a.json"); // TODO file name
-    d->storageObject = d->engine->newQObject(d->storage);
-    d->engine->globalObject().setProperty("$", d->engine->newQObject(this));
+    m_engine->globalObject().setProperty("$", m_engine->newQObject(this));
 }
 
 GlobalObject::~GlobalObject() {
@@ -27,31 +26,32 @@ GlobalObject *GlobalObject::instance() {
 }
 
 QJSEngine *GlobalObject::engine() const {
-    return d->engine;
+    return m_engine;
 }
 
 QJSValue GlobalObject::load(const QString &scriptFilename) {
     QFile f(scriptFilename);
     if (!f.open(QFile::ReadOnly))
-        return d->engine->newErrorObject(QJSValue::URIError, QString("Script file does not exist: '%1'").arg(scriptFilename));
-    auto ret = d->engine->evaluate(f.readAll(), scriptFilename);
+        return m_engine->newErrorObject(QJSValue::URIError,
+                                        QString("Script file does not exist: '%1'").arg(scriptFilename));
+    auto ret = m_engine->evaluate(f.readAll(), scriptFilename);
     if (ret.isError())
         return ret;
     return QJSValue::UndefinedValue;
 }
 
 GlobalRegistryObject *GlobalObject::registry() const {
-    return d->registry;
+    return m_registry;
 }
 
 GlobalStorageObject *GlobalObject::storage() const {
-    return d->storage;
+    return m_storage;
 }
 
 QJSValue GlobalObject::jsRegistry() const {
-    return d->registryObject;
+    return m_registryObject;
 }
 
 QJSValue GlobalObject::jsStorage() const {
-    return d->storageObject;
+    return m_storageObject;
 }

@@ -1,11 +1,11 @@
 #ifndef DIFFSCOPE_GLOBALREGISTRYOBJECT_H
 #define DIFFSCOPE_GLOBALREGISTRYOBJECT_H
 
-#include <QObject>
+#include <QHash>
 #include <QJSValue>
+#include <QObject>
 
 class GlobalObject;
-class GlobalRegistryObjectPrivate;
 
 class GlobalRegistryObject : public QObject {
     Q_OBJECT
@@ -22,7 +22,7 @@ public slots:
     void registerScript(const QJSValue &scriptConstructor);
 
 private:
-    QScopedPointer<GlobalRegistryObjectPrivate> d;
+    QHash<QString, QJSValue> m_scriptDict;
 };
 
 

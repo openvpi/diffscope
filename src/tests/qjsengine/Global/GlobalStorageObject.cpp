@@ -1,14 +1,13 @@
 #include "GlobalStorageObject.h"
-#include "GlobalStorageObject_p.h"
 
 #include "GlobalObject.h"
 
 #include <QJsonDocument>
 
-GlobalStorageObject::GlobalStorageObject(GlobalObject *global, const QString &filename) : QObject(global), d(new GlobalStorageObjectPrivate) {
-    d->storageFile.setFileName(filename);
-    d->storageFile.open(QFile::ReadWrite);
-    d->jsonStorage = QJsonDocument::fromJson(d->storageFile.readAll()).object();
+GlobalStorageObject::GlobalStorageObject(GlobalObject *global, const QString &filename)
+    : QObject(global), m_storageFile(filename) {
+    m_storageFile.open(QFile::ReadWrite);
+    m_jsonStorage = QJsonDocument::fromJson(m_storageFile.readAll()).object();
 }
 
 GlobalStorageObject::~GlobalStorageObject() {
@@ -16,26 +15,27 @@ GlobalStorageObject::~GlobalStorageObject() {
 }
 
 void GlobalStorageObject::update() {
-    if (!d->isModified)
+    if (!m_isModified)
         return;
-    d->storageFile.resize(0);
-    d->storageFile.write(QJsonDocument(d->jsonStorage).toJson(
+    m_storageFile.resize(0);
+    m_storageFile.write(QJsonDocument(m_jsonStorage)
+                            .toJson(
 #ifdef QT_DEBUG
-        QJsonDocument::Indented
+                                QJsonDocument::Indented
 #else
-        QJsonDocument::Compact
+                                QJsonDocument::Compact
 #endif
-    ));
-    d->isModified = false;
+                                ));
+    m_isModified = false;
 }
 
 void GlobalStorageObject::setItem(const QString &key, const QString &value) {
-    d->jsonStorage.insert(key, value);
-    d->isModified = true;
+    m_jsonStorage.insert(key, value);
+    m_isModified = true;
 }
 
 QJSValue GlobalStorageObject::getItem(const QString &key) {
-    auto value = d->jsonStorage.value(key);
+    auto value = m_jsonStorage.value(key);
     if (value.isString()) {
         return value.toString();
     } else {
@@ -44,6 +44,6 @@ QJSValue GlobalStorageObject::getItem(const QString &key) {
 }
 
 void GlobalStorageObject::removeItem(const QString &key) {
-    d->jsonStorage.remove(key);
-    d->isModified = true;
+    m_jsonStorage.remove(key);
+    m_isModified = true;
 }

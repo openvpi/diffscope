@@ -1,24 +1,23 @@
 #include "GlobalRegistryObject.h"
-#include "GlobalRegistryObject_p.h"
 
 #include <QJSEngine>
 
 #include "GlobalObject.h"
 
-GlobalRegistryObject::GlobalRegistryObject(GlobalObject *global) : QObject(global), d(new GlobalRegistryObjectPrivate) {
+GlobalRegistryObject::GlobalRegistryObject(GlobalObject *global) : QObject(global) {
 }
 
 GlobalRegistryObject::~GlobalRegistryObject() = default;
 
 QStringList GlobalRegistryObject::scripts() const {
-    return d->scriptDict.keys();
+    return m_scriptDict.keys();
 }
 QJSValue GlobalRegistryObject::scriptConstructor(const QString &id) const {
-    return d->scriptDict.value(id);
+    return m_scriptDict.value(id);
 }
 
 void GlobalRegistryObject::clearRegistry() {
-    d->scriptDict.clear();
+    m_scriptDict.clear();
 }
 
 void GlobalRegistryObject::registerScript(const QJSValue &scriptConstructor) {
@@ -26,6 +25,6 @@ void GlobalRegistryObject::registerScript(const QJSValue &scriptConstructor) {
         return jsGlobal->engine()->throwError(QJSValue::TypeError, "'manifest' is not a function");
     auto manifest = scriptConstructor.property("manifest").call();
     if (!manifest.property("id").isString())
-        return jsGlobal->engine()->throwError(QJSValue::TypeError, "Invalid return value of manifest()");;
-    d->scriptDict.insert(manifest.property("id").toString(), scriptConstructor);
+        return jsGlobal->engine()->throwError(QJSValue::TypeError, "Invalid return value of manifest()");
+    m_scriptDict.insert(manifest.property("id").toString(), scriptConstructor);
 }

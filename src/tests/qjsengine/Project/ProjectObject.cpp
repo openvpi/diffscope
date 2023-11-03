@@ -1,31 +1,30 @@
 #include "ProjectObject.h"
-#include "ProjectObject_p.h"
 
 #include <QDebug>
-#include <QWidget>
 #include <QJSEngine>
+#include <QWidget>
 
 #include "../Global/GlobalObject.h"
 #include "../Global/GlobalRegistryObject.h"
 #include "../Global/GlobalStorageObject.h"
 #include "ProjectWindowObject.h"
 
-ProjectObject::ProjectObject(QWidget *window) : QObject(window), d(new ProjectObjectPrivate{window}) {
-    d->thisObject = jsGlobal->engine()->newQObject(this);
-    d->windowObject = jsGlobal->engine()->newQObject(new ProjectWindowObject(this));
+ProjectObject::ProjectObject(QWidget *window)
+    : QObject(window), m_win(window), m_thisObject(jsGlobal->engine()->newQObject(this)),
+      m_windowObject(jsGlobal->engine()->newQObject(new ProjectWindowObject(this))) {
 }
 
 ProjectObject::~ProjectObject() = default;
 
 QWidget *ProjectObject::window() const {
-    return d->win;
+    return m_win;
 }
 
 QJSValue ProjectObject::invoke(const QString &id, int index) {
     auto scriptConstructor = jsGlobal->registry()->scriptConstructor(id);
     if (scriptConstructor.isUndefined())
         return QJSValue::UndefinedValue;
-    auto script = scriptConstructor.callAsConstructor({d->thisObject});
+    auto script = scriptConstructor.callAsConstructor({m_thisObject});
     if (script.isError())
         return script;
     if (!script.property("prepare").isCallable())
@@ -44,5 +43,5 @@ QJSValue ProjectObject::invoke(const QString &id, int index) {
 }
 
 QJSValue ProjectObject::jsWindow() const {
-    return d->windowObject;
+    return m_windowObject;
 }

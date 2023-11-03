@@ -10,29 +10,30 @@
 
 #include "Window/Dialog.h"
 
-ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(project), d(new ProjectWindowObjectPrivate{project}) {
+ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(project), m_project(project) {
 }
 
 ProjectWindowObject::~ProjectWindowObject() = default;
 
 QWidget *ProjectWindowObject::window() const {
-    return d->project->window();
+    return m_project->window();
 }
 
 void ProjectWindowObject::alert(const QString &message, const QString &title) {
-    QMessageBox::information(d->project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title, message);
+    QMessageBox::information(m_project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title, message);
 }
 
 void ProjectWindowObject::warning(const QString &message, const QString &title) {
-    QMessageBox::warning(d->project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title, message);
+    QMessageBox::warning(m_project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title, message);
 }
 
 void ProjectWindowObject::critical(const QString &message, const QString &title) {
-    QMessageBox::critical(d->project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title, message);
+    QMessageBox::critical(m_project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title, message);
 }
 
 bool ProjectWindowObject::question(const QString &message, const QString &title) {
-    return QMessageBox::question(d->project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title, message) == QMessageBox::Yes;
+    return QMessageBox::question(m_project->window(), title.isEmpty() ? qApp->applicationDisplayName() : title,
+                                 message) == QMessageBox::Yes;
 }
 
 QJSValue ProjectWindowObject::createWidget(const QString &tag) {

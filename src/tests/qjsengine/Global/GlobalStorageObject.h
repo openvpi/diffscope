@@ -1,8 +1,10 @@
 #ifndef DIFFSCOPE_GLOBALSTORAGEOBJECT_H
 #define DIFFSCOPE_GLOBALSTORAGEOBJECT_H
 
-#include <QObject>
+#include <QFile>
 #include <QJSValue>
+#include <QJsonObject>
+#include <QObject>
 
 class GlobalObject;
 
@@ -22,7 +24,9 @@ public slots:
     void removeItem(const QString &key);
 
 private:
-    QScopedPointer<GlobalStorageObjectPrivate> d;
+    QFile m_storageFile;
+    QJsonObject m_jsonStorage;
+    bool m_isModified = false;
 };
 
 #endif // DIFFSCOPE_GLOBALSTORAGEOBJECT_H

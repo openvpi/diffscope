@@ -1,14 +1,13 @@
 #ifndef DIFFSCOPE_GLOBALOBJECT_H
 #define DIFFSCOPE_GLOBALOBJECT_H
 
-#include <QObject>
 #include <QJSValue>
+#include <QObject>
 
 class QJSEngine;
 
 class GlobalRegistryObject;
 class GlobalStorageObject;
-class GlobalObjectPrivate;
 
 class GlobalObject : public QObject {
     Q_OBJECT
@@ -28,7 +27,13 @@ public:
     QJSValue jsStorage() const;
 
 private:
-    QScopedPointer<GlobalObjectPrivate> d;
+    QJSEngine *m_engine;
+
+    GlobalRegistryObject *m_registry;
+    GlobalStorageObject *m_storage;
+
+    QJSValue m_registryObject;
+    QJSValue m_storageObject;
 };
 
 #define jsGlobal GlobalObject::instance()

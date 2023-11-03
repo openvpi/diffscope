@@ -1,13 +1,12 @@
 #ifndef DIFFSCOPE_PROJECTOBJECT_H
 #define DIFFSCOPE_PROJECTOBJECT_H
 
-#include <QObject>
+#include <QHash>
 #include <QJSValue>
+#include <QObject>
 
 class QWidget;
 class QJSEngine;
-
-class ProjectObjectPrivate;
 
 class ProjectObject : public QObject {
     Q_OBJECT
@@ -22,7 +21,12 @@ public:
     QJSValue jsWindow() const;
 
 private:
-    QScopedPointer<ProjectObjectPrivate> d;
+    QWidget *m_win;
+
+    QHash<QString, QJSValue> m_scriptInstanceDict;
+
+    QJSValue m_thisObject;
+    QJSValue m_windowObject;
 };
 
 
