@@ -22,9 +22,9 @@ void GlobalRegistryObject::clearRegistry() {
 
 void GlobalRegistryObject::registerScript(const QJSValue &scriptConstructor) {
     if (!scriptConstructor.property("manifest").isCallable())
-        return jsGlobal->engine()->throwError(QJSValue::TypeError, "'manifest' is not a function");
+        return JS_THROW(QJSValue::TypeError, "'manifest' is not a function");
     auto manifest = scriptConstructor.property("manifest").call();
     if (!manifest.property("id").isString())
-        return jsGlobal->engine()->throwError(QJSValue::TypeError, "Invalid return value of manifest()");
+        return JS_THROW(QJSValue::TypeError, "Invalid return value of manifest()");
     m_scriptDict.insert(manifest.property("id").toString(), scriptConstructor);
 }

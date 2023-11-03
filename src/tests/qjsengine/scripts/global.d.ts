@@ -2,16 +2,67 @@ declare namespace $ {
 
     namespace Project {
         namespace Window {
-            interface Widget {}
+            interface Element {}
 
-            interface Dialog extends Widget {
-                content: Widget;
+            interface WidgetElement extends Element{
+                enabled: boolean;
+                visible: boolean;
+                toolTip: string;
+            }
+
+            interface Button extends WidgetElement {
+                autoExclusive: boolean;
+                checkable: boolean;
+                checked: boolean;
+                text: string;
+                onClicked: ((isChecked: boolean) => void)|null;
+                onPressed: (() => void)|null;
+                onReleased: (() => void)|null;
+            }
+
+            interface Dialog extends Element {
+                content: Element;
                 open(): boolean;
                 close(accepted: boolean): void;
             }
 
-            interface WidgetKeyMap {
+            interface FormLayout extends Element {
+                addRow(label: string, element: Element): void;
+                addElement(element: Element): void;
+            }
+
+            interface Label extends WidgetElement {
+                text: string;
+            }
+
+            interface LineEdit extends WidgetElement {
+                readonly acceptableInput: boolean;
+                cursorPosition: number;
+                hasSelectedText: boolean;
+                inputMask: string;
+                maxLength: number;
+                placeholderText: string;
+                readOnly: boolean;
+                readonly selectedText: string;
+                text: string;
+                clear(): void;
+                copy(): void;
+                selectAll(): void;
+                onCursorPositionChanged: ((oldPos: number, newPos: number) => void)|null;
+                onEditingFinished: (() => void)|null;
+                onInputRejected: (() => void)|null;
+                onReturnPressed: (() => void)|null;
+                onSelectionChanged: (() => void)|null;
+                onTextChanged: ((text: string) => void)|null;
+                onTextEdited: ((text: string) => void)|null;
+            }
+
+            interface ElementKeyMap {
+                'button': Button;
                 'dialog': Dialog;
+                'form-layout': FormLayout;
+                'label': Label;
+                'line-edit': LineEdit
             }
         }
     }
@@ -22,7 +73,7 @@ declare namespace $ {
             warning(message: string, title?: string): void;
             critical(message: string, title?: string): void;
             question(message: string, title?: string): boolean;
-            createWidget<K extends keyof Project.Window.WidgetKeyMap>(tag: K): Project.Window.WidgetKeyMap[K];
+            createElement<K extends keyof Project.Window.ElementKeyMap>(tag: K): Project.Window.ElementKeyMap[K];
         }
     }
 

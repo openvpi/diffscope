@@ -10,8 +10,8 @@
 #include "ProjectWindowObject.h"
 
 ProjectObject::ProjectObject(QWidget *window)
-    : QObject(window), m_win(window), m_thisObject(jsGlobal->engine()->newQObject(this)),
-      m_windowObject(jsGlobal->engine()->newQObject(new ProjectWindowObject(this))) {
+    : QObject(window), m_win(window), m_thisObject(JS_QOBJ(this)),
+      m_windowObject(JS_QOBJ(new ProjectWindowObject(this))) {
 }
 
 ProjectObject::~ProjectObject() = default;

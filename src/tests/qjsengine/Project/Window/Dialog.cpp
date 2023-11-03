@@ -8,6 +8,7 @@
 #include "../../Global/GlobalObject.h"
 
 Dialog::Dialog(QWidget *win) : QObject(win), m_dlg(new QDialog(win)), m_dlgLayout(new QVBoxLayout) {
+    m_dlg->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     m_dlg->setLayout(m_dlgLayout);
     auto okBtn = new QPushButton("OK");
     auto cancelBtn = new QPushButton("Cancel");
@@ -37,7 +38,7 @@ void Dialog::setContent(const QJSValue &jsWidget) {
         return;
     }
     m_content = QJSValue::NullValue;
-    jsGlobal->engine()->throwError(QJSValue::TypeError, "Invalid type of dialog content");
+    JS_THROW(QJSValue::TypeError, "Invalid type of dialog content");
 }
 
 QJSValue Dialog::content() const {

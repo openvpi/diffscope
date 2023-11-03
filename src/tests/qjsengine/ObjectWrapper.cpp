@@ -19,6 +19,10 @@ QJSValue ObjectWrapper::wrap(QObject *obj, QJSEngine *engine, const QStringList 
         keys = Object.property("keys").call({jsObj}).toVariant().toStringList();
 
     for (const auto &key : keys) {
+        if (!jsObj.hasProperty(key)) {
+            qWarning() << "ObjectWrapper: No property named" << key;
+            continue;
+        }
         auto desc = engine->newObject();
         desc.setProperty("configurable", true);
         desc.setProperty("enumerable", true);

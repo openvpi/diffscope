@@ -37,5 +37,7 @@ private:
 };
 
 #define jsGlobal GlobalObject::instance()
+#define JS_QOBJ jsGlobal->engine()->newQObject
+#define JS_THROW jsGlobal->engine()->throwError
 
 #endif // DIFFSCOPE_GLOBALOBJECT_H

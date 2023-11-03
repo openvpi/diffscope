@@ -20,7 +20,7 @@ public slots:
     void critical(const QString &message, const QString &title = {});
     bool question(const QString &message, const QString &title = {});
 
-    QJSValue createWidget(const QString &tag);
+    QJSValue createElement(const QString &tag);
 
 private:
     ProjectObject *m_project;
