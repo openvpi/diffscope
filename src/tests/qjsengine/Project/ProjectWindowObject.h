@@ -13,13 +13,14 @@ public:
     explicit ProjectWindowObject(ProjectObject *project);
     ~ProjectWindowObject() override;
 
+    QWidget *window() const;
+
 public slots:
     void alert(const QString &message, const QString &title = {});
     void warning(const QString &message, const QString &title = {});
     void critical(const QString &message, const QString &title = {});
     bool question(const QString &message, const QString &title = {});
 
-    QJSValue createDialog();
     QJSValue createWidget(const QString &tag);
 
 private:

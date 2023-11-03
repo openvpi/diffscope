@@ -1,11 +1,28 @@
 declare namespace $ {
 
+    namespace Project {
+        namespace Window {
+            interface Widget {}
+
+            interface Dialog extends Widget {
+                content: Widget;
+                open(): boolean;
+                close(accepted: boolean): void;
+            }
+
+            interface WidgetKeyMap {
+                'dialog': Dialog;
+            }
+        }
+    }
+
     interface Project {
         readonly window: {
             alert(message: string, title?: string): void;
             warning(message: string, title?: string): void;
             critical(message: string, title?: string): void;
             question(message: string, title?: string): boolean;
+            createWidget<K extends keyof Project.Window.WidgetKeyMap>(tag: K): Project.Window.WidgetKeyMap[K];
         }
     }
 

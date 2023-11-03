@@ -20,7 +20,8 @@
         }
 
         main() {
-            this.project.window.alert($.storage.getItem("a"));
+            let dlg = this.project.window.createWidget('dialog');
+            dlg.open();
         }
     })
 
