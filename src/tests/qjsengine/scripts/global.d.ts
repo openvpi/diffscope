@@ -22,8 +22,8 @@ declare namespace $ {
 
             interface Dialog extends Element {
                 content: Element;
-                open(): boolean;
-                close(accepted: boolean): void;
+                openDialog(): boolean;
+                closeDialog(accepted: boolean): void;
             }
 
             interface FormLayout extends Element {
@@ -57,12 +57,49 @@ declare namespace $ {
                 onTextEdited: ((text: string) => void)|null;
             }
 
+            interface Select extends WidgetElement {
+                currentIndex: number;
+                addOption(text: string): void;
+                optionAt(index: number): string;
+                onCurrentIndexChanged: ((index: number) => void)|null;
+            }
+
+            interface Slider extends WidgetElement {
+                maximum: number;
+                minimum: number;
+                pageStep: number;
+                singleStep: number;
+                value: number;
+                tickInterval: number;
+                hasTicks: boolean;
+                onValueChanged: ((value: number) => void)|null;
+            }
+
+            interface SpinBox extends WidgetElement {
+                readOnly: boolean;
+                maximum: number;
+                minimum: number;
+                prefix: string;
+                singleStep: number;
+                suffix: string;
+                value: number;
+                onValueChanged: ((value: number) => void)|null;
+            }
+
+            interface DoubleSpinBox extends SpinBox {
+                decimals: number;
+            }
+
             interface ElementKeyMap {
                 'button': Button;
                 'dialog': Dialog;
+                'double-spin-box': DoubleSpinBox;
                 'form-layout': FormLayout;
                 'label': Label;
-                'line-edit': LineEdit
+                'line-edit': LineEdit;
+                'select': Select;
+                'slider': Slider;
+                'spin-box': SpinBox;
             }
         }
     }

@@ -1,28 +1,17 @@
 #ifndef DIFFSCOPE_FORMLAYOUT_H
 #define DIFFSCOPE_FORMLAYOUT_H
 
-#include <QObject>
+#include <QFormLayout>
 #include <QJSValue>
 
-class QFormLayout;
-
-class FormLayout : public QObject {
+class FormLayout : public QFormLayout {
     Q_OBJECT
-    Q_PROPERTY(QJSValue _p READ layoutObject)
 public:
-    explicit FormLayout(QWidget *win);
-
-    QJSValue layoutObject() const {
-        return m_layoutObject;
-    }
+    explicit FormLayout(QWidget *parent = nullptr);
 
 public slots:
     void addRow(const QString &label, const QJSValue &jsWidget);
     void addElement(const QJSValue &jsWidget);
-
-private:
-    QFormLayout *m_layout;
-    QJSValue m_layoutObject;
 
 };
 

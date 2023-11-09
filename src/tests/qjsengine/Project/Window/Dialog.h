@@ -2,27 +2,25 @@
 #define DIFFSCOPE_DIALOG_H
 
 #include <QJSValue>
-#include <QObject>
+#include <QDialog>
 
-class QDialog;
 class QVBoxLayout;
 
-class Dialog : public QObject {
+class Dialog : public QDialog {
     Q_OBJECT
     Q_PROPERTY(QJSValue content READ content WRITE setContent)
 public:
-    explicit Dialog(QWidget *win);
+    explicit Dialog(QWidget *parent = nullptr);
     ~Dialog() override;
 
     void setContent(const QJSValue &jsWidget);
     QJSValue content() const;
 
 public slots:
-    bool open();
-    void close(bool accepted);
+    bool openDialog();
+    void closeDialog(bool accepted);
 
 private:
-    QDialog *m_dlg;
     QVBoxLayout *m_dlgLayout;
     QJSValue m_content = QJSValue::NullValue;
 };

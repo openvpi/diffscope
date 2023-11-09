@@ -5,33 +5,34 @@
 #include <QJSEngine>
 
 #include "../../Global/GlobalObject.h"
+#include "../ProjectWindowObject.h"
 
-FormLayout::FormLayout(QWidget *win) : QObject(win), m_layout(new QFormLayout), m_layoutObject(JS_QOBJ(m_layout)) {
+FormLayout::FormLayout(QWidget *parent) : QFormLayout(parent) {
 }
 
 void FormLayout::addRow(const QString &label, const QJSValue &jsWidget) {
-    auto *widget = qobject_cast<QWidget *>(jsWidget.property("_p").toQObject());
+    auto *widget = ProjectWindowObject::getWidgetOfWrappedObject(jsWidget);
     if (widget) {
-        m_layout->addRow(label, widget);
+        QFormLayout::addRow(label, widget);
         return;
     }
-    auto *layout = qobject_cast<QLayout *>(jsWidget.property("_p").toQObject());
+    auto *layout = ProjectWindowObject::getLayoutOfWrappedObject(jsWidget);
     if (layout) {
-        m_layout->addRow(label, layout);
+        QFormLayout::addRow(label, layout);
         return;
     }
     JS_THROW(QJSValue::TypeError, "Invalid type of layout content");
 }
 
 void FormLayout::addElement(const QJSValue &jsWidget) {
-    auto *widget = qobject_cast<QWidget *>(jsWidget.property("_p").toQObject());
+    auto *widget = ProjectWindowObject::getWidgetOfWrappedObject(jsWidget);
     if (widget) {
-        m_layout->addRow(widget);
+        QFormLayout::addRow(widget);
         return;
     }
-    auto *layout = qobject_cast<QLayout *>(jsWidget.property("_p").toQObject());
+    auto *layout = ProjectWindowObject::getLayoutOfWrappedObject(jsWidget);
     if (layout) {
-        m_layout->addRow(layout);
+        QFormLayout::addRow(layout);
         return;
     }
     JS_THROW(QJSValue::TypeError, "Invalid type of layout content");
