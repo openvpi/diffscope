@@ -68,7 +68,6 @@
             }
 
             dlg.content = dlgLayout;
-            dlg.content = null;
             dlg.openDialog();
         }
     })

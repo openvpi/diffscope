@@ -29,6 +29,8 @@ declare namespace $ {
             interface FormLayout extends Element {
                 addRow(label: string, element: Element): void;
                 addElement(element: Element): void;
+                horizontalSpacing: number;
+                verticalSpacing: number;
             }
 
             interface Label extends WidgetElement {

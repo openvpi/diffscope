@@ -11,13 +11,16 @@
 
 Dialog::Dialog(QWidget *parent) : QDialog(parent), m_dlgLayout(new QVBoxLayout) {
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-    setLayout(m_dlgLayout);
     auto okBtn = new QPushButton("OK");
     auto cancelBtn = new QPushButton("Cancel");
     auto btnLayout = new QHBoxLayout;
+    btnLayout->addStretch();
     btnLayout->addWidget(okBtn);
     btnLayout->addWidget(cancelBtn);
-    m_dlgLayout->addLayout(btnLayout);
+    auto mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(m_dlgLayout);
+    mainLayout->addLayout(btnLayout);
+    setLayout(mainLayout);
     connect(okBtn, &QPushButton::clicked, this, &QDialog::accept);
     connect(cancelBtn, &QPushButton::clicked, this, &QDialog::reject);
 }
@@ -26,11 +29,8 @@ Dialog::~Dialog() = default;
 
 void Dialog::setContent(const QJSValue &jsWidget) {
     if (!m_content.isNull()) {
-        auto item = m_dlgLayout->takeAt(0);
-        if (item->layout())
-            delete item->layout();
-        else
-            delete item->widget();
+        JS_THROW("Dialog content is already set");
+        return;
     }
     auto *widget = ProjectWindowObject::getWidgetOfWrappedObject(jsWidget);
     if (widget) {

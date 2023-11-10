@@ -56,7 +56,7 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
 
     if (tag == "form-layout") {
         auto layout = new FormLayout;
-        auto obj = ObjectWrapper::wrap(layout, jsGlobal->engine(), {"addRow", "addElement"});
+        auto obj = ObjectWrapper::wrap(layout, jsGlobal->engine(), {"addRow", "addElement", "horizontalSpacing", "verticalSpacing"});
         return obj;
     }
 
@@ -92,28 +92,36 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
 
     if (tag == "select") {
         auto comboBox = new ComboBox(window());
-        auto obj = ObjectWrapper::wrap(comboBox, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{"currentIndex", "addOption", "optionAt"});
-        ObjectWrapper::bindSignal(comboBox, QOverload<int>::of(&ComboBox::currentIndexChanged), obj, "currentIndexChanged");
+        auto obj = ObjectWrapper::wrap(comboBox, jsGlobal->engine(),
+                                       qWidgetGeneralKeys + QStringList{"currentIndex", "addOption", "optionAt"});
+        ObjectWrapper::bindSignal(comboBox, QOverload<int>::of(&ComboBox::currentIndexChanged), obj,
+                                  "currentIndexChanged");
         return obj;
     }
 
     if (tag == "slider") {
         auto slider = new Slider(window());
-        auto obj = ObjectWrapper::wrap(slider, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{"maximum", "minimum", "pageStep", "singleStep", "value", "tickInterval", "hasTicks"});
+        auto obj = ObjectWrapper::wrap(slider, jsGlobal->engine(),
+                                       qWidgetGeneralKeys + QStringList{"maximum", "minimum", "pageStep", "singleStep",
+                                                                        "value", "tickInterval", "hasTicks"});
         OBJECT_WRAPPER_BIND_SIGNAL(slider, obj, valueChanged);
         return obj;
     }
 
     if (tag == "spin-box") {
         auto spinBox = new QSpinBox;
-        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{"readOnly", "maximum", "minimum", "prefix", "singleStep", "suffix", "value"});
+        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
+                                       qWidgetGeneralKeys + QStringList{"readOnly", "maximum", "minimum", "prefix",
+                                                                        "singleStep", "suffix", "value"});
         ObjectWrapper::bindSignal(spinBox, QOverload<int>::of(&QSpinBox::valueChanged), obj, "valueChanged");
         return obj;
     }
 
     if (tag == "double-spin-box") {
         auto spinBox = new QDoubleSpinBox;
-        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{"readOnly", "maximum", "minimum", "prefix", "singleStep", "suffix", "value", "decimals"});
+        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
+                                       qWidgetGeneralKeys + QStringList{"readOnly", "maximum", "minimum", "prefix",
+                                                                        "singleStep", "suffix", "value", "decimals"});
         ObjectWrapper::bindSignal(spinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), obj, "valueChanged");
         return obj;
     }
@@ -121,6 +129,7 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
     JS_THROW(QJSValue::TypeError, QString("Invalid tag '%1'").arg(tag));
     return QJSValue::UndefinedValue;
 }
+
 QWidget *ProjectWindowObject::getWidgetOfWrappedObject(const QJSValue &obj) {
     auto *widget = qobject_cast<QWidget *>(obj.property("_p").toQObject());
     if (widget)
@@ -128,6 +137,7 @@ QWidget *ProjectWindowObject::getWidgetOfWrappedObject(const QJSValue &obj) {
     widget = qobject_cast<QWidget *>(obj.property("_p").property("_subObject").toQObject());
     return widget;
 }
+
 QLayout *ProjectWindowObject::getLayoutOfWrappedObject(const QJSValue &obj) {
     auto *layout = qobject_cast<QLayout *>(obj.property("_p").toQObject());
     if (layout)
