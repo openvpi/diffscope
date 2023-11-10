@@ -3,24 +3,55 @@
 #include <QWidget>
 
 #include <QApplication>
+#include <QButtonGroup>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QJSEngine>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QSpinBox>
 
 #include "../Global/GlobalObject.h"
 #include "ProjectObject.h"
 
 #include "../ObjectWrapper.h"
+#include "Window/BoxLayout.h"
+#include "Window/ButtonGroup.h"
 #include "Window/ComboBox.h"
 #include "Window/Dialog.h"
 #include "Window/FormLayout.h"
+#include "Window/GridLayout.h"
 #include "Window/Slider.h"
 
 ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(project), m_project(project) {
+    jsGlobal->defineEnum("Alignment", {
+                                          {"None",          0x0000},
+                                          {"AlignLeft",     0x0001},
+                                          {"AlignRight",    0x0002},
+                                          {"AlignHCenter",  0x0004},
+                                          {"AlignJustify",  0x0008},
+                                          {"AlignTop",      0x0020},
+                                          {"AlignBottom",   0x0040},
+                                          {"AlignVCenter",  0x0080},
+                                          {"AlignBaseline", 0x0100},
+                                          {"AlignAbsolute", 0x0010}});
+    jsGlobal->defineEnum("CheckState", {
+                                           {"Unchecked"},
+                                           {"PartiallyChecked"},
+                                           {"Checked"}});
+    jsGlobal->defineEnum("Corner", {
+                                          {"TopLeftCorner"},
+                                          {"TopRightCorner"},
+                                          {"BottomLeftCorner"},
+                                          {"BottomRightCorner"}});
+    jsGlobal->defineEnum("Direction", {
+                                          {"LeftToRight"},
+                                          {"RightToLeft"},
+                                          {"TopToBottom"},
+                                          {"BottomToTop"}});
 }
 
 ProjectWindowObject::~ProjectWindowObject() = default;
@@ -46,40 +77,140 @@ bool ProjectWindowObject::question(const QString &message, const QString &title)
                                  message) == QMessageBox::Yes;
 }
 
+QJSValue ProjectWindowObject::createButtonGroup() {
+    auto btnGrp = new ButtonGroup;
+    auto obj = ObjectWrapper::wrap(btnGrp, jsGlobal->engine(), {
+                                                                   "addButton",
+                                                                   "checkedId",
+                                                                   "id",
+                                                                   "removeButton",
+                                                                   "setId"
+                                                               });
+    OBJECT_WRAPPER_BIND_SIGNAL(btnGrp, obj, idClicked);
+    OBJECT_WRAPPER_BIND_SIGNAL(btnGrp, obj, idPressed);
+    OBJECT_WRAPPER_BIND_SIGNAL(btnGrp, obj, idReleased);
+    OBJECT_WRAPPER_BIND_SIGNAL(btnGrp, obj, idToggled);
+    return obj;
+}
+
 QJSValue ProjectWindowObject::createElement(const QString &tag) {
     QStringList qWidgetGeneralKeys = {"enabled", "visible", "toolTip"};
-    if (tag == "dialog") {
-        auto dlg = new Dialog(window());
-        auto obj = ObjectWrapper::wrap(dlg, jsGlobal->engine(), {"content", "openDialog", "closeDialog"});
-        return obj;
-    }
-
-    if (tag == "form-layout") {
-        auto layout = new FormLayout;
-        auto obj = ObjectWrapper::wrap(layout, jsGlobal->engine(), {"addRow", "addElement", "horizontalSpacing", "verticalSpacing"});
-        return obj;
-    }
-
-    if (tag == "label")
-        return ObjectWrapper::wrap(new QLabel, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{"text"});
+    if (tag == "box-layout")
+        return ObjectWrapper::wrap(new BoxLayout, jsGlobal->engine(), {
+                                                                          "direction",
+                                                                          "addElement",
+                                                                          "addSpacing",
+                                                                          "addStretch",
+                                                                          "addStrut",
+                                                                          "insertElement",
+                                                                          "insertSpacing",
+                                                                          "insertStretch",
+                                                                          "spacing",
+                                                                          "count"});
 
     if (tag == "button") {
         auto btn = new QPushButton;
         auto obj = ObjectWrapper::wrap(
-            btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{"autoExclusive", "checkable", "checked", "text"});
+            btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
+                                                              "autoExclusive",
+                                                              "checkable",
+                                                              "checked",
+                                                              "text"});
         OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, clicked);
         OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, pressed);
         OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, released);
         return obj;
     }
 
+    if (tag == "check-box") {
+        auto btn = new QCheckBox;
+        auto obj = ObjectWrapper::wrap(
+            btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
+                                                              "tristate",
+                                                              "checkState",
+                                                              "autoExclusive",
+                                                              "checkable",
+                                                              "checked",
+                                                              "text",});
+        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, clicked);
+        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, pressed);
+        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, released);
+        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, stateChanged);
+        return obj;
+    }
+
+    if (tag == "dialog")
+        return ObjectWrapper::wrap(new Dialog(window()), jsGlobal->engine(), {
+                                                                                 "content",
+                                                                                 "openDialog",
+                                                                                 "closeDialog"});
+
+    if (tag == "double-spin-box") {
+        auto spinBox = new QDoubleSpinBox;
+        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
+                                       qWidgetGeneralKeys + QStringList{
+                                                                "readOnly",
+                                                                "maximum",
+                                                                "minimum",
+                                                                "prefix",
+                                                                "singleStep",
+                                                                "suffix",
+                                                                "value",
+                                                                "decimals"});
+        ObjectWrapper::bindSignal(spinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), obj, "valueChanged");
+        return obj;
+    }
+
+    if (tag == "form-layout")
+        return ObjectWrapper::wrap(new FormLayout, jsGlobal->engine(), {
+                                                                           "addRow",
+                                                                           "addElement",
+                                                                           "insertRow",
+                                                                           "insertElement",
+                                                                           "horizontalSpacing",
+                                                                           "verticalSpacing",
+                                                                           "rowCount"});
+
+    if (tag == "grid-layout")
+        return ObjectWrapper::wrap(new GridLayout, jsGlobal->engine(), {
+                                                                           "addElement",
+                                                                           "addElement",
+                                                                           "rowMinimumHeight",
+                                                                           "columnMinimumWidth",
+                                                                           "setRowMinimumHeight",
+                                                                           "setColumnMinimumWidth",
+                                                                           "rowStretch",
+                                                                           "columnStretch",
+                                                                           "setRowStretch",
+                                                                           "setColumnStretch",
+                                                                           "horizontalSpacing",
+                                                                           "verticalSpacing",
+                                                                           "rowCount",
+                                                                           "columnCount",
+                                                                           "count",
+                                                                           "originCorner"
+                                                                       });
+
+    if (tag == "label")
+        return ObjectWrapper::wrap(new QLabel, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
+                                                                                            "text"});
+
     if (tag == "line-edit") {
         auto lineEdit = new QLineEdit;
         auto obj = ObjectWrapper::wrap(lineEdit, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{"acceptableInput", "cursorPosition",
-                                                                        "hasSelectedText", "inputMask", "maxLength",
-                                                                        "placeholderText", "readOnly", "selectedText",
-                                                                        "text", "clear", "copy", "selectAll"});
+                                       qWidgetGeneralKeys + QStringList{
+                                                                "acceptableInput",
+                                                                "cursorPosition",
+                                                                "hasSelectedText",
+                                                                "inputMask",
+                                                                "maxLength",
+                                                                "placeholderText",
+                                                                "readOnly",
+                                                                "selectedText",
+                                                                "text",
+                                                                "clear",
+                                                                "copy",
+                                                                "selectAll"});
         OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, cursorPositionChanged);
         OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, editingFinished);
         OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, inputRejected);
@@ -90,10 +221,27 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
         return obj;
     }
 
+    if (tag == "radio") {
+        auto btn = new QRadioButton;
+        auto obj = ObjectWrapper::wrap(
+            btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
+                                                              "autoExclusive",
+                                                              "checkable",
+                                                              "checked",
+                                                              "text"});
+        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, clicked);
+        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, pressed);
+        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, released);
+        return obj;
+    }
+
     if (tag == "select") {
         auto comboBox = new ComboBox(window());
         auto obj = ObjectWrapper::wrap(comboBox, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{"currentIndex", "addOption", "optionAt"});
+                                       qWidgetGeneralKeys + QStringList{
+                                                                "currentIndex",
+                                                                "addOption",
+                                                                "optionAt"});
         ObjectWrapper::bindSignal(comboBox, QOverload<int>::of(&ComboBox::currentIndexChanged), obj,
                                   "currentIndexChanged");
         return obj;
@@ -102,8 +250,14 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
     if (tag == "slider") {
         auto slider = new Slider(window());
         auto obj = ObjectWrapper::wrap(slider, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{"maximum", "minimum", "pageStep", "singleStep",
-                                                                        "value", "tickInterval", "hasTicks"});
+                                       qWidgetGeneralKeys + QStringList{
+                                                                "maximum",
+                                                                "minimum",
+                                                                "pageStep",
+                                                                "singleStep",
+                                                                "value",
+                                                                "tickInterval",
+                                                                "hasTicks"});
         OBJECT_WRAPPER_BIND_SIGNAL(slider, obj, valueChanged);
         return obj;
     }
@@ -111,37 +265,18 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
     if (tag == "spin-box") {
         auto spinBox = new QSpinBox;
         auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{"readOnly", "maximum", "minimum", "prefix",
-                                                                        "singleStep", "suffix", "value"});
+                                       qWidgetGeneralKeys + QStringList{
+                                                                "readOnly",
+                                                                "maximum",
+                                                                "minimum",
+                                                                "prefix",
+                                                                "singleStep",
+                                                                "suffix",
+                                                                "value"});
         ObjectWrapper::bindSignal(spinBox, QOverload<int>::of(&QSpinBox::valueChanged), obj, "valueChanged");
-        return obj;
-    }
-
-    if (tag == "double-spin-box") {
-        auto spinBox = new QDoubleSpinBox;
-        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{"readOnly", "maximum", "minimum", "prefix",
-                                                                        "singleStep", "suffix", "value", "decimals"});
-        ObjectWrapper::bindSignal(spinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), obj, "valueChanged");
         return obj;
     }
 
     JS_THROW(QJSValue::TypeError, QString("Invalid tag '%1'").arg(tag));
     return QJSValue::UndefinedValue;
-}
-
-QWidget *ProjectWindowObject::getWidgetOfWrappedObject(const QJSValue &obj) {
-    auto *widget = qobject_cast<QWidget *>(obj.property("_p").toQObject());
-    if (widget)
-        return widget;
-    widget = qobject_cast<QWidget *>(obj.property("_p").property("_subObject").toQObject());
-    return widget;
-}
-
-QLayout *ProjectWindowObject::getLayoutOfWrappedObject(const QJSValue &obj) {
-    auto *layout = qobject_cast<QLayout *>(obj.property("_p").toQObject());
-    if (layout)
-        return layout;
-    layout = qobject_cast<QLayout *>(obj.property("_p").property("_subObject").toQObject());
-    return layout;
 }

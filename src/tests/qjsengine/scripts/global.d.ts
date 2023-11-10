@@ -1,5 +1,38 @@
 declare namespace $ {
 
+    enum Alignment {
+        None          = 0x0000,
+        AlignLeft     = 0x0001,
+        AlignRight    = 0x0002,
+        AlignHCenter  = 0x0004,
+        AlignJustify  = 0x0008,
+        AlignTop      = 0x0020,
+        AlignBottom   = 0x0040,
+        AlignVCenter  = 0x0080,
+        AlignBaseline = 0x0100,
+        AlignAbsolute = 0x0010,
+    }
+
+    enum CheckState {
+        Unchecked,
+        PartiallyChecked,
+        Checked,
+    }
+
+    enum Corner {
+        TopLeftCorner,
+        TopRightCorner,
+        BottomLeftCorner,
+        BottomRightCorner,
+    }
+
+    enum Direction {
+        LeftToRight,
+        RightToLeft,
+        TopToBottom,
+        BottomToTop,
+    }
+
     namespace Project {
         namespace Window {
             interface Element {}
@@ -8,6 +41,21 @@ declare namespace $ {
                 enabled: boolean;
                 visible: boolean;
                 toolTip: string;
+            }
+
+            interface BoxLayout {
+                direction: Direction;
+                addElement(element: Element, stretch = 0, alignment = Alignment.None): void,
+                addSpacing(size: number): void;
+                addStretch(stretch = 0): void;
+                addStrut(size: number): void;
+
+                insertElement(index: number, element: Element, stretch: number = 0, alignment = Alignment.None): void;
+                insertSpacing(index: number, size: number): void;
+                insertStretch(index: number, stretch = 0): void;
+
+                spacing: number;
+                readonly count: number;
             }
 
             interface Button extends WidgetElement {
@@ -20,8 +68,14 @@ declare namespace $ {
                 onReleased: (() => void)|null;
             }
 
+            interface CheckBox extends Button {
+                tristate: boolean;
+                checkState: CheckState;
+                onStateChanged: ((state: CheckState) => void)|null;
+            }
+
             interface Dialog extends Element {
-                content: Element;
+                content: Element|null;
                 openDialog(): boolean;
                 closeDialog(accepted: boolean): void;
             }
@@ -29,8 +83,36 @@ declare namespace $ {
             interface FormLayout extends Element {
                 addRow(label: string, element: Element): void;
                 addElement(element: Element): void;
+
+                insertRow(row: number, label: string, element: Element): void;
+                insertElement(row: number, element: Element): void;
+
                 horizontalSpacing: number;
                 verticalSpacing: number;
+                readonly rowCount: number;
+            }
+
+            interface GridLayout extends Element {
+                addElement(element: Element, row: number, column: number, alignment = Alignment.None): void;
+                addElement(element: Element, row: number, column: number, rowSpan: number, columnSpan: number, alignment = Alignment.None): void;
+
+                rowMinimumHeight(row: number): number;
+                columnMinimumWidth(column: number): number;
+                setRowMinimumHeight(row: number, minSize: number): number;
+                setColumnMinimumWidth(column: number, minSize: number): number;
+
+                rowStretch(row: number): number;
+                columnStretch(column: number): number;
+                setRowStretch(row: number, stretch: number): number;
+                setColumnStretch(column: number, stretch: number): number;
+
+                horizontalSpacing: number;
+                verticalSpacing: number;
+                readonly rowCount: number;
+                readonly columnCount: number;
+                readonly count: number;
+                originCorner: Corner;
+
             }
 
             interface Label extends WidgetElement {
@@ -57,6 +139,10 @@ declare namespace $ {
                 onSelectionChanged: (() => void)|null;
                 onTextChanged: ((text: string) => void)|null;
                 onTextEdited: ((text: string) => void)|null;
+            }
+
+            interface Radio extends Button {
+
             }
 
             interface Select extends WidgetElement {
@@ -93,15 +179,32 @@ declare namespace $ {
             }
 
             interface ElementKeyMap {
+                'box-layout': BoxLayout;
                 'button': Button;
+                'check-box': CheckBox;
                 'dialog': Dialog;
                 'double-spin-box': DoubleSpinBox;
                 'form-layout': FormLayout;
+                'grid-layout': GridLayout;
                 'label': Label;
                 'line-edit': LineEdit;
+                'radio': Radio;
                 'select': Select;
                 'slider': Slider;
                 'spin-box': SpinBox;
+            }
+
+            interface ButtonGroup {
+                addButton(button: Button, id = -1): void;
+                checkedId(): number;
+                id(button: button): number;
+                removeButton(button: Button): void;
+                setId(button: Button, id: number): void;
+                onIdClicked: ((id: number) => void)|null;
+                onIdPressed: ((id: number) => void)|null;
+                onIdReleased: ((id: number) => void)|null;
+                onIdToggled: ((id: number, checked: boolean) => void)|null;
+
             }
         }
     }
@@ -113,6 +216,7 @@ declare namespace $ {
             critical(message: string, title?: string): void;
             question(message: string, title?: string): boolean;
             createElement<K extends keyof Project.Window.ElementKeyMap>(tag: K): Project.Window.ElementKeyMap[K];
+            createButtonGroup(): Project.Window.ButtonGroup;
         }
     }
 

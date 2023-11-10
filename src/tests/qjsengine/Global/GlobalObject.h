@@ -26,6 +26,21 @@ public:
     QJSValue jsRegistry() const;
     QJSValue jsStorage() const;
 
+    struct JSEnumEntry {
+        QString s;
+        int i = -1;
+    };
+    void defineEnum(const QString &enumName, const QList<JSEnumEntry> &entries);
+
+    template<class T>
+    static T *getOfWrappedObject(const QJSValue &obj) {
+        auto *v = qobject_cast<T *>(obj.property("_p").toQObject());
+        if (v)
+            return v;
+        v = qobject_cast<T *>(obj.property("_p").property("_subObject").toQObject());
+        return v;
+    }
+
 private:
     QJSEngine *m_engine;
 

@@ -32,13 +32,13 @@ void Dialog::setContent(const QJSValue &jsWidget) {
         JS_THROW("Dialog content is already set");
         return;
     }
-    auto *widget = ProjectWindowObject::getWidgetOfWrappedObject(jsWidget);
+    auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         m_content = jsWidget;
         m_dlgLayout->insertWidget(0, widget);
         return;
     }
-    auto *layout = ProjectWindowObject::getLayoutOfWrappedObject(jsWidget);
+    auto *layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         m_content = jsWidget;
         m_dlgLayout->insertLayout(0, layout);

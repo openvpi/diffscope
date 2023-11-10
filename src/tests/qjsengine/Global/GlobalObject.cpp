@@ -5,6 +5,7 @@
 
 #include "GlobalRegistryObject.h"
 #include "GlobalStorageObject.h"
+#include "../ObjectWrapper.h"
 
 static GlobalObject *m_instance = nullptr;
 
@@ -14,7 +15,8 @@ GlobalObject::GlobalObject(QObject *parent)
       m_storage(new GlobalStorageObject(this, "D:/a.json")), // TODO file name
       m_storageObject(m_engine->newQObject(m_storage)) {
     m_instance = this;
-    m_engine->globalObject().setProperty("$", m_engine->newQObject(this));
+    auto obj = ObjectWrapper::wrap(this, m_engine, {"registry", "storage"});
+    m_engine->globalObject().setProperty("$", obj);
 }
 
 GlobalObject::~GlobalObject() {
@@ -54,4 +56,17 @@ QJSValue GlobalObject::jsRegistry() const {
 
 QJSValue GlobalObject::jsStorage() const {
     return m_storageObject;
+}
+
+void GlobalObject::defineEnum(const QString &enumName, const QList<JSEnumEntry> &entries) {
+    auto enumObj = m_engine->newObject();
+    int index = 0;
+    for (const auto &entry: entries) {
+        if (entry.i != -1)
+            index = entry.i;
+        enumObj.setProperty(index, entry.s);
+        enumObj.setProperty(entry.s, index++);
+    }
+    m_engine->globalObject().property("Object").property("freeze").call({enumObj});
+    m_engine->globalObject().property("$").setProperty(enumName, enumObj);
 }

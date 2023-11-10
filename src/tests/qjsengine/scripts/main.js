@@ -67,7 +67,32 @@
                 spinBox.value = value;
             }
 
-            dlg.content = dlgLayout;
+            let boxLayout = this.project.window.createElement('box-layout');
+            boxLayout.direction = $.Direction.LeftToRight;
+            let btn1 = this.project.window.createElement('button');
+            btn1.text = 'Test 1';
+            let btn2 = this.project.window.createElement('button');
+            btn2.text = 'Test 2';
+            boxLayout.addElement(btn1);
+            boxLayout.addElement(btn2);
+            boxLayout.addStretch();
+            dlgLayout.addElement(boxLayout);
+
+            let gridLayout = this.project.window.createElement('grid-layout');
+            gridLayout.addElement(dlgLayout, 0, 0);
+            let grpBtn1 = this.project.window.createElement('radio');
+            gridLayout.addElement(grpBtn1, 1, 1);
+            let grpBtn2 = this.project.window.createElement('button');
+            grpBtn2.checkable = true;
+            gridLayout.addElement(grpBtn2, 1, 2);
+            let grpBtn3 = this.project.window.createElement('check-box');
+            gridLayout.addElement(grpBtn3, 1, 3);
+            let btnGrp = this.project.window.createButtonGroup();
+            btnGrp.addButton(grpBtn1);
+            btnGrp.addButton(grpBtn2);
+            btnGrp.addButton(grpBtn3);
+
+            dlg.content = gridLayout;
             dlg.openDialog();
         }
     })
