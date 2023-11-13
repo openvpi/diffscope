@@ -20,11 +20,14 @@
 #include "../ObjectWrapper.h"
 #include "Window/BoxLayout.h"
 #include "Window/ButtonGroup.h"
+#include "Window/CheckBox.h"
 #include "Window/ComboBox.h"
 #include "Window/Dialog.h"
+#include "Window/FileSelector.h"
 #include "Window/FormLayout.h"
 #include "Window/GridLayout.h"
 #include "Window/Slider.h"
+#include "Window/StackedLayout.h"
 
 ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(project), m_project(project) {
     jsGlobal->defineEnum("Alignment", {
@@ -93,6 +96,10 @@ QJSValue ProjectWindowObject::createButtonGroup() {
     return obj;
 }
 
+QJSValue ProjectWindowObject::createDialog() {
+    return ObjectWrapper::wrap(new Dialog(window()), jsGlobal->engine(), {"content", "openDialog", "closeDialog"});
+}
+
 QJSValue ProjectWindowObject::createElement(const QString &tag) {
     QStringList qWidgetGeneralKeys = {"enabled", "visible", "toolTip"};
     if (tag == "box-layout")
@@ -123,7 +130,7 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
     }
 
     if (tag == "check-box") {
-        auto btn = new QCheckBox;
+        auto btn = new CheckBox;
         auto obj = ObjectWrapper::wrap(
             btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
                                                               "tristate",
@@ -139,12 +146,6 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
         return obj;
     }
 
-    if (tag == "dialog")
-        return ObjectWrapper::wrap(new Dialog(window()), jsGlobal->engine(), {
-                                                                                 "content",
-                                                                                 "openDialog",
-                                                                                 "closeDialog"});
-
     if (tag == "double-spin-box") {
         auto spinBox = new QDoubleSpinBox;
         auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
@@ -158,6 +159,20 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
                                                                 "value",
                                                                 "decimals"});
         ObjectWrapper::bindSignal(spinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), obj, "valueChanged");
+        return obj;
+    }
+
+    if (tag == "file-selector") {
+        auto fileSelector = new FileSelector;
+        auto obj = ObjectWrapper::wrap(fileSelector, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
+                                                                                                  "isOpenFile",
+                                                                                                  "allowsMultipleFiles",
+                                                                                                  "filter",
+                                                                                                  "title",
+                                                                                                  "selectedFilter",
+                                                                                                  "files",
+                                                                                              });
+        OBJECT_WRAPPER_BIND_SIGNAL(fileSelector, obj, fileChanged);
         return obj;
     }
 
@@ -275,6 +290,10 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
                                                                 "value"});
         ObjectWrapper::bindSignal(spinBox, QOverload<int>::of(&QSpinBox::valueChanged), obj, "valueChanged");
         return obj;
+    }
+
+    if (tag == "stacked-layout") {
+        return ObjectWrapper::wrap(new StackedLayout, jsGlobal->engine(), {"addElement", "insertElement", "count", "currentIndex"});
     }
 
     JS_THROW(QJSValue::TypeError, QString("Invalid tag '%1'").arg(tag));

@@ -33,6 +33,32 @@ declare namespace $ {
         BottomToTop,
     }
 
+    enum OpenMode {
+        NotOpen = 0x0000,
+        ReadOnly = 0x0001,
+        WriteOnly = 0x0002,
+        ReadWrite = 0x0003,
+        Append = 0x0004,
+        Truncate = 0x0008,
+        Text = 0x0010,
+    }
+
+    interface File {
+        readonly name: string;
+        readonly lastModifiedDate: Date|null;
+        size: number;
+        pos: number;
+        openMode: OpenMode;
+
+        open(openMode: OpenMode): boolean;
+        close(): void;
+        read(readSize: number): Uint8Array;
+        readAll(): Uint8Array;
+        readAllAsUtf8(): string;
+        write(data: string|number[]|Uint8Array): number;
+        flush(): void;
+    }
+
     namespace Project {
         namespace Window {
             interface Element {}
@@ -74,10 +100,20 @@ declare namespace $ {
                 onStateChanged: ((state: CheckState) => void)|null;
             }
 
-            interface Dialog extends Element {
+            interface Dialog {
                 content: Element|null;
                 openDialog(): boolean;
                 closeDialog(accepted: boolean): void;
+            }
+
+            interface FileSelector extends WidgetElement {
+                isOpenFile: boolean;
+                allowsMultipleFiles: boolean;
+                filter: string;
+                title: string;
+                selectedFilter: string;
+                files: $.File[];
+                onFileChanged: (() => void)|null;
             }
 
             interface FormLayout extends Element {
@@ -178,12 +214,19 @@ declare namespace $ {
                 decimals: number;
             }
 
+            interface StackedLayout extends Element {
+                addElement(element: Element): void;
+                insertElement(index: number, element: Element);
+                readonly count: number;
+                currentIndex: number;
+            }
+
             interface ElementKeyMap {
                 'box-layout': BoxLayout;
                 'button': Button;
                 'check-box': CheckBox;
-                'dialog': Dialog;
                 'double-spin-box': DoubleSpinBox;
+                'file-selector': FileSelector;
                 'form-layout': FormLayout;
                 'grid-layout': GridLayout;
                 'label': Label;
@@ -192,6 +235,7 @@ declare namespace $ {
                 'select': Select;
                 'slider': Slider;
                 'spin-box': SpinBox;
+                'stacked-layout': StackedLayout;
             }
 
             interface ButtonGroup {
@@ -215,6 +259,7 @@ declare namespace $ {
             warning(message: string, title?: string): void;
             critical(message: string, title?: string): void;
             question(message: string, title?: string): boolean;
+            createDialog(): Project.Window.Dialog;
             createElement<K extends keyof Project.Window.ElementKeyMap>(tag: K): Project.Window.ElementKeyMap[K];
             createButtonGroup(): Project.Window.ButtonGroup;
         }

@@ -23,6 +23,7 @@ public slots:
     bool question(const QString &message, const QString &title = {});
 
     QJSValue createButtonGroup();
+    QJSValue createDialog();
     QJSValue createElement(const QString &tag);
 
 private:

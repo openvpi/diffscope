@@ -17,6 +17,15 @@ GlobalObject::GlobalObject(QObject *parent)
     m_instance = this;
     auto obj = ObjectWrapper::wrap(this, m_engine, {"registry", "storage"});
     m_engine->globalObject().setProperty("$", obj);
+    defineEnum("OpenMode", {
+                               {"NotOpen", 0x0001},
+                               {"ReadOnly", 0x0001},
+                               {"WriteOnly", 0x0002},
+                               {"ReadWrite", 0x0003},
+                               {"Append", 0x0004},
+                               {"Truncate", 0x0008},
+                               {"Text", 0x0010},
+                           });
 }
 
 GlobalObject::~GlobalObject() {

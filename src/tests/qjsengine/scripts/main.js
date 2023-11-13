@@ -20,7 +20,7 @@
         }
 
         main() {
-            let dlg = this.project.window.createElement('dialog');
+            let dlg = this.project.window.createDialog();
             let dlgLayout = this.project.window.createElement('form-layout');
 
             let btn = this.project.window.createElement('button');
@@ -92,7 +92,39 @@
             btnGrp.addButton(grpBtn2);
             btnGrp.addButton(grpBtn3);
 
-            dlg.content = gridLayout;
+            let stackedBtn = this.project.window.createElement('button');
+            stackedBtn.text = 'Stacked';
+            let stackedLayout = this.project.window.createElement('stacked-layout');
+            stackedLayout.addElement(gridLayout);
+            stackedLayout.addElement(stackedBtn);
+            btn1.onClicked = () => {
+                stackedLayout.currentIndex = 1;
+            }
+            stackedBtn.onClicked = () => {
+                stackedLayout.currentIndex = 0;
+            }
+
+            let fileSelector = this.project.window.createElement('file-selector');
+            dlgLayout.addRow("File", fileSelector);
+            btn2.onClicked = () => {
+                fileSelector.allowsMultipleFiles = !fileSelector.allowsMultipleFiles;
+            }
+
+            let displayFileBtn = this.project.window.createElement('button');
+            displayFileBtn.text = 'Test file';
+            displayFileBtn.enabled = false;
+            fileSelector.onFileChanged = () => {
+                displayFileBtn.enabled = !!fileSelector.files.length;
+            }
+            displayFileBtn.onClicked = () => {
+                let file = fileSelector.files[0];
+                file.open($.OpenMode.ReadOnly);
+                this.project.window.alert(file.readAllAsUtf8());
+                file.close();
+            }
+            dlgLayout.addRow("Test", displayFileBtn);
+
+            dlg.content = stackedLayout;
             dlg.openDialog();
         }
     })
