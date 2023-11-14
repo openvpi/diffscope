@@ -30,6 +30,8 @@ private:
 
 class ObjectWrapper {
 public:
+    static QStringList qWidgetGeneralKeys();
+
     static QJSValue wrap(QObject *obj, QJSEngine *engine, const QStringList &includedKeys = {}, const QStringList &excludedKeys = {});
 
     template<class Obj, class Ret, class FuncClass, class... Args>

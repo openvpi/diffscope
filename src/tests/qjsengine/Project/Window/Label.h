@@ -1,24 +1,20 @@
-#ifndef DIFFSCOPE_CHECKBOX_H
-#define DIFFSCOPE_CHECKBOX_H
+#ifndef DIFFSCOPE_LABEL_H
+#define DIFFSCOPE_LABEL_H
 
-#include <QCheckBox>
+#include <QLabel>
 
 #include "../../ScriptObject.h"
 
-class CheckBox : public QCheckBox, public ScriptDescriptiveObject {
+class Label : public QLabel, public ScriptDescriptiveObject {
     Q_OBJECT
-    Q_PROPERTY(int checkState READ checkState WRITE setCheckState)
 public:
     QJSValue createScriptObject() override;
     void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
                                                 const QJSValue &children,
         const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
-
-    explicit CheckBox(QWidget *parent = nullptr);
-    void setCheckState(int state);
-    int checkState() const;
+    explicit Label(QWidget *parent = nullptr);
 };
 
 
 
-#endif // DIFFSCOPE_CHECKBOX_H
+#endif // DIFFSCOPE_LABEL_H

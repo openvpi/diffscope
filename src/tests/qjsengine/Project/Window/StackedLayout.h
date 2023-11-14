@@ -2,12 +2,17 @@
 #define DIFFSCOPE_STACKEDLAYOUT_H
 
 #include <QStackedLayout>
-#include <QJSValue>
 
-class StackedLayout : public QStackedLayout {
+#include "../../ScriptObject.h"
+
+class StackedLayout : public QStackedLayout, public ScriptDescriptiveObject {
     Q_OBJECT
     Q_PROPERTY(int count READ count)
 public:
+    QJSValue createScriptObject() override;
+    void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+                                                const QJSValue &children,
+        const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
     explicit StackedLayout(QWidget *parent = nullptr);
 
 public slots:

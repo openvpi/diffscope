@@ -19,17 +19,52 @@
 
 #include "../ObjectWrapper.h"
 #include "Window/BoxLayout.h"
+#include "Window/Button.h"
 #include "Window/ButtonGroup.h"
 #include "Window/CheckBox.h"
 #include "Window/ComboBox.h"
 #include "Window/Dialog.h"
+#include "Window/DoubleSpinBox.h"
 #include "Window/FileSelector.h"
 #include "Window/FormLayout.h"
 #include "Window/GridLayout.h"
+#include "Window/GroupBox.h"
+#include "Window/Label.h"
+#include "Window/LineEdit.h"
+#include "Window/Radio.h"
 #include "Window/Slider.h"
+#include "Window/SpinBox.h"
 #include "Window/StackedLayout.h"
 
+#define ADD_ELEMENT_CLASS(Class)                                                                                       \
+    {                                                                                                                  \
+        QString s = "";                                                                                                \
+        for (auto c : QString(#Class)) {                                                                               \
+            if (c.isUpper() && !s.isEmpty())                                                                           \
+                s.append('-');                                                                                         \
+            s.append(c.toLower());                                                                                     \
+        }                                                                                                              \
+        addElementClass<Class>(s);                                                                                     \
+    }                                                                                                                  \
+    void()
+
 ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(project), m_project(project) {
+    ADD_ELEMENT_CLASS(BoxLayout);
+    ADD_ELEMENT_CLASS(Button);
+    ADD_ELEMENT_CLASS(CheckBox);
+    ADD_ELEMENT_CLASS(ComboBox);
+    ADD_ELEMENT_CLASS(DoubleSpinBox);
+    ADD_ELEMENT_CLASS(FileSelector);
+    ADD_ELEMENT_CLASS(FormLayout);
+    ADD_ELEMENT_CLASS(GridLayout);
+    ADD_ELEMENT_CLASS(GroupBox);
+    ADD_ELEMENT_CLASS(Label);
+    ADD_ELEMENT_CLASS(LineEdit);
+    ADD_ELEMENT_CLASS(Radio);
+    ADD_ELEMENT_CLASS(Slider);
+    ADD_ELEMENT_CLASS(SpinBox);
+    ADD_ELEMENT_CLASS(StackedLayout);
+
     jsGlobal->defineEnum("Alignment", {
                                           {"None",          0x0000},
                                           {"AlignLeft",     0x0001},
@@ -102,200 +137,24 @@ QJSValue ProjectWindowObject::createDialog() {
 
 QJSValue ProjectWindowObject::createElement(const QString &tag) {
     QStringList qWidgetGeneralKeys = {"enabled", "visible", "toolTip"};
-    if (tag == "box-layout")
-        return ObjectWrapper::wrap(new BoxLayout, jsGlobal->engine(), {
-                                                                          "direction",
-                                                                          "addElement",
-                                                                          "addSpacing",
-                                                                          "addStretch",
-                                                                          "addStrut",
-                                                                          "insertElement",
-                                                                          "insertSpacing",
-                                                                          "insertStretch",
-                                                                          "spacing",
-                                                                          "count"});
 
-    if (tag == "button") {
-        auto btn = new QPushButton;
-        auto obj = ObjectWrapper::wrap(
-            btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
-                                                              "autoExclusive",
-                                                              "checkable",
-                                                              "checked",
-                                                              "text"});
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, clicked);
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, pressed);
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, released);
-        return obj;
-    }
-
-    if (tag == "check-box") {
-        auto btn = new CheckBox;
-        auto obj = ObjectWrapper::wrap(
-            btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
-                                                              "tristate",
-                                                              "checkState",
-                                                              "autoExclusive",
-                                                              "checkable",
-                                                              "checked",
-                                                              "text",});
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, clicked);
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, pressed);
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, released);
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, stateChanged);
-        return obj;
-    }
-
-    if (tag == "double-spin-box") {
-        auto spinBox = new QDoubleSpinBox;
-        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{
-                                                                "readOnly",
-                                                                "maximum",
-                                                                "minimum",
-                                                                "prefix",
-                                                                "singleStep",
-                                                                "suffix",
-                                                                "value",
-                                                                "decimals"});
-        ObjectWrapper::bindSignal(spinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), obj, "valueChanged");
-        return obj;
-    }
-
-    if (tag == "file-selector") {
-        auto fileSelector = new FileSelector;
-        auto obj = ObjectWrapper::wrap(fileSelector, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
-                                                                                                  "isOpenFile",
-                                                                                                  "allowsMultipleFiles",
-                                                                                                  "filter",
-                                                                                                  "title",
-                                                                                                  "selectedFilter",
-                                                                                                  "files",
-                                                                                              });
-        OBJECT_WRAPPER_BIND_SIGNAL(fileSelector, obj, fileChanged);
-        return obj;
-    }
-
-    if (tag == "form-layout")
-        return ObjectWrapper::wrap(new FormLayout, jsGlobal->engine(), {
-                                                                           "addRow",
-                                                                           "addElement",
-                                                                           "insertRow",
-                                                                           "insertElement",
-                                                                           "horizontalSpacing",
-                                                                           "verticalSpacing",
-                                                                           "rowCount"});
-
-    if (tag == "grid-layout")
-        return ObjectWrapper::wrap(new GridLayout, jsGlobal->engine(), {
-                                                                           "addElement",
-                                                                           "addElement",
-                                                                           "rowMinimumHeight",
-                                                                           "columnMinimumWidth",
-                                                                           "setRowMinimumHeight",
-                                                                           "setColumnMinimumWidth",
-                                                                           "rowStretch",
-                                                                           "columnStretch",
-                                                                           "setRowStretch",
-                                                                           "setColumnStretch",
-                                                                           "horizontalSpacing",
-                                                                           "verticalSpacing",
-                                                                           "rowCount",
-                                                                           "columnCount",
-                                                                           "count",
-                                                                           "originCorner"
-                                                                       });
-
-    if (tag == "label")
-        return ObjectWrapper::wrap(new QLabel, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
-                                                                                            "text"});
-
-    if (tag == "line-edit") {
-        auto lineEdit = new QLineEdit;
-        auto obj = ObjectWrapper::wrap(lineEdit, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{
-                                                                "acceptableInput",
-                                                                "cursorPosition",
-                                                                "hasSelectedText",
-                                                                "inputMask",
-                                                                "maxLength",
-                                                                "placeholderText",
-                                                                "readOnly",
-                                                                "selectedText",
-                                                                "text",
-                                                                "clear",
-                                                                "copy",
-                                                                "selectAll"});
-        OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, cursorPositionChanged);
-        OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, editingFinished);
-        OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, inputRejected);
-        OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, returnPressed);
-        OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, selectionChanged);
-        OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, textChanged);
-        OBJECT_WRAPPER_BIND_SIGNAL(lineEdit, obj, textEdited);
-        return obj;
-    }
-
-    if (tag == "radio") {
-        auto btn = new QRadioButton;
-        auto obj = ObjectWrapper::wrap(
-            btn, jsGlobal->engine(), qWidgetGeneralKeys + QStringList{
-                                                              "autoExclusive",
-                                                              "checkable",
-                                                              "checked",
-                                                              "text"});
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, clicked);
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, pressed);
-        OBJECT_WRAPPER_BIND_SIGNAL(btn, obj, released);
-        return obj;
-    }
-
-    if (tag == "select") {
-        auto comboBox = new ComboBox(window());
-        auto obj = ObjectWrapper::wrap(comboBox, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{
-                                                                "currentIndex",
-                                                                "addOption",
-                                                                "optionAt"});
-        ObjectWrapper::bindSignal(comboBox, QOverload<int>::of(&ComboBox::currentIndexChanged), obj,
-                                  "currentIndexChanged");
-        return obj;
-    }
-
-    if (tag == "slider") {
-        auto slider = new Slider(window());
-        auto obj = ObjectWrapper::wrap(slider, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{
-                                                                "maximum",
-                                                                "minimum",
-                                                                "pageStep",
-                                                                "singleStep",
-                                                                "value",
-                                                                "tickInterval",
-                                                                "hasTicks"});
-        OBJECT_WRAPPER_BIND_SIGNAL(slider, obj, valueChanged);
-        return obj;
-    }
-
-    if (tag == "spin-box") {
-        auto spinBox = new QSpinBox;
-        auto obj = ObjectWrapper::wrap(spinBox, jsGlobal->engine(),
-                                       qWidgetGeneralKeys + QStringList{
-                                                                "readOnly",
-                                                                "maximum",
-                                                                "minimum",
-                                                                "prefix",
-                                                                "singleStep",
-                                                                "suffix",
-                                                                "value"});
-        ObjectWrapper::bindSignal(spinBox, QOverload<int>::of(&QSpinBox::valueChanged), obj, "valueChanged");
-        return obj;
-    }
-
-    if (tag == "stacked-layout") {
-        return ObjectWrapper::wrap(new StackedLayout, jsGlobal->engine(), {"addElement", "insertElement", "count", "currentIndex"});
+    if (m_elementDict.contains(tag)) {
+        return m_elementDict.value(tag)();
     }
 
     JS_THROW(QJSValue::TypeError, QString("Invalid tag '%1'").arg(tag));
-    return QJSValue::UndefinedValue;
+    return {};
+}
+
+QJSValue ProjectWindowObject::renderElement(const QJSValue &description, QJSValue objectIdMap) {
+    auto tag = description.property("tag").toString();
+    if (!m_elementDescriptiveDict.contains(tag)) {
+        JS_THROW(QJSValue::TypeError, QString("Invalid tag '%1'").arg(tag));
+        return {};
+    }
+    auto elm = m_elementDescriptiveDict.value(tag)(objectIdMap, description.property("attributes"), description.property("children"));
+    if (description.property("id").isString()) {
+        objectIdMap.setProperty(description.property("id").toString(), elm);
+    }
+    return elm;
 }

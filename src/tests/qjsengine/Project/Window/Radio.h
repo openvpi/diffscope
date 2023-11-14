@@ -1,24 +1,20 @@
-#ifndef DIFFSCOPE_CHECKBOX_H
-#define DIFFSCOPE_CHECKBOX_H
+#ifndef DIFFSCOPE_RADIO_H
+#define DIFFSCOPE_RADIO_H
 
-#include <QCheckBox>
+#include <QRadioButton>
 
 #include "../../ScriptObject.h"
 
-class CheckBox : public QCheckBox, public ScriptDescriptiveObject {
+class Radio : public QRadioButton, public ScriptDescriptiveObject {
     Q_OBJECT
-    Q_PROPERTY(int checkState READ checkState WRITE setCheckState)
 public:
     QJSValue createScriptObject() override;
     void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
                                                 const QJSValue &children,
         const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
-
-    explicit CheckBox(QWidget *parent = nullptr);
-    void setCheckState(int state);
-    int checkState() const;
+    explicit Radio(QWidget *parent = nullptr);
 };
 
 
 
-#endif // DIFFSCOPE_CHECKBOX_H
+#endif // DIFFSCOPE_RADIO_H

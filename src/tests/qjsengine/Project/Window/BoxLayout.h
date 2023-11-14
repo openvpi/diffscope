@@ -2,13 +2,19 @@
 #define DIFFSCOPE_BOXLAYOUT_H
 
 #include <QBoxLayout>
-#include <QJSValue>
 
-class BoxLayout : public QBoxLayout {
+#include "../../ScriptObject.h"
+
+class BoxLayout : public QBoxLayout, public ScriptDescriptiveObject {
     Q_OBJECT
     Q_PROPERTY(int direction READ direction WRITE setDirection)
     Q_PROPERTY(int count READ count)
 public:
+    QJSValue createScriptObject() override;
+    void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+                                                const QJSValue &children,
+        const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
+
     explicit BoxLayout(QWidget *parent = nullptr);
     int direction();
     void setDirection(int direction);

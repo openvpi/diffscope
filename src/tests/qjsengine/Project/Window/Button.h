@@ -1,24 +1,20 @@
-#ifndef DIFFSCOPE_CHECKBOX_H
-#define DIFFSCOPE_CHECKBOX_H
+#ifndef DIFFSCOPE_BUTTON_H
+#define DIFFSCOPE_BUTTON_H
 
-#include <QCheckBox>
-
+#include <QPushButton>
 #include "../../ScriptObject.h"
 
-class CheckBox : public QCheckBox, public ScriptDescriptiveObject {
+class Button : public QPushButton, public ScriptDescriptiveObject {
     Q_OBJECT
-    Q_PROPERTY(int checkState READ checkState WRITE setCheckState)
 public:
+    explicit Button(QWidget *parent = nullptr);
+
     QJSValue createScriptObject() override;
     void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
                                                 const QJSValue &children,
         const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
-
-    explicit CheckBox(QWidget *parent = nullptr);
-    void setCheckState(int state);
-    int checkState() const;
 };
 
 
 
-#endif // DIFFSCOPE_CHECKBOX_H
+#endif // DIFFSCOPE_BUTTON_H

@@ -1,24 +1,18 @@
-#ifndef DIFFSCOPE_CHECKBOX_H
-#define DIFFSCOPE_CHECKBOX_H
+#ifndef DIFFSCOPE_LINEEDIT_H
+#define DIFFSCOPE_LINEEDIT_H
 
-#include <QCheckBox>
+#include <QLineEdit>
 
 #include "../../ScriptObject.h"
 
-class CheckBox : public QCheckBox, public ScriptDescriptiveObject {
+class LineEdit : public QLineEdit, public ScriptDescriptiveObject {
     Q_OBJECT
-    Q_PROPERTY(int checkState READ checkState WRITE setCheckState)
 public:
     QJSValue createScriptObject() override;
     void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
                                                 const QJSValue &children,
         const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
-
-    explicit CheckBox(QWidget *parent = nullptr);
-    void setCheckState(int state);
-    int checkState() const;
+    explicit LineEdit(QWidget *parent = nullptr);
 };
 
-
-
-#endif // DIFFSCOPE_CHECKBOX_H
+#endif // DIFFSCOPE_LINEEDIT_H

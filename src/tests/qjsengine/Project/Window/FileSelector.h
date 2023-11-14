@@ -2,13 +2,14 @@
 #define DIFFSCOPE_FILESELECTOR_H
 
 #include <QWidget>
-#include <QJSValue>
+
+#include "../../ScriptObject.h"
 
 class QVBoxLayout;
 class QLineEdit;
 class QPlainTextEdit;
 
-class FileSelector : public QWidget {
+class FileSelector : public QWidget, public ScriptDescriptiveObject {
     Q_OBJECT
     Q_PROPERTY(bool isOpenFile MEMBER m_isOpenFile)
     Q_PROPERTY(bool allowsMultipleFiles READ allowsMultipleFiles WRITE setAllowsMultipleFiles)
@@ -17,6 +18,8 @@ class FileSelector : public QWidget {
     Q_PROPERTY(QString selectedFilter READ selectedFilter)
     Q_PROPERTY(QJSValue files READ files)
 public:
+    QJSValue createScriptObject() override;
+
     explicit FileSelector(QWidget *parent = nullptr);
     ~FileSelector() override;
 

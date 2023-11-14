@@ -1,14 +1,29 @@
 #include "FileSelector.h"
 
-#include <QStackedLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QPlainTextEdit>
-#include <QJSEngine>
 #include <QFileDialog>
+#include <QJSEngine>
+#include <QLineEdit>
+#include <QPlainTextEdit>
+#include <QPushButton>
+#include <QStackedLayout>
 
-#include "../../Global/GlobalObject.h"
 #include "../../Global/File.h"
+#include "../../Global/GlobalObject.h"
+#include "../../ObjectWrapper.h"
+
+QJSValue FileSelector::createScriptObject() {
+    auto obj = ObjectWrapper::wrap(this, jsGlobal->engine(),
+                                   ObjectWrapper::qWidgetGeneralKeys() + QStringList{
+                                                                             "isOpenFile",
+                                                                             "allowsMultipleFiles",
+                                                                             "filter",
+                                                                             "title",
+                                                                             "selectedFilter",
+                                                                             "files",
+                                                                         });
+    OBJECT_WRAPPER_BIND_SIGNAL(this, obj, fileChanged);
+    return obj;
+}
 
 FileSelector::FileSelector(QWidget *parent) : QWidget(parent) {
     m_mainLayout = new QVBoxLayout(this);
@@ -22,6 +37,7 @@ FileSelector::FileSelector(QWidget *parent) : QWidget(parent) {
     singleLayout->addWidget(m_singleFilePath);
     singleLayout->addWidget(singleFileBrowse);
     singleLayout->addWidget(singleFileReset);
+    singleLayout->setContentsMargins(0, 0, 0, 0);
     m_singleWidget->setLayout(singleLayout);
     m_mainLayout->addWidget(m_singleWidget);
 
@@ -36,12 +52,13 @@ FileSelector::FileSelector(QWidget *parent) : QWidget(parent) {
     multipleButtonLayout->addWidget(multipleFileBrowse);
     multipleButtonLayout->addWidget(multipleFileReset);
     multipleLayout->addLayout(multipleButtonLayout);
+    multipleLayout->setContentsMargins(0, 0, 0, 0);
     m_multipleWidget->setLayout(multipleLayout);
     m_mainLayout->addWidget(m_multipleWidget);
 
     m_multipleWidget->hide();
 
-    // TODO margin
+    m_mainLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(m_mainLayout);
 
     connect(singleFileBrowse, &QPushButton::clicked, this, [=]() {
@@ -93,7 +110,7 @@ void FileSelector::setFile(const QString &file) {
 }
 
 void FileSelector::addFiles(const QStringList &filePaths) {
-    for (const auto &s: filePaths) {
+    for (const auto &s : filePaths) {
         m_singleFilePath->setText(s);
         m_multipleFilePaths->appendPlainText(s);
         m_files.append(JS_QOBJ(new File(s)));

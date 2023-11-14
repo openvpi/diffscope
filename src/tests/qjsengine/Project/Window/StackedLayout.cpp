@@ -4,6 +4,22 @@
 #include <QWidget>
 
 #include "../../Global/GlobalObject.h"
+#include "../../ObjectWrapper.h"
+
+QJSValue StackedLayout::createScriptObject() {
+    return ObjectWrapper::wrap(this, jsGlobal->engine(), {"addElement", "insertElement", "count", "currentIndex"});
+}
+void StackedLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+                                                           const QJSValue &children,
+    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
+    int childrenCount = children.property("length").toInt();
+    for (int i = 0; i < childrenCount; i++) {
+        auto child = children.property(i);
+        addElement(renderer(child, objectIdMap));
+    }
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children,
+                                                                    renderer);
+}
 
 StackedLayout::StackedLayout(QWidget *parent) : QStackedLayout(parent) {
 }

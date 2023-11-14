@@ -151,6 +151,16 @@ declare namespace $ {
 
             }
 
+            interface GroupBox extends WidgetElement {
+                alignment: Alignment;
+                checkable: boolean;
+                checked: boolean;
+                title: string;
+                content: Element;
+                onClicked: ((checked: boolean) => void)|null;
+                onToggled: ((on: boolean) => void)|null;
+            }
+
             interface Label extends WidgetElement {
                 text: string;
             }
@@ -181,9 +191,12 @@ declare namespace $ {
 
             }
 
-            interface Select extends WidgetElement {
+            interface ComboBox extends WidgetElement {
                 currentIndex: number;
                 addOption(text: string): void;
+                insertOption(index: number, text: string): void;
+                removeOption(index: number): void;
+                clear(): void;
                 optionAt(index: number): string;
                 onCurrentIndexChanged: ((index: number) => void)|null;
             }
@@ -229,10 +242,11 @@ declare namespace $ {
                 'file-selector': FileSelector;
                 'form-layout': FormLayout;
                 'grid-layout': GridLayout;
+                'group-box': GroupBox;
                 'label': Label;
                 'line-edit': LineEdit;
                 'radio': Radio;
-                'select': Select;
+                'combo-box': ComboBox;
                 'slider': Slider;
                 'spin-box': SpinBox;
                 'stacked-layout': StackedLayout;

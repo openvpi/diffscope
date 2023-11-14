@@ -43,7 +43,7 @@
             }
             dlgLayout.addElement(lineEdit);
 
-            let select = this.project.window.createElement('select');
+            let select = this.project.window.createElement('combo-box');
             select.addOption('a');
             select.addOption('b');
             select.addOption('c');
@@ -104,8 +104,14 @@
                 stackedLayout.currentIndex = 0;
             }
 
+            let groupBox = this.project.window.createElement('group-box');
+            groupBox.title = 'File Test';
+            groupBox.checkable = true;
+            let groupBoxLayout = this.project.window.createElement('form-layout');
+            groupBox.content = groupBoxLayout;
+
             let fileSelector = this.project.window.createElement('file-selector');
-            dlgLayout.addRow("File", fileSelector);
+            groupBoxLayout.addRow("File", fileSelector);
             btn2.onClicked = () => {
                 fileSelector.allowsMultipleFiles = !fileSelector.allowsMultipleFiles;
             }
@@ -122,7 +128,46 @@
                 this.project.window.alert(file.readAllAsUtf8());
                 file.close();
             }
-            dlgLayout.addRow("Test", displayFileBtn);
+            groupBoxLayout.addRow("Test", displayFileBtn);
+
+            dlgLayout.addElement(groupBox);
+
+            let objectIdMap = {};
+            let renderedElement = this.project.window.renderElement({
+                tag: 'group-box',
+                attributes: {
+                    title: 'Test',
+                },
+                children: [{
+                    tag: 'form-layout',
+                    children: [{
+                        tag: 'button',
+                        id: 'test-btn',
+                        children: ["Test Button"],
+                    }, {
+                        tag: 'combo-box',
+                        attributes: {
+                            'form-layout-label': 'Test Select',
+                            currentIndex: 2,
+                        },
+                        children: [{
+                            tag: 'combo-box-option',
+                            children: ["Option 1"],
+                        }, {
+                            tag: 'combo-box-option',
+                            children: ["Option 2"],
+                        }, {
+                            tag: 'combo-box-option',
+                            children: ["Option 3"],
+                        }]
+                    }]
+                }],
+            }, objectIdMap);
+            objectIdMap['test-btn'].onClicked = () => {
+                this.project.window.alert("Test");
+            }
+
+            dlgLayout.addElement(renderedElement);
 
             dlg.content = stackedLayout;
             dlg.openDialog();

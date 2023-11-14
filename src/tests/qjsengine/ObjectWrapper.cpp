@@ -4,6 +4,10 @@
 #include <QJSEngine>
 #include <QMetaMethod>
 
+QStringList ObjectWrapper::qWidgetGeneralKeys() {
+    return {"enabled", "visible", "toolTip"};
+}
+
 QJSValue ObjectWrapper::wrap(QObject *obj, QJSEngine *engine, const QStringList &includedKeys,
                              const QStringList &excludedKeys) {
     auto Object = engine->globalObject().property("Object");

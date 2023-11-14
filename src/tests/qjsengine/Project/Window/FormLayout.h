@@ -2,12 +2,17 @@
 #define DIFFSCOPE_FORMLAYOUT_H
 
 #include <QFormLayout>
-#include <QJSValue>
 
-class FormLayout : public QFormLayout {
+#include "../../ScriptObject.h"
+
+class FormLayout : public QFormLayout, public ScriptDescriptiveObject {
     Q_OBJECT
     Q_PROPERTY(int rowCount READ rowCount)
 public:
+    QJSValue createScriptObject() override;
+    void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+                                                const QJSValue &children,
+        const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
     explicit FormLayout(QWidget *parent = nullptr);
 
 public slots:

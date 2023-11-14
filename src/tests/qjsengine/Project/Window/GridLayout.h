@@ -2,9 +2,10 @@
 #define DIFFSCOPE_GRIDLAYOUT_H
 
 #include <QGridLayout>
-#include <QJSValue>
 
-class GridLayout : public QGridLayout {
+#include "../../ScriptObject.h"
+
+class GridLayout : public QGridLayout, public ScriptDescriptiveObject {
     Q_OBJECT
     Q_PROPERTY(int originCorner READ originCorner WRITE setOriginCorner)
     Q_PROPERTY(int rowCount READ rowCount)
@@ -13,6 +14,11 @@ class GridLayout : public QGridLayout {
     Q_PROPERTY(int horizontalSpacing READ horizontalSpacing WRITE setHorizontalSpacing)
     Q_PROPERTY(int verticalSpacing READ verticalSpacing WRITE setVerticalSpacing)
 public:
+    QJSValue createScriptObject() override;
+    void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+                                                const QJSValue &children,
+        const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
+
     explicit GridLayout(QWidget *parent = nullptr);
     void setOriginCorner(int corner);
     int originCorner() const;

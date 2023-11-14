@@ -5,7 +5,29 @@
 #include <QJSEngine>
 
 #include "../../Global/GlobalObject.h"
+#include "../../ObjectWrapper.h"
 #include "../ProjectWindowObject.h"
+
+QJSValue FormLayout::createScriptObject() {
+    return ObjectWrapper::wrap(
+        this, jsGlobal->engine(),
+        {"addRow", "addElement", "insertRow", "insertElement", "horizontalSpacing", "verticalSpacing", "rowCount"});
+}
+void FormLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+                                                        const QJSValue &children,
+    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children,
+                                                                    renderer);
+    int childrenCount = children.property("length").toInt();
+    for (int i = 0; i < childrenCount; i++) {
+        auto child = children.property(i);
+        if (child.property("attributes").property("form-layout-label").isString()) {
+            addRow(child.property("attributes").property("form-layout-label").toString(), renderer(child, objectIdMap));
+        } else {
+            addElement(renderer(child, objectIdMap));
+        }
+    }
+}
 
 FormLayout::FormLayout(QWidget *parent) : QFormLayout(parent) {
 }

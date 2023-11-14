@@ -4,6 +4,35 @@
 #include <QWidget>
 
 #include "../../Global/GlobalObject.h"
+#include "../../ObjectWrapper.h"
+
+QJSValue GridLayout::createScriptObject() {
+    return ObjectWrapper::wrap(this, jsGlobal->engine(),
+                               {"addElement", "addElement", "rowMinimumHeight", "columnMinimumWidth",
+                                "setRowMinimumHeight", "setColumnMinimumWidth", "rowStretch", "columnStretch",
+                                "setRowStretch", "setColumnStretch", "horizontalSpacing", "verticalSpacing", "rowCount",
+                                "columnCount", "count", "originCorner"});
+}
+void GridLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+                                                        const QJSValue &children,
+    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children,
+                                                                    renderer);
+    int childrenCount = children.property("length").toInt();
+    for (int i = 0; i < childrenCount; i++) {
+        auto child = children.property(i);
+        if (child.property("attributes").hasProperty("grid-layout-row-span"))
+            addElement(renderer(child, objectIdMap), child.property("attributes").property("grid-layout-row").toInt(),
+                       child.property("attributes").property("grid-layout-column").toInt(),
+                       child.property("attributes").property("grid-layout-row-span").toInt(),
+                       child.property("attributes").property("grid-layout-column-span").toInt(),
+                       child.property("attributes").property("grid-layout-alignment").toInt());
+        else
+            addElement(renderer(child, objectIdMap), child.property("attributes").property("grid-layout-row").toInt(),
+                       child.property("attributes").property("grid-layout-column").toInt(),
+                       child.property("attributes").property("grid-layout-alignment").toInt());
+    }
+}
 
 GridLayout::GridLayout(QWidget *parent) : QGridLayout(parent) {
 }
