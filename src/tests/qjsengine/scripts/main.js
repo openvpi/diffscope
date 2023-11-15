@@ -170,27 +170,20 @@
 
             dlgLayout.addElement(renderedElement);
 
-            let tabWidget = this.project.window.renderElement({
-                tag: 'tab-widget',
-                children: [{
-                    tag: 'button',
-                    attributes: {
-                        'tab-widget-label': 'Tab 1',
-                    },
-                    children: ['Button 1'],
-                }, {
-                    tag: 'button',
-                    attributes: {
-                        'tab-widget-label': 'Tab 2',
-                    },
-                    children: ['Button 2'],
-                }],
-            });
+            let tabWidget = this.project.window.renderElement(`
+                <tab-widget id="test-tab-widget">
+                    <button id="tab-widget-btn-1" tab-widget-label="Tab 1">Button 1</button>
+                    <button id="tab-widget-btn-2" tab-widget-label="Tab 2">Button 2</button>
+                </tab-widget>
+            `);
             dlgLayout.addElement(tabWidget);
+            this.project.window.getElementById('tab-widget-btn-1').onClicked = () => {
+                this.project.window.getElementById('test-tab-widget').currentIndex = 1;
+            }
 
             dlg.content = stackedLayout;
             dlg.openDialog();
         }
-    })
+    });
 
-})()
+})();

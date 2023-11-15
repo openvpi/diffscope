@@ -6,6 +6,7 @@
 #include <QLayout>
 #include <QObject>
 #include <QMap>
+#include <QDomNode>
 
 #include "../Global/GlobalObject.h"
 #include "../ScriptObject.h"
@@ -62,6 +63,8 @@ private:
             return obj;
         });
     }
+
+    QJSValue convertXmlToDescription(const QDomNode &node);
 };
 
 #endif // DIFFSCOPE_PROJECTWINDOWOBJECT_H

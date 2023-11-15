@@ -2,6 +2,8 @@
 #include <QLayout>
 #include <QWidget>
 
+#include <QDebug>
+
 #include <QApplication>
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -37,17 +39,17 @@
 #include "Window/StackedLayout.h"
 #include "Window/TabWidget.h"
 
-#define ADD_ELEMENT_CLASS(Class)                                                                                       \
-    {                                                                                                                  \
-        QString s = "";                                                                                                \
-        for (auto c : QString(#Class)) {                                                                               \
-            if (c.isUpper() && !s.isEmpty())                                                                           \
-                s.append('-');                                                                                         \
-            s.append(c.toLower());                                                                                     \
-        }                                                                                                              \
-        addElementClass<Class>(s);                                                                                     \
-    }                                                                                                                  \
-    void()
+#define ADD_ELEMENT_CLASS(Class) addElementClass<Class>(camelToHyphen(#Class))
+
+static QString camelToHyphen(const QString &s) {
+    QString ret = "";
+    for (auto c : s) {
+        if (c.isUpper() && !ret.isEmpty())
+            ret.append('-');
+        ret.append(c.toLower());
+    }
+    return ret;
+}
 
 ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(project), m_project(project) {
     ADD_ELEMENT_CLASS(BoxLayout);
@@ -162,13 +164,50 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
 }
 
 QJSValue ProjectWindowObject::renderElement(const QJSValue &description) {
-    auto tag = description.property("tag").toString();
+    auto targetDescription = description;
+    if (description.isString()) {
+        QDomDocument doc;
+        doc.setContent(description.toString());
+        if (!doc.documentElement().isNull())
+            targetDescription = convertXmlToDescription(doc.documentElement());
+    }
+    auto tag = targetDescription.property("tag").toString();
     if (!m_elementDescriptiveDict.contains(tag)) {
         JS_THROW(QJSValue::TypeError, QString("Invalid tag '%1'").arg(tag));
         return {};
     }
-    auto elm = m_elementDescriptiveDict.value(tag)(description.property("attributes"), description.property("children"));
+    auto elm = m_elementDescriptiveDict.value(tag)(targetDescription.property("attributes"), targetDescription.property("children"));
     return elm;
+}
+
+QJSValue ProjectWindowObject::convertXmlToDescription(const QDomNode &node) {
+    QList<QJSValue> children;
+
+    QDomNode childNode = node.firstChild();
+    while (!childNode.isNull()) {
+        if (childNode.isElement() || childNode.isText()) {
+            auto child = convertXmlToDescription(childNode);
+            children.append(child);
+        }
+        childNode = childNode.nextSibling();
+    }
+
+    if (node.isElement()) {
+        auto elementJson = jsGlobal->engine()->newObject();;
+        elementJson.setProperty("tag", camelToHyphen(node.toElement().tagName()));
+
+        auto attributes = node.attributes();
+        auto attributesJson = jsGlobal->engine()->newObject();
+        for (int i = 0; i < attributes.count(); ++i) {
+            QDomAttr attribute = attributes.item(i).toAttr();
+            attributesJson.setProperty(attribute.name(), attribute.value());
+        }
+        elementJson.setProperty("attributes", attributesJson);
+        elementJson.setProperty("children", jsGlobal->engine()->toScriptValue(children));
+        return elementJson;
+    } else {
+        return node.nodeValue();
+    }
 }
 
 QJSValue ProjectWindowObject::getElementById(const QString &id) const {

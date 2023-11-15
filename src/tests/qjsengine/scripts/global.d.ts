@@ -304,10 +304,6 @@ declare namespace $ {
                 }
                 children?: (ElementDescription|string)[];
             }
-
-            interface RenderedIdMap {
-                [id: string]: Element;
-            }
         }
     }
 
@@ -320,7 +316,7 @@ declare namespace $ {
             createDialog(): Project.Window.Dialog;
             createElement<K extends keyof Project.Window.ElementKeyMap>(tag: K): Project.Window.ElementKeyMap[K];
             createButtonGroup(): Project.Window.ButtonGroup;
-            renderElement(description: ElementDescription, idMap?: RenderedIdMap);
+            renderElement(description: ElementDescription|string);
             getElementById(id: string): Project.Window.Element|null;
         }
     }
