@@ -12,9 +12,9 @@ QJSValue ComboBox::createScriptObject() {
     ObjectWrapper::bindSignal(this, QOverload<int>::of(&ComboBox::currentIndexChanged), obj, "currentIndexChanged");
     return obj;
 }
-void ComboBox::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+void ComboBox::configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
                                                       const QJSValue &children,
-    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
+                                                      const std::function<QJSValue(const QJSValue &)> &renderer) {
     int childrenCount = children.property("length").toInt();
     for (int i = 0; i < childrenCount; i++) {
         auto child = children.property(i);
@@ -22,8 +22,7 @@ void ComboBox::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJ
             addOption(child.property("children").property(0).toString());
         }
     }
-    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children,
-                                                                    renderer);
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, attributes, children, renderer);
 }
 
 ComboBox::ComboBox(QWidget *parent) : QComboBox(parent) {

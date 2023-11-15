@@ -16,6 +16,7 @@ GlobalObject::GlobalObject(QObject *parent)
       m_storageObject(m_engine->newQObject(m_storage)) {
     m_instance = this;
     auto obj = ObjectWrapper::wrap(this, m_engine, {"registry", "storage"});
+    m_engine->installExtensions(QJSEngine::ConsoleExtension);
     m_engine->globalObject().setProperty("$", obj);
     defineEnum("OpenMode", {
                                {"NotOpen", 0x0001},

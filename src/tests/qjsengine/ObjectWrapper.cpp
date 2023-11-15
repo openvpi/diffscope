@@ -46,3 +46,14 @@ QJSValue ObjectWrapper::wrap(QObject *obj, QJSEngine *engine, const QStringList 
 
     return wrapped;
 }
+
+void ObjectWrapper::addAccessorPropertyImpl(QJSValue wrapped, QJSEngine *engine, const QString &key,
+                                            JSValueCustomAccessorDescriptor *descriptorObject) {
+    auto desc = engine->newObject();
+    desc.setProperty("configurable", true);
+    desc.setProperty("enumerable", true);
+    auto accessorDesc = engine->newQObject(descriptorObject);
+    desc.setProperty("get", accessorDesc.property("get"));
+    desc.setProperty("set", accessorDesc.property("set"));
+    engine->globalObject().property("Object").property("defineProperty").call({wrapped, key, desc});
+}

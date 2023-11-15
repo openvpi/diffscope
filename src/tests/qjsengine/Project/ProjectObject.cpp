@@ -11,7 +11,8 @@
 
 ProjectObject::ProjectObject(QWidget *window)
     : QObject(window), m_win(window), m_thisObject(JS_QOBJ(this)),
-      m_windowObject(JS_QOBJ(new ProjectWindowObject(this))) {
+      m_windowQObject(new ProjectWindowObject(this)),
+      m_windowObject(JS_QOBJ(m_windowQObject)) {
 }
 
 ProjectObject::~ProjectObject() = default;
@@ -21,6 +22,12 @@ QWidget *ProjectObject::window() const {
 }
 
 QJSValue ProjectObject::invoke(const QString &id, int index) {
+    auto ret = invokeImpl(id, index);
+    m_windowQObject->finalizeScriptScope();
+    return ret;
+}
+
+QJSValue ProjectObject::invokeImpl(const QString &id, int index) {
     auto scriptConstructor = jsGlobal->registry()->scriptConstructor(id);
     if (scriptConstructor.isUndefined())
         return QJSValue::UndefinedValue;

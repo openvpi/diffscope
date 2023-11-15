@@ -18,11 +18,10 @@ QJSValue Button::createScriptObject() {
     return obj;
 }
 
-void Button::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+void Button::configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
                                                     const QJSValue &children,
-    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
-    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children,
-                                                                    renderer);
+                                                    const std::function<QJSValue(const QJSValue &)> &renderer) {
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, attributes, children, renderer);
     if (children.property(0).isString()) {
         setText(children.property(0).toString());
     }

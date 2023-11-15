@@ -21,6 +21,8 @@ public:
 
     QWidget *window() const;
 
+    void finalizeScriptScope();
+
 public slots:
     void alert(const QString &message, const QString &title = {});
     void warning(const QString &message, const QString &title = {});
@@ -30,24 +32,33 @@ public slots:
     QJSValue createButtonGroup();
     QJSValue createDialog();
     QJSValue createElement(const QString &tag);
-    QJSValue renderElement(const QJSValue &description, QJSValue objectIdMap);
+    QJSValue renderElement(const QJSValue &description);
+    QJSValue getElementById(const QString &id) const;
 
 private:
     ProjectObject *m_project;
     QMap<QString, std::function<QJSValue ()>> m_elementDict;
-    QMap<QString, std::function<QJSValue (QJSValue, const QJSValue &, const QJSValue &)>> m_elementDescriptiveDict;
+    QMap<QString, std::function<QJSValue (const QJSValue &, const QJSValue &)>> m_elementDescriptiveDict;
+
+    QList<QObject *> m_scriptScopedObjects;
+    QMap<QString, QJSValue> m_scriptScopedIdSpecifiedElements;
+
+    void bindIdAccessorToElement(QJSValue element);
 
     template<class T>
     void addElementClass(const QString &tagName) {
-        m_elementDict.insert(tagName, []() {
-            auto t = new T;
-            return t->createScriptObject();
-        });
-        m_elementDescriptiveDict.insert(tagName, [this](QJSValue objectIdMap, const QJSValue &attributes, const QJSValue &children) {
+        m_elementDict.insert(tagName, [this]() {
             auto t = new T;
             auto obj = t->createScriptObject();
-            t->configureThisScriptObjectByDescription(obj, objectIdMap, attributes, children,
-                                                      [this](const QJSValue &arg1, QJSValue arg2) { return renderElement(arg1, arg2); });
+            bindIdAccessorToElement(obj);
+            return obj;
+        });
+        m_elementDescriptiveDict.insert(tagName, [this](const QJSValue &attributes, const QJSValue &children) {
+            auto t = new T;
+            auto obj = t->createScriptObject();
+            bindIdAccessorToElement(obj);
+            t->configureThisScriptObjectByDescription(
+                obj, attributes, children, [this](const QJSValue &arg) { return renderElement(arg); });
             return obj;
         });
     }

@@ -13,11 +13,10 @@ QJSValue BoxLayout::createScriptObject() {
                                 "insertSpacing", "insertStretch", "spacing", "count"});
 }
 
-void BoxLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+void BoxLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
                                                        const QJSValue &children,
-    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
-    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children,
-                                                                    renderer);
+                                                       const std::function<QJSValue(const QJSValue &)> &renderer) {
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, attributes, children, renderer);
     int childrenCount = children.property("length").toInt();
     for (int i = 0; i < childrenCount; i++) {
         QJSValue child = children.property(i);
@@ -28,7 +27,7 @@ void BoxLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, Q
         } else if (child.property("tag").toString() == "box-layout-strut") {
             addStrut(child.property("attributes").property("value").toInt());
         } else {
-            addElement(renderer(child, objectIdMap), child.property("attributes").property("box-layout-stretch").toInt(),
+            addElement(renderer(child), child.property("attributes").property("box-layout-stretch").toInt(),
                        child.property("attributes").property("box-layout-alignment").toInt());
         }
     }

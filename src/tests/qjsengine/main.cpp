@@ -17,7 +17,6 @@ int main(int argc, char **argv) {
     auto win = new QMainWindow;
     win->show();
     GlobalObject global;
-    global.engine()->installExtensions(QJSEngine::ConsoleExtension);
     auto ret = global.load(":/scripts/main.js");
     if (ret.isError())
         qDebug() << ret.toString();

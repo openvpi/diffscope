@@ -8,6 +8,8 @@
 class QWidget;
 class QJSEngine;
 
+class ProjectWindowObject;
+
 class ProjectObject : public QObject {
     Q_OBJECT
     Q_PROPERTY(QJSValue window READ jsWindow)
@@ -22,11 +24,14 @@ public:
 
 private:
     QWidget *m_win;
+    ProjectWindowObject *m_windowQObject;
 
     QHash<QString, QJSValue> m_scriptInstanceDict;
 
     QJSValue m_thisObject;
     QJSValue m_windowObject;
+
+    QJSValue invokeImpl(const QString &id, int index = -1);
 };
 
 

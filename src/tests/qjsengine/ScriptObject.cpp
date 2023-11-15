@@ -4,8 +4,8 @@
 #include <QJSEngine>
 
 void ScriptDescriptiveObject::configureThisScriptObjectByDescription(
-    QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes, const QJSValue &children,
-    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
+    QJSValue wrappedObject, const QJSValue &attributes, const QJSValue &children,
+    const std::function<QJSValue(const QJSValue &)> &renderer) {
     auto attributeKeys = jsGlobal->engine()
                              ->globalObject()
                              .property("Object")

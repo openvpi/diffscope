@@ -1,5 +1,8 @@
 declare namespace $ {
 
+    import ElementDescription = $.Project.Window.ElementDescription;
+    import RenderedIdMap = $.Project.Window.RenderedIdMap;
+
     enum Alignment {
         None          = 0x0000,
         AlignLeft     = 0x0001,
@@ -41,6 +44,13 @@ declare namespace $ {
         Append = 0x0004,
         Truncate = 0x0008,
         Text = 0x0010,
+    }
+
+    enum TabPosition {
+        North,
+        South,
+        West,
+        East,
     }
 
     interface File {
@@ -234,6 +244,27 @@ declare namespace $ {
                 currentIndex: number;
             }
 
+            interface TabWidget extends WidgetElement {
+                readonly count: number;
+                currentIndex: number;
+                tabPosition: TabPosition;
+                usesScrollButtons: boolean;
+                addTab(element: Element, label: string): number;
+                insertTab(index: number, element: Element, label: string): number;
+                setTabEnabled(index: number, enabled: boolean): void;
+                isTabEnabled(index: number): boolean;
+                setTabText(index: number, label: string): void;
+                tabText(index: number): string;
+                setTabToolTip(index: number, tip: string): void;
+                tabToolTip(index: number): string;
+                setTabVisible(index: number, visible: boolean): void;
+                isTabVisible(index: number): boolean;
+
+                onCurrentChanged: ((index: number) => void)|null;
+                onTabBarClicked: ((index: number) => void)|null;
+                onTabBarDoubleClicked: ((index: number) => void)|null;
+            }
+
             interface ElementKeyMap {
                 'box-layout': BoxLayout;
                 'button': Button;
@@ -250,6 +281,7 @@ declare namespace $ {
                 'slider': Slider;
                 'spin-box': SpinBox;
                 'stacked-layout': StackedLayout;
+                'tab-widget': TabWidget;
             }
 
             interface ButtonGroup {
@@ -264,6 +296,18 @@ declare namespace $ {
                 onIdToggled: ((id: number, checked: boolean) => void)|null;
 
             }
+
+            interface ElementDescription {
+                tag: string;
+                attributes?: {
+                    [attribute: string]: any;
+                }
+                children?: (ElementDescription|string)[];
+            }
+
+            interface RenderedIdMap {
+                [id: string]: Element;
+            }
         }
     }
 
@@ -276,6 +320,8 @@ declare namespace $ {
             createDialog(): Project.Window.Dialog;
             createElement<K extends keyof Project.Window.ElementKeyMap>(tag: K): Project.Window.ElementKeyMap[K];
             createButtonGroup(): Project.Window.ButtonGroup;
+            renderElement(description: ElementDescription, idMap?: RenderedIdMap);
+            getElementById(id: string): Project.Window.Element|null;
         }
     }
 

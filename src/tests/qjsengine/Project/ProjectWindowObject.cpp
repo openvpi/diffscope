@@ -35,6 +35,7 @@
 #include "Window/Slider.h"
 #include "Window/SpinBox.h"
 #include "Window/StackedLayout.h"
+#include "Window/TabWidget.h"
 
 #define ADD_ELEMENT_CLASS(Class)                                                                                       \
     {                                                                                                                  \
@@ -64,6 +65,7 @@ ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(proje
     ADD_ELEMENT_CLASS(Slider);
     ADD_ELEMENT_CLASS(SpinBox);
     ADD_ELEMENT_CLASS(StackedLayout);
+    ADD_ELEMENT_CLASS(TabWidget);
 
     jsGlobal->defineEnum("Alignment", {
                                           {"None",          0x0000},
@@ -90,12 +92,25 @@ ProjectWindowObject::ProjectWindowObject(ProjectObject *project) : QObject(proje
                                           {"RightToLeft"},
                                           {"TopToBottom"},
                                           {"BottomToTop"}});
+    jsGlobal->defineEnum("TabPosition", {
+                                            {"North"},
+                                            {"South"},
+                                            {"West"},
+                                            {"East"},
+                                        });
 }
 
 ProjectWindowObject::~ProjectWindowObject() = default;
 
 QWidget *ProjectWindowObject::window() const {
     return m_project->window();
+}
+
+void ProjectWindowObject::finalizeScriptScope() {
+    for(auto obj: m_scriptScopedObjects) {
+        obj->deleteLater();
+    }
+    m_scriptScopedIdSpecifiedElements.clear();
 }
 
 void ProjectWindowObject::alert(const QString &message, const QString &title) {
@@ -146,15 +161,28 @@ QJSValue ProjectWindowObject::createElement(const QString &tag) {
     return {};
 }
 
-QJSValue ProjectWindowObject::renderElement(const QJSValue &description, QJSValue objectIdMap) {
+QJSValue ProjectWindowObject::renderElement(const QJSValue &description) {
     auto tag = description.property("tag").toString();
     if (!m_elementDescriptiveDict.contains(tag)) {
         JS_THROW(QJSValue::TypeError, QString("Invalid tag '%1'").arg(tag));
         return {};
     }
-    auto elm = m_elementDescriptiveDict.value(tag)(objectIdMap, description.property("attributes"), description.property("children"));
-    if (description.property("id").isString()) {
-        objectIdMap.setProperty(description.property("id").toString(), elm);
-    }
+    auto elm = m_elementDescriptiveDict.value(tag)(description.property("attributes"), description.property("children"));
     return elm;
+}
+
+QJSValue ProjectWindowObject::getElementById(const QString &id) const {
+    return m_scriptScopedIdSpecifiedElements.value(id, QJSValue::NullValue);
+}
+
+void ProjectWindowObject::bindIdAccessorToElement(QJSValue element) {
+    ObjectWrapper::addAccessorProperty(element, jsGlobal->engine(), "id", [=]() {
+        return element.property("_elmId");
+    }, [=](const QJSValue &id) {
+        if (element.property("_elmId").isString())
+            m_scriptScopedIdSpecifiedElements.remove(element.property("_elmId").toString());
+        if (id.isString())
+            m_scriptScopedIdSpecifiedElements.insert(id.toString(), element);
+    });
+    element.setProperty("_elmId", QJSValue::NullValue);
 }

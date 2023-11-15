@@ -11,7 +11,7 @@ GroupBox::GroupBox(QWidget *parent) : QGroupBox(parent) {
 
 void GroupBox::setContent(const QJSValue &jsWidget) {
     if (!m_content.isNull()) {
-        JS_THROW("Dialog content is already set");
+        JS_THROW("Group box content is already set");
         return;
     }
     auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
@@ -29,7 +29,7 @@ void GroupBox::setContent(const QJSValue &jsWidget) {
         return;
     }
     m_content = QJSValue::NullValue;
-    JS_THROW(QJSValue::TypeError, "Invalid type of dialog content");
+    JS_THROW(QJSValue::TypeError, "Invalid type of group box content");
 }
 
 QJSValue GroupBox::content() const {
@@ -48,11 +48,11 @@ QJSValue GroupBox::createScriptObject() {
     OBJECT_WRAPPER_BIND_SIGNAL(this, obj, toggled);
     return obj;
 }
-void GroupBox::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+void GroupBox::configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
                                                       const QJSValue &children,
-    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
-    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children, renderer);
+                                                      const std::function<QJSValue(const QJSValue &)> &renderer) {
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, attributes, children, renderer);
     if (children.hasProperty("0")) {
-        setContent(renderer(children.property(0), objectIdMap));
+        setContent(renderer(children.property(0)));
     }
 }

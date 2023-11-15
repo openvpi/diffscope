@@ -10,9 +10,9 @@ class CheckBox : public QCheckBox, public ScriptDescriptiveObject {
     Q_PROPERTY(int checkState READ checkState WRITE setCheckState)
 public:
     QJSValue createScriptObject() override;
-    void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+    void configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
                                                 const QJSValue &children,
-        const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
+                                                const std::function<QJSValue(const QJSValue &)> &renderer) override;
 
     explicit CheckBox(QWidget *parent = nullptr);
     void setCheckState(int state);

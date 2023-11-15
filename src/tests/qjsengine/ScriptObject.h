@@ -10,9 +10,9 @@ public:
 
 class ScriptDescriptiveObject : public ScriptObject {
 public:
-    virtual void configureThisScriptObjectByDescription(
-        QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes, const QJSValue &children,
-                                               const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer);
+    virtual void configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
+                                                        const QJSValue &children,
+                                                        const std::function<QJSValue(const QJSValue &)> &renderer);
 };
 
 #endif // DIFFSCOPE_SCRIPTOBJECT_H

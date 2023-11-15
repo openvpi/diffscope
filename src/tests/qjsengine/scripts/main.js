@@ -132,7 +132,6 @@
 
             dlgLayout.addElement(groupBox);
 
-            let objectIdMap = {};
             let renderedElement = this.project.window.renderElement({
                 tag: 'group-box',
                 attributes: {
@@ -142,7 +141,9 @@
                     tag: 'form-layout',
                     children: [{
                         tag: 'button',
-                        id: 'test-btn',
+                        attributes: {
+                            id: 'test-btn',
+                        },
                         children: ["Test Button"],
                     }, {
                         tag: 'combo-box',
@@ -162,12 +163,30 @@
                         }]
                     }]
                 }],
-            }, objectIdMap);
-            objectIdMap['test-btn'].onClicked = () => {
+            });
+            this.project.window.getElementById('test-btn').onClicked = () => {
                 this.project.window.alert("Test");
             }
 
             dlgLayout.addElement(renderedElement);
+
+            let tabWidget = this.project.window.renderElement({
+                tag: 'tab-widget',
+                children: [{
+                    tag: 'button',
+                    attributes: {
+                        'tab-widget-label': 'Tab 1',
+                    },
+                    children: ['Button 1'],
+                }, {
+                    tag: 'button',
+                    attributes: {
+                        'tab-widget-label': 'Tab 2',
+                    },
+                    children: ['Button 2'],
+                }],
+            });
+            dlgLayout.addElement(tabWidget);
 
             dlg.content = stackedLayout;
             dlg.openDialog();

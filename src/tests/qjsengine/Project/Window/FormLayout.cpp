@@ -13,18 +13,17 @@ QJSValue FormLayout::createScriptObject() {
         this, jsGlobal->engine(),
         {"addRow", "addElement", "insertRow", "insertElement", "horizontalSpacing", "verticalSpacing", "rowCount"});
 }
-void FormLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+void FormLayout::configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
                                                         const QJSValue &children,
-    const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) {
-    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, objectIdMap, attributes, children,
-                                                                    renderer);
+                                                        const std::function<QJSValue(const QJSValue &)> &renderer) {
+    ScriptDescriptiveObject::configureThisScriptObjectByDescription(wrappedObject, attributes, children, renderer);
     int childrenCount = children.property("length").toInt();
     for (int i = 0; i < childrenCount; i++) {
         auto child = children.property(i);
         if (child.property("attributes").property("form-layout-label").isString()) {
-            addRow(child.property("attributes").property("form-layout-label").toString(), renderer(child, objectIdMap));
+            addRow(child.property("attributes").property("form-layout-label").toString(), renderer(child));
         } else {
-            addElement(renderer(child, objectIdMap));
+            addElement(renderer(child));
         }
     }
 }

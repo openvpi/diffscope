@@ -28,6 +28,27 @@ private:
     QString m_key;
 };
 
+class JSValueCustomAccessorDescriptor : public QObject {
+    Q_OBJECT
+    using GetterFunc = std::function<QJSValue ()>;
+    using SetterFunc = std::function<void (const QJSValue &)>;
+public:
+    explicit JSValueCustomAccessorDescriptor(const GetterFunc &getter, const SetterFunc &setter): QObject(nullptr), getter(getter), setter(setter) {
+    }
+
+public slots:
+    QJSValue get() const {
+        return getter();
+    }
+    void set(const QJSValue &value) {
+        setter(value);
+    }
+
+private:
+    GetterFunc getter;
+    SetterFunc setter;
+};
+
 class ObjectWrapper {
 public:
     static QStringList qWidgetGeneralKeys();
@@ -46,6 +67,14 @@ public:
                 cb.call(argList);
         });
     }
+
+    template<typename GetterFunctor, typename SetterFunctor>
+    static void addAccessorProperty(QJSValue wrapped, QJSEngine *engine, const QString &key, GetterFunctor getterFunctor, SetterFunctor setterFunctor) {
+        addAccessorPropertyImpl(wrapped, engine, key, new JSValueCustomAccessorDescriptor(getterFunctor, setterFunctor));
+    }
+
+private:
+    static void addAccessorPropertyImpl(QJSValue wrapped, QJSEngine *engine, const QString &key, JSValueCustomAccessorDescriptor *descriptorObject);
 };
 
 #define OBJECT_WRAPPER_BIND_SIGNAL(obj, wrapped, signal) ObjectWrapper::bindSignal(obj, &std::remove_pointer<decltype(obj)>::type::signal, wrapped, #signal)

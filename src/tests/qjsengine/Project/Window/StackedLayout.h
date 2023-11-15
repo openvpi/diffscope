@@ -10,9 +10,9 @@ class StackedLayout : public QStackedLayout, public ScriptDescriptiveObject {
     Q_PROPERTY(int count READ count)
 public:
     QJSValue createScriptObject() override;
-    void configureThisScriptObjectByDescription(QJSValue wrappedObject, QJSValue objectIdMap, const QJSValue &attributes,
+    void configureThisScriptObjectByDescription(QJSValue wrappedObject, const QJSValue &attributes,
                                                 const QJSValue &children,
-        const std::function<QJSValue(const QJSValue &, QJSValue)> &renderer) override;
+                                                const std::function<QJSValue(const QJSValue &)> &renderer) override;
     explicit StackedLayout(QWidget *parent = nullptr);
 
 public slots:
