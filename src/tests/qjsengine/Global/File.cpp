@@ -7,6 +7,7 @@
 #include <QJSEngine>
 
 #include "GlobalObject.h"
+#include "../ObjectWrapper.h"
 
 File::File(const QString &path) : f(new QFile(path, this)) {
 }
@@ -58,16 +59,14 @@ void File::close() {
 }
 
 QJSValue File::read(int readSize) {
-    QVector<quint8> data(readSize);
-    int actualSize = f->read((char *)(data.data()), readSize);
+    QByteArray data(readSize, Qt::Uninitialized);
+    int actualSize = f->read(data.data(), readSize);
     if (actualSize == -1) {
         JS_THROW(f->errorString());
         return {};
     }
     data.resize(actualSize);
-    auto jsArrayData = jsGlobal->engine()->toScriptValue(data);
-    auto jsUint8ArrayData = jsGlobal->engine()->globalObject().property("Uint8Array").callAsConstructor({jsArrayData});
-    return jsUint8ArrayData.property("buffer");
+    return ObjectWrapper::toUint8Array(data, jsGlobal->engine()).property("buffer");
 }
 
 QJSValue File::readAll() {
@@ -92,13 +91,8 @@ int File::write(const QJSValue &data) {
     } else if (data.isArray()) {
         return write(jsGlobal->engine()->globalObject().property("Uint8Array").callAsConstructor({data}).property("buffer"));
     } else if (data.hasProperty("byteLength")) {
-        QVector<quint8> arr;
         auto uint8Data = jsGlobal->engine()->globalObject().property("Uint8Array").callAsConstructor({data});
-        arr.reserve(uint8Data.property("length").toInt());
-        for (int i = 0; i < uint8Data.property("length").toInt(); i++) {
-            arr.append(uint8Data.property(i).toInt());
-        }
-        actualSize = f->write((const char *)(arr.constData()), arr.size());
+        actualSize = f->write(ObjectWrapper::fromUint8Array(uint8Data, jsGlobal->engine()));
     } else {
         JS_THROW(QJSValue::TypeError, "Invalid data type to write to file");
         return 0;

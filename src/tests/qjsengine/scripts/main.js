@@ -16,13 +16,21 @@
         }
 
         prepare() {
-            return this.project.window.question("Test?");
+            let tests = [this.testDialog, this.testFile, this.testProgress];
+            let dlg = this.project.window.createDialog();
+            let select = this.project.window.createElement('combo-box');
+            dlg.content = select;
+            tests.forEach(f => select.addOption(f.name));
+            if (dlg.openDialog()) {
+                this.testTarget = tests[select.currentIndex].bind(this);
+                return true;
+            } else {
+                return false;
+            }
         }
 
         main() {
-            //this.testDialog();
-            //this.testProgress();
-            this.testFile();
+            this.testTarget();
         }
 
         testDialog() {

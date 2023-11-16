@@ -73,6 +73,10 @@ public:
         addAccessorPropertyImpl(wrapped, engine, key, new JSValueCustomAccessorDescriptor(getterFunctor, setterFunctor));
     }
 
+    static QJSValue toUint8Array(const QByteArray &ba, QJSEngine *engine);
+    static void fillUint8Array(const QByteArray &ba, QJSValue uint8Array);
+    static QByteArray fromUint8Array(const QJSValue &uint8Array, QJSEngine *engine);
+
 private:
     static void addAccessorPropertyImpl(QJSValue wrapped, QJSEngine *engine, const QString &key, JSValueCustomAccessorDescriptor *descriptorObject);
 };

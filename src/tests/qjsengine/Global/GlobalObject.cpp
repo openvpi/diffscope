@@ -5,6 +5,8 @@
 
 #include "GlobalRegistryObject.h"
 #include "GlobalStorageObject.h"
+#include "TextEncoder.h"
+#include "TextDecoder.h"
 #include "../ObjectWrapper.h"
 
 static GlobalObject *m_instance = nullptr;
@@ -15,8 +17,13 @@ GlobalObject::GlobalObject(QObject *parent)
       m_storage(new GlobalStorageObject(this, "D:/a.json")), // TODO file name
       m_storageObject(m_engine->newQObject(m_storage)) {
     m_instance = this;
+
     m_engine->installExtensions(QJSEngine::ConsoleExtension);
+    m_engine->globalObject().setProperty("TextDecoder", m_engine->newQMetaObject<TextDecoder>());
+    m_engine->globalObject().setProperty("TextEncoder", m_engine->newQMetaObject<TextEncoder>());
+
     m_engine->globalObject().setProperty("$", JS_QOBJ(this));
+
     defineEnum("OpenMode", {
                                {"NotOpen", 0x0001},
                                {"ReadOnly", 0x0001},

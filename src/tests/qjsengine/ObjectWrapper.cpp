@@ -57,3 +57,30 @@ void ObjectWrapper::addAccessorPropertyImpl(QJSValue wrapped, QJSEngine *engine,
     desc.setProperty("set", accessorDesc.property("set"));
     engine->globalObject().property("Object").property("defineProperty").call({wrapped, key, desc});
 }
+
+QJSValue ObjectWrapper::toUint8Array(const QByteArray &ba, QJSEngine *engine) {
+    auto uint8Array = engine->globalObject().property("Uint8Array").callAsConstructor({ba.size()});
+    fillUint8Array(ba, uint8Array);
+    return uint8Array;
+}
+
+void ObjectWrapper::fillUint8Array(const QByteArray &ba, QJSValue uint8Array) {
+    auto size = uint8Array.property("length").toInt();
+    for (int i = 0; i < size; i++) {
+        uint8Array.setProperty(i, ba[i]);
+    }
+}
+
+QByteArray ObjectWrapper::fromUint8Array(const QJSValue &uint8Array, QJSEngine *engine) {
+    QJSValue data = uint8Array;
+    if (engine->globalObject().property("ArrayBuffer").property("isView").call({uint8Array}).toBool()) {
+        data = uint8Array.property("buffer");
+    }
+    data = engine->globalObject().property("Uint8Array").callAsConstructor({data});
+    auto size = data.property("length").toInt();
+    QByteArray ba(size, Qt::Uninitialized);
+    for (int i = 0; i < size; i++) {
+        ba[i] = data.property(i).toInt();
+    }
+    return ba;
+}
