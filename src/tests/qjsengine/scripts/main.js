@@ -20,6 +20,12 @@
         }
 
         main() {
+            //this.testDialog();
+            //this.testProgress();
+            this.testFile();
+        }
+
+        testDialog() {
             let dlg = this.project.window.createDialog();
             let dlgLayout = this.project.window.createElement('form-layout');
 
@@ -183,6 +189,34 @@
 
             dlg.content = stackedLayout;
             dlg.openDialog();
+        }
+
+        testProgress() {
+            this.project.startProgress("Test progressing", 1000);
+            for (let i = 0; i < 1000; i++) {
+                this.project.updateProgress(i);
+                let a = []
+                for (let j = 0; j < 100; j++) {
+                    for(let k = 0; k < 100; k++) {
+                        a[Math.round(Math.abs(Math.cos(k)) * j)] = Math.log(j * k);
+                    }
+                }
+            }
+        }
+
+        testFile() {
+            let dialog = this.project.window.createDialog();
+            let fileSelector = this.project.window.createElement('file-selector');
+            dialog.content = fileSelector;
+            fileSelector.onFileChanged = () => {
+                if (!fileSelector.files.length)
+                    return;
+                let file = fileSelector.files[0];
+                file.open($.OpenMode.WriteOnly);
+                let data = new Uint8Array([52, 53, 54]);
+                file.write(data);
+            };
+            dialog.openDialog();
         }
     });
 

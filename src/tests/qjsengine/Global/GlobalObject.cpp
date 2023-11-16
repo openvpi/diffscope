@@ -15,9 +15,8 @@ GlobalObject::GlobalObject(QObject *parent)
       m_storage(new GlobalStorageObject(this, "D:/a.json")), // TODO file name
       m_storageObject(m_engine->newQObject(m_storage)) {
     m_instance = this;
-    auto obj = ObjectWrapper::wrap(this, m_engine, {"registry", "storage"});
     m_engine->installExtensions(QJSEngine::ConsoleExtension);
-    m_engine->globalObject().setProperty("$", obj);
+    m_engine->globalObject().setProperty("$", JS_QOBJ(this));
     defineEnum("OpenMode", {
                                {"NotOpen", 0x0001},
                                {"ReadOnly", 0x0001},

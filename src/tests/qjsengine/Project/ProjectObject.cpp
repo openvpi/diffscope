@@ -1,5 +1,6 @@
 #include "ProjectObject.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QJSEngine>
 #include <QWidget>
@@ -23,6 +24,7 @@ QWidget *ProjectObject::window() const {
 
 QJSValue ProjectObject::invoke(const QString &id, int index) {
     auto ret = invokeImpl(id, index);
+    finishProgress();
     m_windowQObject->finalizeScriptScope();
     return ret;
 }
@@ -51,4 +53,21 @@ QJSValue ProjectObject::invokeImpl(const QString &id, int index) {
 
 QJSValue ProjectObject::jsWindow() const {
     return m_windowObject;
+}
+
+void ProjectObject::startProgress(const QString &title, int maximum) {
+    m_isProgressStarted = true;
+    emit progressStarted(title, maximum);
+}
+
+void ProjectObject::updateProgress(int value) {
+    if (m_isProgressStarted)
+        emit progressValueChanged(value);
+    qApp->processEvents();
+}
+
+void ProjectObject::finishProgress() {
+    if (m_isProgressStarted)
+        emit progressFinished();
+    m_isProgressStarted = false;
 }

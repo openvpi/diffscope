@@ -58,8 +58,8 @@ void File::close() {
 }
 
 QJSValue File::read(int readSize) {
-    QVector<char> data(readSize);
-    int actualSize = f->read(data.data(), readSize);
+    QVector<quint8> data(readSize);
+    int actualSize = f->read((char *)(data.data()), readSize);
     if (actualSize == -1) {
         JS_THROW(f->errorString());
         return {};
@@ -67,7 +67,7 @@ QJSValue File::read(int readSize) {
     data.resize(actualSize);
     auto jsArrayData = jsGlobal->engine()->toScriptValue(data);
     auto jsUint8ArrayData = jsGlobal->engine()->globalObject().property("Uint8Array").callAsConstructor({jsArrayData});
-    return jsUint8ArrayData;
+    return jsUint8ArrayData.property("buffer");
 }
 
 QJSValue File::readAll() {
@@ -87,25 +87,18 @@ int File::write(const QJSValue &data) {
     int actualSize;
     if (data.isString()) {
         actualSize = f->write(data.toString().toUtf8());
+    } else if (jsGlobal->engine()->globalObject().property("ArrayBuffer").property("isView").call({data}).toBool()) {
+        return write(data.property("buffer"));
     } else if (data.isArray()) {
-        QVector<char> arr;
-        arr.reserve(data.property("length").toInt());
-        for (const auto &v: data.toVariant().toList()) {
-            bool ok;
-            arr.append(v.toInt(&ok));
-            if (!ok) {
-                JS_THROW(QJSValue::TypeError, "Invalid data type to write to file");
-                return 0;
-            }
+        return write(jsGlobal->engine()->globalObject().property("Uint8Array").callAsConstructor({data}).property("buffer"));
+    } else if (data.hasProperty("byteLength")) {
+        QVector<quint8> arr;
+        auto uint8Data = jsGlobal->engine()->globalObject().property("Uint8Array").callAsConstructor({data});
+        arr.reserve(uint8Data.property("length").toInt());
+        for (int i = 0; i < uint8Data.property("length").toInt(); i++) {
+            arr.append(uint8Data.property(i).toInt());
         }
-        actualSize = f->write(arr.data(), arr.size());
-    } else if (data.property("BYTES_PER_ELEMENT").toInt() == 1) {
-        QVector<char> arr;
-        arr.reserve(data.property("length").toInt());
-        for (int i = 0; i < data.property("length").toInt(); i++) {
-            arr.append(data.property(i).toInt());
-        }
-        actualSize = f->write(arr.data(), arr.size());
+        actualSize = f->write((const char *)(arr.constData()), arr.size());
     } else {
         JS_THROW(QJSValue::TypeError, "Invalid data type to write to file");
         return 0;

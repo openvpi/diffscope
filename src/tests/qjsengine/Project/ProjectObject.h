@@ -22,6 +22,16 @@ public:
 
     QJSValue jsWindow() const;
 
+public slots:
+    void startProgress(const QString &title, int maximum);
+    void updateProgress(int value);
+    void finishProgress();
+
+signals:
+    void progressStarted(const QString &title, int maximum);
+    void progressValueChanged(int value);
+    void progressFinished();
+
 private:
     QWidget *m_win;
     ProjectWindowObject *m_windowQObject;
@@ -32,6 +42,8 @@ private:
     QJSValue m_windowObject;
 
     QJSValue invokeImpl(const QString &id, int index = -1);
+
+    bool m_isProgressStarted = false;
 };
 
 

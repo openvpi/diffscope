@@ -62,10 +62,10 @@ declare namespace $ {
 
         open(openMode: OpenMode): boolean;
         close(): void;
-        read(readSize: number): Uint8Array;
-        readAll(): Uint8Array;
+        read(readSize: number): ArrayBuffer;
+        readAll(): ArrayBuffer;
         readAllAsUtf8(): string;
-        write(data: string|number[]|Uint8Array): number;
+        write(data: ArrayBuffer|DataView|Uint8Array|string|number[]): number;
         flush(): void;
     }
 
@@ -319,6 +319,10 @@ declare namespace $ {
             renderElement(description: ElementDescription|string);
             getElementById(id: string): Project.Window.Element|null;
         }
+
+        startProgress(title: string, maximum: number): void;
+        updateProgress(value: number): void;
+        finishProgress(): void;
     }
 
     interface ScriptManifestBase {
