@@ -2,25 +2,26 @@
 
 #include <QFile>
 #include <QJSEngine>
+#include <QMessageBox>
 
+#include "../ObjectWrapper.h"
 #include "GlobalRegistryObject.h"
 #include "GlobalStorageObject.h"
-#include "TextEncoder.h"
 #include "TextDecoder.h"
-#include "../ObjectWrapper.h"
+#include "TextEncoder.h"
+#include "Console.h"
 
 static GlobalObject *m_instance = nullptr;
 
 GlobalObject::GlobalObject(QObject *parent)
-    : QObject(parent), m_engine(new QJSEngine(this)), m_registry(new GlobalRegistryObject(this)),
+    : QObject(parent), m_engine(new QJSEngine(this)), m_registry(new GlobalRegistryObject(this)), m_console(new Console(this)),
       m_registryObject(m_engine->newQObject(m_registry)),
       m_storage(new GlobalStorageObject(this, "D:/a.json")), // TODO file name
       m_storageObject(m_engine->newQObject(m_storage)) {
     m_instance = this;
 
-    m_engine->installExtensions(QJSEngine::ConsoleExtension);
-    m_engine->globalObject().setProperty("TextDecoder", m_engine->newQMetaObject<TextDecoder>());
-    m_engine->globalObject().setProperty("TextEncoder", m_engine->newQMetaObject<TextEncoder>());
+    installTextCodec();
+    installConsole();
 
     m_engine->globalObject().setProperty("$", JS_QOBJ(this));
 
@@ -35,6 +36,33 @@ GlobalObject::GlobalObject(QObject *parent)
                            });
 }
 
+void GlobalObject::installConsole() {
+    m_engine->evaluate("(c, global) => {\n"
+                       "    let console = {};\n"
+                       "    console.assert = (a, ...b) => c.assert(a, b);\n"
+                       "    console.clear = () => c.clear();\n"
+                       "    console.count = (a) => c.count(a);\n"
+                       "    console.countReset = (a) => c.countReset(a);\n"
+                       "    console.debug = (...a) => c.debug(a);\n"
+                       "    console.error = (...a) => c.error(a);\n"
+                       "    console.exception = (...a) => c.exception(a);\n"
+                       "    console.info = (...a) => c.info(a);\n"
+                       "    console.log = (...a) => c.log(a);\n"
+                       "    console.time = (a) => c.time(a);\n"
+                       "    console.timeEnd = (a) => c.timeEnd(a);\n"
+                       "    console.timeLog = (a, ...b) => c.timeLog(a, b);\n"
+                       "    console.trace = (...a) => c.trace(a);\n"
+                       "    console.warn = (...a) => c.warn(a);\n"
+                       "    Object.freeze(console);\n"
+                       "    global.console = console;\n"
+                       "}").call({JS_QOBJ(m_console), m_engine->globalObject()});
+}
+
+void GlobalObject::installTextCodec() {
+    m_engine->globalObject().setProperty("TextDecoder", m_engine->newQMetaObject<TextDecoder>());
+    m_engine->globalObject().setProperty("TextEncoder", m_engine->newQMetaObject<TextEncoder>());
+}
+
 GlobalObject::~GlobalObject() {
     m_instance = nullptr;
 }
@@ -47,14 +75,25 @@ QJSEngine *GlobalObject::engine() const {
     return m_engine;
 }
 
+QString GlobalObject::stackTrace(int depth) {
+    return m_engine->evaluate("throw new Error()").property("stack").toString().split("\n").mid(1 + depth).join("\n");
+}
+
+QString GlobalObject::fileTrace(int depth) {
+    auto stack = stackTrace().split("\n")[depth];
+    return stack.mid(stack.indexOf('@') + 1);
+}
+
 QJSValue GlobalObject::load(const QString &scriptFilename) {
     QFile f(scriptFilename);
     if (!f.open(QFile::ReadOnly))
         return m_engine->newErrorObject(QJSValue::URIError,
                                         QString("Script file does not exist: '%1'").arg(scriptFilename));
     auto ret = m_engine->evaluate(f.readAll(), scriptFilename);
-    if (ret.isError())
+    if (ret.isError()) {
+        m_console->printUncaughtError(ret);
         return ret;
+    }
     return QJSValue::UndefinedValue;
 }
 
@@ -64,6 +103,10 @@ GlobalRegistryObject *GlobalObject::registry() const {
 
 GlobalStorageObject *GlobalObject::storage() const {
     return m_storage;
+}
+
+Console *GlobalObject::console() const {
+    return m_console;
 }
 
 QJSValue GlobalObject::jsRegistry() const {
@@ -85,4 +128,12 @@ void GlobalObject::defineEnum(const QString &enumName, const QList<JSEnumEntry> 
     }
     m_engine->globalObject().property("Object").property("freeze").call({enumObj});
     m_engine->globalObject().property("$").setProperty(enumName, enumObj);
+}
+
+void GlobalObject::pause() {
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("JavaScript Pause");
+    msgBox.setText("Script execution is paused.\nStack trace:\n" + stackTrace());
+    msgBox.addButton("Continue", QMessageBox::AcceptRole);
+    msgBox.exec();
 }

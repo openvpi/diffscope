@@ -8,6 +8,7 @@ class QJSEngine;
 
 class GlobalRegistryObject;
 class GlobalStorageObject;
+class Console;
 
 class GlobalObject : public QObject {
     Q_OBJECT
@@ -18,10 +19,14 @@ public:
     ~GlobalObject() override;
     static GlobalObject *instance();
 
+    QString stackTrace(int depth = 0);
+    QString fileTrace(int depth = 0);
+
     QJSEngine *engine() const;
     QJSValue load(const QString &scriptFilename);
     GlobalRegistryObject *registry() const;
     GlobalStorageObject *storage() const;
+    Console *console() const;
 
     QJSValue jsRegistry() const;
     QJSValue jsStorage() const;
@@ -41,14 +46,21 @@ public:
         return v;
     }
 
+public slots:
+    void pause();
+
 private:
     QJSEngine *m_engine;
 
     GlobalRegistryObject *m_registry;
     GlobalStorageObject *m_storage;
+    Console *m_console;
 
     QJSValue m_registryObject;
     QJSValue m_storageObject;
+
+    void installTextCodec();
+    void installConsole();
 };
 
 #define jsGlobal GlobalObject::instance()
