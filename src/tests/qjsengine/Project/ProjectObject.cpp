@@ -60,6 +60,10 @@ QJSValue ProjectObject::invokeImpl(const QString &id, int index) {
     return QJSValue::UndefinedValue;
 }
 
+ProjectWindowObject *ProjectObject::windowObject() const {
+    return m_windowQObject;
+}
+
 QJSValue ProjectObject::jsWindow() const {
     return m_windowObject;
 }

@@ -14,11 +14,10 @@
 static GlobalObject *m_instance = nullptr;
 
 GlobalObject::GlobalObject(QObject *parent)
-    : QObject(parent), m_engine(new QJSEngine(this)), m_registry(new GlobalRegistryObject(this)), m_console(new Console(this)),
+    : QObject(parent), m_engine(new QJSEngine(m_instance = this)), m_registry(new GlobalRegistryObject(this)), m_console(new Console(this)),
       m_registryObject(m_engine->newQObject(m_registry)),
       m_storage(new GlobalStorageObject(this, "D:/a.json")), // TODO file name
       m_storageObject(m_engine->newQObject(m_storage)) {
-    m_instance = this;
 
     installTextCodec();
     installConsole();
@@ -86,15 +85,17 @@ QString GlobalObject::fileTrace(int depth) {
 
 QJSValue GlobalObject::load(const QString &scriptFilename) {
     QFile f(scriptFilename);
-    if (!f.open(QFile::ReadOnly))
-        return m_engine->newErrorObject(QJSValue::URIError,
-                                        QString("Script file does not exist: '%1'").arg(scriptFilename));
+    if (!f.open(QFile::ReadOnly)) {
+        auto err = m_engine->newErrorObject(QJSValue::URIError,
+                                            QString("Script file does not exist: '%1'").arg(scriptFilename));
+        m_console->printUncaughtError(err);
+        return err;
+    }
     auto ret = m_engine->evaluate(f.readAll(), scriptFilename);
     if (ret.isError()) {
         m_console->printUncaughtError(ret);
-        return ret;
     }
-    return QJSValue::UndefinedValue;
+    return ret;
 }
 
 GlobalRegistryObject *GlobalObject::registry() const {
@@ -132,8 +133,8 @@ void GlobalObject::defineEnum(const QString &enumName, const QList<JSEnumEntry> 
 
 void GlobalObject::pause() {
     QMessageBox msgBox;
-    msgBox.setWindowTitle("JavaScript Pause");
-    msgBox.setText("Script execution is paused.\nStack trace:\n" + stackTrace());
-    msgBox.addButton("Continue", QMessageBox::AcceptRole);
+    msgBox.setWindowTitle(tr("JavaScript Pause"));
+    msgBox.setText(tr("Script execution is paused.\nStack trace:\n") + stackTrace());
+    msgBox.addButton(tr("Continue"), QMessageBox::AcceptRole);
     msgBox.exec();
 }

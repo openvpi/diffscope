@@ -20,6 +20,7 @@ public:
     QWidget *window() const;
     QJSValue invoke(const QString &id, int index = -1);
 
+    ProjectWindowObject *windowObject() const;
     QJSValue jsWindow() const;
 
 public slots:

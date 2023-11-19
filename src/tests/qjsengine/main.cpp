@@ -66,5 +66,7 @@ int main(int argc, char **argv) {
             qDebug() << ret.toString();
         executeButton->setDisabled(false);
     });
+    global.registry()->registerBuiltInScripts();
+    project.invoke("transpose", 4);
     return a.exec();
 }

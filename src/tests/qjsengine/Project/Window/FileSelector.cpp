@@ -32,8 +32,8 @@ FileSelector::FileSelector(QWidget *parent) : QWidget(parent) {
     auto singleLayout = new QHBoxLayout;
     m_singleFilePath = new QLineEdit;
     m_singleFilePath->setReadOnly(true);
-    auto singleFileBrowse = new QPushButton("Browse");
-    auto singleFileReset = new QPushButton("Reset");
+    auto singleFileBrowse = new QPushButton(tr("Browse"));
+    auto singleFileReset = new QPushButton(tr("Reset"));
     singleLayout->addWidget(m_singleFilePath);
     singleLayout->addWidget(singleFileBrowse);
     singleLayout->addWidget(singleFileReset);
@@ -46,8 +46,8 @@ FileSelector::FileSelector(QWidget *parent) : QWidget(parent) {
     m_multipleFilePaths = new QPlainTextEdit;
     m_multipleFilePaths->setReadOnly(true);
     multipleLayout->addWidget(m_multipleFilePaths);
-    auto multipleFileBrowse = new QPushButton("Browse");
-    auto multipleFileReset = new QPushButton("Reset");
+    auto multipleFileBrowse = new QPushButton(tr("Browse"));
+    auto multipleFileReset = new QPushButton(tr("Reset"));
     auto multipleButtonLayout = new QHBoxLayout;
     multipleButtonLayout->addWidget(multipleFileBrowse);
     multipleButtonLayout->addWidget(multipleFileReset);

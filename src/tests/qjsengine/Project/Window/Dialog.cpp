@@ -11,8 +11,8 @@
 
 Dialog::Dialog(QWidget *parent) : QDialog(parent), m_dlgLayout(new QVBoxLayout) {
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-    auto okBtn = new QPushButton("OK");
-    auto cancelBtn = new QPushButton("Cancel");
+    auto okBtn = new QPushButton(tr("OK"));
+    auto cancelBtn = new QPushButton(tr("Cancel"));
     auto btnLayout = new QHBoxLayout;
     btnLayout->addStretch();
     btnLayout->addWidget(okBtn);

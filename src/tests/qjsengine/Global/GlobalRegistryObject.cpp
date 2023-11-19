@@ -1,8 +1,12 @@
 #include "GlobalRegistryObject.h"
 
 #include <QJSEngine>
+#include <QDebug>
 
 #include "GlobalObject.h"
+#include "Console.h"
+
+#include "../BuiltIn/TransposeScript.h"
 
 GlobalRegistryObject::GlobalRegistryObject(GlobalObject *global) : QObject(global) {
 }
@@ -27,4 +31,15 @@ void GlobalRegistryObject::registerScript(const QJSValue &scriptConstructor) {
     if (!manifest.property("id").isString())
         return JS_THROW(QJSValue::TypeError, "Invalid return value of manifest()");
     m_scriptDict.insert(manifest.property("id").toString(), scriptConstructor);
+}
+
+void GlobalRegistryObject::registerScriptImplementationImpl(const QMetaObject *impl, const QJSValue &manifest) {
+    auto ret = m_builtInScriptHelper.call({jsGlobal->engine()->newQMetaObject(impl), manifest});
+    if (ret.isError())
+        jsGlobal->console()->printUncaughtError(ret);
+}
+
+void GlobalRegistryObject::registerBuiltInScripts() {
+    m_builtInScriptHelper = jsGlobal->load(":/scripts/builtInScriptHelper.js");
+    registerScriptImplementation<TransposeScript>();
 }
