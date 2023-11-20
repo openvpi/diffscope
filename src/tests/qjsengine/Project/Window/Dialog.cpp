@@ -8,6 +8,7 @@
 
 #include "../../Global/GlobalObject.h"
 #include "../ProjectWindowObject.h"
+#include "../../ObjectWrapper.h"
 
 Dialog::Dialog(QWidget *parent) : QDialog(parent), m_dlgLayout(new QVBoxLayout) {
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
@@ -32,13 +33,13 @@ void Dialog::setContent(const QJSValue &jsWidget) {
         JS_THROW("Dialog content is already set");
         return;
     }
-    auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto *widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         m_content = jsWidget;
         m_dlgLayout->insertWidget(0, widget);
         return;
     }
-    auto *layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto *layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         m_content = jsWidget;
         m_dlgLayout->insertLayout(0, layout);

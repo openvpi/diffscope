@@ -3,8 +3,8 @@
 #include <QJSEngine>
 #include <QLayout>
 
-#include "../../ObjectWrapper.h"
 #include "../../Global/GlobalObject.h"
+#include "../../ObjectWrapper.h"
 
 QJSValue TabWidget::createScriptObject() {
     auto obj = ObjectWrapper::wrap(this, jsGlobal->engine(),
@@ -55,11 +55,11 @@ void TabWidget::setTabPosition(int position) {
 }
 
 int TabWidget::addTab(const QJSValue &jsWidget, const QString &label) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         return QTabWidget::addTab(widget, label);
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         auto w = new QWidget;
         w->setLayout(layout);
@@ -70,11 +70,11 @@ int TabWidget::addTab(const QJSValue &jsWidget, const QString &label) {
 }
 
 int TabWidget::insertTab(int index, const QJSValue &jsWidget, const QString &label) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         return QTabWidget::insertTab(index, widget, label);
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         auto w = new QWidget;
         w->setLayout(layout);

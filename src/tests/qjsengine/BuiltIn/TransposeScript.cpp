@@ -4,6 +4,7 @@
 #include "../Global/GlobalObject.h"
 #include "../Project/ProjectObject.h"
 #include "../Project/ProjectWindowObject.h"
+#include "../Project/ProjectScopedStorageObject.h"
 
 TransposeScript::TransposeScript(const QJSValue &project) {
     m_project = qobject_cast<ProjectObject *>(project.toQObject());
@@ -41,7 +42,7 @@ QJSValue TransposeScript::manifest() {
 }
 
 bool TransposeScript::prepare(int index) {
-    switch (index) {
+    switch (Entries(index)) {
         case UpSemitone:
             m_value = 1;
             return true;
@@ -55,15 +56,17 @@ bool TransposeScript::prepare(int index) {
             m_value = -12;
             return true;
         case Customize:
-            auto dlg = m_project->windowObject()->createDialog();
-            auto formLayout = m_project->windowObject()->createElement("form-layout");
-            auto spinBox = m_project->windowObject()->createElement("spin-box");
+            auto dlg = m_project->window()->createDialog();
+            auto formLayout = m_project->window()->createElement("form-layout");
+            auto spinBox = m_project->window()->createElement("spin-box");
             spinBox.setProperty("minimum", -127);
             spinBox.setProperty("maximum", 127);
+            spinBox.setProperty("value", m_project->scopedStorage()->getItem("transpose.cachedValue"));
             formLayout.property("addRow").call({tr("Semitone(s)"), spinBox});
             dlg.setProperty("content", formLayout);
             dlg.property("openDialog").call();
             m_value = spinBox.property("value").toInt();
+            m_project->scopedStorage()->setItem("transpose.cachedValue", m_value);
             return true;
     }
     return false;
@@ -71,5 +74,5 @@ bool TransposeScript::prepare(int index) {
 
 void TransposeScript::main() {
     // TODO
-    m_project->windowObject()->alert(QString::number(m_value));
+    m_project->window()->alert(QString::number(m_value));
 }

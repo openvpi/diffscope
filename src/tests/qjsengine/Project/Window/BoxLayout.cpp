@@ -45,12 +45,12 @@ void BoxLayout::setDirection(int direction) {
 }
 
 void BoxLayout::addElement(const QJSValue &jsWidget, int stretch, int alignment) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QBoxLayout::addWidget(widget, stretch, Qt::Alignment(alignment));
         return;
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QBoxLayout::addLayout(layout, stretch);
         return;
@@ -71,12 +71,12 @@ void BoxLayout::addStrut(int size) {
 }
 
 void BoxLayout::insertElement(int index, const QJSValue &jsWidget, int stretch, int alignment) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QBoxLayout::insertWidget(index, widget, stretch, Qt::Alignment(alignment));
         return;
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QBoxLayout::insertLayout(index, layout, stretch);
         return;

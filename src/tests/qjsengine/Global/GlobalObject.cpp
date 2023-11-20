@@ -14,28 +14,30 @@
 static GlobalObject *m_instance = nullptr;
 
 GlobalObject::GlobalObject(QObject *parent)
-    : QObject(parent), m_engine(new QJSEngine(m_instance = this)), m_registry(new GlobalRegistryObject(this)), m_console(new Console(this)),
-      m_registryObject(m_engine->newQObject(m_registry)),
-      m_storage(new GlobalStorageObject(this, "D:/a.json")), // TODO file name
-      m_storageObject(m_engine->newQObject(m_storage)) {
+    : QObject(parent), m_engine(new QJSEngine(this)){
+
+    m_instance = this;
 
     installTextCodec();
     installConsole();
 
-    m_engine->globalObject().setProperty("$", JS_QOBJ(this));
+    initializeJavaScriptGlobal();
 
-    defineEnum("OpenMode", {
-                               {"NotOpen", 0x0001},
-                               {"ReadOnly", 0x0001},
-                               {"WriteOnly", 0x0002},
-                               {"ReadWrite", 0x0003},
-                               {"Append", 0x0004},
-                               {"Truncate", 0x0008},
-                               {"Text", 0x0010},
-                           });
+    m_registry = new GlobalRegistryObject(this);
+    m_registryObject = m_engine->newQObject(m_registry);
+    m_registry->registerBuiltInScripts();
+
+    m_storage = new GlobalStorageObject(this, "D:/a.json"); // TODO file name
+    m_storageObject = m_engine->newQObject(m_storage);
+
+}
+
+GlobalObject::~GlobalObject() {
+    m_instance = nullptr;
 }
 
 void GlobalObject::installConsole() {
+    m_console = new Console(this);
     m_engine->evaluate("(c, global) => {\n"
                        "    let console = {};\n"
                        "    console.assert = (a, ...b) => c.assert(a, b);\n"
@@ -62,25 +64,28 @@ void GlobalObject::installTextCodec() {
     m_engine->globalObject().setProperty("TextEncoder", m_engine->newQMetaObject<TextEncoder>());
 }
 
-GlobalObject::~GlobalObject() {
-    m_instance = nullptr;
+void GlobalObject::initializeJavaScriptGlobal() {
+    m_engine->globalObject().setProperty("$", JS_QOBJ(this));
+
+    defineEnum("OpenMode", {
+                               {"NotOpen", 0x0001},
+                               {"ReadOnly", 0x0001},
+                               {"WriteOnly", 0x0002},
+                               {"ReadWrite", 0x0003},
+                               {"Append", 0x0004},
+                               {"Truncate", 0x0008},
+                               {"Text", 0x0010},
+    });
 }
 
 GlobalObject *GlobalObject::instance() {
     return m_instance;
 }
 
+//========Helper functions========//
+
 QJSEngine *GlobalObject::engine() const {
     return m_engine;
-}
-
-QString GlobalObject::stackTrace(int depth) {
-    return m_engine->evaluate("throw new Error()").property("stack").toString().split("\n").mid(1 + depth).join("\n");
-}
-
-QString GlobalObject::fileTrace(int depth) {
-    auto stack = stackTrace().split("\n")[depth];
-    return stack.mid(stack.indexOf('@') + 1);
 }
 
 QJSValue GlobalObject::load(const QString &scriptFilename) {
@@ -98,26 +103,6 @@ QJSValue GlobalObject::load(const QString &scriptFilename) {
     return ret;
 }
 
-GlobalRegistryObject *GlobalObject::registry() const {
-    return m_registry;
-}
-
-GlobalStorageObject *GlobalObject::storage() const {
-    return m_storage;
-}
-
-Console *GlobalObject::console() const {
-    return m_console;
-}
-
-QJSValue GlobalObject::jsRegistry() const {
-    return m_registryObject;
-}
-
-QJSValue GlobalObject::jsStorage() const {
-    return m_storageObject;
-}
-
 void GlobalObject::defineEnum(const QString &enumName, const QList<JSEnumEntry> &entries) {
     auto enumObj = m_engine->newObject();
     int index = 0;
@@ -130,6 +115,41 @@ void GlobalObject::defineEnum(const QString &enumName, const QList<JSEnumEntry> 
     m_engine->globalObject().property("Object").property("freeze").call({enumObj});
     m_engine->globalObject().property("$").setProperty(enumName, enumObj);
 }
+
+QString GlobalObject::stackTrace(int depth) {
+    return m_engine->evaluate("throw new Error()").property("stack").toString().split("\n").mid(1 + depth).join("\n");
+}
+
+QString GlobalObject::fileTrace(int depth) {
+    auto stack = stackTrace().split("\n")[depth];
+    return stack.mid(stack.indexOf('@') + 1);
+}
+
+//========Objects (C++)========//
+
+GlobalRegistryObject *GlobalObject::registry() const {
+    return m_registry;
+}
+
+GlobalStorageObject *GlobalObject::storage() const {
+    return m_storage;
+}
+
+Console *GlobalObject::console() const {
+    return m_console;
+}
+
+//========Objects (JavaScript)========//
+
+QJSValue GlobalObject::jsRegistry() const {
+    return m_registryObject;
+}
+
+QJSValue GlobalObject::jsStorage() const {
+    return m_storageObject;
+}
+
+//========Slot functions========//
 
 void GlobalObject::pause() {
     QMessageBox msgBox;

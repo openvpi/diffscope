@@ -14,7 +14,7 @@ void GroupBox::setContent(const QJSValue &jsWidget) {
         JS_THROW("Group box content is already set");
         return;
     }
-    auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto *widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         m_content = jsWidget;
         auto l = new QVBoxLayout;
@@ -22,7 +22,7 @@ void GroupBox::setContent(const QJSValue &jsWidget) {
         setLayout(l);
         return;
     }
-    auto *layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto *layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         m_content = jsWidget;
         setLayout(layout);

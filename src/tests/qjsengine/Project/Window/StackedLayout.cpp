@@ -24,12 +24,12 @@ StackedLayout::StackedLayout(QWidget *parent) : QStackedLayout(parent) {
 }
 
 void StackedLayout::addElement(const QJSValue &jsWidget) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         addWidget(widget);
         return;
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         auto w = new QWidget;
         w->setLayout(layout);
@@ -40,12 +40,12 @@ void StackedLayout::addElement(const QJSValue &jsWidget) {
 }
 
 void StackedLayout::insertElement(int index, const QJSValue &jsWidget) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         insertWidget(index, widget);
         return;
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         auto w = new QWidget;
         w->setLayout(layout);

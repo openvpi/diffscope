@@ -32,12 +32,12 @@ FormLayout::FormLayout(QWidget *parent) : QFormLayout(parent) {
 }
 
 void FormLayout::addRow(const QString &label, const QJSValue &jsWidget) {
-    auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto *widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QFormLayout::addRow(label, widget);
         return;
     }
-    auto *layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto *layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QFormLayout::addRow(label, layout);
         return;
@@ -46,12 +46,12 @@ void FormLayout::addRow(const QString &label, const QJSValue &jsWidget) {
 }
 
 void FormLayout::addElement(const QJSValue &jsWidget) {
-    auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto *widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QFormLayout::addRow(widget);
         return;
     }
-    auto *layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto *layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QFormLayout::addRow(layout);
         return;
@@ -60,12 +60,12 @@ void FormLayout::addElement(const QJSValue &jsWidget) {
 }
 
 void FormLayout::insertRow(int row, const QString &label, const QJSValue &jsWidget) {
-    auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto *widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QFormLayout::insertRow(row, label, widget);
         return;
     }
-    auto *layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto *layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QFormLayout::insertRow(row, label, layout);
         return;
@@ -74,12 +74,12 @@ void FormLayout::insertRow(int row, const QString &label, const QJSValue &jsWidg
 }
 
 void FormLayout::insertElement(int row, const QJSValue &jsWidget) {
-    auto *widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto *widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QFormLayout::insertRow(row, widget);
         return;
     }
-    auto *layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto *layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QFormLayout::insertRow(row, layout);
         return;

@@ -9,24 +9,28 @@
 #include "../Global/Console.h"
 #include "../Global/GlobalRegistryObject.h"
 #include "../Global/GlobalStorageObject.h"
+
 #include "ProjectWindowObject.h"
+#include "ProjectScopedStorageObject.h"
 
 ProjectObject::ProjectObject(QWidget *window)
     : QObject(window), m_win(window), m_thisObject(JS_QOBJ(this)),
-      m_windowQObject(new ProjectWindowObject(this)),
-      m_windowObject(JS_QOBJ(m_windowQObject)) {
+      m_window(new ProjectWindowObject(this)),
+      m_windowObject(JS_QOBJ(m_window)),
+      m_scopedStorage(new ProjectScopedStorageObject(this)),
+      m_scopedStorageObject(JS_QOBJ(m_scopedStorage)) {
 }
 
 ProjectObject::~ProjectObject() = default;
 
-QWidget *ProjectObject::window() const {
+QWidget *ProjectObject::win() const {
     return m_win;
 }
 
 QJSValue ProjectObject::invoke(const QString &id, int index) {
     auto ret = invokeImpl(id, index);
     finishProgress();
-    m_windowQObject->finalizeScriptScope();
+    m_window->finalizeScriptScope();
     return ret;
 }
 
@@ -60,12 +64,20 @@ QJSValue ProjectObject::invokeImpl(const QString &id, int index) {
     return QJSValue::UndefinedValue;
 }
 
-ProjectWindowObject *ProjectObject::windowObject() const {
-    return m_windowQObject;
+ProjectWindowObject *ProjectObject::window() const {
+    return m_window;
 }
 
 QJSValue ProjectObject::jsWindow() const {
     return m_windowObject;
+}
+
+ProjectScopedStorageObject *ProjectObject::scopedStorage() const {
+    return m_scopedStorage;
+}
+
+QJSValue ProjectObject::jsScopedStorage() const {
+    return m_scopedStorageObject;
 }
 
 void ProjectObject::startProgress(const QString &title, int maximum) {

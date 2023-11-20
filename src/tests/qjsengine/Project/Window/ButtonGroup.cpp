@@ -1,15 +1,16 @@
 #include "ButtonGroup.h"
 
-#include <QJSEngine>
-#include <QAbstractButton>
 #include "../../Global/GlobalObject.h"
 #include "../ProjectWindowObject.h"
+#include "../../ObjectWrapper.h"
+#include <QAbstractButton>
+#include <QJSEngine>
 
 ButtonGroup::ButtonGroup(QObject *parent) : QButtonGroup(parent) {
 }
 
 void ButtonGroup::addButton(const QJSValue &jsButton, int id) {
-    auto btn = GlobalObject::getOfWrappedObject<QAbstractButton>(jsButton);
+    auto btn = ObjectWrapper::getOfWrappedObject<QAbstractButton>(jsButton);
     if (btn) {
         QButtonGroup::addButton(btn, id);
         return;

@@ -1,8 +1,5 @@
 declare namespace $ {
 
-    import ElementDescription = $.Project.Window.ElementDescription;
-    import RenderedIdMap = $.Project.Window.RenderedIdMap;
-
     enum Alignment {
         None          = 0x0000,
         AlignLeft     = 0x0001,
@@ -316,8 +313,14 @@ declare namespace $ {
             createDialog(): Project.Window.Dialog;
             createElement<K extends keyof Project.Window.ElementKeyMap>(tag: K): Project.Window.ElementKeyMap[K];
             createButtonGroup(): Project.Window.ButtonGroup;
-            renderElement(description: ElementDescription|string);
+            renderElement(description: Project.Window.ElementDescription|string);
             getElementById(id: string): Project.Window.Element|null;
+        }
+
+        readonly scopedStorage: {
+            setItem(key: string, value: any): void;
+            getItem(key: string): any;
+            removeItem(key: string): void;
         }
 
         startProgress(title: string, maximum: number): void;
@@ -365,4 +368,6 @@ declare namespace $ {
         getItem(key: string): string|null;
         removeItem(key: string): void;
     }
+
+    function pause(): void;
 }

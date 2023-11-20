@@ -14,25 +14,31 @@ public:
     ~GlobalRegistryObject() override;
 
     QStringList scripts() const;
+    struct ScriptSpec {
+        bool isBuiltIn = false;
+        bool isVisibleToUser = true;
+        QJSValue scriptConstructor;
+    };
+    ScriptSpec scriptSpec(const QString &id) const;
     QJSValue scriptConstructor(const QString &id) const;
-
     void clearRegistry();
 
     template <class T>
-    void registerScriptImplementation() {
-        registerScriptImplementationImpl(&T::staticMetaObject, T::manifest());
+    void registerScriptImplementation(bool isVisibleToUser = true) {
+        registerScriptImplementationImpl(&T::staticMetaObject, T::manifest(), isVisibleToUser);
     }
-
-    void registerBuiltInScripts();
 
 public slots:
     void registerScript(const QJSValue &scriptConstructor);
 
 private:
-    QHash<QString, QJSValue> m_scriptDict;
-    QJSValue m_builtInScriptHelper;
+    friend class GlobalObject;
+    ScriptSpec m_currentScriptSpec;
+    QHash<QString, ScriptSpec> m_scriptDict;
 
-    void registerScriptImplementationImpl(const QMetaObject *impl, const QJSValue &manifest);
+    QJSValue m_builtInScriptHelper;
+    void registerScriptImplementationImpl(const QMetaObject *impl, const QJSValue &manifest, bool isVisibleToUser);
+    void registerBuiltInScripts();
 };
 
 

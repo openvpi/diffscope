@@ -77,6 +77,18 @@ public:
     static void fillUint8Array(const QByteArray &ba, QJSValue uint8Array);
     static QByteArray fromUint8Array(const QJSValue &uint8Array, QJSEngine *engine);
 
+    template<class T>
+    static T *getOfWrappedObject(const QJSValue &obj) {
+        auto *v = qobject_cast<T *>(obj.toQObject());
+        if (v)
+            return v;
+        v = qobject_cast<T *>(obj.property("_p").toQObject());
+        if (v)
+            return v;
+        v = qobject_cast<T *>(obj.property("_p").property("_subObject").toQObject());
+        return v;
+    }
+
 private:
     static void addAccessorPropertyImpl(QJSValue wrapped, QJSEngine *engine, const QString &key, JSValueCustomAccessorDescriptor *descriptorObject);
 };

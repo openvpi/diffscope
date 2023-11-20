@@ -13,11 +13,29 @@ GlobalRegistryObject::GlobalRegistryObject(GlobalObject *global) : QObject(globa
 
 GlobalRegistryObject::~GlobalRegistryObject() = default;
 
+void GlobalRegistryObject::registerScriptImplementationImpl(const QMetaObject *impl, const QJSValue &manifest, bool isVisibleToUser) {
+    m_currentScriptSpec = {true, isVisibleToUser};
+    auto ret = m_builtInScriptHelper.call({jsGlobal->engine()->newQMetaObject(impl), manifest});
+    if (ret.isError())
+        jsGlobal->console()->printUncaughtError(ret);
+    m_currentScriptSpec = ScriptSpec();
+}
+
+void GlobalRegistryObject::registerBuiltInScripts() {
+    m_builtInScriptHelper = jsGlobal->load(":/scripts/builtInScriptHelper.js");
+    registerScriptImplementation<TransposeScript>();
+}
+
 QStringList GlobalRegistryObject::scripts() const {
     return m_scriptDict.keys();
 }
-QJSValue GlobalRegistryObject::scriptConstructor(const QString &id) const {
+
+GlobalRegistryObject::ScriptSpec GlobalRegistryObject::scriptSpec(const QString &id) const {
     return m_scriptDict.value(id);
+}
+
+QJSValue GlobalRegistryObject::scriptConstructor(const QString &id) const {
+    return m_scriptDict.value(id).scriptConstructor;
 }
 
 void GlobalRegistryObject::clearRegistry() {
@@ -30,16 +48,7 @@ void GlobalRegistryObject::registerScript(const QJSValue &scriptConstructor) {
     auto manifest = scriptConstructor.property("manifest").call();
     if (!manifest.property("id").isString())
         return JS_THROW(QJSValue::TypeError, "Invalid return value of manifest()");
-    m_scriptDict.insert(manifest.property("id").toString(), scriptConstructor);
-}
-
-void GlobalRegistryObject::registerScriptImplementationImpl(const QMetaObject *impl, const QJSValue &manifest) {
-    auto ret = m_builtInScriptHelper.call({jsGlobal->engine()->newQMetaObject(impl), manifest});
-    if (ret.isError())
-        jsGlobal->console()->printUncaughtError(ret);
-}
-
-void GlobalRegistryObject::registerBuiltInScripts() {
-    m_builtInScriptHelper = jsGlobal->load(":/scripts/builtInScriptHelper.js");
-    registerScriptImplementation<TransposeScript>();
+    auto spec = m_currentScriptSpec;
+    spec.scriptConstructor = scriptConstructor;
+    m_scriptDict.insert(manifest.property("id").toString(), spec);
 }

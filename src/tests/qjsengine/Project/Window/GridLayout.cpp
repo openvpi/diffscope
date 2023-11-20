@@ -37,12 +37,12 @@ GridLayout::GridLayout(QWidget *parent) : QGridLayout(parent) {
 }
 
 void GridLayout::addElement(const QJSValue &jsWidget, int row, int column, int alignment) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QGridLayout::addWidget(widget, row, column, Qt::Alignment(alignment));
         return;
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QGridLayout::addLayout(layout, row, column, Qt::Alignment(alignment));
         return;
@@ -51,12 +51,12 @@ void GridLayout::addElement(const QJSValue &jsWidget, int row, int column, int a
 }
 
 void GridLayout::addElement(const QJSValue &jsWidget, int row, int column, int rowSpan, int columnSpan, int alignment) {
-    auto widget = GlobalObject::getOfWrappedObject<QWidget>(jsWidget);
+    auto widget = ObjectWrapper::getOfWrappedObject<QWidget>(jsWidget);
     if (widget) {
         QGridLayout::addWidget(widget, row, column, rowSpan, columnSpan, Qt::Alignment(alignment));
         return;
     }
-    auto layout = GlobalObject::getOfWrappedObject<QLayout>(jsWidget);
+    auto layout = ObjectWrapper::getOfWrappedObject<QLayout>(jsWidget);
     if (layout) {
         QGridLayout::addLayout(layout, row, column, rowSpan, columnSpan, Qt::Alignment(alignment));
         return;
