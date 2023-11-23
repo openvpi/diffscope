@@ -331,14 +331,21 @@ declare namespace $ {
     interface ScriptManifestBase {
         id: string;
         name: string;
+        description?: string;
     }
 
-    interface ScriptManifest extends ScriptManifestBase {
+    interface ScriptEntryDescription {
+        shortcut?: string;
+        // TODO predicate selection target
+    }
+
+    interface ScriptManifest extends ScriptManifestBase, ScriptEntryDescription {
         isScriptSet?: false;
     }
 
     interface ScriptSetManifest extends ScriptManifestBase {
         isScriptSet: true;
+        children: (ScriptManifestBase & ScriptEntryDescription)[];
     }
 
     interface ScriptConstructor {

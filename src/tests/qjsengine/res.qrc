@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>scripts/builtInScriptHelper.js</file>
-        <file>scripts/main.js</file>
-    </qresource>
-</RCC>

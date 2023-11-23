@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QJSEngine>
 #include <QMessageBox>
+#include <QTimer>
 
 #include "../ObjectWrapper.h"
 #include "GlobalRegistryObject.h"
@@ -25,7 +26,6 @@ GlobalObject::GlobalObject(QObject *parent)
 
     m_registry = new GlobalRegistryObject(this);
     m_registryObject = m_engine->newQObject(m_registry);
-    m_registry->registerBuiltInScripts();
 
     m_storage = new GlobalStorageObject(this, "D:/a.json"); // TODO file name
     m_storageObject = m_engine->newQObject(m_storage);
@@ -123,6 +123,13 @@ QString GlobalObject::stackTrace(int depth) {
 QString GlobalObject::fileTrace(int depth) {
     auto stack = stackTrace().split("\n")[depth];
     return stack.mid(stack.indexOf('@') + 1);
+}
+
+void GlobalObject::interruptExecution() {
+    m_engine->setInterrupted(true);
+    QTimer::singleShot(0, [=] {
+        m_engine->setInterrupted(false);
+    });
 }
 
 //========Objects (C++)========//

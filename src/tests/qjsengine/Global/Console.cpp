@@ -9,7 +9,7 @@
 Console::Console(QObject *parent) : QObject(parent) {
     connect(this, &Console::messagePrinted, [=](int level, const QString &message, const QString &fileTrace) {
         QString prifix;
-        switch (level) {
+        switch (Level(level)) {
           case Debug:
               prifix = QString("[js: debug][%1] ").arg(fileTrace);
               break;

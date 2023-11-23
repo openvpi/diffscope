@@ -1,3 +1,4 @@
+#include "Widgets/JavaScriptOutputWidget.h"
 #include <QApplication>
 #include <QDateTime>
 #include <QDebug>
@@ -15,6 +16,7 @@
 #include "Project/ProjectObject.h"
 
 #include "Global/File.h"
+#include "Widgets/JavaScriptDebuggingToolsWindow.h"
 
 int main(int argc, char **argv) {
     QApplication a(argc, argv);
@@ -35,7 +37,7 @@ int main(int argc, char **argv) {
     win->setCentralWidget(mainWidget);
     win->show();
     GlobalObject global;
-    auto ret = global.load(":/scripts/main.js");
+    auto ret = global.load(":/scripts/test.js");
     if (ret.isError())
         qDebug() << ret.toString();
     qDebug() << global.registry()->scripts();
@@ -67,5 +69,10 @@ int main(int argc, char **argv) {
         executeButton->setDisabled(false);
     });
     project.invoke("transpose", 4);
+    auto outputWin = new JavaScriptDebuggingToolsWindow(win);
+    auto outputButton = new QPushButton("Debugging Tools");
+    mainLayout->addWidget(outputButton);
+    outputWin->hide();
+    QObject::connect(outputButton, &QPushButton::clicked, outputWin, &QWidget::show);
     return a.exec();
 }

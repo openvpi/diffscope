@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>scripts/builtInScriptHelper.js</file>
+        <file>scripts/test.js</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>icons/info.svg</file>
+        <file>icons/warning.svg</file>
+        <file>icons/error.svg</file>
+    </qresource>
+</RCC>

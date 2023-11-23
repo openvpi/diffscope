@@ -21,6 +21,7 @@ public:
     };
     ScriptSpec scriptSpec(const QString &id) const;
     QJSValue scriptConstructor(const QString &id) const;
+    void loadScript(const QString &userScriptDir);
     void clearRegistry();
 
     template <class T>

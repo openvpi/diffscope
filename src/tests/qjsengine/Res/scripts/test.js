@@ -16,7 +16,7 @@
         }
 
         prepare() {
-            let tests = [this.testDialog, this.testFile, this.testProgress];
+            let tests = [this.testDialog, this.testFile, this.testProgress, this.testConsole];
             let dlg = this.project.window.createDialog();
             let select = this.project.window.createElement('combo-box');
             dlg.content = select;
@@ -225,6 +225,15 @@
                 file.write(data);
             };
             dialog.openDialog();
+        }
+
+        testConsole() {
+            console.debug(111);
+            console.info("222\n222");
+            console.log(333);
+            console.warn(444);
+            console.error(555);
+            console.trace(666);
         }
     });
 

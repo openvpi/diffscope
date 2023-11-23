@@ -29,6 +29,7 @@ public:
     void defineEnum(const QString &enumName, const QList<JSEnumEntry> &entries);
     QString stackTrace(int depth = 0);
     QString fileTrace(int depth = 0);
+    void interruptExecution();
 
     //========Objects (C++)========//
     GlobalRegistryObject *registry() const;
