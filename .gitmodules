@@ -13,3 +13,6 @@
 [submodule "talcs"]
 	path = libs/talcs
 	url = ../../CrSjimo/talcs.git
+[submodule "libs/stimmt"]
+	path = libs/stimmt
+	url = git@github.com:CrSjimo/stimmt
