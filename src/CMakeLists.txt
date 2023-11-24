@@ -1,19 +1,9 @@
 # Add `ChorusKitAPI`
-if(BUILD_LIBRARIES_IN_PLACE)
-    include(../libs/choruskit/cmake/ChorusKitAPI.cmake)
-else()
+if(NOT TARGET ChorusKit::AppCore)
     find_package(ChorusKit REQUIRED)
 endif()
 
-ck_init_build_system(${PROJECT_NAME}
-    ROOT ..
-    VENDOR "OpenVPI"
-)
-
-if(BUILD_LIBRARIES_IN_PLACE)
-    set(EXTERNAL_BUILD_MAIN_DIR ${CMAKE_BINARY_DIR}/out-Libraries)
-    add_subdirectory(../libs ../libs)
-endif()
+ck_init_build_system()
 
 # ----------------------------------
 # Compile Definitions

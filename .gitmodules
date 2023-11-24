@@ -1,6 +1,10 @@
 [submodule "vcpkg"]
 	path = vcpkg
 	url = ../../microsoft/vcpkg.git
+
+[submodule "vcpkg-overlay"]
+	path = scripts/vcpkg
+	url = ../../SineStriker/vcpkg-overlay.git
 	
 [submodule "qtmediate"]
 	path = libs/qtmediate

@@ -11,7 +11,9 @@ option(DIFFSCOPE_ENABLE_BREAKPAD "Use breakpad handler" off)
 option(DIFFSCOPE_BUILD_TESTS "Build test cases" on)
 
 # Develop options
-#   BUILD_LIBRARIES_IN_PLACE
+if(NOT DEFINED BUILD_LIBRARIES_IN_PLACE)
+    set(BUILD_LIBRARIES_IN_PLACE ON)
+endif()
 
 if(MSVC)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /manifest:no")
@@ -20,4 +22,8 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
 endif()
 
-add_subdirectory(src)
+if(BUILD_LIBRARIES_IN_PLACE)
+    add_subdirectory(libs)
+endif()
+
+# add_subdirectory(src)
