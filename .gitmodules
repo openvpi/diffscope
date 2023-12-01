@@ -4,15 +4,15 @@
 
 [submodule "vcpkg-overlay"]
 	path = scripts/vcpkg
-	url = ../../SineStriker/vcpkg-overlay.git
+	url = ../../stdware/vcpkg-overlay.git
 	
 [submodule "qtmediate"]
 	path = libs/qtmediate
-	url = ../../SineStriker/qtmediate.git
+	url = ../../stdware/qtmediate.git
 
 [submodule "choruskit"]
 	path = libs/choruskit
-	url = ../../SineStriker/choruskit.git
+	url = ../../stdware/choruskit.git
 
 [submodule "talcs"]
 	path = libs/talcs
