@@ -10,10 +10,10 @@
         "sdl2",
         "libsndfile",
         "libsamplerate",
-        "quazip",
         "boost-math",
         "rpclib",
-        "interval-tree"
+        "interval-tree",
+        "stdutau"
     ],
     "vcpkg-configuration": {
         "overlay-ports": [

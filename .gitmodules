@@ -5,6 +5,23 @@
 [submodule "talcs"]
 	path = libs/talcs
 	url = ../../CrSjimo/talcs.git
-[submodule "libs/stimmt"]
+
+[submodule "stimmt"]
 	path = libs/stimmt
-	url = git@github.com:CrSjimo/stimmt
+	url = ../../CrSjimo/stimmt.git
+
+[submodule "qtmediate"]
+	path = libs/qtmediate
+	url = ../../stdware/qtmediate.git
+
+[submodule "opendspx"]
+	path = libs/opendspx
+	url = ../../diffscope/opendspx.git
+
+[submodule "svscraft"]
+	path = libs/svscraft
+	url = ../../diffscope/svscraft.git
+
+[submodule "vcpkg-overlay"]
+	path = scripts/vcpkg
+	url = ../../stdware/vcpkg-overlay.git

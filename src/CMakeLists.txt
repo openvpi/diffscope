@@ -10,11 +10,6 @@ ck_init_build_system(${PROJECT_NAME}
     VENDOR "OpenVPI"
 )
 
-if(BUILD_LIBRARIES_IN_PLACE)
-    set(EXTERNAL_BUILD_MAIN_DIR ${CMAKE_BINARY_DIR}/out-Libraries)
-    add_subdirectory(../libs ../libs)
-endif()
-
 # ----------------------------------
 # Compile Definitions
 # ----------------------------------
@@ -30,11 +25,12 @@ add_subdirectory(app)
 
 add_subdirectory(libs)
 
-# add_subdirectory(plugins)
+add_subdirectory(plugins)
 
-# add_subdirectory(share)
-if(DIFFSCOPE_BUILD_TESTS)
-    add_subdirectory(tests)
-endif()
+add_subdirectory(share)
+
+# if(DIFFSCOPE_BUILD_TESTS)
+#     add_subdirectory(tests)
+# endif()
 
 ck_finish_build_system()
