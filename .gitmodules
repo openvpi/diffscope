@@ -25,3 +25,7 @@
 [submodule "vcpkg-overlay"]
 	path = scripts/vcpkg
 	url = ../../stdware/vcpkg-overlay.git
+
+[submodule "substate"]
+	path = libs/substate
+	url = ../../stdware/substate.git
