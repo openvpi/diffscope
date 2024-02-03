@@ -27,49 +27,27 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
 
 ### Open-source Libraries
 
-+ [Qt 5.15.2](https://www.qt.io/)
++ [Qt](https://www.qt.io/)
     + GNU LGPL v2.1 or later
 + [vcpkg](https://github.com/microsoft/vcpkg)
     + MIT License
-+ [FFmpeg](https://github.com/FFmpeg/FFmpeg)
-    + GNU LGPL v2.1 or later
-+ [lame](https://lame.sourceforge.io/)
-    + GNU LGPL v2.0
-+ [SDL](https://github.com/libsdl-org/SDL)
-    + Zlib License
-+ [QuaZip](https://github.com/stachenov/quazip)
-    + GNU LGPL v2.1
 + [fluentui-system-icons](https://github.com/microsoft/fluentui-system-icons)
     + MIT License
-+ [SndFile](https://github.com/libsndfile/libsndfile)
-    + GNU LGPL v2.1 or later
 
 ### Related Projects
 
-+ [FramelessHelper](https://github.com/wangwenx190/framelesshelper)
-    + MIT License
-+ [qastool](https://github.com/SineStriker/qt-json-autogen)
-    + Apache 2.0 License
-+ [FFmpeg-fake](https://github.com/SineStriker/ffmpeg-fake)
-    + GNU LGPL v2.1 or later
-+ [QNrbf](https://github.com/SineStriker/QNrbf)
-    + GNU LGPL v2.1 or later
-+ [AceTreeModel](https://github.com/SineStriker/AceTreeModel)
-    + Apache 2.0 License
-+ [ChorusKit](https://github.com/SineStriker/choruskit)
++ [qtmediate](https://github.com/stdware/qtmediate)
     + GNU LGPL v2.1
-+ [qtmediate](https://github.com/SineStriker/qtmediate)
++ [ChorusKit](https://github.com/stdware/choruskit)
+    + GNU LGPL v2.1
++ [svscraft](https://github.com/diffscope/svscraft)
     + GNU LGPL v2.1
 + [fluentui-system-icons-modified](https://github.com/CrSjimo/fluentui-system-icons-modified)
     + MIT License
 + [talcs](https://github.com/CrSjimo/talcs)
     + GNU LGPL v2.1
-
-<!-- ### Special Thanks
-
-+ [wangwenx190](https://github.com/wangwenx190)
-
-+ [MapleSpe](https://github.com/maplespe) -->
++ [stimmt](https://github.com/CrSjimo/stimmt)
+    + GNU LGPL v2.1
 
 ## License
 

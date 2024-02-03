@@ -1,11 +1,3 @@
-[submodule "vcpkg"]
-	path = vcpkg
-	url = ../../microsoft/vcpkg.git
-	
-[submodule "qtmediate"]
-	path = libs/qtmediate
-	url = ../../SineStriker/qtmediate.git
-
 [submodule "choruskit"]
 	path = libs/choruskit
 	url = ../../SineStriker/choruskit.git

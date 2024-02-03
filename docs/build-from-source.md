@@ -78,8 +78,7 @@ cmake -B build -G Ninja \
     -DCMAKE_PREFIX_PATH=<dir> \     # directory `Qt5Config.cmake` locates
     -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
     -DVCPKG_APPLOCAL_DEPS:BOOL=FALSE \
-    -DCMAKE_BUILD_TYPE:STRING=Release \
-    -DBUILD_LIBRARIES_IN_PLACE:BOOL=TRUE
+    -DCMAKE_BUILD_TYPE:STRING=Release
 
 cmake --build build --target all
 
