@@ -23,23 +23,15 @@ set(APP_CONFIG_PADDING 20)
 set(_config_file ${CMAKE_CURRENT_BINARY_DIR}/config.json)
 configure_file(config.json.in ${_config_file} @ONLY)
 
-if(APPLE)
-    set(_app_res_dir .)
-    set(_app_doc_dir doc)
-else()
-    set(_app_res_dir ${PROJECT_NAME})
-    set(_app_doc_dir doc/${PROJECT_NAME})
-endif()
-
 # Deploy docs
 ck_add_shared_files(
     SKIP_BUILD
-    SRC share/doc/ DEST ${_app_doc_dir}
+    SRC share/doc/ DEST ${CK_BUILD_DOC_DIR}
 )
 
 # Deploy resources
 ck_add_shared_files(
-    SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST share/${_app_res_dir}
+    SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${CK_BUILD_DATA_DIR}
 )
 
 # Deploy config files
@@ -56,7 +48,7 @@ if(WIN32)
     # Deploy windows icons
     ck_add_shared_files(
         SKIP_BUILD
-        SRC share/win-icons/ DEST share/${PROJECT_NAME}/icons
+        SRC share/win-icons/ DEST ${CK_BUILD_DATA_DIR}/icons
     )
 elseif(APPLE)
 # TODO...
@@ -64,6 +56,6 @@ else()
     # Add linux files
     ck_add_shared_files(
         SKIP_BUILD
-        SRC share/applications share/icons DEST share/${PROJECT_NAME}
+        SRC share/applications share/icons DEST ${CK_BUILD_DATA_DIR}
     )
 endif()

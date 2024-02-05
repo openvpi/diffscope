@@ -10,7 +10,8 @@
         "rpclib",
         "interval-tree",
         "stdutau",
-        "extensionsystem"
+        "extensionsystem",
+        "qwindowkit"
     ],
     "vcpkg-configuration": {
         "overlay-ports": [

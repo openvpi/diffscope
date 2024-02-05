@@ -1,0 +1,17 @@
+{
+    "Name": "Core",
+    "DisplayName": "Core",
+    "Version": "@PLUGIN_METADATA_VERSION@",
+    "CompatVersion": "@PLUGIN_METADATA_COMPAT_VERSION@",
+    "DisabledByDefault": false,
+    "HiddenByDefault": false,
+    "Vendor": "@PLUGIN_METADATA_VENDOR@",
+    "Copyright": "Copyright (C) @PLUGIN_METADATA_YEAR@ @PLUGIN_METADATA_VENDOR@",
+    "License": [
+        "Apache 2.0"
+    ],
+    "Category": "Core",
+    "Description": "The core plugin for DiffScope.",
+    "Url": "https://www.baidu.com/",
+    "Required": true
+}
