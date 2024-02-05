@@ -48,6 +48,8 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
     + GNU LGPL v2.1
 + [stimmt](https://github.com/CrSjimo/stimmt)
     + GNU LGPL v2.1
++ [opendspx](https://github.com/diffscope/opendspx)
+    + Apache 2.0
 
 ## License
 

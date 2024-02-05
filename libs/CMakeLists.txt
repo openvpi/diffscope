@@ -6,4 +6,6 @@ add_subdirectory(svscraft)
 
 add_subdirectory(opendspx)
 
+add_subdirectory(jetbrains-docking-system)
+
 set(CK_CMAKE_MODULES_DIR ${CMAKE_CURRENT_LIST_DIR}/choruskit/cmake PARENT_SCOPE)

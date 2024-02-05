@@ -29,3 +29,7 @@
 [submodule "substate"]
 	path = libs/substate
 	url = ../../stdware/substate.git
+
+[submodule "jetbrains-docking-system"]
+	path = libs/jetbrains-docking-system
+	url = ../../stdware/jetbrains-docking-system.git
