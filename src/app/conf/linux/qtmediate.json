@@ -2,11 +2,8 @@
     "Prefix": "..",
     "Libraries": "lib",
     "Share": "share",
-    "Plugins": [
-        "lib/qtmediate/plugins"
-    ],
+    "Plugins": [],
     "Translations": [
-        "share/qtmediate/translations",
         "share/ChorusKit/translations"
     ],
     "Themes": [

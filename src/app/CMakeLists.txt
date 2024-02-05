@@ -1,17 +1,19 @@
 ck_configure_application(
     ICO app.ico
     ICNS app.icns
-    NAME ${PROJECT_NAME}
-    VERSION ${PROJECT_VERSION}
-    DESCRIPTION ${PROJECT_NAME}
 )
 
-ck_target_components(${PROJECT_NAME}
+qm_configure_target(${PROJECT_NAME}
     SOURCES main.cpp
     QT_LINKS Core Widgets
-    LINKS_PRIVATE ChorusKit::Loader ChorusKit::AppCore ChorusKit::qBreakpad
+    LINKS_PRIVATE ChorusKit::Loader ChorusKit::AppCore
     INCLUDE_PRIVATE ${CK_BUILD_INCLUDE_DIR}
 )
+
+if(DIFFSCOPE_ENABLE_BREAKPAD)
+    find_package(qBreakpad REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE qBreakpad::qBreakpad)
+endif()
 
 # Set configration file variables
 set(APP_CONFIG_SPLASH_IMAGE "splash.svg")
@@ -32,24 +34,29 @@ endif()
 # Deploy docs
 ck_add_shared_files(
     SKIP_BUILD
-    SRC share/doc/* DEST ${_app_doc_dir}
+    SRC share/doc/ DEST ${_app_doc_dir}
 )
 
 # Deploy resources
 ck_add_shared_files(
-    SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${_app_res_dir}
+    SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST share/${_app_res_dir}
 )
 
 # Deploy config files
 ck_add_shared_files(
-    SRC conf/${CK_PLATFORM_LOWER}/* DEST ${CK_BUILD_QT_CONF_DIR}
+    SKIP_BUILD
+    SRC conf/${CK_PLATFORM_LOWER}/qt.conf DEST ${CK_BUILD_QT_CONF_DIR}
+)
+
+ck_add_shared_files(
+    SRC conf/${CK_PLATFORM_LOWER}/qtmediate.json DEST ${CK_BUILD_QT_CONF_DIR}
 )
 
 if(WIN32)
     # Deploy windows icons
     ck_add_shared_files(
         SKIP_BUILD
-        SRC share/win-icons/* DEST ${PROJECT_NAME}/icons
+        SRC share/win-icons/ DEST share/${PROJECT_NAME}/icons
     )
 elseif(APPLE)
 # TODO...
@@ -57,6 +64,6 @@ else()
     # Add linux files
     ck_add_shared_files(
         SKIP_BUILD
-        SRC share/applications share/icons DEST ${PROJECT_NAME}
+        SRC share/applications share/icons DEST share/${PROJECT_NAME}
     )
 endif()

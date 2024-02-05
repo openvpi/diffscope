@@ -2,11 +2,8 @@
     "Prefix": ".",
     "Libraries": "Frameworks",
     "Share": "Resources",
-    "Plugins": [
-        "Frameworks/qtmediate/plugins"
-    ],
+    "Plugins": [],
     "Translations": [
-        "Resources/qtmediate/translations",
         "Resources/ChorusKit/translations"
     ],
     "Themes": [

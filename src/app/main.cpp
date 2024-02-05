@@ -4,21 +4,23 @@
 
 #include <extensionsystem/pluginmanager.h>
 
-#include <QBreakpadHandler.h>
+#ifdef CONFIG_ENABLE_BREAKPAD
+#  include <QBreakpadHandler.h>
+#endif
 
-#include <QMAppExtension.h>
-#include <QMDecoratorV2.h>
-#include <QMSystem.h>
+#include <QMCore/QMSystem.h>
+#include <QMWidgets/QMAppExtension.h>
+#include <QMWidgets/QMDecoratorV2.h>
 
-#include <CoreApi/ILoader.h>
+#include <CoreApi/iloader.h>
 
-#include <loaderconfig.h>
+#include <CkLoader/loaderconfig.h>
 
-#include "choruskit_config.h"
+#include <choruskit_config.h>
 
-static const char APP_PLUGIN_IID[] = "org.ChorusKit." APP_NAME ".Plugin";
+static const char APP_PLUGIN_IID[] = "org.OpenVPI." APP_NAME ".Plugin";
 
-class MyLoaderConfiguration : public LoaderConfiguration {
+class MyLoaderConfiguration : public Loader::LoaderConfiguration {
 public:
     MyLoaderConfiguration() {
         allowRoot = false;
@@ -76,10 +78,12 @@ public:
 
         // Set ILoader settings path
         Core::ILoader &loader = *Core::ILoader::instance();
-        loader.setSettingsPath(QSettings::UserScope,
-                               QString("%1/%2.settings.json").arg(userSettingsPath, qApp->applicationName()));
-        loader.setSettingsPath(QSettings::SystemScope,
-                               QString("%1/%2.settings.json").arg(systemSettingsPath, qApp->applicationName()));
+        loader.setSettingsPath(
+            QSettings::UserScope,
+            QString("%1/%2.settings.json").arg(userSettingsPath, qApp->applicationName()));
+        loader.setSettingsPath(
+            QSettings::SystemScope,
+            QString("%1/%2.settings.json").arg(systemSettingsPath, qApp->applicationName()));
 
         // Add initial routine to loader object pool
         auto initRoutine = new Core::InitialRoutine(screen);
@@ -97,18 +101,17 @@ public:
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    QMAppExtension host;
-
     a.setApplicationName(APP_NAME);
     a.setApplicationVersion(APP_VERSION);
-    a.setOrganizationName("ChorusKit");
-    a.setOrganizationDomain("ChorusKit");
+    a.setOrganizationName("OpenVPI");
+    a.setOrganizationDomain("org.openvpi");
 
-    Core::ILoader loader;
+    QMAppExtension host;
 
 #ifdef CONFIG_ENABLE_BREAKPAD
     QBreakpadInstance.setDumpPath(host.appDataDir() + "/crashes");
 #endif
 
+    Core::ILoader loader;
     return MyLoaderConfiguration().run();
 }
