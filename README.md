@@ -52,6 +52,8 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
     + Apache 2.0 License
 + [jetbrains-docking-system](https://github.com/stdware/jetbrains-docking-system)
     + MIT License
++ [QWindowKit](https://github.com/stdware/qwindowkit)
+    + Apache 2.0 License
 
 ## License
 
