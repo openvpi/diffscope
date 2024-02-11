@@ -33,3 +33,7 @@
 [submodule "jetbrains-docking-system"]
 	path = libs/jetbrains-docking-system
 	url = ../../stdware/jetbrains-docking-system.git
+
+[submodule "qstackpanel"]
+	path = libs/qstackpanel
+	url = ../../diffscope/qstackpanel.git
