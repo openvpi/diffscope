@@ -52,7 +52,7 @@ namespace Core {
     void ICore::aboutApp(QWidget *parent) {
         QString copyrightInfo =
             tr("<p>Based on Qt version %1.<br>"
-               "Copyright 2019-%2 OpenVPI. All rights reserved.</p>")
+               "Copyright 2019-%2 Team OpenVPI. All rights reserved.</p>")
                 .arg(QStringLiteral(QT_VERSION_STR), QStringLiteral(DIFFSCOPE_BUILD_YEAR));
 
         QString buildInfo = tr("<h3>Build Information</h3>"

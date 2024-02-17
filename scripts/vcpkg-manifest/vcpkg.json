@@ -11,7 +11,8 @@
         "interval-tree",
         "stdutau",
         "extensionsystem",
-        "qwindowkit"
+        "qwindowkit",
+        "jetbrains-docking-system"
     ],
     "vcpkg-configuration": {
         "overlay-ports": [

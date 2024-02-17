@@ -4,7 +4,8 @@
     "Share": "Resources",
     "Plugins": [],
     "Translations": [
-        "Resources/ChorusKit/translations"
+        "Resources/ChorusKit/translations",
+        "share/svscraft/translations"
     ],
     "Themes": [
         "Resources/ChorusKit/themes"

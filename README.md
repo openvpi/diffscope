@@ -55,6 +55,11 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
 + [QWindowKit](https://github.com/stdware/qwindowkit)
     + Apache 2.0 License
 
+### Related Organizations
+
++ [Stdware Collections](https://github.com/stdware)
++ [Team OpenVPI](https://github.com/openvpi)
+
 ## License
 
 DiffScope is licensed under the Apache 2.0 License.

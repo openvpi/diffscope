@@ -4,7 +4,8 @@
     "Share": "share",
     "Plugins": [],
     "Translations": [
-        "share/ChorusKit/translations"
+        "share/ChorusKit/translations",
+        "share/svscraft/translations"
     ],
     "Themes": [
         "share/ChorusKit/themes"
