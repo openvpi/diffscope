@@ -215,6 +215,7 @@ namespace QDspx {
         NS_Length,
         NS_KeyNumber,
         NS_Lyric,
+        NS_OrgPronunciation,
         NS_Pronunciation,
         NS_PhonemeInfo,
         NS_VibratoInfo,
@@ -258,6 +259,14 @@ namespace QDspx {
         setVariantImpl(NS_Lyric, lyric);
     }
 
+    QString NoteEntity::orgPronunciation() const {
+        return valueImpl(NS_OrgPronunciation).variant->toString();
+    }
+
+    void NoteEntity::setOrgPronunciation(const QString &orgPronunciation) {
+        setVariantImpl(NS_OrgPronunciation, orgPronunciation);
+    }
+
     QString NoteEntity::pronunciation() const {
         return valueImpl(NS_Pronunciation).variant->toString();
     }
@@ -289,8 +298,11 @@ namespace QDspx {
             case NS_Lyric:
                 Q_EMIT lyricChanged(val.variant->toString());
                 return;
+            case NS_OrgPronunciation:
+                Q_EMIT orgPronunciationChanged(val.variant->toString());
+                return;
             case NS_Pronunciation:
-                Q_EMIT pronounciationChanged(val.variant->toString());
+                Q_EMIT pronunciationChanged(val.variant->toString());
                 return;
             default:
                 break;

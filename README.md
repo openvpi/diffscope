@@ -42,8 +42,6 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
     + GNU LGPL v2.1
 + [svscraft](https://github.com/diffscope/svscraft)
     + GNU LGPL v2.1
-+ [fluentui-system-icons-modified](https://github.com/CrSjimo/fluentui-system-icons-modified)
-    + MIT License
 + [talcs](https://github.com/CrSjimo/talcs)
     + GNU LGPL v2.1
 + [stimmt](https://github.com/CrSjimo/stimmt)
@@ -54,6 +52,8 @@ This application uses Microsoft VCPKG to handle its dependencies on third-party 
     + MIT License
 + [QWindowKit](https://github.com/stdware/qwindowkit)
     + Apache 2.0 License
++ [fluentui-system-icons-modified](https://github.com/CrSjimo/fluentui-system-icons-modified)
+    + MIT License
 
 ### Related Organizations
 

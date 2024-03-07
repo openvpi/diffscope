@@ -125,7 +125,7 @@ namespace QDspx {
         Q_PROPERTY(int keyNumber READ keyNumber WRITE setKeyNumber NOTIFY keyNumberChanged)
         Q_PROPERTY(QString lyric READ lyric WRITE setLyric NOTIFY lyricChanged)
         Q_PROPERTY(QString pronunciation READ pronunciation WRITE setPronunciation NOTIFY
-                       pronounciationChanged)
+                       pronunciationChanged)
     public:
         explicit NoteEntity(QObject *parent = nullptr);
         ~NoteEntity();
@@ -143,6 +143,9 @@ namespace QDspx {
         QString lyric() const;
         void setLyric(const QString &lyric);
 
+        QString orgPronunciation() const;
+        void setOrgPronunciation(const QString &orgPronunciation);
+
         QString pronunciation() const;
         void setPronunciation(const QString &pronunciation);
 
@@ -154,7 +157,8 @@ namespace QDspx {
         void lengthChanged(int length);
         void keyNumberChanged(int keyNumber);
         void lyricChanged(const QString &lyric);
-        void pronounciationChanged(const QString &lyric);
+        void orgPronunciationChanged(const QString &orgPronunciation);
+        void pronunciationChanged(const QString &pronunciation);
 
     protected:
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;

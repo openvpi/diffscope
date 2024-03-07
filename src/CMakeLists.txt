@@ -32,6 +32,9 @@ ck_init_buildsystem()
 # ----------------------------------
 qm_add_definition(APP_NAME ${PROJECT_NAME} STRING_LITERAL)
 qm_add_definition(APP_VERSION ${PROJECT_VERSION} STRING_LITERAL)
+qm_add_definition(APP_ORG_NAME "OpenVPI" STRING_LITERAL)
+qm_add_definition(APP_ORG_DOMAIN "org.openvpi" STRING_LITERAL)
+qm_add_definition(APP_PLUGIN_IID "org.OpenVPI.${PROJECT_NAME}.Plugin" STRING_LITERAL)
 qm_add_definition(CONFIG_ENABLE_BREAKPAD CONDITION DIFFSCOPE_ENABLE_BREAKPAD)
 
 # ----------------------------------
@@ -44,6 +47,10 @@ add_subdirectory(libs)
 add_subdirectory(plugins)
 
 add_subdirectory(share)
+
+if(DIFFSCOPE_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
 
 # ----------------------------------
 # Finale

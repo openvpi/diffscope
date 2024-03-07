@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QSettings>
 
-#include <CoreApi/ICoreBase.h>
+#include <CoreApi/icorebase.h>
 
 #include <coreplugin/coreglobal.h>
 
@@ -26,7 +26,10 @@ namespace Core {
         static QString displayTitle(const QString &text);
         static void aboutApp(QWidget *parent = nullptr);
         static void fatalError(QWidget *parent, const QString &text, int exitCode = -1);
-    
+
+    public:
+        bool openFile(const QString &fileName, QWidget *parent = nullptr) const;
+
     private:
         explicit ICore(QObject *parent = nullptr);
         ~ICore();

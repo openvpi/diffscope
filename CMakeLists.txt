@@ -7,6 +7,7 @@ project(DiffScope VERSION 0.0.1.1 LANGUAGES CXX)
 # ----------------------------------
 option(DIFFSCOPE_ENABLE_DEVEL "Install developer files" OFF)
 option(DIFFSCOPE_INSTALL "Install this project" ON)
+option(DIFFSCOPE_BUILD_TESTS "Build test cases" OFF)
 
 option(DIFFSCOPE_ENABLE_BREAKPAD "Enable breakpad configuration" OFF)
 

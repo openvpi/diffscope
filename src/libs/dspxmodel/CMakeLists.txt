@@ -8,7 +8,7 @@ file(GLOB_RECURSE _src *.h *.cpp)
 qm_configure_target(${PROJECT_NAME}
     SOURCES ${_src}
     QT_LINKS Core
-    LINKS substate::qsubstate svscraft::Core
+    LINKS substate::qsubstate svscraft::Core opendspx::opendspx
     INCLUDE_PRIVATE
     SKIP_AUTOMOC "dspxmodelglobal.h"
 )

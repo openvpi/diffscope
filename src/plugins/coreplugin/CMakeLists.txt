@@ -13,10 +13,23 @@ ck_add_plugin(${PROJECT_NAME}
 file(GLOB_RECURSE _src *.h *.cpp)
 qm_configure_target(${PROJECT_NAME}
     SOURCES ${_src}
-    QT_LINKS Core Gui Widgets
-    QT_INCLUDE_PRIVATE Core Gui Widgets
-    LINKS CkAppCore
-    INCLUDE_PRIVATE core internal
+    QT_LINKS
+        Core
+        Gui
+        Widgets
+    QT_INCLUDE_PRIVATE
+        Core
+        Gui
+        Widgets
+    LINKS
+        ChorusKit::AppCore
+        svscraft::Widgets
+    INCLUDE_PRIVATE
+        core
+        internal
+        internal/dialogs
+        internal/widgets
+        internal/windows
 )
 
 # Add translation
@@ -42,4 +55,10 @@ ck_add_attached_files(${PROJECT_NAME}
 # Add install command
 ck_sync_include(${PROJECT_NAME}
     OPTIONS EXCLUDE "internal/.+"
+)
+
+ck_sync_include(${PROJECT_NAME}
+    DIRECTORY internal
+    PREFIX "${PROJECT_NAME}/internal"
+    SKIP_INSTALL
 )

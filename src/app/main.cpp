@@ -18,14 +18,12 @@
 
 #include <choruskit_config.h>
 
-static const char APP_PLUGIN_IID[] = "org.OpenVPI." APP_NAME ".Plugin";
-
 class MyLoaderConfiguration : public Loader::LoaderConfiguration {
 public:
     MyLoaderConfiguration() {
         allowRoot = false;
-        pluginIID = APP_PLUGIN_IID;
-        splashSettingPath = qAppExt->appShareDir() + "/config.json";
+        pluginIID = QStringLiteral(APP_PLUGIN_IID);
+        splashSettingPath = qAppExt->appShareDir() + QStringLiteral("/config.json");
         userSettingsPath = qAppExt->appDataDir();
         systemSettingsPath = qAppExt->appShareDir();
 
@@ -36,7 +34,8 @@ public:
         // Skip if show help
         const auto &realArgs = QApplication::arguments();
         const auto &realArgsSet = QSet<QString>(realArgs.begin(), realArgs.end());
-        if (realArgsSet.contains("-h") || realArgsSet.contains("--help")) {
+        if (realArgsSet.contains(QStringLiteral("-h")) ||
+            realArgsSet.contains(QStringLiteral("--help"))) {
             return true;
         }
 
@@ -80,14 +79,14 @@ public:
         Core::ILoader &loader = *Core::ILoader::instance();
         loader.setSettingsPath(
             QSettings::UserScope,
-            QString("%1/%2.settings.json").arg(userSettingsPath, qApp->applicationName()));
-        loader.setSettingsPath(
-            QSettings::SystemScope,
-            QString("%1/%2.settings.json").arg(systemSettingsPath, qApp->applicationName()));
+            QStringLiteral("%1/%2.settings.json").arg(userSettingsPath, QStringLiteral(APP_NAME)));
+        loader.setSettingsPath(QSettings::SystemScope,
+                               QStringLiteral("%1/%2.settings.json")
+                                   .arg(systemSettingsPath, QStringLiteral(APP_NAME)));
 
         // Add initial routine to loader object pool
         auto initRoutine = new Core::InitialRoutine(screen);
-        loader.addObject("choruskit_init_routine", initRoutine);
+        loader.addObject(QStringLiteral("choruskit_init_routine"), initRoutine);
         QObject::connect(initRoutine, &Core::InitialRoutine::done, initRoutine, [&] {
             loader.removeObject(initRoutine); //
             delete initRoutine;
@@ -101,10 +100,10 @@ public:
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    a.setApplicationName(APP_NAME);
-    a.setApplicationVersion(APP_VERSION);
-    a.setOrganizationName("OpenVPI");
-    a.setOrganizationDomain("org.openvpi");
+    a.setApplicationName(QStringLiteral(APP_NAME));
+    a.setApplicationVersion(QStringLiteral(APP_VERSION));
+    a.setOrganizationName(QStringLiteral(APP_ORG_NAME));
+    a.setOrganizationDomain(QStringLiteral(APP_ORG_DOMAIN));
 
     QMAppExtension host;
 
