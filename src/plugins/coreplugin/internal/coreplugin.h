@@ -23,9 +23,6 @@ namespace Core::Internal {
 
     protected:
         bool eventFilter(QObject *obj, QEvent *event) override;
-
-    public:
-        static void waitSplash(QWidget *w);
     };
 
 }

@@ -6,7 +6,7 @@ ck_configure_application(
 qm_configure_target(${PROJECT_NAME}
     SOURCES main.cpp
     QT_LINKS Core Widgets
-    LINKS_PRIVATE ChorusKit::Loader ChorusKit::AppCore
+    LINKS_PRIVATE ChorusKit::Loader ChorusKit::AppCore initroutine
     INCLUDE_PRIVATE ${CK_BUILD_INCLUDE_DIR}
 )
 

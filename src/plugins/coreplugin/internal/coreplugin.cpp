@@ -14,13 +14,13 @@
 
 #include <CoreApi/iloader.h>
 
+#include <initroutine/initroutine.h>
+
 namespace Core {
 
     namespace Internal {
 
         static ICore *icore = nullptr;
-
-        static InitialRoutine *m_rout = nullptr;
 
         static int openFileFromCommand(QString workingDir, const QStringList &args, IWindow *iWin) {
             int cnt = 0;
@@ -31,7 +31,7 @@ namespace Core {
             for (const auto &arg : qAsConst(args)) {
                 QFileInfo info(arg);
                 if (info.isRelative()) {
-                    info.setFile(workingDir + "/" + arg);
+                    info.setFile(workingDir + QStringLiteral("/") + arg);
                 }
 
                 if (!info.isFile()) {
@@ -50,6 +50,13 @@ namespace Core {
             return cnt;
         }
 
+        static void waitSplash(QWidget *w) {
+            // Get splash screen handle
+            auto initRoutine = InitRoutine::instance();
+            initRoutine->splash->finish(w);
+            delete initRoutine;
+        }
+
         CorePlugin::CorePlugin() {
         }
 
@@ -58,16 +65,11 @@ namespace Core {
 
         bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage) {
             // Add resources
-            qIDec->addTranslationPath(pluginSpec()->location() + "/translations");
-            qIDec->addThemePath(pluginSpec()->location() + "/themes");
+            qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
+            qIDec->addThemePath(pluginSpec()->location() + QStringLiteral("/themes"));
 
-            auto rout = qobject_cast<Core::InitialRoutine *>(
-                ILoader::instance()->getFirstObject("choruskit_init_routine"));
-            if (rout) {
-                rout->splash()->showMessage(tr("Initializing core plugin..."));
-            }
-            m_rout = rout;
-            // QThread::msleep(2000);
+            InitRoutine::instance()->splash->showMessage(tr("Initializing core plugin..."));
+            QThread::msleep(2000);
 
             // Init ICore instance
             icore = new ICore(this);
@@ -125,13 +127,12 @@ namespace Core {
         void CorePlugin::extensionsInitialized() {
             // Theme fallback
             if (!qIDec->themes().contains(qIDec->theme())) {
-                qIDec->setTheme("Visual Studio Code - Dark");
+                qIDec->setTheme(QStringLiteral("Visual Studio Code - Dark"));
             }
         }
 
         bool CorePlugin::delayedInitialize() {
-            if (m_rout)
-                m_rout->splash()->showMessage(tr("Initializing user interface..."));
+            InitRoutine::instance()->splash->showMessage(tr("Initializing user interface..."));
 
             // QTimer::singleShot(0, this, [this]() {
             //     auto winMgr = icore->windowSystem();
@@ -160,6 +161,8 @@ namespace Core {
             w->show();
             w->setAttribute(Qt::WA_DeleteOnClose);
 
+            waitSplash(w);
+
             return false;
         }
 
@@ -182,14 +185,6 @@ namespace Core {
             return QObject::eventFilter(obj, event);
         }
 
-        void CorePlugin::waitSplash(QWidget *w) {
-            // Get splash screen handle
-            if (m_rout) {
-                m_rout->splash()->finish(w);
-                emit m_rout->done();
-            }
-        }
-
         // This scope is only to expose strings to Qt translation tool
         static void _qt_translation_CommandCategory() {
             QApplication::translate("Core::CommandCategory", "Create");
@@ -203,6 +198,6 @@ namespace Core {
             QApplication::translate("Core::CommandCategory", "Edit Mode");
         }
 
-    } // namespace Internal
+    }
 
-} // namespace Core
+}

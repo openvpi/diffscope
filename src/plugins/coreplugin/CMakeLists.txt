@@ -24,6 +24,7 @@ qm_configure_target(${PROJECT_NAME}
     LINKS
         ChorusKit::AppCore
         svscraft::Widgets
+        initroutine
     INCLUDE_PRIVATE
         core
         internal

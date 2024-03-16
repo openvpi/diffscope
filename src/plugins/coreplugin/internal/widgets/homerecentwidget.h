@@ -20,9 +20,6 @@ namespace Core::Internal {
 
     class HomeRecentTopButtonBar;
 
-    /**
-     * @brief Recent widget top frame
-     */
     class HomeRecentTopFrame : public QFrame {
         Q_OBJECT
         Q_LAYOUT_PROPERTY_DELCARE
@@ -49,10 +46,6 @@ namespace Core::Internal {
         QMEqualBoxLayout *topLayout;
         QHash<QString, QAbstractButton *> externButtons;
     };
-
-    /**
-     * @brief Recent widget bottom frame
-     */
 
     class HomeRecentBottomFrame : public QFrame {
         Q_OBJECT
@@ -86,9 +79,6 @@ namespace Core::Internal {
         void _q_itemClickedEx(const QModelIndex &index, int button);
     };
 
-    /**
-     * @brief Recent widget
-     */
     class HomeRecentWidget : public QSplitter {
         Q_OBJECT
     public:

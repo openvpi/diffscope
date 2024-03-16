@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QDebug>
+#include <QProcess>
 #include <QNetworkProxyFactory>
 
 #include <extensionsystem/pluginmanager.h>
@@ -17,6 +18,8 @@
 #include <CkLoader/loaderconfig.h>
 
 #include <choruskit_config.h>
+
+#include <initroutine/initroutine.h>
 
 class MyLoaderConfiguration : public Loader::LoaderConfiguration {
 public:
@@ -84,13 +87,9 @@ public:
                                QStringLiteral("%1/%2.settings.json")
                                    .arg(systemSettingsPath, QStringLiteral(APP_NAME)));
 
-        // Add initial routine to loader object pool
-        auto initRoutine = new Core::InitialRoutine(screen);
-        loader.addObject(QStringLiteral("choruskit_init_routine"), initRoutine);
-        QObject::connect(initRoutine, &Core::InitialRoutine::done, initRoutine, [&] {
-            loader.removeObject(initRoutine); //
-            delete initRoutine;
-        });
+        // Add initial routine, should be removed in core plugin
+        auto initRoutine = new Core::InitRoutine();
+        initRoutine->splash = screen;
     }
 
     void afterLoadPlugins() override {
