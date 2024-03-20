@@ -1,4 +1,4 @@
-project(initroutine VERSION 0.0.1.0)
+project(appshared VERSION 0.0.1.0)
 
 # Add target
 ck_add_library(${PROJECT_NAME} INTERFACE)

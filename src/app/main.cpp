@@ -19,7 +19,7 @@
 
 #include <choruskit_config.h>
 
-#include <initroutine/initroutine.h>
+#include <appshared/initroutine.h>
 
 class MyLoaderConfiguration : public Loader::LoaderConfiguration {
 public:
@@ -88,7 +88,7 @@ public:
                                    .arg(systemSettingsPath, QStringLiteral(APP_NAME)));
 
         // Add initial routine, should be removed in core plugin
-        auto initRoutine = new Core::InitRoutine();
+        auto initRoutine = new AppShared::InitRoutine();
         initRoutine->splash = screen;
     }
 

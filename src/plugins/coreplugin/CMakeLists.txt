@@ -24,9 +24,10 @@ qm_configure_target(${PROJECT_NAME}
     LINKS
         ChorusKit::AppCore
         svscraft::Widgets
-        initroutine
+        appshared
     INCLUDE_PRIVATE
         core
+        windows
         internal
         internal/dialogs
         internal/widgets

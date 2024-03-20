@@ -6,7 +6,7 @@
 
 #include <CoreApi/iloader.h>
 
-namespace Core {
+namespace AppShared {
 
     struct InitRoutine {
         enum StartMode {
@@ -14,18 +14,20 @@ namespace Core {
             VST,
         };
 
-        using StartEntry = void (*)();
+        using StartEntry = QWidget *(*) ();
+
+        static constexpr const int InitRoutineDataIndex = 0;
 
         inline InitRoutine() {
-            ILoader::quickData(0) = this;
+            Core::ILoader::quickData(InitRoutineDataIndex) = this;
         }
 
         inline ~InitRoutine() {
-            ILoader::quickData(0) = nullptr;
+            Core::ILoader::quickData(InitRoutineDataIndex) = nullptr;
         }
 
         static InitRoutine *instance() {
-            return static_cast<InitRoutine *>(ILoader::quickData(0));
+            return static_cast<InitRoutine *>(Core::ILoader::quickData(InitRoutineDataIndex));
         }
 
         QSplashScreen *splash = nullptr;

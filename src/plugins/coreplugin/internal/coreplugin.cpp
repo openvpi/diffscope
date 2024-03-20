@@ -8,13 +8,16 @@
 #include <QThread>
 
 #include <extensionsystem/pluginspec.h>
+#include <extensionsystem/pluginmanager.h>
 
 #include <QMWidgets/qmdecoratorv2.h>
 #include <QMWidgets/qmview.h>
 
 #include <CoreApi/iloader.h>
 
-#include <initroutine/initroutine.h>
+#include <appshared/initroutine.h>
+
+#include "ihomewindow.h"
 
 namespace Core {
 
@@ -52,9 +55,9 @@ namespace Core {
 
         static void waitSplash(QWidget *w) {
             // Get splash screen handle
-            auto initRoutine = InitRoutine::instance();
-            initRoutine->splash->finish(w);
-            delete initRoutine;
+            auto ir = AppShared::InitRoutine::instance();
+            ir->splash->finish(w);
+            delete ir;
         }
 
         CorePlugin::CorePlugin() {
@@ -64,12 +67,13 @@ namespace Core {
         }
 
         bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage) {
+            auto ir = AppShared::InitRoutine::instance();
+
             // Add resources
             qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
             qIDec->addThemePath(pluginSpec()->location() + QStringLiteral("/themes"));
 
-            InitRoutine::instance()->splash->showMessage(tr("Initializing core plugin..."));
-            QThread::msleep(2000);
+            ir->splash->showMessage(tr("Initializing core plugin..."));
 
             // Init ICore instance
             icore = new ICore(this);
@@ -132,36 +136,19 @@ namespace Core {
         }
 
         bool CorePlugin::delayedInitialize() {
-            InitRoutine::instance()->splash->showMessage(tr("Initializing user interface..."));
+            auto ir = AppShared::InitRoutine::instance();
+            ir->splash->showMessage(tr("Initializing user interface..."));
 
-            // QTimer::singleShot(0, this, [this]() {
-            //     auto winMgr = icore->windowSystem();
+            if (ir->entry) {
+                waitSplash(ir->entry());
+                return false;
+            }
 
-            //     LastWindowFilter g;
-
-            //     if (m_rout) {
-            //         for (const auto &func : qAsConst(m_rout->routines())) {
-            //             func();
-            //         }
-            //     }
-
-            //     // Open files
-            //     openFileFromCommand({}, ExtensionSystem::PluginManager::arguments(), nullptr);
-
-            //     // If no window is created, create a default home window
-            //     if (winMgr->count() == 0) {
-            //         auto home = IWindow::create<IHomeWindow>();
-            //         waitSplash(home->window());
-            //     } else {
-            //         waitSplash(winMgr->firstWindow()->window());
-            //     }
-            // });
-
-            auto w = new QWidget();
-            w->show();
-            w->setAttribute(Qt::WA_DeleteOnClose);
-
-            waitSplash(w);
+            if (openFileFromCommand({}, ExtensionSystem::PluginManager::arguments(), nullptr) > 0) {
+                waitSplash(icore->windowSystem()->firstWindow()->window());
+            } else {
+                waitSplash(IWindow::create<IHomeWindow>()->window());
+            }
 
             return false;
         }
