@@ -33,34 +33,25 @@ public:
         pluginPaths << qAppExt->appPluginsDir();
     }
 
-    bool preprocessArguments(QStringList &arguments, int *code) override {
-        // Skip if show help
-        const auto &realArgs = QApplication::arguments();
-        const auto &realArgsSet = QSet<QString>(realArgs.begin(), realArgs.end());
-        if (realArgsSet.contains(QStringLiteral("-h")) ||
-            realArgsSet.contains(QStringLiteral("--help"))) {
-            return true;
-        }
+    void splashWillShow(QSplashScreen *screen) override {
+        splash = screen;
 
-        // Create app data path and temp path
-        if (!qAppExt->createDataAndTempDirs()) {
-            *code = -1;
-            return false;
-        }
-
-        return true;
+        // Don't show plugin manager debug info
+        QLoggingCategory::setFilterRules(QLatin1String("qtc.*.debug=false"));
     }
 
-    void beforeLoadPlugins(QSplashScreen *screen) override {
+    void beforeLoadPlugins() override {
+        // Create app data path and temp path
+        if (!qAppExt->createDataAndTempDirs()) {
+            showError("Failed to create data or temp directories!");
+        }
+
         // Set global settings path
         QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, userSettingsPath);
         QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, systemSettingsPath);
 
         // Make sure we honor the system's proxy settings
         QNetworkProxyFactory::setUseSystemConfiguration(true);
-
-        // Don't show plugin manager debug info
-        QLoggingCategory::setFilterRules(QLatin1String("qtc.*.debug=false"));
 
         // Restore language and themes
         {
@@ -89,12 +80,14 @@ public:
 
         // Add initial routine, should be removed in core plugin
         auto initRoutine = new AppShared::InitRoutine();
-        initRoutine->splash = screen;
+        initRoutine->splash = splash;
     }
 
     void afterLoadPlugins() override {
         // Do nothing
     }
+
+    QSplashScreen *splash = nullptr;
 };
 
 int main(int argc, char *argv[]) {

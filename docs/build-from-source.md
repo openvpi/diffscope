@@ -83,6 +83,7 @@ cmake -B build -G Ninja \
     -DVCPKG_APPLOCAL_DEPS=FALSE \
     -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG=vcpkg/installed/x64-windows/debug/bin \
     -DQMSETUP_APPLOCAL_DEPS_PATHS_RELEASE=vcpkg/installed/x64-windows/bin \
+    -DCK_ENABLE_CONSOLE=FALSE \
     -DCK_WIN_APPLOCAL_DEPS=TRUE \
     -DCMAKE_BUILD_TYPE=Release
 
