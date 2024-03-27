@@ -27,6 +27,31 @@ namespace Core {
         return m_instance;
     }
 
+    QAbstractButton *IHomeWindow::addTab(QWidget *w) {
+        return static_cast<Internal::HomeWindow *>(window())->nav()->addWidget(w);
+    }
+
+    void IHomeWindow::removeTab(QAbstractButton *btn) {
+        return static_cast<Internal::HomeWindow *>(window())->nav()->removeWidget(btn);
+    }
+
+    void IHomeWindow::addBottomButton(QAbstractButton *button) {
+        static_cast<Internal::HomeWindow *>(window())->bottomButtonslayout()->addWidget(button);
+    }
+
+    void IHomeWindow::removeBottomButton(QAbstractButton *button) {
+        static_cast<Internal::HomeWindow *>(window())->bottomButtonslayout()->removeWidget(button);
+    }
+
+    void IHomeWindow::addRecentTopButton(QAbstractButton *button) {
+        return static_cast<Internal::HomeWindow *>(window())->recentTopLayout()->addWidget(button);
+    }
+
+    void IHomeWindow::removeRecentTopButton(QAbstractButton *button) {
+        return static_cast<Internal::HomeWindow *>(window())->recentTopLayout()->removeWidget(
+            button);
+    }
+
     QString IHomeWindow::correctWindowTitle(const QString &title) const {
         return IWindow::correctWindowTitle(ICore::displayTitle(title));
     }

@@ -15,47 +15,47 @@ namespace Core::Internal {
         setAcceptDrops(true);
 
         // Initialize nav frame
-        navFrame = new CNavFrame();
-        navFrame->setObjectName(QStringLiteral("home-frame"));
-        setCentralWidget(navFrame);
+        m_navFrame = new CNavFrame();
+        m_navFrame->setObjectName(QStringLiteral("home-frame"));
+        setCentralWidget(m_navFrame);
 
-        titleButton = new CTabButton(qApp->applicationName());
-        titleButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        navFrame->setTopWidget(titleButton);
+        m_titleButton = new CTabButton(qApp->applicationName());
+        m_titleButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        m_navFrame->setTopWidget(m_titleButton);
 
         {
-            settingsButton = new CTabButton();
-            aboutButton = new CTabButton();
+            m_settingsButton = new CTabButton();
+            m_aboutButton = new CTabButton();
 
-            auto bottomButtonsLayout = new QVBoxLayout();
-            bottomButtonsLayout->setContentsMargins({});
-            bottomButtonsLayout->setSpacing(0);
-            bottomButtonsLayout->addWidget(settingsButton);
-            bottomButtonsLayout->addWidget(aboutButton);
+            m_bottomButtonsLayout = new QBoxLayout(QBoxLayout::BottomToTop);
+            m_bottomButtonsLayout->setContentsMargins({});
+            m_bottomButtonsLayout->setSpacing(0);
+            m_bottomButtonsLayout->addWidget(m_aboutButton);
+            m_bottomButtonsLayout->addWidget(m_settingsButton);
 
-            auto bottomButtons = new QFrame();
-            bottomButtons->setObjectName("bottom-buttons-widget");
-            bottomButtons->setLayout(bottomButtonsLayout);
+            m_bottomButtonsFrame = new QFrame();
+            m_bottomButtonsFrame->setObjectName("bottom-buttons-widget");
+            m_bottomButtonsFrame->setLayout(m_bottomButtonsLayout);
 
-            navFrame->setBottomWidget(bottomButtons);
+            m_navFrame->setBottomWidget(m_bottomButtonsFrame);
 
-            connect(settingsButton, &QAbstractButton::clicked, this,
+            connect(m_settingsButton, &QAbstractButton::clicked, this,
                     &HomeWindow::_q_settingsButtonClicked);
-            connect(aboutButton, &QAbstractButton::clicked, this,
+            connect(m_aboutButton, &QAbstractButton::clicked, this,
                     &HomeWindow::_q_aboutButtonClicked);
         }
 
         // Add recent widget
-        auto recentWidget = new HomeRecentWidget();
-        recentWidgetButton = navFrame->addWidget(recentWidget);
+        m_recentWidget = new HomeRecentWidget();
+        m_recentWidgetButton = m_navFrame->addWidget(m_recentWidget);
 
-        auto recentTopWidget = recentWidget->topWidget;
+        auto recentTopWidget = m_recentWidget->topWidget;
         connect(recentTopWidget, &HomeRecentTopFrame::newRequested, this,
                 &HomeWindow::_q_newButtonClicked);
         connect(recentTopWidget, &HomeRecentTopFrame::openRequested, this,
                 &HomeWindow::_q_openButtonClicked);
 
-        auto recentBottomWidget = recentWidget->bottomWidget;
+        auto recentBottomWidget = m_recentWidget->bottomWidget;
         connect(recentBottomWidget, &HomeRecentBottomFrame::openFileRequested, this,
                 &HomeWindow::_q_openFileRequested);
 
@@ -66,9 +66,13 @@ namespace Core::Internal {
     }
 
     void HomeWindow::reloadStrings() {
-        recentWidgetButton->setText(tr("Recent"));
-        settingsButton->setText(tr("Settings"));
-        aboutButton->setText(tr("About %1").arg(qApp->applicationName()));
+        m_recentWidgetButton->setText(tr("Recent"));
+        m_settingsButton->setText(tr("Settings"));
+        m_aboutButton->setText(tr("About %1").arg(qApp->applicationName()));
+    }
+
+    QLayout *HomeWindow::recentTopLayout() const {
+        return m_recentWidget->topWidget->layout();
     }
 
     void HomeWindow::_q_newButtonClicked() {

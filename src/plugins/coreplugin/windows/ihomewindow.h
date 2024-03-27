@@ -1,6 +1,8 @@
 #ifndef IHOMEWINDOW_H
 #define IHOMEWINDOW_H
 
+#include <QAbstractButton>
+
 #include <CoreApi/iwindow.h>
 
 #include <coreplugin/coreglobal.h>
@@ -17,6 +19,16 @@ namespace Core {
         ~IHomeWindow();
 
         static IHomeWindow *instance();
+
+    public:
+        QAbstractButton *addTab(QWidget *w);
+        void removeTab(QAbstractButton *btn);
+
+        void addBottomButton(QAbstractButton *button);
+        void removeBottomButton(QAbstractButton *button);
+
+        void addRecentTopButton(QAbstractButton *button);
+        void removeRecentTopButton(QAbstractButton *button);
 
     protected:
         QString correctWindowTitle(const QString &title) const override;

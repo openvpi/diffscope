@@ -1,0 +1,20 @@
+{
+    "Name": "IEMgr",
+    "DisplayName": "Import/Export Manager",
+    "Version": "@PLUGIN_METADATA_VERSION@",
+    "CompatVersion": "@PLUGIN_METADATA_COMPAT_VERSION@",
+    "DisabledByDefault": false,
+    "HiddenByDefault": false,
+    "Vendor": "@PLUGIN_METADATA_VENDOR@",
+    "Copyright": "Copyright (C) @PLUGIN_METADATA_YEAR@ @PLUGIN_METADATA_VENDOR@",
+    "License": [
+        "Apache 2.0"
+    ],
+    "Category": "Format Exchange",
+    "Description": "Import/Export manager plugin for DiffScope.",
+    "Url": "https://www.baidu.com/",
+    "Required": true,
+    "Dependencies" : [
+        { "Name" : "Core", "Version" : "0.1.0" }
+    ]
+}

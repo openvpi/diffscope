@@ -16,7 +16,18 @@ namespace Core {
         static void autoPolishScrollBars(QWidget *w);
 
         static QString fileManagerName();
+        static inline QString allFilesFilter();
     };
+
+    inline QString AppExtra::allFilesFilter() {
+        return
+#ifdef Q_OS_WINDOWS
+            QStringLiteral("*.*")
+#else
+            QStringLiteral("*")
+#endif
+                ;
+    }
 
 }
 

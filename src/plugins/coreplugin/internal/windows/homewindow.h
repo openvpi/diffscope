@@ -2,10 +2,13 @@
 #define HOMEWINDOW_H
 
 #include <QMainWindow>
+#include <QBoxLayout>
 
 #include <QMWidgets/cnavframe.h>
 
 namespace Core::Internal {
+
+    class HomeRecentWidget;
 
     class HomeWindow : public QMainWindow {
         Q_OBJECT
@@ -15,13 +18,27 @@ namespace Core::Internal {
 
         void reloadStrings();
 
-    public:
-        CNavFrame *navFrame;
-        QAbstractButton *titleButton;
-        QAbstractButton *settingsButton;
-        QAbstractButton *aboutButton;
+        inline CNavFrame *nav() const {
+            return m_navFrame;
+        }
 
-        QAbstractButton *recentWidgetButton;
+        inline QLayout *bottomButtonslayout() const {
+            return m_bottomButtonsLayout;
+        }
+
+        QLayout *recentTopLayout() const;
+
+    protected:
+        CNavFrame *m_navFrame;
+        QAbstractButton *m_titleButton;
+        QAbstractButton *m_settingsButton;
+        QAbstractButton *m_aboutButton;
+
+        QAbstractButton *m_recentWidgetButton;
+        HomeRecentWidget *m_recentWidget;
+
+        QBoxLayout *m_bottomButtonsLayout;
+        QFrame *m_bottomButtonsFrame;
 
     private:
         void _q_newButtonClicked();

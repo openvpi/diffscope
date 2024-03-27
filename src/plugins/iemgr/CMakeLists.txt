@@ -1,12 +1,11 @@
-project(coreplugin VERSION 0.1.0.0)
+project(iemgr VERSION 0.1.0.0)
 
 # Add target
 ck_add_plugin(${PROJECT_NAME}
-    NAME Core
+    NAME IEMgr
     COMPAT_VERSION 0.0.0.0
     VENDOR "Sine Striker"
     DESCRIPTION "${CURRENT_PLUGIN_DESC}"
-    MACRO_PREFIX CORE
 )
 
 # Configure target
@@ -17,17 +16,11 @@ qm_configure_target(${PROJECT_NAME}
         Core
         Gui
         Widgets
-    QT_INCLUDE_PRIVATE
-        Core
-        Gui
-        Widgets
     LINKS
-        ChorusKit::AppCore
-        svscraft::Widgets
-        appshared
+        coreplugin
+        opendspx::opendspx
     INCLUDE_PRIVATE
         core
-        windows
         internal/**
 )
 
@@ -36,7 +29,7 @@ qm_import(Translate)
 qm_find_qt(LinguistTools)
 qm_add_translation(${PROJECT_NAME}_translations
     PREFIX
-        Core
+        IEMgr
     TARGETS
         ${PROJECT_NAME}
     LOCALES

@@ -72,12 +72,11 @@ namespace Core {
         }
 
         bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage) {
-            auto ir = AppShared::InitRoutine::instance();
-
             // Add resources
             qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
             qIDec->addThemePath(pluginSpec()->location() + QStringLiteral("/themes"));
 
+            auto ir = AppShared::InitRoutine::instance();
             ir->splash->showMessage(tr("Initializing core plugin..."));
 
             // Init ICore instance
