@@ -28,6 +28,9 @@ namespace Core {
         static void fatalError(QWidget *parent, const QString &text, int exitCode = -1);
 
     public:
+        int showSettingsDialog(const QString &id, QWidget *parent);
+
+        void newFile() const;
         bool openFile(const QString &fileName, QWidget *parent = nullptr) const;
 
     private:

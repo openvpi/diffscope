@@ -69,6 +69,6 @@ private:
 };
 
 } // namespace Internal
-} // namespace Core
+}
 
 #endif // PLUGINDIALOG_H

@@ -24,8 +24,10 @@
 #include <choruskit_config.h>
 #include <choruskit_buildinfo.h>
 
-namespace Core {
+#include "dspxspec.h"
+#include "settingsdialog.h"
 
+namespace Core {
     class ICorePrivate : ICoreBasePrivate {
         Q_DECLARE_PUBLIC(ICore)
     public:
@@ -50,10 +52,11 @@ namespace Core {
     }
 
     void ICore::aboutApp(QWidget *parent) {
+        static const QString appName = qApp->applicationName();
         QString copyrightInfo =
             tr("<p>Based on Qt version %1.<br>"
                "Copyright 2019-%2 Team OpenVPI. All rights reserved.</p>")
-                .arg(QStringLiteral(QT_VERSION_STR), QStringLiteral(DIFFSCOPE_BUILD_YEAR));
+                .arg(QStringLiteral(QT_VERSION_STR), QStringLiteral(APPLICATION_BUILD_YEAR));
 
         QString buildInfo = tr("<h3>Build Information</h3>"
                                "<p>"
@@ -64,17 +67,18 @@ namespace Core {
                                "Toolchain: %5 %6 %7"
                                "</p>")
                                 .arg(QApplication::applicationVersion(),
-                                     QStringLiteral(DIFFSCOPE_GIT_BRANCH),           //
-                                     QStringLiteral(DIFFSCOPE_GIT_LAST_COMMIT_HASH), //
-                                     QStringLiteral(DIFFSCOPE_BUILD_TIME),           //
-                                     QStringLiteral(DIFFSCOPE_COMPILER_ARCH),        //
-                                     QStringLiteral(DIFFSCOPE_COMPILER_ID),          //
-                                     QStringLiteral(DIFFSCOPE_COMPILER_VERSION));
+                                     QStringLiteral(APPLICATION_GIT_BRANCH),           //
+                                     QStringLiteral(APPLICATION_GIT_LAST_COMMIT_HASH), //
+                                     QStringLiteral(APPLICATION_BUILD_TIME),           //
+                                     QStringLiteral(APPLICATION_COMPILER_ARCH),        //
+                                     QStringLiteral(APPLICATION_COMPILER_ID),          //
+                                     QStringLiteral(APPLICATION_COMPILER_VERSION));
 
         QString aboutInfo =
-            tr("<h3>About</h3>"
-               "<p>DiffScope is a kind of implementation of DiffSinger graphical editing tool, "
-               "included in ChorusKit toolset.</p>");
+            tr("<h3>About Application</h3>"
+               "<p>%1 is a cross-platform SVS editing application mainly powered by "
+               "DiffSinger for virtual singer producers to make song compositions.</p>")
+                .arg(appName);
 
         QString licenseInfo =
             tr("<h3>License</h3>"
@@ -88,8 +92,8 @@ namespace Core {
                     "href=\"https://www.apache.org/licenses/LICENSE-2.0\">apache.org/licenses</a>");
 
         QString translatedTextAboutQtCaption =
-            tr("<h2>ChorusKit DiffScope</h2>%1%2%3%4")
-                .arg(copyrightInfo, buildInfo, aboutInfo, licenseInfo);
+            tr("<h2>%1</h2>%2%3%4%5")
+                .arg(appName, copyrightInfo, buildInfo, aboutInfo, licenseInfo);
 
         QMessageBox msgBox(parent);
         msgBox.setWindowTitle(tr("About %1").arg(qApp->applicationName()));
@@ -107,26 +111,6 @@ namespace Core {
         layout->addItem(horizontalSpacer, layout->rowCount(), 0, 1, layout->columnCount());
         msgBox.exec();
     }
-
-    // int ICore::showSettingsDialog(const QString &id, QWidget *parent) {
-    //     static Internal::SettingsDialog *dlg = nullptr;
-
-    //     if (dlg) {
-    //         dlg->selectPage(id);
-    //         return -1;
-    //     }
-
-    //     int code;
-    //     {
-    //         Internal::SettingsDialog dlg2(parent);
-    //         dlg = &dlg2;
-    //         dlg2.selectPage(id);
-    //         code = dlg2.exec();
-    //         dlg = nullptr;
-    //     }
-
-    //     return code;
-    // }
 
     // void ICore::showHome() {
     //     auto inst = IHomeWindow::instance();
@@ -146,6 +130,37 @@ namespace Core {
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
         std::exit(exitCode);
+    }
+
+    int ICore::showSettingsDialog(const QString &id, QWidget *parent) {
+        static Internal::SettingsDialog *dlg = nullptr;
+
+        if (dlg) {
+            dlg->selectPage(id);
+            return -1;
+        }
+
+        int code;
+        {
+            Internal::SettingsDialog dlg2(parent);
+            dlg = &dlg2;
+            dlg2.selectPage(id);
+            code = dlg2.exec();
+            dlg = nullptr;
+        }
+
+        return code;
+    }
+
+    void ICore::newFile() const {
+    }
+
+    bool ICore::openFile(const QString &fileName, QWidget *parent) const {
+        auto docMgr = ICore::instance()->documentSystem();
+        if (fileName.isEmpty()) {
+            return docMgr->openFileBrowse(parent, DspxSpec::instance());
+        }
+        return DspxSpec::instance()->open(fileName, parent);
     }
 
     ICore::ICore(QObject *parent) : ICore(*new ICorePrivate(), parent) {

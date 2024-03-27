@@ -19,6 +19,12 @@
 
 #include "ihomewindow.h"
 
+#include "actionconfigurepage.h"
+#include "appearancetoppage.h"
+#include "displaypage.h"
+
+#include "dspxspec.h"
+
 namespace Core {
 
     namespace Internal {
@@ -44,7 +50,6 @@ namespace Core {
                 auto spec = icore->documentSystem()->supportedDocType(info.completeSuffix());
                 if (!spec)
                     continue;
-
                 if (spec->open(info.canonicalFilePath(), iWin ? iWin->window() : nullptr)) {
                     cnt++;
                 }
@@ -86,40 +91,35 @@ namespace Core {
             //     return false;
             // }
 
-            // // Add basic windows and add-ons
+            // Add basic windows and add-ons
             // auto winMgr = icore->windowSystem();
 
             // winMgr->addAddOn("home", &HomeWindowAddOn::staticMetaObject);
             // winMgr->addAddOn("project", &ProjectWindowAddOn::staticMetaObject);
 
-            // // Add setting panels
-            // auto sc = icore->settingCatalog();
-            // {
-            //     auto appearance = new AppearanceTopPage();
+            // Add setting panels
+            auto sc = icore->settingCatalog();
+            {
+                auto appearance = new AppearanceTopPage();
 
-            //     auto display = new DisplayPage();
-            //     auto actionConfigure = new ActionConfigurePage();
+                auto display = new DisplayPage();
+                auto actionConfigure = new ActionConfigurePage();
 
-            //     appearance->addPage(display);
-            //     appearance->addPage(actionConfigure);
+                appearance->addPage(display);
+                appearance->addPage(actionConfigure);
 
-            //     sc->addPage(appearance);
-            // }
+                sc->addPage(appearance);
+            }
 
-            // // Register basic items
-            // initDspxEntitiesSchema();
+            // Add document types
+            auto docMgr = icore->documentSystem();
+            {
+                auto dspxSpex = new DspxSpec();
+                docMgr->addDocType(dspxSpex);
+                docMgr->setPreferredDocTypeId(QStringLiteral("dspx"), dspxSpex->id());
+            }
 
-            // // Add document types
-            // auto docMgr = icore->documentSystem();
-
-            // auto dspxSpex = new DspxSpec();
-            // docMgr->addDocType(dspxSpex);
-            // docMgr->setPreferredDocTypeId("dspx", dspxSpex->id());
-
-            // // QLoggingCategory::setFilterRules("qt.gui.shortcutmap=true");
-            // qApp->setProperty("closeHomeOnOpen", true);
-            // qApp->setProperty("projectDocTypeId", "org.ChorusKit.dspx");
-
+            // QLoggingCategory::setFilterRules("qt.gui.shortcutmap=true");
             // qApp->setWindowIcon(QIcon(":/svg/app/diffsinger.svg"));
 
             // Handle FileOpenEvent

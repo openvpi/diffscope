@@ -28,21 +28,23 @@ qm_configure_target(${PROJECT_NAME}
     INCLUDE_PRIVATE
         core
         windows
-        internal
-        internal/dialogs
-        internal/widgets
-        internal/windows
+        internal/**
 )
 
 # Add translation
 qm_import(Translate)
 qm_find_qt(LinguistTools)
 qm_add_translation(${PROJECT_NAME}_translations
-    PREFIX Core
-    TARGETS ${PROJECT_NAME}
-    LOCALES zh_CN zh_HK ja_JP
-    TS_DIR res/translations
-    QM_DIR ${CMAKE_CURRENT_BINARY_DIR}/res/translations
+    PREFIX
+        Core
+    TARGETS
+        ${PROJECT_NAME}
+    LOCALES
+        zh_CN zh_HK ja_JP
+    TS_DIR
+        res/translations
+    QM_DIR
+        ${CMAKE_CURRENT_BINARY_DIR}/res/translations
     TS_DEPENDS ChorusKit_UpdateTranslations
     QM_DEPENDS ChorusKit_ReleaseTranslations
 )
@@ -56,11 +58,13 @@ ck_add_attached_files(${PROJECT_NAME}
 
 # Add install command
 ck_sync_include(${PROJECT_NAME}
-    OPTIONS EXCLUDE "internal/.+"
+    OPTIONS
+        EXCLUDE "internal/.+"
 )
 
 ck_sync_include(${PROJECT_NAME}
-    DIRECTORY internal
+    DIRECTORY
+        internal
     PREFIX "${PROJECT_NAME}/internal"
     SKIP_INSTALL
 )

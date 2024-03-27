@@ -170,4 +170,4 @@ void PluginDialog::openErrorDetails()
 }
 
 } // namespace Internal
-} // namespace Core
+}
