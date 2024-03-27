@@ -2,9 +2,11 @@
 
 ## Install Qt 5.15.2
 
-+ If you're using Arm64 (Aarch64 Linux or Apple M1/M2), you need to compile Qt from source and install yourself.
++ If you're using Arm64 (Aarch64 Linux or Apple M1/M2), you need to compile Qt from source and install yourself, or install with `homebrew`.
 
 + The online installers provide only x86_64 prebuilt binaries.
+
++ Building with Qt6 is in experiment phase, if using Qt6, change all Qt5 variables below to Qt6.
 
 ### Mirrors
 
@@ -42,7 +44,7 @@ git clone --recursive git@github.com:openvpi/diffscope.git
 
 ### Install VCPKG Packages
 
-Use msys terminal (Git Bash) on Windows
+Use msys terminal (Git Bash) on Windows.
 
 ```sh
 cd vcpkg
@@ -68,7 +70,7 @@ export VCPKG_KEEP_ENV_VARS="QT_DIR;Qt5_DIR"
 
 ### Build & Install
 
-If you have installed the required libraries specified in `scripts/vcpkg-manifest/vcpkg.json`, you can skip setting VCPKG variables so long as you make sure CMake can find them.
+<!-- If you have installed the required libraries specified in `scripts/vcpkg-manifest/vcpkg.json`, you can skip setting VCPKG variables so long as you make sure CMake can find them. -->
 
 ChorusKit buildsystem is able to deploy the shared libraries to build directory and install directory automatically, this functionality is especially useful on Windows.
 
@@ -77,8 +79,11 @@ cmake -B build -G Ninja \
     -DCMAKE_INSTALL_PREFIX=<dir> \  # install directory
     -DCMAKE_PREFIX_PATH=<dir> \     # directory `Qt5Config.cmake` locates
     -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
-    -DVCPKG_APPLOCAL_DEPS:BOOL=FALSE \
-    -DCMAKE_BUILD_TYPE:STRING=Release
+    -DVCPKG_APPLOCAL_DEPS=FALSE \
+    -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG=vcpkg/installed/x64-windows/debug/bin \
+    -DQMSETUP_APPLOCAL_DEPS_PATHS_RELEASE=vcpkg/installed/x64-windows/bin \
+    -DCK_WIN_APPLOCAL_DEPS=TRUE \
+    -DCMAKE_BUILD_TYPE=Release
 
 cmake --build build --target all
 

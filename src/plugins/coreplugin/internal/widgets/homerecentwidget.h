@@ -11,18 +11,15 @@
 
 #include <QMWidgets/ctabbutton.h>
 #include <QMWidgets/qmequalboxlayout.h>
-#include <QMWidgets/qmwidgetsmacros.h>
+#include <QMWidgets/cbasicframe.h>
 
 #include <SVSCraftWidgets/linearscrollarea.h>
 #include <SVSCraftWidgets/titlelistwidget.h>
 
 namespace Core::Internal {
 
-    class HomeRecentTopButtonBar;
-
-    class HomeRecentTopFrame : public QFrame {
+    class HomeRecentTopFrame : public CBasicFrame {
         Q_OBJECT
-        Q_LAYOUT_PROPERTY_DELCARE
     public:
         explicit HomeRecentTopFrame(QWidget *parent = nullptr);
         ~HomeRecentTopFrame();
@@ -38,7 +35,7 @@ namespace Core::Internal {
         void openRequested();
         void textChanged(const QString &text);
 
-    private:
+    protected:
         CTabButton *newButton;
         CTabButton *openButton;
         QLineEdit *searchBox;
@@ -47,9 +44,8 @@ namespace Core::Internal {
         QHash<QString, QAbstractButton *> externButtons;
     };
 
-    class HomeRecentBottomFrame : public QFrame {
+    class HomeRecentBottomFrame : public CBasicFrame {
         Q_OBJECT
-        Q_LAYOUT_PROPERTY_DELCARE
     public:
         explicit HomeRecentBottomFrame(QWidget *parent = nullptr);
         ~HomeRecentBottomFrame();
@@ -63,14 +59,13 @@ namespace Core::Internal {
     Q_SIGNALS:
         void openFileRequested(const QString &fileName);
 
-    private:
+    protected:
         QVBoxLayout *bottomLayout;
         SVS::TitleListWidget *fileWidget;
         QLabel *emptyLabel;
 
         QString m_keyword;
 
-    private:
         void updateListFilter();
         void updateEmptyLabel();
 

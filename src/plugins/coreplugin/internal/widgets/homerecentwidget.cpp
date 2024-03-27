@@ -17,12 +17,10 @@
 
 namespace Core::Internal {
 
-    static const char dateFormat[] = "yyyy-MM-dd hh:mm";
-
     /**
      * @brief Recent widget top frame
      */
-    HomeRecentTopFrame::HomeRecentTopFrame(QWidget *parent) : QFrame(parent) {
+    HomeRecentTopFrame::HomeRecentTopFrame(QWidget *parent) : CBasicFrame(parent) {
         searchBox = new CLineEdit();
         searchBox->setClearButtonEnabled(true);
         searchBox->setObjectName("search-box");
@@ -86,7 +84,7 @@ namespace Core::Internal {
      * @brief Recent widget bottom frame
      */
 
-    HomeRecentBottomFrame::HomeRecentBottomFrame(QWidget *parent) : QFrame(parent) {
+    HomeRecentBottomFrame::HomeRecentBottomFrame(QWidget *parent) : CBasicFrame(parent) {
         fileWidget = new SVS::TitleListWidget();
         AppExtra::autoPolishScrollArea(fileWidget);
 
@@ -109,8 +107,10 @@ namespace Core::Internal {
         setLayout(bottomLayout);
 
         auto docMgr = ICore::instance()->documentSystem();
-        connect(docMgr, &DocumentSystem::recentFilesChanged, this, &HomeRecentBottomFrame::_q_recentFilesChanged);
-        connect(fileWidget, &SVS::TitleListWidget::itemClickedEx, this, &HomeRecentBottomFrame::_q_itemClickedEx);
+        connect(docMgr, &DocumentSystem::recentFilesChanged, this,
+                &HomeRecentBottomFrame::_q_recentFilesChanged);
+        connect(fileWidget, &SVS::TitleListWidget::itemClickedEx, this,
+                &HomeRecentBottomFrame::_q_itemClickedEx);
 
         // Reload recent files once
         reloadRecentFiles();
@@ -139,7 +139,8 @@ namespace Core::Internal {
             item->setData(SVS::DecorationRole, spec ? spec->icon() : QIcon());
             item->setData(SVS::DisplayRole, QDir::toNativeSeparators(info.absoluteFilePath()));
             item->setData(SVS::SubtitleRole, QDir::toNativeSeparators(info.absolutePath()));
-            item->setData(SVS::DescriptionRole, info.lastModified().toString(dateFormat));
+            item->setData(SVS::DescriptionRole,
+                          info.lastModified().toString(QStringLiteral("yyyy-MM-dd hh:mm")));
 
             fileWidget->addItem(item);
 
@@ -227,8 +228,7 @@ namespace Core::Internal {
                 } else {
                     //
                 }
-            }
-            else if (action == &removeAction) {
+            } else if (action == &removeAction) {
                 ICore::instance()->documentSystem()->removeRecentFile(filename);
             } else if (action == &revealAction) {
                 QM::reveal(filename);
@@ -260,7 +260,8 @@ namespace Core::Internal {
 
         qIDec->installLocale(this, _LOC(HomeRecentWidget, this));
 
-        connect(topWidget, &HomeRecentTopFrame::textChanged, this, &HomeRecentWidget::_q_searchTextChanged);
+        connect(topWidget, &HomeRecentTopFrame::textChanged, this,
+                &HomeRecentWidget::_q_searchTextChanged);
     }
 
     HomeRecentWidget::~HomeRecentWidget() {

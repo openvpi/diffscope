@@ -3,30 +3,26 @@
 
 #include <CoreApi/ISettingPage.h>
 
-namespace Core {
+namespace Core::Internal {
 
-    namespace Internal {
+    class AppearanceTopPage : public ISettingPage {
+        Q_OBJECT
+    public:
+        explicit AppearanceTopPage(QObject *parent = nullptr);
+        ~AppearanceTopPage();
 
-        class AppearanceTopPage : public ISettingPage {
-            Q_OBJECT
-        public:
-            explicit AppearanceTopPage(QObject *parent = nullptr);
-            ~AppearanceTopPage();
+    public:
+        QString sortKeyword() const override;
 
-        public:
-            QString sortKeyword() const override;
+        bool matches(const QString &word) const override;
+        QWidget *widget() override;
 
-            bool matches(const QString &word) const override;
-            QWidget *widget() override;
+        bool accept() override;
+        void finish() override;
 
-            bool accept() override;
-            void finish() override;
-
-        private:
-            QWidget *m_widget;
-        };
-
-    }
+    private:
+        QWidget *m_widget;
+    };
 
 }
 

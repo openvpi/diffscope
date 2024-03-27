@@ -18,6 +18,7 @@ namespace Core::Internal {
     public:
         CNavFrame *navFrame;
         QAbstractButton *titleButton;
+        QAbstractButton *settingsButton;
         QAbstractButton *aboutButton;
 
         QAbstractButton *recentWidgetButton;
@@ -25,6 +26,7 @@ namespace Core::Internal {
     private:
         void _q_newButtonClicked();
         void _q_openButtonClicked();
+        void _q_settingsButtonClicked();
         void _q_aboutButtonClicked();
 
         void _q_openFileRequested(const QString &fileName);

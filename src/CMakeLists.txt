@@ -59,3 +59,43 @@ endif()
 # Finale
 # ----------------------------------
 ck_finish_buildsystem()
+
+# Deploy
+if(CK_ENABLE_INSTALL)
+    qm_find_qt(Core)
+
+    set(_plugins)
+
+    if(QT_VERSION_MAJOR EQUAL 5)
+        # Qt5
+        list(APPEND _plugins
+            bearer/qgenericbearer
+            iconengines/qsvgicon
+            imageformats/q*
+        )
+    else()
+        # Qt6
+        set(_)
+    endif()
+
+    if(WIN32)
+        # Windows
+        list(APPEND _plugins
+            platforms/qwindows
+            styles/qwindowsvistastyle
+        )
+    elseif(APPLE)
+        # Mac
+        set(_)
+    else()
+        # Linux
+        set(_)
+    endif()
+
+    qm_deploy_directory(${CMAKE_INSTALL_PREFIX}
+        PLUGINS ${_plugins}
+        PLUGIN_DIR lib/Qt/plugins
+        WIN_SEARCHING_PATHS ${CK_BUILD_RUNTIME_DIR}
+        VERBOSE
+    )
+endif()

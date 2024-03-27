@@ -3,6 +3,7 @@
 #include <QApplication>
 
 #include <QMWidgets/ctabbutton.h>
+#include <QMWidgets/qmequalboxlayout.h>
 #include <QMWidgets/qmdecoratorv2.h>
 
 #include "icore.h"
@@ -19,16 +20,30 @@ namespace Core::Internal {
         setCentralWidget(navFrame);
 
         titleButton = new CTabButton(qApp->applicationName());
-        titleButton->setObjectName(QStringLiteral("home-title-button"));
         titleButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         navFrame->setTopWidget(titleButton);
 
-        aboutButton = new CTabButton();
-        aboutButton->setProperty("type", QStringLiteral("home-bottom-button"));
-        aboutButton->setObjectName(QStringLiteral("home-about-button"));
-        navFrame->setBottomWidget(aboutButton);
+        {
+            settingsButton = new CTabButton();
+            aboutButton = new CTabButton();
 
-        connect(aboutButton, &QAbstractButton::clicked, this, &HomeWindow::_q_aboutButtonClicked);
+            auto bottomButtonsLayout = new QVBoxLayout();
+            bottomButtonsLayout->setContentsMargins({});
+            bottomButtonsLayout->setSpacing(0);
+            bottomButtonsLayout->addWidget(settingsButton);
+            bottomButtonsLayout->addWidget(aboutButton);
+
+            auto bottomButtons = new QFrame();
+            bottomButtons->setObjectName("bottom-buttons-widget");
+            bottomButtons->setLayout(bottomButtonsLayout);
+
+            navFrame->setBottomWidget(bottomButtons);
+
+            connect(settingsButton, &QAbstractButton::clicked, this,
+                    &HomeWindow::_q_settingsButtonClicked);
+            connect(aboutButton, &QAbstractButton::clicked, this,
+                    &HomeWindow::_q_aboutButtonClicked);
+        }
 
         // Add recent widget
         auto recentWidget = new HomeRecentWidget();
@@ -52,6 +67,7 @@ namespace Core::Internal {
 
     void HomeWindow::reloadStrings() {
         recentWidgetButton->setText(tr("Recent"));
+        settingsButton->setText(tr("Settings"));
         aboutButton->setText(tr("About %1").arg(qApp->applicationName()));
     }
 
@@ -61,6 +77,10 @@ namespace Core::Internal {
 
     void HomeWindow::_q_openButtonClicked() {
         ICore::instance()->openFile({}, this);
+    }
+
+    void HomeWindow::_q_settingsButtonClicked() {
+        ICore::instance()->showSettingsDialog(QStringLiteral("core.Settings"), this);
     }
 
     void HomeWindow::_q_aboutButtonClicked() {

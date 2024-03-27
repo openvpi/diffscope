@@ -16,7 +16,7 @@ namespace Core::Internal {
     }
 
     QString ActionConfigurePage::sortKeyword() const {
-        return "Actions and Toolbars";
+        return QStringLiteral("Actions and Toolbars");
     }
 
     bool ActionConfigurePage::matches(const QString &word) const {

@@ -29,6 +29,7 @@ namespace Core {
 
     public:
         int showSettingsDialog(const QString &id, QWidget *parent);
+        void showHome();
 
         void newFile() const;
         bool openFile(const QString &fileName, QWidget *parent = nullptr) const;

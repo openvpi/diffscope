@@ -17,6 +17,7 @@
 #include <extensionsystem/pluginmanager.h>
 
 #include <QMCore/qmsystem.h>
+#include <QMWidgets/qmview.h>
 
 #include <CoreApi/iloader.h>
 #include <CoreApi/private/icorebase_p.h>
@@ -25,6 +26,7 @@
 #include <choruskit_buildinfo.h>
 
 #include "dspxspec.h"
+#include "ihomewindow.h"
 #include "settingsdialog.h"
 
 namespace Core {
@@ -150,6 +152,15 @@ namespace Core {
         }
 
         return code;
+    }
+
+    void ICore::showHome() {
+        auto inst = IHomeWindow::instance();
+        if (inst) {
+            QMView::raiseWindow(inst->window());
+            return;
+        }
+        IWindow::create<IHomeWindow>();
     }
 
     void ICore::newFile() const {
