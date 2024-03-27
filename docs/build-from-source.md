@@ -47,6 +47,7 @@ git clone --recursive git@github.com:openvpi/diffscope.git
 Use msys terminal (Git Bash) on Windows.
 
 ```sh
+git clone https://github.com/microsoft/vcpkg.git
 cd vcpkg
 
 # If you clone for the first time, you need to run this
@@ -72,7 +73,7 @@ export VCPKG_KEEP_ENV_VARS="QT_DIR;Qt5_DIR"
 
 <!-- If you have installed the required libraries specified in `scripts/vcpkg-manifest/vcpkg.json`, you can skip setting VCPKG variables so long as you make sure CMake can find them. -->
 
-ChorusKit buildsystem is able to deploy the shared libraries to build directory and install directory automatically, this functionality is especially useful on Windows.
+The buildsystem is able to deploy the shared libraries to build directory and install directory automatically, this functionality is especially useful on Windows.
 
 ```sh
 cmake -B build -G Ninja \

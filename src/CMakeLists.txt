@@ -61,7 +61,7 @@ endif()
 ck_finish_buildsystem()
 
 # Deploy
-if(CK_ENABLE_INSTALL)
+if(DIFFSCOPE_INSTALL)
     qm_find_qt(Core)
 
     set(_plugins)

@@ -11,7 +11,7 @@ namespace Core {
 
     class IHomeWindowPrivate;
 
-    class IHomeWindow : public IWindow {
+    class CORE_EXPORT IHomeWindow : public IWindow {
         Q_OBJECT
         Q_DECLARE_PRIVATE(IHomeWindow)
     public:
