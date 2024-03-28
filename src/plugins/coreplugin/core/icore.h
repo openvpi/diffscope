@@ -22,14 +22,10 @@ namespace Core {
     public:
         static ICore *instance();
 
-        static QString mainTitle();
-        static QString displayTitle(const QString &text);
-        static void aboutApp(QWidget *parent = nullptr);
-        static void fatalError(QWidget *parent, const QString &text, int exitCode = -1);
-
     public:
-        int showSettingsDialog(const QString &id, QWidget *parent);
-        void showHome();
+        static int showSettingsDialog(const QString &id, QWidget *parent);
+        static void showPluginsDialog(QWidget *parent);
+        static void showHome();
 
         void newFile() const;
         bool openFile(const QString &fileName, QWidget *parent = nullptr) const;

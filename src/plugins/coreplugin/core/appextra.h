@@ -9,6 +9,11 @@ namespace Core {
 
     class CORE_EXPORT AppExtra {
     public:
+        static QString mainTitle();
+        static QString displayTitle(const QString &text);
+        static void aboutApp(QWidget *parent = nullptr);
+        static void fatalError(QWidget *parent, const QString &text, int exitCode = -1);
+        
         static QMenu *createCoreMenu(QWidget *parent = nullptr);
 
         static void autoPolishPopupMenu(QWidget *w);

@@ -11,9 +11,9 @@
         "Apache 2.0"
     ],
     "Category": "Format Exchange",
-    "Description": "Import/Export manager plugin for DiffScope.",
+    "Description": "Import/Export manager plugin for @APPLICATION_INSTALL_NAME@.",
     "Url": "https://www.baidu.com/",
-    "Required": true,
+    "Required": false,
     "Dependencies" : [
         { "Name" : "Core", "Version" : "0.1.0" }
     ]

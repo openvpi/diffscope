@@ -10,7 +10,7 @@ qm_configure_target(${PROJECT_NAME}
     INCLUDE_PRIVATE ${CK_BUILD_INCLUDE_DIR}
 )
 
-if(DIFFSCOPE_ENABLE_BREAKPAD)
+if(APPLICATION_ENABLE_BREAKPAD)
     find_package(qBreakpad REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE qBreakpad::qBreakpad)
 endif()

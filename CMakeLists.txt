@@ -5,11 +5,11 @@ project(DiffScope VERSION 0.0.1.1 LANGUAGES CXX)
 # ----------------------------------
 # Build Options
 # ----------------------------------
-option(DIFFSCOPE_ENABLE_DEVEL "Install developer files" OFF)
-option(DIFFSCOPE_INSTALL "Install this project" ON)
-option(DIFFSCOPE_BUILD_TESTS "Build test cases" OFF)
+option(APPLICATION_ENABLE_DEVEL "Install developer files" OFF)
+option(APPLICATION_INSTALL "Install this project" ON)
+option(APPLICATION_BUILD_TESTS "Build test cases" OFF)
 
-option(DIFFSCOPE_ENABLE_BREAKPAD "Enable breakpad configuration" OFF)
+option(APPLICATION_ENABLE_BREAKPAD "Enable breakpad configuration" OFF)
 
 # ----------------------------------
 # CMake Settings
@@ -21,7 +21,7 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
 endif()
 
-if(DIFFSCOPE_INSTALL)
+if(APPLICATION_INSTALL)
     include(GNUInstallDirs)
     include(CMakePackageConfigHelpers)
 endif()
@@ -29,8 +29,8 @@ endif()
 # ----------------------------------
 # Project Variables
 # ----------------------------------
-set(DIFFSCOPE_VERSION ${PROJECT_VERSION})
-set(DIFFSCOPE_INSTALL_NAME ${PROJECT_NAME})
+set(APPLICATION_VERSION ${PROJECT_VERSION})
+set(APPLICATION_INSTALL_NAME ${PROJECT_NAME})
 
 # ----------------------------------
 # Find basic dependencies

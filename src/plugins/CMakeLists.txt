@@ -1,7 +1,12 @@
-set(CURRENT_PLUGIN_DESC "DiffScope Application Plugin")
+set(CURRENT_PLUGIN_DESC "${PROJECT_NAME} Application Plugin")
 
-add_subdirectory(coreplugin)
+set(_subdirs)
+qm_get_subdirs(_subdirs
+    EXCLUDE # plugins that will be ignored
+)
 
-add_subdirectory(audioplugin)
-
-add_subdirectory(iemgr)
+foreach(_dir IN LISTS _subdirs)
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${_dir}/plugin.json.in)
+        add_subdirectory(${_dir})
+    endif()
+endforeach()

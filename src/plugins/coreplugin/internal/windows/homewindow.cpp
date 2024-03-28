@@ -1,12 +1,14 @@
 #include "homewindow.h"
 
 #include <QApplication>
+#include <QMessageBox>
 
 #include <QMWidgets/ctabbutton.h>
 #include <QMWidgets/qmequalboxlayout.h>
 #include <QMWidgets/qmdecoratorv2.h>
 
 #include "icore.h"
+#include "appextra.h"
 #include "homerecentwidget.h"
 
 namespace Core::Internal {
@@ -24,14 +26,14 @@ namespace Core::Internal {
         m_navFrame->setTopWidget(m_titleButton);
 
         {
-            m_settingsButton = new CTabButton();
-            m_aboutButton = new CTabButton();
+            m_configureButton = new CTabButton();
+            m_helpButton = new CTabButton();
 
             m_bottomButtonsLayout = new QBoxLayout(QBoxLayout::BottomToTop);
             m_bottomButtonsLayout->setContentsMargins({});
             m_bottomButtonsLayout->setSpacing(0);
-            m_bottomButtonsLayout->addWidget(m_aboutButton);
-            m_bottomButtonsLayout->addWidget(m_settingsButton);
+            m_bottomButtonsLayout->addWidget(m_helpButton);
+            m_bottomButtonsLayout->addWidget(m_configureButton);
 
             m_bottomButtonsFrame = new QFrame();
             m_bottomButtonsFrame->setObjectName("bottom-buttons-widget");
@@ -39,9 +41,9 @@ namespace Core::Internal {
 
             m_navFrame->setBottomWidget(m_bottomButtonsFrame);
 
-            connect(m_settingsButton, &QAbstractButton::clicked, this,
-                    &HomeWindow::_q_settingsButtonClicked);
-            connect(m_aboutButton, &QAbstractButton::clicked, this,
+            connect(m_configureButton, &QAbstractButton::clicked, this,
+                    &HomeWindow::_q_configureButtonClicked);
+            connect(m_helpButton, &QAbstractButton::clicked, this,
                     &HomeWindow::_q_aboutButtonClicked);
         }
 
@@ -67,8 +69,8 @@ namespace Core::Internal {
 
     void HomeWindow::reloadStrings() {
         m_recentWidgetButton->setText(tr("Recent"));
-        m_settingsButton->setText(tr("Settings"));
-        m_aboutButton->setText(tr("About %1").arg(qApp->applicationName()));
+        m_configureButton->setText(tr("Configure"));
+        m_helpButton->setText(tr("Help"));
     }
 
     QLayout *HomeWindow::recentTopLayout() const {
@@ -83,12 +85,30 @@ namespace Core::Internal {
         ICore::instance()->openFile({}, this);
     }
 
-    void HomeWindow::_q_settingsButtonClicked() {
-        ICore::instance()->showSettingsDialog(QStringLiteral("core.Settings"), this);
+    void HomeWindow::_q_configureButtonClicked() {
+        auto menu = AppExtra::createCoreMenu(this);
+        auto pluginsAction = menu->addAction(tr("Plugins"));
+        auto settingsAction = menu->addAction(tr("Settings"));
+        auto action = menu->exec(QCursor::pos());
+        if (action == pluginsAction) {
+            ICore::showPluginsDialog(this);
+        } else if (action == settingsAction) {
+            ICore::showSettingsDialog(QStringLiteral("core.Settings"), this);
+        }
+        menu->deleteLater();
     }
 
     void HomeWindow::_q_aboutButtonClicked() {
-        ICore::aboutApp(this);
+        auto menu = AppExtra::createCoreMenu(this);
+        auto aboutAppAction = menu->addAction(tr("About %1").arg(qApp->applicationName()));
+        auto aboutQtAction = menu->addAction(tr("About Qt"));
+        auto action = menu->exec(QCursor::pos());
+        if (action == aboutAppAction) {
+            AppExtra::aboutApp(this);
+        } else if (action == aboutQtAction) {
+            QMessageBox::aboutQt(this, tr("About Qt"));
+        }
+        menu->deleteLater();
     }
 
     void HomeWindow::_q_openFileRequested(const QString &fileName) {

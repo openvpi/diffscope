@@ -3,7 +3,7 @@
 
 #include <extensionsystem/iplugin.h>
 
-namespace IEMgr ::Internal {
+namespace IEMgr::Internal {
 
     class IEMgrPlugin : public ExtensionSystem::IPlugin {
         Q_OBJECT

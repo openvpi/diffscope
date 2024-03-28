@@ -18,12 +18,20 @@ namespace Core::Internal {
 
         void reloadStrings();
 
-        inline CNavFrame *nav() const {
-            return m_navFrame;
+        inline QAbstractButton *addTab(QWidget *w) {
+            return m_navFrame->addWidget(w);
         }
 
-        inline QLayout *bottomButtonslayout() const {
-            return m_bottomButtonsLayout;
+        inline void removeTab(QWidget *btn) {
+            m_navFrame->removeWidget(btn);
+        }
+
+        inline void addBottomButton(QAbstractButton *button) {
+            m_bottomButtonsLayout->addWidget(button);
+        }
+
+        inline void removeBottomButton(QAbstractButton *button) {
+            m_bottomButtonsLayout->removeWidget(button);
         }
 
         QLayout *recentTopLayout() const;
@@ -31,8 +39,8 @@ namespace Core::Internal {
     protected:
         CNavFrame *m_navFrame;
         QAbstractButton *m_titleButton;
-        QAbstractButton *m_settingsButton;
-        QAbstractButton *m_aboutButton;
+        QAbstractButton *m_configureButton;
+        QAbstractButton *m_helpButton;
 
         QAbstractButton *m_recentWidgetButton;
         HomeRecentWidget *m_recentWidget;
@@ -43,7 +51,7 @@ namespace Core::Internal {
     private:
         void _q_newButtonClicked();
         void _q_openButtonClicked();
-        void _q_settingsButtonClicked();
+        void _q_configureButtonClicked();
         void _q_aboutButtonClicked();
 
         void _q_openFileRequested(const QString &fileName);

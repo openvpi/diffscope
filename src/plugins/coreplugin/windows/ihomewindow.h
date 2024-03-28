@@ -22,7 +22,7 @@ namespace Core {
 
     public:
         QAbstractButton *addTab(QWidget *w);
-        void removeTab(QAbstractButton *btn);
+        void removeTab(QWidget *btn);
 
         void addBottomButton(QAbstractButton *button);
         void removeBottomButton(QAbstractButton *button);

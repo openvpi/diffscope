@@ -14,76 +14,67 @@
 #include <extensionsystem/pluginspec.h>
 
 #include "wizardmanager.h"
+#include "homeaddon.h"
 
-// #include "AddOn/IEMgrAddOn.h"
+#include "midiwizard.h"
+#include "opensvipwizard.h"
+#include "svipwizard.h"
+#include "ustwizard.h"
 
-// #include "iemgr/IManager.h"
+namespace IEMgr::Internal {
 
-// #include "Internal/Wizards/MidiWizard.h"
-// #include "Internal/Wizards/OpenSvipWizard.h"
-// #include "Internal/Wizards/SvipWizard.h"
-// #include "Internal/Wizards/UstWizard.h"
+    static WizardManager *imgr = nullptr;
 
-namespace IEMgr {
+    IEMgrPlugin::IEMgrPlugin() {
+    }
 
-    using namespace Core;
+    IEMgrPlugin::~IEMgrPlugin() {
+    }
 
-    namespace Internal {
+    bool IEMgrPlugin::initialize(const QStringList &arguments, QString *errorMessage) {
+        // Add resources
+        qIDec->addTranslationPath(pluginSpec()->location() + "/translations");
+        qIDec->addThemePath(pluginSpec()->location() + "/themes");
 
-        static WizardManager *imgr = nullptr;
+        auto ir = AppShared::InitRoutine::instance();
+        ir->splash->showMessage(tr("Initializing import/export manager..."));
 
-        IEMgrPlugin::IEMgrPlugin() {
-        }
+        // Init WizardManager instance
+        imgr = new WizardManager(this);
 
-        IEMgrPlugin::~IEMgrPlugin() {
-        }
+        auto icore = Core::ICore::instance();
 
-        bool IEMgrPlugin::initialize(const QStringList &arguments, QString *errorMessage) {
-            // Add resources
-            qIDec->addTranslationPath(pluginSpec()->location() + "/translations");
-            qIDec->addThemePath(pluginSpec()->location() + "/themes");
+        // Add basic actions
+        // auto actionMgr = icore->actionSystem();
+        // if (actionMgr->loadContexts(":/iemgr_actions.xml").isEmpty()) {
+        //     *errorMessage = tr("Failed to load action configuration!");
+        //     return false;
+        // }
 
-            auto ir = AppShared::InitRoutine::instance();
-            ir->splash->showMessage(tr("Initializing import/export manager..."));
+        // Add basic windows and add-ons
+        auto winMgr = icore->windowSystem();
+        winMgr->addAddOn(QStringLiteral("home"), &HomeAddOn::staticMetaObject);
 
-            // Init WizardManager instance
-            imgr = new WizardManager(this);
+        // Add wizards
+        imgr->addWizard(new MidiWizard());
+        imgr->addWizard(new UstWizard());
+        imgr->addWizard(new OpenSvipWizard());
+        imgr->addWizard(new SvipWizard());
 
-            auto icore = ICore::instance();
+        return true;
+    }
 
-            // Add basic actions
-            // auto actionMgr = icore->actionSystem();
-            // if (actionMgr->loadContexts(":/iemgr_actions.xml").isEmpty()) {
-            //     *errorMessage = tr("Failed to load action configuration!");
-            //     return false;
-            // }
+    void IEMgrPlugin::extensionsInitialized() {
+    }
 
-            // Add basic windows and add-ons
-            // auto winMgr = icore->windowSystem();
-            // winMgr->addAddOn({"home", "project"}, &IEMgrAddOn::staticMetaObject);
+    bool IEMgrPlugin::delayedInitialize() {
+        return false;
+    }
 
-            // // Add wizards
-            // imgr->addWizard(new MidiWizard());
-            // imgr->addWizard(new UstWizard());
-            // imgr->addWizard(new OpenSvipWizard());
-            // imgr->addWizard(new SvipWizard());
-
-            return true;
-        }
-
-        void IEMgrPlugin::extensionsInitialized() {
-        }
-
-        bool IEMgrPlugin::delayedInitialize() {
-            return false;
-        }
-
-        // This scope is only to expose strings to Qt translation tool
-        static void _qt_translation_CommandCategory() {
-            QApplication::translate("Core::CommandCategory", "Import");
-            QApplication::translate("Core::CommandCategory", "Export");
-        }
-
+    // This scope is only to expose strings to Qt translation tool
+    static void _qt_translation_CommandCategory() {
+        QApplication::translate("Core::CommandCategory", "Import");
+        QApplication::translate("Core::CommandCategory", "Export");
     }
 
 }
