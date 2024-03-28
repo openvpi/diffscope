@@ -230,6 +230,18 @@ namespace Core {
             descriptionLabel->setText({});
         }
 
+        static QString unescapeAccelerateChar(const QString &s) {
+            QString res;
+            for (const auto &ch : s) {
+                if (ch == '&') {
+                    res += "&&";
+                } else {
+                    res += ch;
+                }
+            }
+            return res;
+        }
+
         void SettingsDialog::showCatalog() {
             auto w = new QFrame();
 
@@ -243,10 +255,12 @@ namespace Core {
 
                 auto btn = new CTabButton();
                 btn->setProperty("id", page->id());
-                btn->setText(page->title());
+                btn->setText(unescapeAccelerateChar(page->title()));
 
                 // Update text
-                connect(page, &ISettingPage::titleChanged, btn, &QAbstractButton::setText);
+                connect(page, &ISettingPage::titleChanged, btn, [btn, page]() {
+                    btn->setText(unescapeAccelerateChar(page->title())); //
+                });
 
                 connect(btn, &QAbstractButton::clicked, this, [this]() {
                     selectPage(sender()->property("id").toString()); //
