@@ -13,7 +13,7 @@
     "Category": "Core",
     "Description": "The audio plugin for DiffScope.",
     "Url": "https://www.baidu.com/",
-    "Required": true,
+    "Required": false,
     "Arguments" : [
         {
             "Name" : "-vst",

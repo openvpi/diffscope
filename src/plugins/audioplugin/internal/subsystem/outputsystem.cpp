@@ -6,8 +6,8 @@
 #include <TalcsDevice/AudioDriverManager.h>
 #include <TalcsDevice/AudioSourcePlayback.h>
 
-#include "icore.h"
-#include "CoreApi/iloader.h"
+#include <icore.h>
+#include <CoreApi/iloader.h>
 
 namespace Audio {
     OutputSystem::OutputSystem(QObject *parent) : QObject(parent) {
@@ -18,8 +18,6 @@ namespace Audio {
     OutputSystem::~OutputSystem() {
     }
     bool OutputSystem::initialize() {
-        if (!Core::ILoader::instance()->settings()->contains("Audio"))
-            Core::ILoader::instance()->settings()->insert("Audio", QJsonObject());
         m_settingObj = std::make_unique<QJsonObject>(Core::ILoader::instance()->settings()->value("Audio").toObject());
         m_adoptedBufferSize = m_settingObj->value("adoptedBufferSize").toInt();
         m_adoptedSampleRate = m_settingObj->value("adoptedSampleRate").toDouble();
@@ -43,9 +41,17 @@ namespace Audio {
             m_dev = std::move(savedDevice);
             postSetDevice(true);
             connect(m_drv, &talcs::AudioDriver::deviceChanged, this, &OutputSystem::handleDeviceHotPlug);
+            qDebug() << "Audio::OutputSystem: initialized from saved device" << m_drv->name() << m_dev->name();
             return true;
         } while (false);
-        return enumerateDevices(false);
+        qDebug() << "Audio::OutputSystem: no saved device, try to enumerate devices";
+        if (enumerateDevices(false)) {
+            qDebug() << "Audio::OutputSystem: initialized by enumerating devices" << m_drv->name() << m_dev->name();
+            return true;
+        } else {
+            qWarning() << "Audio::OutputSystem: fatal: no available device";
+            return false;
+        }
     }
     talcs::AudioDriverManager *OutputSystem::driverManager() const {
         return m_drvMgr;
@@ -55,9 +61,6 @@ namespace Audio {
     }
     talcs::AudioDevice *OutputSystem::device() const {
         return m_dev.get();
-    }
-    talcs::AudioSourcePlayback *OutputSystem::playback() const {
-        return m_playback.get();
     }
     talcs::MixerAudioSource *OutputSystem::preMixer() const {
         return m_preMixer;
@@ -161,6 +164,7 @@ namespace Audio {
         m_hotPlugNotificationMode = mode;
     }
     void OutputSystem::handleDeviceHotPlug() {
+        qDebug() << "Audio::VSTConnectionSystem: hot plug detected";
         switch (m_hotPlugNotificationMode) {
             case Omni:
                 emit deviceHotPlugged();
@@ -187,6 +191,5 @@ namespace Audio {
             m_settingObj->insert("adoptedBufferSize", m_adoptedBufferSize);
         }
         emit deviceChanged();
-
     }
 } // Audio

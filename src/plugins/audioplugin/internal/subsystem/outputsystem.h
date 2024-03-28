@@ -26,7 +26,6 @@ namespace Audio {
         talcs::AudioDriverManager *driverManager() const;
         talcs::AudioDriver *driver() const;
         talcs::AudioDevice *device() const;
-        talcs::AudioSourcePlayback *playback() const;
         talcs::MixerAudioSource *preMixer() const;
 
         bool setDriver(const QString &driverName);
