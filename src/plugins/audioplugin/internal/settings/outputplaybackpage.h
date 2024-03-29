@@ -34,6 +34,10 @@ namespace Audio {
         QComboBox *m_playHeadBehaviorComboBox;
         QCheckBox *m_closeDeviceOnPlaybackStopCheckBox;
         SVS::ExpressionDoubleSpinBox *m_fileBufferSizeMsecSpinBox;
+
+        void updateDriverComboBox();
+        void updateDeviceComboBox();
+        void updateBufferSizeAndSampleRateComboBox();
     };
 
 } // Audio

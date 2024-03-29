@@ -8,8 +8,16 @@
 #include <QGroupBox>
 #include <QPushButton>
 #include <QLabel>
+#include <QMessageBox>
+
+#include <TalcsDevice/AudioDriverManager.h>
+#include <TalcsDevice/AudioDriver.h>
+#include <TalcsDevice/AudioDevice.h>
 
 #include <SVSCraftWidgets/expressiondoublespinbox.h>
+
+#include "audiosystem.h"
+#include "outputsystem.h"
 
 namespace Audio {
     OutputPlaybackPage::OutputPlaybackPage(QObject *parent) : Core::ISettingPage("audio.OutputPlayback", parent) {
@@ -73,11 +81,143 @@ namespace Audio {
         mainLayout->addWidget(fileGroupBox);
         mainLayout->addStretch();
         m_widget->setLayout(mainLayout);
+
+        connect(testDeviceButton, &QPushButton::clicked, this, [=] { AudioSystem::outputSystem()->testDevice(); });
+
+        connect(deviceControlPanelButton, &QPushButton::clicked, this, [=] {
+            if (AudioSystem::outputSystem()->device())
+                AudioSystem::outputSystem()->device()->openControlPanel();
+        });
+
+        updateDriverComboBox();
+
         return m_widget;
     }
     bool OutputPlaybackPage::accept() {
         return true;
     }
     void OutputPlaybackPage::finish() {
+    }
+
+    void OutputPlaybackPage::updateDriverComboBox() {
+        auto outputSys = AudioSystem::outputSystem();
+
+        auto driverList = outputSys->driverManager()->drivers();
+        for (int i = 0; i < driverList.size(); i++) {
+            m_driverComboBox->addItem(OutputSystem::driverDisplayName(driverList[i]), driverList[i]);
+            if (outputSys->driver() && driverList[i] == outputSys->driver()->name())
+                m_driverComboBox->setCurrentIndex(i);
+        }
+        if (!outputSys->driver()) {
+            m_driverComboBox->addItem(tr("(Not working)"));
+            m_driverComboBox->setCurrentIndex(m_driverComboBox->count() - 1);
+        }
+
+        updateDeviceComboBox();
+
+        if (outputSys->driver()) {
+            connect(outputSys->driver(), &talcs::AudioDriver::deviceChanged, this, [=] {
+                disconnect(m_deviceComboBox, nullptr, this, nullptr);
+                m_deviceComboBox->clear();
+                disconnect(m_bufferSizeComboBox, nullptr, this, nullptr);
+                m_bufferSizeComboBox->clear();
+                disconnect(m_sampleRateComboBox, nullptr, this, nullptr);
+                m_sampleRateComboBox->clear();
+                updateDeviceComboBox();
+            });
+        }
+
+        connect(m_driverComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            auto newDrvName = m_driverComboBox->itemData(index).toString();
+            if (newDrvName.isEmpty())
+                return;
+            disconnect(m_deviceComboBox, nullptr, this, nullptr);
+            m_deviceComboBox->clear();
+            disconnect(m_bufferSizeComboBox, nullptr, this, nullptr);
+            m_bufferSizeComboBox->clear();
+            disconnect(m_sampleRateComboBox, nullptr, this, nullptr);
+            m_sampleRateComboBox->clear();
+            if (!outputSys->setDriver(newDrvName)) {
+                QMessageBox::warning(m_widget, {}, tr("Cannot initialize %1 driver!").arg(OutputSystem::driverDisplayName(outputSys->driver()->name())));
+                if (m_driverComboBox->itemData(m_driverComboBox->count() - 1).isNull()) {
+                    m_driverComboBox->setCurrentIndex(m_driverComboBox->count() - 1);
+                } else {
+                    m_driverComboBox->addItem(tr("(Not working)"));
+                    m_driverComboBox->setCurrentIndex(m_driverComboBox->count() - 1);
+                }
+            } else {
+                if (m_driverComboBox->itemData(m_driverComboBox->count() - 1).isNull()) {
+                    m_driverComboBox->removeItem(m_driverComboBox->count() - 1);
+                }
+                updateDeviceComboBox();
+            }
+        });
+    }
+    void OutputPlaybackPage::updateDeviceComboBox() {
+        auto outputSys = AudioSystem::outputSystem();
+        
+        auto deviceList = outputSys->driver()->devices();
+        for (int i = 0; i < deviceList.size(); i++) {
+            m_deviceComboBox->addItem(deviceList[i], deviceList[i]);
+            if (outputSys->device() && deviceList[i] == outputSys->device()->name())
+                m_deviceComboBox->setCurrentIndex(i);
+        }
+        if (!outputSys->device()) {
+            m_deviceComboBox->addItem(tr("(Not working)"));
+            m_deviceComboBox->setCurrentIndex(m_deviceComboBox->count() - 1);
+        }
+        
+        if (outputSys->device()) {
+            updateBufferSizeAndSampleRateComboBox();
+        }
+
+        connect(m_deviceComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            auto newDevName = m_deviceComboBox->itemData(index).toString();
+            if (newDevName.isNull())
+                return;
+            if (!outputSys->setDevice(newDevName)) {
+                for (int i = 0; i < m_deviceComboBox->count(); i++) {
+                    if ((!outputSys->device() && m_deviceComboBox->itemData(i).isNull()) || (outputSys->device() && outputSys->device()->name() == m_deviceComboBox->itemData(i).toString())) {
+                        QSignalBlocker blocker(m_deviceComboBox);
+                        m_deviceComboBox->setCurrentIndex(i);
+                        break;
+                    }
+                }
+                QMessageBox::warning(m_widget, {}, tr("Audio device %1 is not available!").arg(newDevName));
+            } else {
+                if (m_deviceComboBox->itemData(m_deviceComboBox->count() - 1).isNull()) {
+                    m_deviceComboBox->removeItem(m_deviceComboBox->count() - 1);
+                }
+                disconnect(m_bufferSizeComboBox, nullptr, this, nullptr);
+                m_bufferSizeComboBox->clear();
+                disconnect(m_sampleRateComboBox, nullptr, this, nullptr);
+                m_sampleRateComboBox->clear();
+                updateBufferSizeAndSampleRateComboBox();
+            }
+        });
+    }
+    void OutputPlaybackPage::updateBufferSizeAndSampleRateComboBox() {
+        auto outputSys = AudioSystem::outputSystem();
+        
+        auto bufferSizeList = outputSys->device()->availableBufferSizes();
+        for (int i = 0; i < bufferSizeList.size(); i++) {
+            m_bufferSizeComboBox->addItem(QString::number(bufferSizeList[i]), bufferSizeList[i]);
+            if (bufferSizeList[i] == outputSys->adoptedBufferSize())
+                m_bufferSizeComboBox->setCurrentIndex(i);
+        }
+        connect(m_bufferSizeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            auto newBufferSize = m_bufferSizeComboBox->itemData(index).value<qint64>();
+            outputSys->setAdoptedBufferSize(newBufferSize);
+        });
+        auto sampleRateList = outputSys->device()->availableSampleRates();
+        for (int i = 0; i < sampleRateList.size(); i++) {
+            m_sampleRateComboBox->addItem(QString::number(sampleRateList[i]), sampleRateList[i]);
+            if (sampleRateList[i] == outputSys->adoptedSampleRate())
+                m_sampleRateComboBox->setCurrentIndex(i);
+        }
+        connect(m_sampleRateComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+            auto newSampleRate = m_sampleRateComboBox->itemData(index).value<double>();
+            outputSys->setAdoptedSampleRate(newSampleRate);
+        });
     }
 } // Audio

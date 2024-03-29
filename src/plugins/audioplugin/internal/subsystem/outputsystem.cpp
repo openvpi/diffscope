@@ -66,6 +66,7 @@ namespace Audio {
         return m_preMixer;
     }
     bool OutputSystem::setDriver(const QString &driverName) {
+        // Note: If this function fails, m_drv will become null.
         if (driverName == m_drv->name())
             return true;
         m_dev.reset();
@@ -81,6 +82,7 @@ namespace Audio {
         return enumerateDevices(true);
     }
     bool OutputSystem::setDevice(const QString &deviceName) {
+        // Note: If this function fails, m_dev will remain the previous one.
         std::unique_ptr<talcs::AudioDevice> currentDevice;
         currentDevice.reset(m_drv->createDevice(deviceName));
         if (!currentDevice || !currentDevice->isInitialized())
@@ -109,10 +111,12 @@ namespace Audio {
             std::unique_ptr<talcs::AudioDevice> currentDevice;
             if (i >= m_drv->devices().size())
                 return false;
-            if (i == -1 && !m_drv->defaultDevice().isEmpty())
-                currentDevice.reset(m_drv->createDevice(m_drv->defaultDevice()));
-            else
+            if (i == -1) {
+                if (!m_drv->defaultDevice().isEmpty())
+                    currentDevice.reset(m_drv->createDevice(m_drv->defaultDevice()));
+            } else {
                 currentDevice.reset(m_drv->createDevice(m_drv->devices()[i]));
+            }
             if (!currentDevice || !currentDevice->isInitialized())
                 continue;
             auto savedBufferSize = m_adoptedBufferSize == 0 ? currentDevice->preferredBufferSize() : m_adoptedBufferSize;
