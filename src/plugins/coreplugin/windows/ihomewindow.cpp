@@ -35,21 +35,20 @@ namespace Core {
         return static_cast<Internal::HomeWindow *>(window())->removeTab(btn);
     }
 
-    void IHomeWindow::addBottomButton(QAbstractButton *button) {
-        static_cast<Internal::HomeWindow *>(window())->addBottomButton(button);
+    void IHomeWindow::addNavButton(QAbstractButton *button) {
+        static_cast<Internal::HomeWindow *>(window())->addNavButton(button);
     }
 
-    void IHomeWindow::removeBottomButton(QAbstractButton *button) {
-        static_cast<Internal::HomeWindow *>(window())->removeBottomButton(button);
+    void IHomeWindow::removeNavButton(QAbstractButton *button) {
+        static_cast<Internal::HomeWindow *>(window())->removeNavButton(button);
     }
 
-    void IHomeWindow::addRecentTopButton(QAbstractButton *button) {
-        return static_cast<Internal::HomeWindow *>(window())->recentTopLayout()->addWidget(button);
+    void IHomeWindow::addFileButton(QAbstractButton *button) {
+        return static_cast<Internal::HomeWindow *>(window())->addFileButton(button);
     }
 
-    void IHomeWindow::removeRecentTopButton(QAbstractButton *button) {
-        return static_cast<Internal::HomeWindow *>(window())->recentTopLayout()->removeWidget(
-            button);
+    void IHomeWindow::removeFileButton(QAbstractButton *button) {
+        return static_cast<Internal::HomeWindow *>(window())->removeFileButton(button);
     }
 
     QString IHomeWindow::correctWindowTitle(const QString &title) const {

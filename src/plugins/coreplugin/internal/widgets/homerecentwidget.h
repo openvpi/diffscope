@@ -27,21 +27,15 @@ namespace Core::Internal {
     public:
         void reloadStrings();
 
-        Q_INVOKABLE QAbstractButton *addButton(const QString &id);
-        Q_INVOKABLE void removeButton(const QString &id);
+        void addButton(QAbstractButton *btn);
+        void removeButton(QAbstractButton *btn);
 
     Q_SIGNALS:
-        void newRequested();
-        void openRequested();
         void textChanged(const QString &text);
 
     protected:
-        CTabButton *newButton;
-        CTabButton *openButton;
         QLineEdit *searchBox;
-
         QMEqualBoxLayout *topLayout;
-        QHash<QString, QAbstractButton *> externButtons;
     };
 
     class HomeRecentBottomFrame : public CBasicFrame {

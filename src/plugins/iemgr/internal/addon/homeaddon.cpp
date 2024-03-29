@@ -14,13 +14,12 @@ namespace IEMgr::Internal {
     HomeAddOn::HomeAddOn(QObject *parent) : Core::IWindowAddOn(parent) {
     }
 
-    HomeAddOn::~HomeAddOn() {
-    }
+    HomeAddOn::~HomeAddOn() = default;
 
     void HomeAddOn::initialize() {
         importButton = new CTabButton();
         connect(importButton, &QAbstractButton::clicked, this, &HomeAddOn::_q_importButtonClicked);
-        windowHandle()->cast<Core::IHomeWindow>()->addRecentTopButton(importButton);
+        windowHandle()->cast<Core::IHomeWindow>()->addFileButton(importButton);
 
         qIDec->installLocale(this, _LOC(HomeAddOn, this));
     }

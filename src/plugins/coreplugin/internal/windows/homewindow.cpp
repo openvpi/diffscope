@@ -51,12 +51,6 @@ namespace Core::Internal {
         m_recentWidget = new HomeRecentWidget();
         m_recentWidgetButton = m_navFrame->addWidget(m_recentWidget);
 
-        auto recentTopWidget = m_recentWidget->topWidget;
-        connect(recentTopWidget, &HomeRecentTopFrame::newRequested, this,
-                &HomeWindow::_q_newButtonClicked);
-        connect(recentTopWidget, &HomeRecentTopFrame::openRequested, this,
-                &HomeWindow::_q_openButtonClicked);
-
         auto recentBottomWidget = m_recentWidget->bottomWidget;
         connect(recentBottomWidget, &HomeRecentBottomFrame::openFileRequested, this,
                 &HomeWindow::_q_openFileRequested);
@@ -73,8 +67,12 @@ namespace Core::Internal {
         m_helpButton->setText(tr("Help"));
     }
 
-    QLayout *HomeWindow::recentTopLayout() const {
-        return m_recentWidget->topWidget->layout();
+    void HomeWindow::addFileButton(QAbstractButton *button) {
+        m_recentWidget->topWidget->addButton(button);
+    }
+
+    void HomeWindow::removeFileButton(QAbstractButton *button) {
+        m_recentWidget->topWidget->removeButton(button);
     }
 
     void HomeWindow::_q_newButtonClicked() {

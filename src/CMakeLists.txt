@@ -61,7 +61,7 @@ endif()
 ck_finish_buildsystem()
 
 # Deploy
-if(APPLICATION_INSTALL AND NOT APPLICATION_ENABLE_DEVEL)
+if(APPLICATION_INSTALL)
     qm_find_qt(Core)
 
     set(_plugins)

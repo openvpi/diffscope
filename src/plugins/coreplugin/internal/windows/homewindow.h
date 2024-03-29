@@ -22,19 +22,20 @@ namespace Core::Internal {
             return m_navFrame->addWidget(w);
         }
 
-        inline void removeTab(QWidget *btn) {
-            m_navFrame->removeWidget(btn);
+        inline void removeTab(QWidget *w) {
+            m_navFrame->removeWidget(w);
         }
 
-        inline void addBottomButton(QAbstractButton *button) {
+        inline void addNavButton(QAbstractButton *button) {
             m_bottomButtonsLayout->addWidget(button);
         }
 
-        inline void removeBottomButton(QAbstractButton *button) {
+        inline void removeNavButton(QAbstractButton *button) {
             m_bottomButtonsLayout->removeWidget(button);
         }
 
-        QLayout *recentTopLayout() const;
+        void addFileButton(QAbstractButton *button);
+        void removeFileButton(QAbstractButton *button);
 
     protected:
         CNavFrame *m_navFrame;

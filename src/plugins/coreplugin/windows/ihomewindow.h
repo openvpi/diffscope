@@ -24,11 +24,11 @@ namespace Core {
         QAbstractButton *addTab(QWidget *w);
         void removeTab(QWidget *btn);
 
-        void addBottomButton(QAbstractButton *button);
-        void removeBottomButton(QAbstractButton *button);
+        void addNavButton(QAbstractButton *button);
+        void removeNavButton(QAbstractButton *button);
 
-        void addRecentTopButton(QAbstractButton *button);
-        void removeRecentTopButton(QAbstractButton *button);
+        void addFileButton(QAbstractButton *button);
+        void removeFileButton(QAbstractButton *button);
 
     protected:
         QString correctWindowTitle(const QString &title) const override;

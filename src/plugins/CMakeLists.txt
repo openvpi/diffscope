@@ -6,7 +6,7 @@ qm_get_subdirs(_subdirs
 )
 
 foreach(_dir IN LISTS _subdirs)
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${_dir}/plugin.json.in)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${_dir}/plugin.json.in")
         add_subdirectory(${_dir})
     endif()
 endforeach()

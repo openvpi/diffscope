@@ -27,57 +27,29 @@ namespace Core::Internal {
 
         AppExtra::autoPolishPopupMenu(searchBox);
 
-        newButton = new CTabButton();
-        newButton->setProperty("type", "top-button");
-        newButton->setObjectName("new-button");
-
-        openButton = new CTabButton();
-        openButton->setProperty("type", "top-button");
-        openButton->setObjectName("open-button");
-
         topLayout = new QMEqualBoxLayout(QBoxLayout::LeftToRight);
         topLayout->setMargin(0);
         topLayout->setSpacing(0);
-
         topLayout->addWidget(searchBox);
-        topLayout->addWidget2(newButton);
-        topLayout->addWidget2(openButton);
-
         setLayout(topLayout);
+        connect(searchBox, &QLineEdit::textChanged, this, &HomeRecentTopFrame::textChanged);
 
         qIDec->installLocale(this, _LOC(HomeRecentTopFrame, this));
-
-        connect(newButton, &QAbstractButton::clicked, this, &HomeRecentTopFrame::newRequested);
-        connect(openButton, &QAbstractButton::clicked, this, &HomeRecentTopFrame::openRequested);
-        connect(searchBox, &QLineEdit::textChanged, this, &HomeRecentTopFrame::textChanged);
     }
 
     HomeRecentTopFrame::~HomeRecentTopFrame() {
     }
 
     void HomeRecentTopFrame::reloadStrings() {
-        newButton->setText(tr("New"));
-        openButton->setText(tr("Open"));
         searchBox->setPlaceholderText(tr("Search for files"));
     }
 
-    QAbstractButton *HomeRecentTopFrame::addButton(const QString &id) {
-        if (externButtons.contains(id)) {
-            return nullptr;
-        }
-        auto btn = new CTabButton();
-        btn->setProperty("type", "top-button");
-        topLayout->addWidget(btn);
-        externButtons.insert(id, btn);
-        return btn;
+    void HomeRecentTopFrame::addButton(QAbstractButton *btn) {
+        topLayout->addWidget2(btn);
     }
 
-    void HomeRecentTopFrame::removeButton(const QString &id) {
-        auto btn = externButtons.value(id, nullptr);
-        if (btn) {
-            btn->deleteLater();
-            externButtons.remove(id);
-        }
+    void HomeRecentTopFrame::removeButton(QAbstractButton *btn) {
+        topLayout->removeWidget(btn);
     }
 
     /**
