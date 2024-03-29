@@ -1,6 +1,8 @@
 #ifndef BASEENTITY_H
 #define BASEENTITY_H
 
+#include <QPoint>
+
 #include <qsubstate/sheetentity.h>
 #include <qsubstate/structentity.h>
 
