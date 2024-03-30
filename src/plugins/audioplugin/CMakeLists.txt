@@ -25,7 +25,7 @@ qm_find_qt(LinguistTools)
 qm_add_translation(${PROJECT_NAME}_translations
     PREFIX Audio
     TARGETS ${PROJECT_NAME}
-    LOCALES zh_CN zh_HK ja_JP
+    LOCALES zh_CN zh_TW ja_JP
     TS_DIR res/translations
     QM_DIR ${CMAKE_CURRENT_BINARY_DIR}/res/translations
     TS_DEPENDS ChorusKit_UpdateTranslations

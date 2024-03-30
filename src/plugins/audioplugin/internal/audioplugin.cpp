@@ -40,10 +40,10 @@ namespace Audio {
 
         new AudioSystem(this);
         if (!AudioSystem::outputSystem()->initialize()) {
-            QMessageBox::critical(ir->splash, tr("Error"), tr("Cannot initialize audio output system!"));
+            QMessageBox::critical(ir->splash, {}, tr("Cannot initialize audio output system!"));
         }
         if (!AudioSystem::vstConnectionSystem()->initialize()) {
-            QMessageBox::critical(ir->splash, tr("Error"), tr("Cannot initialize vst connection system!"));
+            QMessageBox::critical(ir->splash, {}, tr("Cannot initialize vst connection system!"));
         }
 
         auto sc = Core::ICore::instance()->settingCatalog();

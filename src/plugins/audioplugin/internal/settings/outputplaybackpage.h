@@ -13,6 +13,7 @@ namespace SVS {
 namespace Audio {
 
     class OutputPlaybackPage : public Core::ISettingPage {
+        Q_OBJECT
     public:
         explicit OutputPlaybackPage(QObject *parent = nullptr);
         ~OutputPlaybackPage() override;

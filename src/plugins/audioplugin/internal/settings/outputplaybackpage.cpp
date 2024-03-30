@@ -67,7 +67,7 @@ namespace Audio {
             tr("Start position"),
             tr("End position"),
         });
-        playbackLayout->addRow("After Playback is Stopped, &Move the Play Head to", m_playHeadBehaviorComboBox);
+        playbackLayout->addRow(tr("After Playback is Stopped, &Move the Play Head to"), m_playHeadBehaviorComboBox);
         m_closeDeviceOnPlaybackStopCheckBox = new QCheckBox(tr("&Close Audio Device When Playback is Stopped"));
         playbackLayout->addRow(m_closeDeviceOnPlaybackStopCheckBox);
         playbackGroupBox->setLayout(playbackLayout);
