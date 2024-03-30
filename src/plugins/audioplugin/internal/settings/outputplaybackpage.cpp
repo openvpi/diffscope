@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QMessageBox>
+#include <QDebug>
 
 #include <TalcsDevice/AudioDriverManager.h>
 #include <TalcsDevice/AudioDriver.h>
@@ -26,7 +27,7 @@ namespace Audio {
     }
     OutputPlaybackPage::~OutputPlaybackPage() = default;
     QString OutputPlaybackPage::sortKeyword() const {
-        return ISettingPage::sortKeyword();
+        return QStringLiteral("OutputPlayback");
     }
     QWidget *OutputPlaybackPage::widget() {
         m_widget = new QWidget;
@@ -82,7 +83,15 @@ namespace Audio {
         mainLayout->addStretch();
         m_widget->setLayout(mainLayout);
 
-        connect(testDeviceButton, &QPushButton::clicked, this, [=] { AudioSystem::outputSystem()->testDevice(); });
+        auto outputSys = AudioSystem::outputSystem();
+
+        connect(testDeviceButton, &QPushButton::clicked, this, [=] {
+            if (!outputSys->makeReady()) {
+                QMessageBox::critical(m_widget, {}, tr("Cannot start audio playback!"));
+            } else {
+                outputSys->testDevice();
+            }
+        });
 
         connect(deviceControlPanelButton, &QPushButton::clicked, this, [=] {
             if (AudioSystem::outputSystem()->device())

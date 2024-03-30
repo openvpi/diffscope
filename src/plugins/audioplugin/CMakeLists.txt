@@ -41,11 +41,12 @@ ck_add_attached_files(${PROJECT_NAME}
 
 # Add install command
 ck_sync_include(${PROJECT_NAME}
-    OPTIONS EXCLUDE "internal/.+"
+    OPTIONS EXCLUDE "internal/.+" FORCE
 )
 
 ck_sync_include(${PROJECT_NAME}
     DIRECTORY internal
     PREFIX "${PROJECT_NAME}/internal"
     SKIP_INSTALL
+    OPTIONS FORCE
 )

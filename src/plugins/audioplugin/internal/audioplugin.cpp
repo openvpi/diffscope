@@ -15,6 +15,7 @@
 #include "vstconnectionsystem.h"
 #include "audiopage.h"
 #include "outputplaybackpage.h"
+#include "vstmodepage.h"
 
 namespace Audio {
 
@@ -33,6 +34,10 @@ namespace Audio {
             AudioSystem::vstConnectionSystem()->setApplicationInitializing(true);
         }
 
+        auto settings = Core::ILoader::instance()->settings();
+        if (!settings->contains("Audio"))
+            settings->insert("Audio", QJsonObject());
+
         new AudioSystem(this);
         if (!AudioSystem::outputSystem()->initialize()) {
             QMessageBox::critical(ir->splash, tr("Error"), tr("Cannot initialize audio output system!"));
@@ -44,6 +49,7 @@ namespace Audio {
         auto sc = Core::ICore::instance()->settingCatalog();
         auto audioPage = new AudioPage;
         audioPage->addPage(new OutputPlaybackPage);
+        audioPage->addPage(new VSTModePage);
         sc->addPage(audioPage);
         return true;
     }

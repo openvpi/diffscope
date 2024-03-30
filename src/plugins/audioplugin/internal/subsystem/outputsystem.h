@@ -3,19 +3,18 @@
 
 #include <memory>
 
-#include <QObject>
+#include "abstractoutputsystem.h"
 
 namespace talcs {
-    class AudioDevice;
     class AudioDriver;
     class AudioDriverManager;
-    class AudioSourcePlayback;
-    class MixerAudioSource;
 }
 
 namespace Audio {
 
-    class OutputSystem : public QObject {
+    class AudioDeviceTesterAudioSource;
+
+    class OutputSystem : public AbstractOutputSystem {
         Q_OBJECT
     public:
         explicit OutputSystem(QObject *parent = nullptr);
@@ -25,7 +24,7 @@ namespace Audio {
 
         talcs::AudioDriverManager *driverManager() const;
         talcs::AudioDriver *driver() const;
-        talcs::AudioDevice *device() const;
+        talcs::AudioDevice *device() const override;
         talcs::MixerAudioSource *preMixer() const;
 
         bool setDriver(const QString &driverName);
@@ -37,7 +36,7 @@ namespace Audio {
         double adoptedSampleRate() const;
         void setAdoptedSampleRate(double sampleRate);
 
-        void testDevice();
+        bool makeReady() override;
 
         static QString driverDisplayName(const QString &driverName);
 
@@ -50,22 +49,15 @@ namespace Audio {
         void setHotPlugNotificationMode(HotPlugNotificationMode mode);
 
     Q_SIGNALS:
-        void adoptedBufferSizeChanged(qint64 bufferSize);
-        void adoptedSampleRateChanged(double sampleRate);
-        void deviceChanged();
         void deviceHotPlugged();
 
     private:
         talcs::AudioDriverManager *m_drvMgr;
         talcs::AudioDriver *m_drv = nullptr;
         std::unique_ptr<talcs::AudioDevice> m_dev;
-        talcs::MixerAudioSource *m_preMixer;
-        std::unique_ptr<talcs::AudioSourcePlayback> m_playback;
 
         qint64 m_adoptedBufferSize = 0;
         double m_adoptedSampleRate = 0.0;
-
-        std::unique_ptr<QJsonObject> m_settingObj;
 
         HotPlugNotificationMode m_hotPlugNotificationMode = Omni;
 

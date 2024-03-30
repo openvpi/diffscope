@@ -14,11 +14,9 @@
 #include <CoreApi/iloader.h>
 
 namespace Audio {
-    VSTConnectionSystem::VSTConnectionSystem(QObject *parent) : QObject(parent) {
+    VSTConnectionSystem::VSTConnectionSystem(QObject *parent) : AbstractOutputSystem(parent) {
     }
     VSTConnectionSystem::~VSTConnectionSystem() {
-        m_preMixer = new talcs::MixerAudioSource(this);
-        m_playback = std::make_unique<talcs::AudioSourcePlayback>(m_preMixer, false, false);
     }
     bool VSTConnectionSystem::initialize() {
         auto vstConfigPath = qAppExt->appDataDir() + "/vstconfig.json";
@@ -28,13 +26,15 @@ namespace Audio {
             qWarning() << "Audio::VSTConnectionSystem: fatal: cannot open VST config file";
             return false;
         }
-        auto settingObj = std::make_unique<QJsonObject>(Core::ILoader::instance()->settings()->value("Audio").toObject());
-        if (!settingObj->contains("vstEditorPort"))
-            settingObj->insert("vstEditorPort", 28081);
-        if (!settingObj->contains("vstPluginPort"))
-            settingObj->insert("vstPluginPort", 28082);
-        auto editorPort = settingObj->value("vstEditorPort").toInt();
-        auto pluginPort = settingObj->value("vstPluginPort").toInt();
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        if (!obj.contains("vstEditorPort"))
+            obj.insert("vstEditorPort", 28081);
+        if (!obj.contains("vstPluginPort"))
+            obj.insert("vstPluginPort", 28082);
+        settings["Audio"] = obj;
+        auto editorPort = obj["vstEditorPort"].toInt();
+        auto pluginPort = obj["vstPluginPort"].toInt();
         QJsonDocument doc({
             {"editor",      QApplication::applicationFilePath()},
             {"editorPort",  editorPort                 },
@@ -71,14 +71,33 @@ namespace Audio {
     talcs::RemoteSocket *VSTConnectionSystem::socket() const {
         return m_socket;
     }
-    talcs::RemoteAudioDevice *VSTConnectionSystem::device() const {
+    talcs::AudioDevice *VSTConnectionSystem::device() const {
         return m_dev;
     }
-    talcs::MixerAudioSource *VSTConnectionSystem::preMixer() const {
-        return m_preMixer;
+    talcs::RemoteAudioDevice *VSTConnectionSystem::remoteAudioDevice() const {
+        return m_dev;
     }
-    void VSTConnectionSystem::testDevice() {
-        // TODO
+    talcs::RemoteEditor *VSTConnectionSystem::remoteEditor() const {
+        return m_editor;
+    }
+    bool VSTConnectionSystem::makeReady() {
+        if (!m_dev) {
+            qWarning() << "Audio::VSTConnectionSystem: fatal: cannot make ready because device is null";
+            return false;
+        }
+        if (!m_dev->isOpen()) {
+            qWarning() << "Audio::OutputSystem: fatal: cannot make ready because device is not opened by remote host";
+            return false;
+        }
+        if (!m_preMixer->isOpen() && !m_preMixer->open(m_dev->bufferSize(), m_dev->sampleRate())) {
+            qWarning() << "Audio::OutputSystem: fatal: cannot make ready because cannot open pre-mixer";
+            return false;
+        }
+        if (!m_dev->isStarted() && !m_dev->start(m_playback.get())) {
+            qWarning() << "Audio::OutputSystem: fatal: cannot make ready because cannot start audio device";
+            return false;
+        }
+        return true;
     }
     void VSTConnectionSystem::setVSTAddOn(VSTAddOn *addOn) {
         m_vstAddOn = addOn;
@@ -97,12 +116,12 @@ namespace Audio {
         auto oldSampleRate = m_dev->sampleRate();
         m_dev->open(bufferSize, sampleRate);
         if (bufferSize != oldBufferSize) {
-            emit remoteBufferSizeChanged(bufferSize);
+            emit bufferSizeChanged(bufferSize);
         }
         if (!qFuzzyCompare(sampleRate, oldSampleRate)) {
-            emit remoteSampleRateChanged(sampleRate);
+            emit sampleRateChanged(sampleRate);
         }
         m_preMixer->open(bufferSize, sampleRate);
-        emit deviceRemoteOpenedHandled();
+        emit deviceChanged();
     }
 } // Audio
