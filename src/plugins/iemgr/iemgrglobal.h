@@ -4,9 +4,9 @@
 #include <QtGlobal>
 
 #if defined(IEMGR_LIBRARY)
-#    define IEMGR_EXPORT Q_DECL_EXPORT
+#  define IEMGR_EXPORT Q_DECL_EXPORT
 #else
-#    define IEMGR_EXPORT Q_DECL_IMPORT
+#  define IEMGR_EXPORT Q_DECL_IMPORT
 #endif
 
 #endif // IEMGRGLOBAL_H

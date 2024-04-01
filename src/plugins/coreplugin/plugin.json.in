@@ -11,7 +11,7 @@
         "Apache 2.0"
     ],
     "Category": "Core",
-    "Description": "The core plugin for DiffScope.",
+    "Description": "The core plugin for @APPLICATION_INSTALL_NAME@.",
     "Url": "https://www.baidu.com/",
     "Required": true
 }
