@@ -9,9 +9,9 @@
 #  include <QBreakpadHandler.h>
 #endif
 
-#include <QMCore/QMSystem.h>
-#include <QMWidgets/QMAppExtension.h>
-#include <QMWidgets/QMDecoratorV2.h>
+#include <QMCore/qmsystem.h>
+#include <QMWidgets/qmappextension.h>
+#include <QMWidgets/qmdecoratorv2.h>
 
 #include <CoreApi/iloader.h>
 

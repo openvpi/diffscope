@@ -1,7 +1,7 @@
 #ifndef CHORUSKIT_ACTIONCONFIGUREPAGE_H
 #define CHORUSKIT_ACTIONCONFIGUREPAGE_H
 
-#include <CoreApi/ISettingPage.h>
+#include <CoreApi/isettingpage.h>
 
 namespace Core::Internal {
 

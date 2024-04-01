@@ -1,7 +1,7 @@
 #include "iwizard.h"
 #include "iwizard_p.h"
 
-#include <QMCore/QMSystem.h>
+#include <QMCore/qmsystem.h>
 
 #include <coreplugin/appextra.h>
 

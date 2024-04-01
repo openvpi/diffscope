@@ -1,7 +1,7 @@
 #ifndef CHORUSKIT_APPEARANCETOPPAGE_H
 #define CHORUSKIT_APPEARANCETOPPAGE_H
 
-#include <CoreApi/ISettingPage.h>
+#include <CoreApi/isettingpage.h>
 
 namespace Core::Internal {
 

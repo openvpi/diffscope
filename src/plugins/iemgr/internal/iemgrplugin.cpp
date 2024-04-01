@@ -3,15 +3,16 @@
 #include <QApplication>
 #include <QThread>
 
-#include <QMCore/QMSystem.h>
-#include <QMWidgets/QMDecoratorV2.h>
+#include <QMCore/qmsystem.h>
+#include <QMWidgets/qmdecoratorv2.h>
 
-#include <CoreApi/ILoader.h>
+#include <extensionsystem/pluginspec.h>
+
+#include <CoreApi/iloader.h>
 
 #include <appshared/initroutine.h>
 
-#include <coreplugin/ICore.h>
-#include <extensionsystem/pluginspec.h>
+#include <coreplugin/icore.h>
 
 #include "wizardmanager.h"
 #include "homeaddon.h"

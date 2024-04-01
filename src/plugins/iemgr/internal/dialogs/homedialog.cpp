@@ -8,9 +8,9 @@
 #include <QMWidgets/clineedit.h>
 #include <QMWidgets/ctabbutton.h>
 
-#include <CoreApi/ILoader.h>
+#include <CoreApi/iloader.h>
 
-#include <coreplugin/ICore.h>
+#include <coreplugin/icore.h>
 
 #include "wizardmanager.h"
 

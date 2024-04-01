@@ -3,7 +3,7 @@
 
 #include <QVersionNumber>
 
-#include <CoreApi/DocumentSpec.h>
+#include <CoreApi/documentspec.h>
 
 #include <coreplugin/coreglobal.h>
 

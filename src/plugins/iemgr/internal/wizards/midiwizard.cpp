@@ -6,7 +6,7 @@
 #include <cmath>
 #include <set>
 
-#include <coreplugin/ICore.h>
+#include <coreplugin/icore.h>
 
 namespace IEMgr ::Internal {
 

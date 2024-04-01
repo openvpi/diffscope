@@ -1,4 +1,4 @@
-#include "HomeRecentWidget.h"
+#include "homerecentwidget.h"
 
 #include <QDateTime>
 #include <QDir>
@@ -13,7 +13,7 @@
 #include <QMWidgets/qmsvgx.h>
 
 #include "icore.h"
-#include "AppExtra.h"
+#include "appextra.h"
 
 namespace Core::Internal {
 

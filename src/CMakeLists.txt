@@ -92,9 +92,16 @@ if(APPLICATION_INSTALL)
         set(_)
     endif()
 
+    if (APPLE)
+        set(_plugin_dir )
+    else()
+        set(_plugin_dir lib/Qt/plugins)
+    endif()
+
     qm_deploy_directory(${CMAKE_INSTALL_PREFIX}
         PLUGINS ${_plugins}
-        PLUGIN_DIR lib/Qt/plugins
+        LIBRARY_DIR ${CK_INSTALL_LIBRARY_DIR}
+        PLUGIN_DIR ${CK_INSTALL_LIBRARY_DIR}/Qt/plugins
         WIN_SEARCHING_PATHS ${CK_BUILD_RUNTIME_DIR}
         VERBOSE
     )

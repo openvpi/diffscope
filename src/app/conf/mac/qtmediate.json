@@ -4,11 +4,11 @@
     "Share": "Resources",
     "Plugins": [],
     "Translations": [
-        "Resources/ChorusKit/translations",
-        "share/svscraft/translations"
+        "Resources/share/ChorusKit/translations",
+        "Resources/share/svscraft/translations"
     ],
     "Themes": [
-        "Resources/ChorusKit/themes"
+        "Resources/share/ChorusKit/themes"
     ],
     "AppFont": {
         "Size": 12

@@ -1,8 +1,9 @@
 #ifndef CHORUSKIT_DISPLAYPAGE_H
 #define CHORUSKIT_DISPLAYPAGE_H
 
-#include <CoreApi/ISettingPage.h>
 #include <QFont>
+
+#include <CoreApi/isettingpage.h>
 
 namespace Core::Internal {
 

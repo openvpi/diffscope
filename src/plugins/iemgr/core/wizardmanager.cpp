@@ -4,7 +4,7 @@
 
 #include <QMCore/qmchronomap.h>
 
-#include <coreplugin/ICore.h>
+#include <coreplugin/icore.h>
 
 #include "homedialog.h"
 
