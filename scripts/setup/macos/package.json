@@ -1,0 +1,9 @@
+{
+  "name": "diffscope-setup-macos",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "appdmg": "^0.6.6"
+  }
+}
