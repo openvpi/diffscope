@@ -33,3 +33,6 @@
 [submodule "jetbrains-docking-system"]
 	path = libs/jetbrains-docking-system
 	url = ../../stdware/jetbrains-docking-system.git
+[submodule "scripts/setup/diffscope-bridge"]
+	path = scripts/setup/diffscope-bridge
+	url = git@github.com:CrSjimo/diffscope-bridge.git

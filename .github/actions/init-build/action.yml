@@ -1,0 +1,130 @@
+name: Initialize Building Environment
+description: Initialize Building Environment
+inputs:
+  os:
+    description: OS
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup devcmd
+      if: inputs.os == 'windows-latest'
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Install build tools (Windows)
+      if: inputs.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        if ((Get-Command "ninja.exe" -ErrorAction SilentlyContinue) -eq $null)
+        {
+           choco install ninja
+        }
+        where.exe ninja
+        ninja --version
+        Write-Output VCPKG_TRIPLET=x64-windows >> $env:GITHUB_ENV
+        Write-Output QT_ARCH=win64_msvc2019_64 >> $env:GITHUB_ENV
+
+    - name: Install build tools (Ubuntu)
+      if: inputs.os == 'ubuntu-latest'
+      shell: pwsh
+      run: |
+        sudo apt update
+        sudo apt-get -y install ninja-build
+        Write-Output VCPKG_TRIPLET=x64-linux >> $env:GITHUB_ENV
+        Write-Output QT_ARCH=gcc_64 >> $env:GITHUB_ENV
+
+    - name: Install build tools (MacOS)
+      if: inputs.os == 'macos-latest'
+      shell: pwsh
+      env:
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: |
+        brew update
+        brew install ninja
+        Write-Output VCPKG_TRIPLET=x64-osx >> $env:GITHUB_ENV
+        Write-Output QT_ARCH=clang_64 >> $env:GITHUB_ENV
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '5.15.2'
+        archives: ${{ inputs.os == 'ubuntu-latest' && 'icu qtbase' || 'qtbase' }}
+        cache: true
+
+    - name: Restore vcpkg from cache
+      id: cache_vcpkg
+      uses: actions/cache/restore@v3
+      with:
+        path: ${{ github.workspace }}/vcpkg
+        key: ${{ runner.os }}-vcpkg
+
+    - name: Clone and bootstrap vcpkg if cache misses
+      if: steps.cache_vcpkg.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
+
+    - name: Install vcpkg dependencies
+      shell: pwsh
+      run: |
+        ./vcpkg install `
+          --x-manifest-root=${{ github.workspace }}/scripts/vcpkg-manifest `
+          --x-install-root=./installed `
+          --triplet=${{ env.VCPKG_TRIPLET }}
+        Remove-Item -Path buildtrees -Recurse -Force
+        Remove-Item -Path downloads -Recurse -Force
+        Remove-Item -Path packages -Recurse -Force
+
+    - name: Save vcpkg to cache
+      uses: actions/cache/save@v3
+      with:
+        path: ${{ github.workspace }}/vcpkg
+        key: ${{ runner.os }}-vcpkg-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg
+
+    - name: Restore ASIO SDK from cache
+      id: cache_asiosdk
+      if: inputs.os == 'windows-latest'
+      uses: actions/cache/restore@v3
+      with:
+        path: ${{github.workspace}}/asiosdk
+        key: asiosdk
+
+    - name: Get ASIO SDK
+      if: inputs.os == 'windows-latest' && steps.cache_asiosdk.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip -OutFile $env:RUNNER_TEMP/asiosdk.zip
+        Expand-Archive -Path $env:RUNNER_TEMP/asiosdk.zip -DestinationPath $env:GITHUB_WORKSPACE
+        Rename-Item -Path asiosdk_2.3.3_2019-06-14 -NewName asiosdk
+
+    - name: Save ASIO SDK to cache
+      if: inputs.os == 'windows-latest' && steps.cache_asiosdk.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+      with:
+        path: ${{github.workspace}}/asiosdk
+        key: asiosdk
+
+    - name: Set directory variables
+      shell: pwsh
+      run: |
+        mv vcpkg ..
+        Write-Output VCPKG_ROOT_DIR=$(Resolve-Path -Path ../vcpkg) >> $env:GITHUB_ENV
+
+    - name: Set ASIO SDK directory variable (Windows)
+      if: inputs.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        mv asiosdk ..
+        Write-Output ASIOSDK_DIR=$(Resolve-Path -Path ../asiosdk) >> $env:GITHUB_ENV
+
+    - name: Set ASIO SDK directory variable (Non-Windows)
+      if: inputs.os != 'windows-latest'
+      shell: pwsh
+      run: |
+        Write-Output ASIOSDK_DIR= >> $env:GITHUB_ENV
