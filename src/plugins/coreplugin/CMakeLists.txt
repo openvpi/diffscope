@@ -1,4 +1,4 @@
-project(coreplugin VERSION 0.1.0.0)
+project(coreplugin VERSION ${APPLICATION_VERSION})
 
 # Add target
 ck_add_plugin(${PROJECT_NAME}

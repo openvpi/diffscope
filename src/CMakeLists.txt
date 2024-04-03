@@ -129,9 +129,15 @@ if(APPLICATION_INSTALL)
         set(_)
     endif()
 
+    if(WIN32)
+        set(_lib_dir ${CK_INSTALL_RUNTIME_DIR})
+    else()
+        set(_lib_dir ${CK_INSTALL_LIBRARY_DIR})
+    endif()
+
     qm_deploy_directory(${CMAKE_INSTALL_PREFIX}
         PLUGINS ${_plugins}
-        LIBRARY_DIR ${CK_INSTALL_LIBRARY_DIR}
+        LIBRARY_DIR ${_lib_dir}
         PLUGIN_DIR ${CK_INSTALL_LIBRARY_DIR}/Qt/plugins
         WIN_SEARCHING_PATHS ${CK_BUILD_RUNTIME_DIR}
         VERBOSE

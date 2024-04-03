@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 
-project(DiffScope VERSION 0.0.1.1 LANGUAGES CXX)
+project(DiffScope VERSION 0.1.0.10 LANGUAGES CXX)
 
 # ----------------------------------
 # Build Options
