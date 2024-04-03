@@ -1,3 +1,11 @@
+set(QTMEDIATE_INSTALL off)
+set(CHORUSKIT_INSTALL off)
+set(SVSCRAFT_INSTALL off)
+set(OPENDSPX_INSTALL off)
+set(JBDS_INSTALL off)
+set(SUBSTATE_INSTALL off)
+set(TALCS_INSTALL off)
+
 add_subdirectory(qtmediate)
 
 add_subdirectory(choruskit)

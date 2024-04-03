@@ -2,7 +2,6 @@ project(widgetframe VERSION 0.0.1.0)
 
 # Add target
 ck_add_library(${PROJECT_NAME} STATIC AUTOGEN
-    SKIP_EXPORT
     SKIP_INSTALL
 )
 

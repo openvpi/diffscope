@@ -1,6 +1,6 @@
 #include "appearancetoppage.h"
 
-#include <QMWidgets/QMDecoratorV2.h>
+#include <QMWidgets/qmdecoratorv2.h>
 
 #include <QLabel>
 

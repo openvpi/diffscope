@@ -6,7 +6,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 
-#include <coreplugin/ICore.h>
+#include <coreplugin/icore.h>
 
 namespace IEMgr ::Internal {
 
