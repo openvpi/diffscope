@@ -67,32 +67,31 @@ if(APPLICATION_INSTALL)
         DESTINATION ${CK_INSTALL_SHARE_DIR}
     )
 
-    # Prevent CMake from removing rpaths when install
-    if(NOT WIN32)
-        set(_marker_file ${CMAKE_BINARY_DIR}/pre_install_timestamp)
+    # # Prevent CMake from removing rpaths when install
+    # if(NOT WIN32)
+    # set(_marker_file ${CMAKE_BINARY_DIR}/pre_install_timestamp)
 
-        if(EXISTS ${_marker_file})
-            file(REMOVE ${_marker_file})
-        endif()
+    # if(EXISTS ${_marker_file})
+    # file(REMOVE ${_marker_file})
+    # endif()
 
-        if(APPLE)
-            set(_command sed -i '' -E '/[[:space:]]*delete_rpath[[:space:]]+\".+\"/d' {})
-        else()
-            set(_command _)
-        endif()
+    # if(APPLE)
+    # set(_command sed -i '' -E '/[[:space:]]*delete_rpath[[:space:]]+\".+\"/d' {})
+    # else()
+    # set(_command _)
+    # endif()
 
-        add_custom_command(
-            OUTPUT ${_marker_file}
-            COMMAND find "${CMAKE_BINARY_DIR}" -type f -name cmake_install.cmake -exec ${_command} \\\\;
-            COMMAND ${CMAKE_COMMAND} -E touch ${_marker_file}
-            COMMENT "Running patch on all \"cmake_install.cmake\" files"
-        )
+    # add_custom_command(
+    # OUTPUT ${_marker_file}
+    # COMMAND find "${CMAKE_BINARY_DIR}" -type f -name cmake_install.cmake -exec ${_command} \\\\;
+    # COMMAND ${CMAKE_COMMAND} -E touch ${_marker_file}
+    # COMMENT "Running patch on all \"cmake_install.cmake\" files"
+    # )
 
-        add_custom_target(
-            pre_install ALL DEPENDS ${_marker_file}
-        )
-    endif()
-
+    # add_custom_target(
+    # pre_install ALL DEPENDS ${_marker_file}
+    # )
+    # endif()
     qm_find_qt(Core)
 
     set(_plugins)
@@ -135,11 +134,17 @@ if(APPLICATION_INSTALL)
         set(_lib_dir ${CK_INSTALL_LIBRARY_DIR})
     endif()
 
+    if(WIN32)
+        set(_extra_search_path ${CK_BUILD_RUNTIME_DIR})
+    else()
+        set(_extra_search_path ${CK_BUILD_LIBRARY_DIR})
+    endif()
+
     qm_deploy_directory(${CMAKE_INSTALL_PREFIX}
         PLUGINS ${_plugins}
         LIBRARY_DIR ${_lib_dir}
         PLUGIN_DIR ${CK_INSTALL_LIBRARY_DIR}/Qt/plugins
-        WIN_SEARCHING_PATHS ${CK_BUILD_RUNTIME_DIR}
+        EXTRA_SEARCHING_PATHS ${_extra_search_path}
         VERBOSE
     )
 endif()

@@ -81,8 +81,8 @@ cmake -B build -G Ninja \
     -DCMAKE_PREFIX_PATH=<dir> \     # directory `Qt5Config.cmake` locates
     -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
     -DVCPKG_APPLOCAL_DEPS=FALSE \
-    -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG=vcpkg/installed/x64-windows/debug/bin \
-    -DQMSETUP_APPLOCAL_DEPS_PATHS_RELEASE=vcpkg/installed/x64-windows/bin \
+    -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG=vcpkg/installed/<triplet>/debug/<dir> \
+    -DQMSETUP_APPLOCAL_DEPS_PATHS_RELEASE=vcpkg/installed/<triplet>/<dir> \
     -DCK_ENABLE_CONSOLE=FALSE \
     -DCK_WIN_APPLOCAL_DEPS=TRUE \
     -DCMAKE_BUILD_TYPE=Release
