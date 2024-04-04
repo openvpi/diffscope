@@ -47,7 +47,7 @@
 															<key>GID</key>
 															<integer>0</integer>
 															<key>PATH</key>
-															<string>build/VST3/DiffScope Bridge.vst3</string>
+															<string>diffscope-bridge-artefacts/VST3/DiffScope Bridge.vst3</string>
 															<key>PATH_TYPE</key>
 															<integer>1</integer>
 															<key>PERMISSIONS</key>
@@ -215,7 +215,7 @@
 															<key>GID</key>
 															<integer>0</integer>
 															<key>PATH</key>
-															<string>build/AU/DiffScope Bridge.component</string>
+															<string>diffscope-bridge-artefacts/AU/DiffScope Bridge.component</string>
 															<key>PATH_TYPE</key>
 															<integer>1</integer>
 															<key>PERMISSIONS</key>
@@ -383,7 +383,7 @@
 															<key>GID</key>
 															<integer>0</integer>
 															<key>PATH</key>
-															<string>build/LV2/DiffScope Bridge.lv2</string>
+															<string>diffscope-bridge-artefacts/LV2/DiffScope Bridge.lv2</string>
 															<key>PATH_TYPE</key>
 															<integer>1</integer>
 															<key>PERMISSIONS</key>
@@ -684,7 +684,7 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>GNU General Public License v3.0 - GNU Project - Free Software Foundation (FSF).html</string>
+							<string>gpl-3.0.rtf</string>
 							<key>PATH_TYPE</key>
 							<integer>1</integer>
 						</dict>
