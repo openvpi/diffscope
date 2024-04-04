@@ -23,6 +23,7 @@ runs:
         where.exe ninja
         ninja --version
         Write-Output VCPKG_TRIPLET=x64-windows >> $env:GITHUB_ENV
+        Write-Output VCPKG_TRIPLET_STATIC=x64-windows-static
         Write-Output QT_ARCH=win64_msvc2019_64 >> $env:GITHUB_ENV
 
     - name: Install build tools (Ubuntu)
@@ -32,6 +33,7 @@ runs:
         sudo apt update
         sudo apt-get -y install ninja-build
         Write-Output VCPKG_TRIPLET=x64-linux >> $env:GITHUB_ENV
+        Write-Output VCPKG_TRIPLET_STATIC=x64-linux >> $env:GITHUB_ENV
         Write-Output QT_ARCH=gcc_64 >> $env:GITHUB_ENV
 
     - name: Install build tools (MacOS)
@@ -44,6 +46,7 @@ runs:
         brew update
         brew install ninja
         Write-Output VCPKG_TRIPLET=x64-osx >> $env:GITHUB_ENV
+        Write-Output VCPKG_TRIPLET_STATIC=x64-osx >> $env:GITHUB_ENV
         Write-Output QT_ARCH=clang_64 >> $env:GITHUB_ENV
 
     - name: Install Qt
@@ -75,6 +78,10 @@ runs:
           --x-manifest-root=${{ github.workspace }}/scripts/vcpkg-manifest `
           --x-install-root=./installed `
           --triplet=${{ env.VCPKG_TRIPLET }}
+        ./vcpkg install `
+          --x-manifest-root=${{ github.workspace }}/scripts/setup/diffscope-bridge `
+          --x-install-root=./installed `
+          --triplet=${{ env.VCPKG_TRIPLET_STATIC }}
         Remove-Item -Path buildtrees -Recurse -Force
         Remove-Item -Path downloads -Recurse -Force
         Remove-Item -Path packages -Recurse -Force

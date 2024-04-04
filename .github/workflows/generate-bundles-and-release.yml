@@ -3,7 +3,6 @@ on:
   push:
     tags:
       - "v*"
-  workflow_dispatch:
 
 jobs:
   Build:
@@ -36,8 +35,19 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=installed
           cmake --build build --target all
           cmake --build build --target install
+          Write-Output DIFFSCOPE_INSTALLED_DIR=$(Resolve-Path -Path build/installed) >> $env:GITHUB_ENV
 
-      - name: Install Inno Setup (Windows)
+      - name: Build DiffScope Bridge
+        shell: pwsh
+        run: |
+          cd scripts/setup/diffscope-bridge
+          cmake -B build -G Ninja `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT_DIR }}/scripts/buildsystems/vcpkg.cmake"
+          cmake --build build --target all
+          Write-Output DIFFSCOPE_BRIDGE_ARTEFACTS_DIR=$(Resolve-Path -Path build/DiffScopeBridge_artefacts/Release) >> $env:GITHUB_ENV
+
+      - name: Create installer (Windows)
         shell: pwsh
         run: |
           $content = Get-Content build/CMakeCache.txt
@@ -58,8 +68,16 @@ jobs:
 
           $env:SETUP_APP_NAME = $variableValues.CMAKE_PROJECT_NAME
           $env:SETUP_APP_VERSION = $variableValues.CMAKE_PROJECT_VERSION
-          $env:SETUP_APP_INSTALLED_DIR = Resolve-Path -Path build/installed
-          $env:SETUP_APP_BRIDGE_ARTEFACTS_DIR = Resolve-Path -Path scripts/setup/diffscope-bridge/build/DiffScopeBridge_artefacts/Release
+          $env:SETUP_APP_INSTALLED_DIR = $env:DIFFSCOPE_INSTALLED_DIR
+          $env:SETUP_APP_BRIDGE_ARTEFACTS_DIR = $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR
 
           &'./innosetup/{app}/ISCC.exe' scripts/setup/windows/setup.iss
+
+          Write-Output PACKAGE_PATH=$(Resolve-Path -Path scripts/setup/windows/Output/diffscope_setup.exe) >> $env:GITHUB_ENV
+
+      - name: Upload release file
+        uses: actions/upload-artifact@v3
+        with:
+          name: diffscope-${{ env.VCPKG_TRIPLET }}-${{ github.ref }}
+          path: ${{ env.PACKAGE_PATH }}
 

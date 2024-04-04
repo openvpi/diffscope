@@ -18,7 +18,7 @@
 #define MyAppBridgeArtefactsDir GetEnv("SETUP_APP_BRIDGE_ARTEFACTS_DIR")
 
 [Setup]
-AppId={E777B852-937C-42A1-930F-C1CD1FF5C07E}
+AppId={{E777B852-937C-42A1-930F-C1CD1FF5C07E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
