@@ -81,8 +81,8 @@ cmake -B build -G Ninja \
     -DCMAKE_PREFIX_PATH=<dir> \     # directory `Qt5Config.cmake` locates
     -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
     -DVCPKG_APPLOCAL_DEPS=FALSE \
-    -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG=vcpkg/installed/<triplet>/debug/<dir> \
-    -DQMSETUP_APPLOCAL_DEPS_PATHS_RELEASE=vcpkg/installed/<triplet>/<dir> \
+    -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG=vcpkg/installed/<triplet>/debug/<runtime> \
+    -DQMSETUP_APPLOCAL_DEPS_PATHS_RELEASE=vcpkg/installed/<triplet>/<runtime> \
     -DCK_ENABLE_CONSOLE=FALSE \
     -DCK_WIN_APPLOCAL_DEPS=TRUE \
     -DCMAKE_BUILD_TYPE=Release
@@ -90,4 +90,13 @@ cmake -B build -G Ninja \
 cmake --build build --target all
 
 cmake --build build --target install
+
+# triplet:
+#   Windows:  `x64-windows` 
+#   Mac:      `x64-osx` or `arm64-osx`
+#   Linux:    `x64-linux` or `arm64-linux`
+
+# runtime:
+#   Windows:    `bin`
+#   Mac/Linux:  `lib`
 ```
