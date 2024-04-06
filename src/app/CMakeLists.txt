@@ -27,7 +27,7 @@ configure_file(config.json.in ${_config_file} @ONLY)
 # Deploy docs
 ck_add_shared_files(
     SKIP_BUILD
-    SRC share/doc/ DEST ${CK_BUILD_DOC_DIR}
+    SRC ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE DEST ${CK_BUILD_DOC_DIR}
 )
 
 # Deploy resources
