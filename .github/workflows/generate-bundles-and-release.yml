@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - "v*"
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
 
 jobs:
   Build:
@@ -19,6 +22,29 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Get DiffScope Bridge Target
+        shell: pwsh
+        run: |
+          $target = (Get-Content scripts/setup/modules.json | ConvertFrom-Json).'diffscope-bridge'
+          Write-Output DIFFSCOPE_BRIDGE_REPO=$($target.repository) >> $env:GITHUB_ENV
+          Write-Output DIFFSCOPE_BRIDGE_REF=$($target.ref) >> $env:GITHUB_ENV
+
+      - name: Restore DiffScope Bridge from cache
+        id: cache_diffscope_bridge
+        uses: actions/cache/restore@v4
+        with:
+          path: scripts/setup/diffscope-bridge
+          key: ${{ runner.os }}-diffscope-bridge-${{ env.DIFFSCOPE_BRIDGE_REPO }}-${{ env.DIFFSCOPE_BRIDGE_REF }}
+
+      - name: Checkout DiffScope Bridge
+        uses: actions/checkout@v4
+        if: steps.cache_diffscope_bridge.outputs.cache-hit != 'true'
+        with:
+          repository: ${{ env.DIFFSCOPE_BRIDGE_REPO }}
+          ref: ${{ env.DIFFSCOPE_BRIDGE_REF }}
+          path: scripts/setup/diffscope-bridge
+          submodules: recursive
+
       - name: Initialize Building Environment
         uses: ./.github/actions/init-build
         with:
@@ -30,26 +56,53 @@ jobs:
           cmake -B build -G Ninja `
             -DCMAKE_BUILD_TYPE=Release `
             -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT_DIR }}/scripts/buildsystems/vcpkg.cmake" `
+            -DVCPKG_APPLOCAL_DEPS:BOOL=FALSE `
+            -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG="${{ env.VCPKG_ROOT_DIR }}/installed/${{ env.VCPKG_TRIPLET }}/debug/${{ matrix.os == 'windows-latest' && 'bin' || 'lib' }}" `
+            -DQMSETUP_APPLOCAL_DEPS_PATHS_RELEASE="${{ env.VCPKG_ROOT_DIR }}/installed/${{ env.VCPKG_TRIPLET }}/${{ matrix.os == 'windows-latest' && 'bin' || 'lib' }}" `
+            -DCK_ENABLE_CONSOLE:BOOL=FALSE `
+            -DCK_WIN_APPLOCAL_DEPS:BOOL=TRUE `
             -DTALCS_DEVICE_ENABLE_ASIO:BOOL=ON `
             -DTALCS_ASIOSDK_DIR=${{ env.ASIOSDK_DIR }} `
             -DCMAKE_INSTALL_PREFIX=installed
           cmake --build build --target all
           cmake --build build --target install
-          Write-Output DIFFSCOPE_INSTALLED_DIR=$(Resolve-Path -Path build/installed) >> $env:GITHUB_ENV
+          Write-Output DIFFSCOPE_INSTALLED_DIR=$(Resolve-Path -Path installed) >> $env:GITHUB_ENV
 
       - name: Build DiffScope Bridge
         shell: pwsh
+        if: steps.cache_diffscope_bridge.outputs.cache-hit != 'true'
         run: |
           cd scripts/setup/diffscope-bridge
           cmake -B build -G Ninja `
             -DCMAKE_BUILD_TYPE=Release `
-            -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT_DIR }}/scripts/buildsystems/vcpkg.cmake"
+            -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT_DIR }}/scripts/buildsystems/vcpkg.cmake" `
+            -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_ROOT_DIR }}/bridge_installed" `
+            -DVCPKG_MANIFEST_MODE:BOOL=OFF `
+            -DVCPKG_TARGET_TRIPLET=${{ env.VCPKG_TRIPLET_STATIC }}
           cmake --build build --target all
-          Write-Output DIFFSCOPE_BRIDGE_ARTEFACTS_DIR=$(Resolve-Path -Path build/DiffScopeBridge_artefacts/Release) >> $env:GITHUB_ENV
-
-      - name: Create installer (Windows)
+          
+      - name: Store DiffScope Bridge artefacts directory
         shell: pwsh
         run: |
+          Write-Output DIFFSCOPE_BRIDGE_ARTEFACTS_DIR=$(Resolve-Path -Path scripts/setup/diffscope-bridge/build/DiffScopeBridge_artefacts/Release) >> $env:GITHUB_ENV
+
+      - name: Save DiffScope Bridge to cache
+        uses: actions/cache/save@v4
+        with:
+          path: scripts/setup/diffscope-bridge
+          key: ${{ runner.os }}-diffscope-bridge-${{ env.DIFFSCOPE_BRIDGE_REPO }}-${{ env.DIFFSCOPE_BRIDGE_REF }}
+
+      - name: Set binary name
+        shell: pwsh
+        run: |
+          Write-Output BINARY_NAME=diffscope-$('${{ env.VCPKG_TRIPLET }}'.replace('osx', 'macos'))-${{ github.ref_type == 'tag' && github.ref_name || github.sha }} >> $env:GITHUB_ENV
+
+      - name: Create installer (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/jrsoftware/issrc/f59a90485af28067626e60ef7e42336e00ae7472/Files/Languages/Unofficial/ChineseSimplified.isl' -OutFile ChineseSimplified.isl
+          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/jrsoftware/issrc/e5e138e67bacd650650eac489fa861274a4b81ce/Files/Languages/Unofficial/ChineseTraditional.isl' -OutFile ChineseTraditional.isl
           $content = Get-Content build/CMakeCache.txt
           $variableValues = @{}
           foreach ($line in $content) {
@@ -61,21 +114,20 @@ jobs:
               }
           }
 
-          Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile is.exe
-          Invoke-WebRequest -Uri "https://github.com/WhatTheBlock/innounp/releases/download/v0.50/innounp.exe" -OutFile innounp.exe
-          mkdir innosetup
-          ./innounp.exe -x -dinnosetup is.exe
-
           $env:SETUP_APP_NAME = $variableValues.CMAKE_PROJECT_NAME
           $env:SETUP_APP_VERSION = $variableValues.CMAKE_PROJECT_VERSION
           $env:SETUP_APP_INSTALLED_DIR = $env:DIFFSCOPE_INSTALLED_DIR
           $env:SETUP_APP_BRIDGE_ARTEFACTS_DIR = $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR
+          Invoke-WebRequest -Uri "https://www.gnu.org/licenses/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
+          $env:GPL3_LICENSE_PATH = Resolve-Path -Path gpl-3.0.rtf
 
-          &'./innosetup/{app}/ISCC.exe' scripts/setup/windows/setup.iss
+          cd scripts/setup/windows
+          ISCC.exe setup.iss
+          Rename-Item Output/diffscope_setup.exe "$env:BINARY_NAME.exe"
+          Write-Output PACKAGE_PATH=$(Resolve-Path -Path "Output/$env:BINARY_NAME.exe") >> $env:GITHUB_ENV
 
-          Write-Output PACKAGE_PATH=$(Resolve-Path -Path scripts/setup/windows/Output/diffscope_setup.exe) >> $env:GITHUB_ENV
-
-      - name: Create DMG bundle (MacOS)
+      - name: Create DMG bundle (macOS)
+        if: matrix.os == 'macos-latest'
         shell: pwsh
         run: |
           cd scripts/setup/macos
@@ -87,12 +139,24 @@ jobs:
           ln -s $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR diffscope-bridge-artefacts
           packagesbuild diffscope-bridge-dist.pkgproj
           npm install
-          node create-dmg.js $env:DIFFSCOPE_INSTALLED_DIR/DiffScope.app 'DiffScope Bridge.pkg' DiffScope.dmg
-          Write-Output PACKAGE_PATH=$(Resolve-Path -Path DiffScope.dmg) >> $env:GITHUB_ENV
+          node create-dmg.js $env:DIFFSCOPE_INSTALLED_DIR/DiffScope.app 'DiffScope Bridge.pkg' "$env:BINARY_NAME.dmg"
+          Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.dmg") >> $env:GITHUB_ENV
 
       - name: Upload release file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: diffscope-${{ env.VCPKG_TRIPLET }}-${{ github.ref }}
+          name: ${{ env.BINARY_NAME }}
           path: ${{ env.PACKAGE_PATH }}
-
+  Release:
+    runs-on: ubuntu-latest
+    needs: Build
+    if: github.event_name == 'push'
+    steps:
+      - name: Get artifacts
+        uses: actions/download-artifact@v4
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: |
+            diffscope-*/*

@@ -23,7 +23,7 @@ runs:
         where.exe ninja
         ninja --version
         Write-Output VCPKG_TRIPLET=x64-windows >> $env:GITHUB_ENV
-        Write-Output VCPKG_TRIPLET_STATIC=x64-windows-static
+        Write-Output VCPKG_TRIPLET_STATIC=x64-windows-static-md >> $env:GITHUB_ENV
         Write-Output QT_ARCH=win64_msvc2019_64 >> $env:GITHUB_ENV
 
     - name: Install build tools (Ubuntu)
@@ -36,7 +36,7 @@ runs:
         Write-Output VCPKG_TRIPLET_STATIC=x64-linux >> $env:GITHUB_ENV
         Write-Output QT_ARCH=gcc_64 >> $env:GITHUB_ENV
 
-    - name: Install build tools (MacOS)
+    - name: Install build tools (macOS)
       if: inputs.os == 'macos-latest'
       shell: pwsh
       env:
@@ -53,51 +53,59 @@ runs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '5.15.2'
-        archives: ${{ inputs.os == 'ubuntu-latest' && 'icu qtbase' || 'qtbase' }}
+        archives: ${{ inputs.os == 'ubuntu-latest' && 'icu qtbase' || 'qtbase' }} qtsvg qtdeclarative qtremoteobjects qttools
         cache: true
 
     - name: Restore vcpkg from cache
       id: cache_vcpkg
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       with:
         path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-vcpkg
-
-    - name: Clone and bootstrap vcpkg if cache misses
-      if: steps.cache_vcpkg.outputs.cache-hit != 'true'
-      shell: pwsh
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        cd vcpkg
-        ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-
 
     - name: Install vcpkg dependencies
       shell: pwsh
       run: |
+        if (!(Test-Path vcpkg)) {
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
+        } else {
+          cd vcpkg
+          git pull origin master
+        }
+        $env:QT_DIR=$env:Qt5_DIR
+        $env:VCPKG_KEEP_ENV_VARS="QT_DIR;Qt5_DIR"
         ./vcpkg install `
           --x-manifest-root=${{ github.workspace }}/scripts/vcpkg-manifest `
           --x-install-root=./installed `
           --triplet=${{ env.VCPKG_TRIPLET }}
         ./vcpkg install `
           --x-manifest-root=${{ github.workspace }}/scripts/setup/diffscope-bridge `
-          --x-install-root=./installed `
+          --x-install-root=./bridge_installed `
           --triplet=${{ env.VCPKG_TRIPLET_STATIC }}
-        Remove-Item -Path buildtrees -Recurse -Force
-        Remove-Item -Path downloads -Recurse -Force
-        Remove-Item -Path packages -Recurse -Force
+        if (Test-Path -Path buildtrees) {
+          Remove-Item -Path buildtrees -Recurse -Force
+        }
+        if (Test-Path -Path downloads) {
+          Remove-Item -Path downloads -Recurse -Force
+        }
+        if (Test-Path -Path packages) {
+          Remove-Item -Path packages -Recurse -Force
+        }
 
     - name: Save vcpkg to cache
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-vcpkg-${{ github.run_id }}
-        restore-keys: |
-          ${{ runner.os }}-vcpkg
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
 
     - name: Restore ASIO SDK from cache
       id: cache_asiosdk
       if: inputs.os == 'windows-latest'
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       with:
         path: ${{github.workspace}}/asiosdk
         key: asiosdk
@@ -112,7 +120,7 @@ runs:
 
     - name: Save ASIO SDK to cache
       if: inputs.os == 'windows-latest' && steps.cache_asiosdk.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: ${{github.workspace}}/asiosdk
         key: asiosdk
@@ -120,8 +128,7 @@ runs:
     - name: Set directory variables
       shell: pwsh
       run: |
-        mv vcpkg ..
-        Write-Output VCPKG_ROOT_DIR=$(Resolve-Path -Path ../vcpkg) >> $env:GITHUB_ENV
+        Write-Output VCPKG_ROOT_DIR=$(Resolve-Path -Path ./vcpkg) >> $env:GITHUB_ENV
 
     - name: Set ASIO SDK directory variable (Windows)
       if: inputs.os == 'windows-latest'
