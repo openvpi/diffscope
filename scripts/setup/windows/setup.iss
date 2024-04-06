@@ -2,6 +2,7 @@
 #define MyAppVersion GetEnv("SETUP_APP_VERSION")
 #define MyAppPublisher "Team OpenVPI"
 #define MyAppURL "https://www.example.com/"
+#define MyAppCopyright "Copyright 2019-2024 Team OpenVPI"
 
 #define MyAppExeName "bin\" + MyAppName + ".exe"
 
@@ -25,6 +26,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+AppCopyright={#MyAppCopyright}
 DefaultDirName={autopf}\OpenVPI\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
@@ -35,6 +37,7 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 ArchitecturesInstallIn64BitMode=x64
+VersionInfoDescription={#MyAppName} Installer
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
