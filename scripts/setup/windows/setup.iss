@@ -1,4 +1,4 @@
-; Pre-defined Environments:
+﻿; Pre-defined Environments:
 ;   SETUP_APP_NAME
 ;   SETUP_APP_VERSION
 ;   SETUP_APP_INSTALLED_DIR
@@ -38,6 +38,9 @@ AppCopyright={#MyAppCopyright}
 DefaultDirName={autopf}\OpenVPI\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
+; Uncomment the following line to run in non administrative install mode (install for current user only.)
+;PrivilegesRequired=lowest
+PrivilegesRequiredOverridesAllowed=dialog
 LicenseFile={#MyAppInstalledDir}\share\doc\DiffScope\LICENSE
 InfoBeforeFile={#GetEnv("GPL3_LICENSE_PATH")}
 OutputBaseFilename=diffscope_setup
@@ -53,10 +56,19 @@ Name: "chinesesimplified"; MessagesFile: "{#GetEnv('SETUP_MESSAGE_FILES_DIR')}\C
 Name: "chinesetraditional"; MessagesFile: "{#GetEnv('SETUP_MESSAGE_FILES_DIR')}\ChineseTraditional.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
+[CustomMessages]
+english.RemoveUserDataDesc=Do you want to remove all user data and temporary files?
+chinesesimplified.RemoveUserDataDesc=是否删除所有用户数据与临时文件？
+chinesetraditional.RemoveUserDataDesc=是否刪除所有用戶數據與暫存檔案？
+japanese.RemoveUserDataDesc=すべてのユーザーデータと一時ファイルを削除しますか？
+
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Code]
+var
+    DeleteUserData: Boolean;
+
 function FullInstallationMessage(Param: String): String;
 begin
     Result := SetupMessage(msgFullInstallation);
@@ -74,25 +86,25 @@ end;
 
 function IsDirectoryEmpty(const Directory: string): Boolean;
 var
-  FindRec: TFindRec;
-  IsEmpty: Boolean;
+    FindRec: TFindRec;
+    IsEmpty: Boolean;
 begin
-  IsEmpty := True;
-  if FindFirst(Directory + '\*.*', FindRec) then
-  begin
-    try
-      repeat
-        if (FindRec.Name <> '.') and (FindRec.Name <> '..') then
-        begin
-          IsEmpty := False;
-          Break;
+    IsEmpty := True;
+    if FindFirst(Directory + '\*.*', FindRec) then
+    begin
+        try
+            repeat
+                if (FindRec.Name <> '.') and (FindRec.Name <> '..') then
+                begin
+                    IsEmpty := False;
+                    Break;
+                end;
+            until not FindNext(FindRec);
+        finally
+            FindClose(FindRec);
         end;
-      until not FindNext(FindRec);
-    finally
-      FindClose(FindRec);
     end;
-  end;
-  Result := IsEmpty;
+    Result := IsEmpty;
 end;
 
 procedure RemoveAppDirectory(Dir: String);
@@ -120,11 +132,23 @@ end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
-    if CurUninstallStep = usPostUninstall then
+    if CurUninstallStep = usUninstall then
     begin
-        RemoveAppDirectory(ExpandConstant('{userappdata}'));
-        RemoveAppDirectory(GetEnv('TMP'));
-        RemoveAppDirectory(GetEnv('TEMP'));
+        DeleteUserData := False;
+        if MsgBox(ExpandConstant('{cm:RemoveUserDataDesc}'), mbConfirmation, MB_YESNO) = IDYES then
+            DeleteUserData := True
+        else
+            DeleteUserData := False;
+    end
+    else if CurUninstallStep = usPostUninstall then
+    begin
+        if DeleteUserData then
+        begin
+            RemoveAppDirectory(ExpandConstant('{userdocs}'));
+            RemoveAppDirectory(ExpandConstant('{userappdata}'));
+            RemoveAppDirectory(GetEnv('TMP'));
+            RemoveAppDirectory(GetEnv('TEMP'));
+        end;
     end;
 end;
 
