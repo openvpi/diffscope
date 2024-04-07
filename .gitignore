@@ -96,5 +96,6 @@ CMakeSettings.json
 *.sublime-*
 setup-vcpkg.json
 setup-vcpkg-temp*
+setup-inno*
 
 node_modules/

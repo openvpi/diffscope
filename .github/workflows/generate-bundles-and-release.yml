@@ -118,6 +118,7 @@ jobs:
           $env:SETUP_APP_VERSION = $variableValues.CMAKE_PROJECT_VERSION
           $env:SETUP_APP_INSTALLED_DIR = $env:DIFFSCOPE_INSTALLED_DIR
           $env:SETUP_APP_BRIDGE_ARTEFACTS_DIR = $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR
+          $env:SETUP_MESSAGE_FILES_DIR = Resolve-Path .
           Invoke-WebRequest -Uri "https://www.gnu.org/licenses/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
           $env:GPL3_LICENSE_PATH = Resolve-Path -Path gpl-3.0.rtf
 

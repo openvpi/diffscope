@@ -1,3 +1,11 @@
+; Pre-defined Environments:
+;   SETUP_APP_NAME
+;   SETUP_APP_VERSION
+;   SETUP_APP_INSTALLED_DIR
+;   SETUP_APP_BRIDGE_ARTEFACTS_DIR
+;   SETUP_MESSAGE_FILES_DIR
+;   GPL3_LICENSE_PATH
+
 #define MyAppName GetEnv("SETUP_APP_NAME")
 #define MyAppVersion GetEnv("SETUP_APP_VERSION")
 #define MyAppPublisher "Team OpenVPI"
@@ -41,17 +49,84 @@ VersionInfoDescription={#MyAppName} Installer
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "chinesesimplified"; MessagesFile: "{#GetEnv('GITHUB_WORKSPACE')}\ChineseSimplified.isl"
-Name: "chinesetraditional"; MessagesFile: "{#GetEnv('GITHUB_WORKSPACE')}\ChineseTraditional.isl"
+Name: "chinesesimplified"; MessagesFile: "{#GetEnv('SETUP_MESSAGE_FILES_DIR')}\ChineseSimplified.isl"
+Name: "chinesetraditional"; MessagesFile: "{#GetEnv('SETUP_MESSAGE_FILES_DIR')}\ChineseTraditional.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Code]
-function FullInstallationMessage(Param: String): String; begin Result := SetupMessage(msgFullInstallation); end;
-function CompactInstallationMessage(Param: String): String; begin Result := SetupMessage(msgCompactInstallation); end;
-function CustomInstallationMessage(Param: String): String; begin Result := SetupMessage(msgCustomInstallation); end;
+function FullInstallationMessage(Param: String): String;
+begin
+    Result := SetupMessage(msgFullInstallation);
+end;
+
+function CompactInstallationMessage(Param: String): String;
+begin
+    Result := SetupMessage(msgCompactInstallation);
+end;
+
+function CustomInstallationMessage(Param: String): String;
+begin
+    Result := SetupMessage(msgCustomInstallation);
+end;
+
+function IsDirectoryEmpty(const Directory: string): Boolean;
+var
+  FindRec: TFindRec;
+  IsEmpty: Boolean;
+begin
+  IsEmpty := True;
+  if FindFirst(Directory + '\*.*', FindRec) then
+  begin
+    try
+      repeat
+        if (FindRec.Name <> '.') and (FindRec.Name <> '..') then
+        begin
+          IsEmpty := False;
+          Break;
+        end;
+      until not FindNext(FindRec);
+    finally
+      FindClose(FindRec);
+    end;
+  end;
+  Result := IsEmpty;
+end;
+
+procedure RemoveAppDirectory(Dir: String);
+var
+    OrgDataDir: String;
+    DataDir: String;
+begin
+    OrgDataDir := Dir + '\OpenVPI'
+    DataDir := OrgDataDir + ExpandConstant('\{#MyAppName}')
+
+    if not DirExists(DataDir) then
+    begin
+        Exit;
+    end;
+
+    // Remove data directory
+    DelTree(DataDir, True, True, True);
+
+    // Remove org data directory if empty
+    if (IsDirectoryEmpty(OrgDataDir)) then
+    begin
+        RemoveDir(OrgDataDir);
+    end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+    if CurUninstallStep = usPostUninstall then
+    begin
+        RemoveAppDirectory(ExpandConstant('{userappdata}'));
+        RemoveAppDirectory(GetEnv('TMP'));
+        RemoveAppDirectory(GetEnv('TEMP'));
+    end;
+end;
 
 [Types]
 Name: "full"; Description: "{code:FullInstallationMessage}"
