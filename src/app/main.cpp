@@ -66,6 +66,14 @@ public:
             if (value.type() == QVariant::String) {
                 qIDec->setTheme(value.toString());
             }
+
+            value = settings->value("Font");
+            if (value.type() == QVariant::String) {
+                QFont font;
+                if (font.fromString(value.toString())) {
+                    qApp->setFont(font);
+                }
+            }
             settings->endGroup();
         }
 

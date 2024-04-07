@@ -9,8 +9,5 @@
     ],
     "Themes": [
         "share/ChorusKit/themes"
-    ],
-    "AppFont": {
-        "Size": 12
-    }
+    ]
 }
