@@ -42,7 +42,7 @@ public:
 
     void beforeLoadPlugins() override {
         // Create app data path and temp path
-        if (!qAppExt->createDataAndTempDirs()) {
+        if (!qAppExt->createAppDirs()) {
             showError("Failed to create data or temp directories!");
         }
 
