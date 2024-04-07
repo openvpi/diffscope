@@ -14,15 +14,15 @@ namespace Audio {
         double rate = std::pow(0.99, 20000.0 / sampleRate);
         qint64 i, j;
         for (i = 0; i < m_sound.sampleCount() && fadeIn < 1.0; i++) {
-            m_sound.sampleAt(0, i) = float(std::sin(2.0 * PI * 440.0 / sampleRate * double(i)) * fadeIn);
+            m_sound.sampleAt(0, i) = float(0.5 * std::sin(2.0 * PI * 440.0 / sampleRate * double(i)) * fadeIn);
             fadeIn /= rate;
         }
         for (j = m_sound.sampleCount() - 1; j >= 0 && fadeOut < 1.0; j--) {
-            m_sound.sampleAt(0, j) = float(std::sin(2.0 * PI * 440.0 / sampleRate * double(j)) * fadeOut);
+            m_sound.sampleAt(0, j) = float(0.5 * std::sin(2.0 * PI * 440.0 / sampleRate * double(j)) * fadeOut);
             fadeOut /= rate;
         }
         for (;i <= j; i++) {
-            m_sound.sampleAt(0, i) = float(std::sin(2.0 * PI * 440.0 / sampleRate * double(i)));
+            m_sound.sampleAt(0, i) = float(0.5 * std::sin(2.0 * PI * 440.0 / sampleRate * double(i)));
         }
         return AudioStreamBase::open(bufferSize, sampleRate);
     }
