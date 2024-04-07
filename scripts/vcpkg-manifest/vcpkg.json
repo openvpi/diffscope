@@ -3,17 +3,26 @@
     "dependencies": [
         "qastool",
         "qnrbf",
-        "sdl2",
-        "libsndfile",
-        "libsamplerate",
-        "boost-interprocess",
-        "rpclib",
-        "rtmidi",
-        "interval-tree",
         "stdutau",
         "extensionsystem",
         "qwindowkit",
-        "jetbrains-docking-system"
+        "jetbrains-docking-system",
+        "libsndfile",
+        "rpclib",
+        "rtmidi",
+        {
+            "name": "sdl2",
+            "default-features": false
+        },
+        "interval-tree",
+        "boost-interprocess"
+    ],
+    "builtin-baseline": "5fa0f075ea51f305b627ecd5e050a363707353ff",
+    "overrides": [
+        {
+            "name": "sdl2",
+            "version": "2.28.2"
+        }
     ],
     "vcpkg-configuration": {
         "overlay-ports": [
