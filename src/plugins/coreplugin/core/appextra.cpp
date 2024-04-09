@@ -145,6 +145,7 @@ namespace Core {
 
     QMenu *AppExtra::createCoreMenu(QWidget *parent) {
         auto menu = new CMenu(parent);
+        menu->setProperty("core-style", true);
         return menu;
     }
 

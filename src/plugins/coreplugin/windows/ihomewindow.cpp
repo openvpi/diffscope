@@ -9,11 +9,6 @@ namespace Core {
 
     static IHomeWindow *m_instance = nullptr;
 
-    class IHomeWindowPrivate : IWindowPrivate {
-        Q_DECLARE_PUBLIC(IHomeWindow)
-    public:
-    };
-
     IHomeWindow::IHomeWindow(QObject *parent)
         : IWindow(*new IWindowPrivate(), QStringLiteral("home"), parent) {
         m_instance = this;

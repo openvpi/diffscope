@@ -10,7 +10,7 @@ namespace IEMgr::Internal {
     class HomeAddOn : public Core::IWindowAddOn {
         Q_OBJECT
     public:
-        Q_INVOKABLE explicit HomeAddOn(QObject *parent = nullptr);
+        explicit HomeAddOn(QObject *parent = nullptr);
         ~HomeAddOn();
 
         void initialize() override;

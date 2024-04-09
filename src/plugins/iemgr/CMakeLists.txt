@@ -33,7 +33,7 @@ qm_add_translation(${PROJECT_NAME}_translations
     TARGETS
         ${PROJECT_NAME}
     LOCALES
-        zh_CN zh_HK ja_JP
+        zh_CN zh_TW ja_JP
     TS_DIR
         res/translations
     QM_DIR

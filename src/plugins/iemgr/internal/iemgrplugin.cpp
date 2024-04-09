@@ -54,7 +54,7 @@ namespace IEMgr::Internal {
 
         // Add basic windows and add-ons
         auto winMgr = icore->windowSystem();
-        winMgr->addAddOn(QStringLiteral("home"), &HomeAddOn::staticMetaObject);
+        winMgr->addAddOn<HomeAddOn>(QStringLiteral("home"));
 
         // Add wizards
         imgr->addWizard(new MidiWizard());

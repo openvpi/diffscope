@@ -18,9 +18,11 @@
 #include <appshared/initroutine.h>
 
 #include "ihomewindow.h"
+#include "iprojectwindow.h"
 
 #include "dspxspec.h"
 #include "homeaddon.h"
+#include "projectaddon.h"
 #include "actionconfigurepage.h"
 #include "appearancetoppage.h"
 #include "displaypage.h"
@@ -82,16 +84,15 @@ namespace Core::Internal {
 
         // Add basic actions
         // auto actionMgr = icore->actionSystem();
-
-        // if (actionMgr->loadContexts(":/core_actions.xml").isEmpty()) {
+        // if (!actionMgr->loadDomainManifest(":/core_actions.xml")) {
         //     *errorMessage = tr("Failed to load action configuration!");
         //     return false;
         // }
 
         // Add basic windows and add-ons
         auto winMgr = icore->windowSystem();
-        winMgr->addAddOn(QStringLiteral("home"), &HomeAddOn::staticMetaObject);
-        // winMgr->addAddOn("project", &ProjectWindowAddOn::staticMetaObject);
+        winMgr->addAddOn<HomeAddOn>(QStringLiteral("home"));
+        winMgr->addAddOn<ProjectAddOn>(QStringLiteral("project"));
 
         // Add setting panels
         auto sc = icore->settingCatalog();

@@ -7,7 +7,5 @@
         "share/ChorusKit/translations",
         "share/svscraft/translations"
     ],
-    "Themes": [
-        "share/ChorusKit/themes"
-    ]
+    "Themes": []
 }

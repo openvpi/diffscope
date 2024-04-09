@@ -8,7 +8,7 @@ namespace Audio {
     class VSTAddOn : public Core::IWindowAddOn {
         Q_OBJECT
     public:
-        Q_INVOKABLE explicit VSTAddOn(QObject *parent = nullptr);
+        explicit VSTAddOn(QObject *parent = nullptr);
         ~VSTAddOn();
 
         void initialize() override;

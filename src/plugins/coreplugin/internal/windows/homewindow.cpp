@@ -13,15 +13,28 @@
 
 namespace Core::Internal {
 
+    class NavFrame : public CNavFrame {
+    public:
+        explicit NavFrame(QWidget *parent = nullptr) : CNavFrame(parent) {
+        }
+
+    protected:
+        void widgetAdded(QWidget *w, QAbstractButton *btn) override {
+            Q_UNUSED(w)
+            btn->setProperty("type", QStringLiteral("home-nav-button"));
+        }
+    };
+
     HomeWindow::HomeWindow(QWidget *parent) {
         setAcceptDrops(true);
 
         // Initialize nav frame
-        m_navFrame = new CNavFrame();
+        m_navFrame = new NavFrame();
         m_navFrame->setObjectName(QStringLiteral("home-frame"));
         setCentralWidget(m_navFrame);
 
         m_titleButton = new CTabButton(qApp->applicationName());
+        m_titleButton->setObjectName(QStringLiteral("home-title-button"));
         m_titleButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         m_navFrame->setTopWidget(m_titleButton);
 
@@ -36,7 +49,7 @@ namespace Core::Internal {
             m_bottomButtonsLayout->addWidget(m_configureButton);
 
             m_bottomButtonsFrame = new QFrame();
-            m_bottomButtonsFrame->setObjectName("bottom-buttons-widget");
+            m_bottomButtonsFrame->setObjectName("home-bottom-buttons-frame");
             m_bottomButtonsFrame->setLayout(m_bottomButtonsLayout);
 
             m_navFrame->setBottomWidget(m_bottomButtonsFrame);
@@ -56,6 +69,7 @@ namespace Core::Internal {
                 &HomeWindow::_q_openFileRequested);
 
         qIDec->installLocale(this, _LOC(HomeWindow, this));
+        // qIDec->installTheme(this, "core.HomeWindow");
     }
 
     HomeWindow::~HomeWindow() {
