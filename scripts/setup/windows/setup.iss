@@ -4,6 +4,8 @@
 ;   SETUP_APP_INSTALLED_DIR
 ;   SETUP_APP_BRIDGE_ARTEFACTS_DIR
 ;   SETUP_MESSAGE_FILES_DIR
+;   SETUP_OUTPUT_DIR
+;   SETUP_OUTPUT_FILE_BASE
 ;   GPL3_LICENSE_PATH
 
 #define MyAppName GetEnv("SETUP_APP_NAME")
@@ -43,7 +45,8 @@ DisableProgramGroupPage=yes
 PrivilegesRequiredOverridesAllowed=dialog
 LicenseFile={#MyAppInstalledDir}\share\doc\DiffScope\LICENSE
 InfoBeforeFile={#GetEnv("GPL3_LICENSE_PATH")}
-OutputBaseFilename=diffscope_setup
+OutputDir={#GetEnv("SETUP_OUTPUT_DIR")}
+OutputBaseFilename={#GetEnv("SETUP_OUTPUT_FILE_BASE")}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
