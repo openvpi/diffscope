@@ -20,7 +20,7 @@ namespace Audio {
         explicit OutputSystem(QObject *parent = nullptr);
         ~OutputSystem() override;
 
-        bool initialize();
+        bool initialize() override;
 
         talcs::AudioDriverManager *driverManager() const;
         talcs::AudioDriver *driver() const;
