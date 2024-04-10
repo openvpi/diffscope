@@ -1,6 +1,8 @@
 #ifndef AUDIO_OUTPUTPLAYBACKPAGE_H
 #define AUDIO_OUTPUTPLAYBACKPAGE_H
 
+#include <QPointer>
+
 #include <CoreApi/isettingpage.h>
 
 class QComboBox;
@@ -26,7 +28,7 @@ namespace Audio {
         void finish() override;
 
     private:
-        QWidget *m_widget = nullptr;
+        QPointer<QWidget> m_widget;
         QComboBox *m_driverComboBox;
         QComboBox *m_deviceComboBox;
         QComboBox *m_bufferSizeComboBox;

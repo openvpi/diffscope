@@ -22,21 +22,24 @@
 
 namespace Audio {
     OutputPlaybackPage::OutputPlaybackPage(QObject *parent) : Core::ISettingPage("audio.OutputPlayback", parent) {
-        setTitle([] { return tr("Output & Playback"); });
-        setDescription([] { return tr("Specify the Audio Output Device and Playback Behaviors."); });
+        setTitle([] { return tr("Output and Playback"); });
+        setDescription([] { return tr("Specify the audio output device and playback behaviors."); });
     }
     OutputPlaybackPage::~OutputPlaybackPage() = default;
     QString OutputPlaybackPage::sortKeyword() const {
         return QStringLiteral("OutputPlayback");
     }
     QWidget *OutputPlaybackPage::widget() {
+        if (m_widget)
+            return m_widget;
+
         m_widget = new QWidget;
         auto mainLayout = new QVBoxLayout;
         
-        auto audioOutputGroupBox = new QGroupBox(tr("Audio Driver && Device"));
+        auto audioOutputGroupBox = new QGroupBox(tr("Audio Driver and Device"));
         auto audioOutputLayout = new QFormLayout;
         m_driverComboBox = new QComboBox;
-        audioOutputLayout->addRow(tr("Audio D&river"), m_driverComboBox);
+        audioOutputLayout->addRow(tr("Audio d&river"), m_driverComboBox);
         auto deviceLayout = new QHBoxLayout;
         m_deviceComboBox = new QComboBox;
         deviceLayout->addWidget(m_deviceComboBox, 1);
@@ -44,19 +47,19 @@ namespace Audio {
         deviceLayout->addWidget(testDeviceButton);
         auto deviceControlPanelButton = new QPushButton(tr("Control &Panel"));
         deviceLayout->addWidget(deviceControlPanelButton);
-        auto deviceLayoutLabel = new QLabel(tr("Audio &Device"));
+        auto deviceLayoutLabel = new QLabel(tr("Audio &device"));
         deviceLayoutLabel->setBuddy(m_deviceComboBox);
         audioOutputLayout->addRow(deviceLayoutLabel, deviceLayout);
         m_bufferSizeComboBox = new QComboBox;
-        audioOutputLayout->addRow(tr("&Buffer Size"), m_bufferSizeComboBox);
+        audioOutputLayout->addRow(tr("&Buffer size"), m_bufferSizeComboBox);
         m_sampleRateComboBox = new QComboBox;
-        audioOutputLayout->addRow(tr("&Sample Rate"), m_sampleRateComboBox);
+        audioOutputLayout->addRow(tr("&Sample rate"), m_sampleRateComboBox);
         m_hotPlugModeComboBox = new QComboBox;
         m_hotPlugModeComboBox->addItems({
             tr("Notify when any device added or removed"),
             tr("Notify when current device removed"),
             tr("Do not notify")});
-        audioOutputLayout->addRow(tr("&Hot Plug Notification"), m_hotPlugModeComboBox);
+        audioOutputLayout->addRow(tr("&Hot plug notification"), m_hotPlugModeComboBox);
         audioOutputGroupBox->setLayout(audioOutputLayout);
         mainLayout->addWidget(audioOutputGroupBox);
 
@@ -67,8 +70,8 @@ namespace Audio {
             tr("Start position"),
             tr("End position"),
         });
-        playbackLayout->addRow(tr("After Playback is Stopped, &Move the Play Head to"), m_playHeadBehaviorComboBox);
-        m_closeDeviceOnPlaybackStopCheckBox = new QCheckBox(tr("&Close Audio Device When Playback is Stopped"));
+        playbackLayout->addRow(tr("After playback is stopped, &move the play head to"), m_playHeadBehaviorComboBox);
+        m_closeDeviceOnPlaybackStopCheckBox = new QCheckBox(tr("&Close audio device when playback is stopped"));
         playbackLayout->addRow(m_closeDeviceOnPlaybackStopCheckBox);
         playbackGroupBox->setLayout(playbackLayout);
         mainLayout->addWidget(playbackGroupBox);
@@ -77,7 +80,7 @@ namespace Audio {
         auto fileLayout = new QFormLayout;
         m_fileBufferSizeMsecSpinBox = new SVS::ExpressionDoubleSpinBox;
         m_fileBufferSizeMsecSpinBox->setRange(0.0, std::numeric_limits<double>::max());
-        fileLayout->addRow(tr("&File Reading Buffer Size (Millisecond)"), m_fileBufferSizeMsecSpinBox);
+        fileLayout->addRow(tr("&File reading buffer size (millisecond)"), m_fileBufferSizeMsecSpinBox);
         fileGroupBox->setLayout(fileLayout);
         mainLayout->addWidget(fileGroupBox);
         mainLayout->addStretch();
@@ -87,7 +90,11 @@ namespace Audio {
 
         connect(testDeviceButton, &QPushButton::clicked, this, [=] {
             if (!outputSys->makeReady()) {
-                QMessageBox::critical(m_widget, {}, tr("Cannot start audio playback!"));
+                QMessageBox msgBox;
+                msgBox.setIcon(QMessageBox::Critical);
+                msgBox.setText(tr("Cannot start audio playback"));
+                msgBox.setInformativeText(tr("Please check the status of the audio driver and device."));
+                msgBox.exec();
             } else {
                 outputSys->testDevice();
             }
@@ -103,9 +110,11 @@ namespace Audio {
         return m_widget;
     }
     bool OutputPlaybackPage::accept() {
+        // TODO
         return true;
     }
     void OutputPlaybackPage::finish() {
+        m_widget.clear();
     }
 
     void OutputPlaybackPage::updateDriverComboBox() {
@@ -147,7 +156,7 @@ namespace Audio {
             disconnect(m_sampleRateComboBox, nullptr, this, nullptr);
             m_sampleRateComboBox->clear();
             if (!outputSys->setDriver(newDrvName)) {
-                QMessageBox::warning(m_widget, {}, tr("Cannot initialize %1 driver!").arg(OutputSystem::driverDisplayName(outputSys->driver()->name())));
+                QMessageBox::warning(m_widget, {}, tr("Cannot initialize %1 driver").arg(OutputSystem::driverDisplayName(outputSys->driver()->name())));
                 if (m_driverComboBox->itemData(m_driverComboBox->count() - 1).isNull()) {
                     m_driverComboBox->setCurrentIndex(m_driverComboBox->count() - 1);
                 } else {
@@ -192,7 +201,7 @@ namespace Audio {
                         break;
                     }
                 }
-                QMessageBox::warning(m_widget, {}, tr("Audio device %1 is not available!").arg(newDevName));
+                QMessageBox::warning(m_widget, {}, tr("Audio device %1 is not available").arg(newDevName));
             } else {
                 if (m_deviceComboBox->itemData(m_deviceComboBox->count() - 1).isNull()) {
                     m_deviceComboBox->removeItem(m_deviceComboBox->count() - 1);
