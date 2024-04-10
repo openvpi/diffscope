@@ -59,19 +59,10 @@ Name: "chinesesimplified"; MessagesFile: "{#GetEnv('SETUP_MESSAGE_FILES_DIR')}\C
 Name: "chinesetraditional"; MessagesFile: "{#GetEnv('SETUP_MESSAGE_FILES_DIR')}\ChineseTraditional.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
-[CustomMessages]
-english.RemoveUserDataDesc=Do you want to remove all user data and temporary files?
-chinesesimplified.RemoveUserDataDesc=是否删除所有用户数据与临时文件？
-chinesetraditional.RemoveUserDataDesc=是否刪除所有用戶數據與暫存檔案？
-japanese.RemoveUserDataDesc=すべてのユーザーデータと一時ファイルを削除しますか？
-
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Code]
-var
-    DeleteUserData: Boolean;
-
 function FullInstallationMessage(Param: String): String;
 begin
     Result := SetupMessage(msgFullInstallation);
@@ -87,73 +78,7 @@ begin
     Result := SetupMessage(msgCustomInstallation);
 end;
 
-function IsDirectoryEmpty(const Directory: string): Boolean;
-var
-    FindRec: TFindRec;
-    IsEmpty: Boolean;
-begin
-    IsEmpty := True;
-    if FindFirst(Directory + '\*.*', FindRec) then
-    begin
-        try
-            repeat
-                if (FindRec.Name <> '.') and (FindRec.Name <> '..') then
-                begin
-                    IsEmpty := False;
-                    Break;
-                end;
-            until not FindNext(FindRec);
-        finally
-            FindClose(FindRec);
-        end;
-    end;
-    Result := IsEmpty;
-end;
-
-procedure RemoveAppDirectory(Dir: String);
-var
-    OrgDataDir: String;
-    DataDir: String;
-begin
-    OrgDataDir := Dir + '\OpenVPI'
-    DataDir := OrgDataDir + ExpandConstant('\{#MyAppName}')
-
-    if not DirExists(DataDir) then
-    begin
-        Exit;
-    end;
-
-    // Remove data directory
-    DelTree(DataDir, True, True, True);
-
-    // Remove org data directory if empty
-    if (IsDirectoryEmpty(OrgDataDir)) then
-    begin
-        RemoveDir(OrgDataDir);
-    end;
-end;
-
-procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
-begin
-    if CurUninstallStep = usUninstall then
-    begin
-        DeleteUserData := False;
-        if MsgBox(ExpandConstant('{cm:RemoveUserDataDesc}'), mbConfirmation, MB_YESNO) = IDYES then
-            DeleteUserData := True
-        else
-            DeleteUserData := False;
-    end
-    else if CurUninstallStep = usPostUninstall then
-    begin
-        if DeleteUserData then
-        begin
-            RemoveAppDirectory(ExpandConstant('{userdocs}'));
-            RemoveAppDirectory(ExpandConstant('{userappdata}'));
-            RemoveAppDirectory(GetEnv('TMP'));
-            RemoveAppDirectory(GetEnv('TEMP'));
-        end;
-    end;
-end;
+#include "uninstall.iss"
 
 [Types]
 Name: "full"; Description: "{code:FullInstallationMessage}"
