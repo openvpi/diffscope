@@ -69,7 +69,7 @@ namespace Core::Internal {
                 &HomeWindow::_q_openFileRequested);
 
         qIDec->installLocale(this, _LOC(HomeWindow, this));
-        // qIDec->installTheme(this, "core.HomeWindow");
+        qIDec->installTheme(this, "core.HomeWindow");
     }
 
     HomeWindow::~HomeWindow() {

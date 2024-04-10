@@ -1,0 +1,177 @@
+/* Stylesheet Content */
+
+Core--Internal--HomeWindow {
+    background-color: #1E1E1E;
+}
+
+CNavFrame#home-frame>QSplitter::handle {
+    background-color: transparent;
+    width: 0;
+}
+
+CNavFrame#home-frame>QSplitter>QFrame#left-frame {
+    background-color: #252526;
+    padding: 0;
+}
+
+CNavFrame#home-frame>QSplitter>QFrame#right-frame {
+    background-color: transparent;
+}
+
+
+/* Top Buttons */
+
+CTabButton#home-title-button {
+    color: #CCCCCC;
+    font-size: 20px;
+    font-weight: bold;
+    --icon: svg(":/svg/app/diffsinger.svg");
+    --iconSize: 32px 32px;
+    --spaceRatio: 0.2;
+    padding: 20px;
+    background-color: transparent;
+    border: none;
+    text-align: left;
+}
+
+
+/* Nav Buttons */
+
+CTabButton[type=home-nav-button] {
+    --iconSize: 20px 20px;
+    --spaceRatio: 0.2;
+    background-color: transparent;
+    color: #FFFFFF;
+    border: 4px solid transparent;
+    padding: 11.25px;
+    text-align: left;
+}
+
+CTabButton[type=home-nav-button]:hover,
+CTabButton[type=home-nav-button]:pressed {
+    background-color: rgba(255, 255, 255, 15%);
+}
+
+CTabButton[type=home-nav-button]:checked {
+    background-color: rgba(255, 255, 255, 5%);
+    border-left-color: #00B578;
+}
+
+
+/* Nav Bottom Buttons */
+
+QFrame#home-bottom-buttons-frame>CTabButton {
+    --iconSize: 28px 28px;
+    --spaceRatio: 0.2;
+    background-color: transparent;
+    color: #FFFFFF;
+    text-align: left;
+    padding: 15px;
+    border: none;
+}
+
+QFrame#home-bottom-buttons-frame>CTabButton:hover,
+QFrame#home-bottom-buttons-frame>CTabButton:pressed {
+    background-color: rgba(255, 255, 255, 15%);
+}
+
+/* CTabButton#home-about-button {
+    --icon: svg(":/svg/icons/info_16_filled.svg", auto);
+    border-top: 1.25px solid rgba(255, 255, 255, 15%);
+    padding-top: 20px;
+    padding-bottom: 20px;
+} */
+
+
+/* Home Recent Widget */
+
+Core--Internal--HomeRecentWidget>QSplitterHandle {
+    --enabled: false;
+}
+
+Core--Internal--HomeRecentWidget::handle {
+    background-color: #666666;
+    height: 1.25px;
+}
+
+Core--Internal--HomeRecentTopFrame {
+    --layoutSpacing: 10px;
+    padding: 15px;
+}
+
+Core--Internal--HomeRecentWidget>LinearScrollArea {
+    background-color: transparent;
+    padding: 0;
+    border-style: none;
+}
+
+Core--Internal--HomeRecentTopFrame>QLineEdit {
+    padding: 5px;
+}
+
+Core--Internal--HomeRecentTopFrame>CTabButton {
+    padding: 5px 10px;
+}
+
+
+/* Recent Top Buttons */
+
+Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button] {
+    --iconSize: 20px 20px;
+    --spaceRatio: 0.2;
+    background-color: rgba(0, 181, 120, 30%);
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 25px;
+    text-align: left;
+}
+
+Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button]:hover,
+Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button]:pressed {
+    background-color: rgba(0, 181, 120, 50%);
+}
+
+Core--Internal--HomeRecentTopFrame>QLineEdit#search-box {
+    background-color: transparent;
+    color: #CCCCCC;
+    border: 2px solid #333333;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+Core--Internal--HomeRecentTopFrame>QLineEdit#search-box:focus {
+    border-color: #666666;
+}
+
+
+/* FileListWidget */
+
+Core--Internal--HomeRecentBottomFrame {
+    padding: 20px;
+    background-color: transparent;
+}
+
+Core--Internal--HomeRecentBottomFrame>QLabel {
+    color: #CCCCCC;
+}
+
+Core--Internal--HomeRecentBottomFrame>QsApi--TitleListWidget {
+    border: none;
+    background-color: transparent;
+    --styleData: qmap(/* styleData */
+    background=qrect((transparent, rgba(255, 255, 255, 10%)), 0), /**/
+    underline=qpen(transparent, 1), /**/
+    titleShape=qfont(#E0E0E0, 15px), /**/
+    subShape=qfont(#909090, 15px), /**/
+    descShape=qfont(#909090, 15px), /**/
+    descHighlightShape=qfont(transparent, 15px), /**/
+    descBackgroundShape=qrectstyle(transparent, (0, 0, 2px, 0)), /**/
+    titleMargins=qmargins(1.25px, 10px), /**/
+    subMargins=qmargins(1.25px, 10px), /**/
+    descMargins=qmargins(0, 10px), /**/
+    iconMargins=qmargins(10px), /**/
+    padding=qmargins(3.75px, 10px), /**/
+    margins=qmargins(3px, 5px, 3px, 5px), /**/
+    defaultIconSize=40px 40px, /**/
+    );
+}

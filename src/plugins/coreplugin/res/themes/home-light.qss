@@ -1,0 +1,188 @@
+/* Stylesheet Content */
+
+QWidget#home-window {
+    background-color: #fff;
+}
+
+CNavFrame#home-frame>QSplitter::handle {
+    background-color: transparent;
+    width: 0;
+}
+
+CNavFrame#home-frame>QSplitter>QFrame#left-frame {
+    background-color: #f3f3f3;
+    padding: 0;
+}
+
+CNavFrame#home-frame>QSplitter>QFrame#right-frame {
+    background-color: transparent;
+}
+
+
+/* Top Buttons */
+
+CTabButton#home-title-button {
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    --icon: svg(":/svg/app/diffsinger.svg");
+    --iconSize: 32px 32px;
+    --spaceRatio: 0.2;
+    padding: 20px;
+    background-color: transparent;
+    border: none;
+    text-align: left;
+}
+
+
+/* Nav Buttons */
+
+CTabButton[type=home-nav-button] {
+    --iconSize: 20px 20px;
+    --spaceRatio: 0.2;
+    background-color: transparent;
+    color: #333;
+    border: 4px solid transparent;
+    padding: 11.25px;
+    text-align: left;
+    border-radius: 0px;
+}
+
+CTabButton[type=home-nav-button]:hover,
+CTabButton[type=home-nav-button]:pressed {
+    background-color: rgba(0, 0, 0, 15%);
+}
+
+CTabButton[type=home-nav-button]:checked {
+    background-color: rgba(0, 0, 0, 5%);
+    border-left-color: #0060c0;
+}
+
+
+/* Nav Bottom Buttons */
+
+CTabButton[type=home-bottom-button] {
+    --iconSize: 28px 28px;
+    --spaceRatio: 0.2;
+    background-color: transparent;
+    color: #333;
+    text-align: left;
+    padding: 15px;
+}
+
+CTabButton[type=home-bottom-button]:hover {
+    background-color: rgba(0, 0, 0, 5%);
+}
+CTabButton[type=home-bottom-button]:pressed {
+    background-color: rgba(0, 0, 0, 10%);
+}
+
+CTabButton#home-about-button {
+    --icon: svg(":/svg/icons/info_16_filled.svg", auto);
+    border-top: 1.25px solid rgba(0, 0, 0, 15%);
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 0px;
+}
+
+
+/* Home Recent Widget */
+
+Core--Internal--HomeRecentWidget>QSplitterHandle {
+    --enabled: false;
+}
+
+Core--Internal--HomeRecentWidget::handle { /* Dividing line for search box and list */ 
+    background-color: transparent;
+    height: 1.25px;
+}
+
+Core--Internal--HomeRecentTopFrame {
+    --layoutSpacing: 10px;
+    padding: 15px;
+}
+
+Core--Internal--HomeRecentWidget>LinearScrollArea {
+    background-color: transparent;
+    padding: 0;
+    border-style: none;
+}
+
+Core--Internal--HomeRecentTopFrame>QLineEdit {
+    padding: 5px;
+}
+
+Core--Internal--HomeRecentTopFrame>CTabButton {
+    padding: 5px 10px;
+}
+
+
+/* Recent Top Buttons */
+
+Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button] {
+    --iconSize: 20px 20px;
+    --spaceRatio: 0.2;
+    background-color: #0060c0;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 25px;
+    text-align: left;
+    border: none;
+}
+
+Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button]:hover {
+    background-color: #0075EA;
+}
+Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button]:pressed {
+    background-color: #004F9E;
+}
+
+Core--Internal--HomeRecentTopFrame>QLineEdit#search-box {
+    background-color: transparent;
+    color: #616161;
+    border: 1px solid #d4d4d4;
+    border-radius: 5px;
+    padding: 10px;
+    selection-color: #FFFFFF;
+    selection-background-color: #0060c0;
+}
+
+Core--Internal--HomeRecentTopFrame>QLineEdit#search-box:focus {
+    border-color: #0060c0;
+}
+
+
+/* FileListWidget */
+
+Core--Internal--HomeRecentBottomFrame {
+    padding: 20px;
+    background-color: transparent;
+}
+
+Core--Internal--HomeRecentBottomFrame>QLabel {
+    color: #CCCCCC;
+}
+
+Core--Internal--HomeRecentBottomFrame>QsApi--TitleListWidget {
+    border: none;
+    background-color: transparent;
+    --styleData: qmap(/* styleData */
+    background=qrect((transparent, #f6f6f6, #f0f0f0), 0), /* Recent List Item Background (normal, hover, selected)*/
+    underline=qpen(transparent, 1), /**/
+    titleShape=qfont((#616161, #616161, #616161), 15px), /* Recent List Item Title*/
+    subShape=qfont((#8d8d8d, #8d8d8d, #8d8d8d), 15px), /* Recent List Item Subtitle*/
+    descShape=qfont((#8d8d8d, #8d8d8d, #8d8d8d), 15px), /* Recent List Item Time*/
+    descHighlightShape=qfont(transparent, 15px), /**/
+    descBackgroundShape=qrectstyle(transparent, (0, 0, 2px, 0)), /**/
+    titleMargins=qmargins(1.25px, 10px), /**/
+    subMargins=qmargins(1.25px, 10px), /**/
+    descMargins=qmargins(0, 10px), /**/
+    iconMargins=qmargins(10px), /**/
+    padding=qmargins(3.75px, 10px), /**/
+    margins=qmargins(3px, 5px, 3px, 5px), /**/
+    defaultIconSize=40px 40px, /**/
+    );
+}

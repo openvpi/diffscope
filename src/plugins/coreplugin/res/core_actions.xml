@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionSystem>
+    <version>2.0</version>
+
+    <items>
+        <!-- File -->
+        <item id="NewFile" command="Create: New File" shortcut="Ctrl+N" />
+        <item id="OpenFile" command="File: Open File" shortcut="Ctrl+O" />
+        <item id="SaveFile" command="File: Save File" shortcut="Ctrl+S" />
+        <item id="SaveAsFile" command="File: Save As File" shortcut="Ctrl+Shift+S" />
+        <item id="CloseFile" command="File: Close File" />
+
+        <!-- Preferences -->
+        <item id="Settings" command="Preferences: Settings" shortcut="Ctrl+," />
+        <item id="ColorThemes" command="Preferences: Color Themes" shortcut="Ctrl+K,Ctrl+T" />
+        <item id="Languages" command="Preferences: Locales And Languages" shortcut="Ctrl+K,Ctrl+L" />
+
+        <!-- Edit -->
+        <item id="Undo" command="Edit: Undo" shortcut="Ctrl+Z" />
+        <item id="Redo" command="Edit: Redo" shortcut="Ctrl+Shift+Z" />
+        <item id="Cut" command="Edit: Cut" shortcut="Ctrl+X" />
+        <item id="Copy" command="Edit: Copy" shortcut="Ctrl+C" />
+        <item id="Paste" command="Edit: Paste" shortcut="Ctrl+V" />
+        <item id="Delete" command="Edit: Delete" shortcut="Del" />
+        <item id="SelectAll" command="Edit: Select All" shortcut="Ctrl+A" />
+        <item id="Deselect" command="Edit: Deselect" />
+        <item id="Find" />
+        <item id="Replace" />
+
+        <!-- Appearances -->
+        <item id="MainMenuVisible" command="View: Main Menu" />
+        <item id="MainToolbarVisible" command="View: Main Toolbar" />
+        <item id="DockVisible" command="View: Dock Panel Bars" />
+        <item id="StatusBarVisible" command="View: Status Bar" />
+
+        <!-- Play -->
+        <item id="Play" command="Playback: Play" shortcut="SPACE" />
+        <item id="Stop" command="Playback: Stop" shortcut="F7" />
+        <item id="MoveToStart" command="Playback: Move To Start" />
+        <item id="MoveToEnd" command="Playback: Move To End" />
+        <item id="Metronome" command="Playback: Metronome" />
+        <item id="LoopPlay" command="Playback: Loop Play" />
+
+        <!-- Help -->
+        <item id="ShowHome" command="Help: Show Home" />
+        <item id="FindAction" command="Help: Show All Actions" shortcut="Ctrl+Shift+P" />
+        <item id="AboutPlugins" command="About: About Plugins" />
+        <item id="AboutApp" command="About: About ${APPNAME}" />
+        <item id="AboutQt" command="About: About Qt" />
+
+        <!-- Invisible -->
+        <item id="ShowRecentFiles" command="File: Show Recent Files" />
+        <item id="SelectPianoKeyWidget" command="View: Select Piano Key Widget" />
+    </items>
+
+    <domains>
+        <!-- 工程窗口 -->
+        <domain id="project">
+
+            <!-- 主菜单 -->
+            <menuBar id="MainMenu">
+                <!-- 文件 -->
+                <menu id="File">
+                    <group id="FileOpenGroup">
+                        <action id="NewFile" />
+                        <action id="OpenFile" />
+                        <action id="OpenRecent" />
+                    </group>
+                    <separator />
+                    <group id="FileSaveGroup">
+                        <action id="SaveFile" />
+                        <action id="SaveAsFile" />
+                    </group>
+                    <separator />
+                    <group id="PreferencesGroup">
+                        <menu id="PreferencesMenu">
+                            <action id="Settings" />
+                            <action id="ColorThemes" />
+                            <action id="Languages" />
+                        </menu>
+                    </group>
+                    <separator />
+                    <action id="CloseFile" />
+                </menu>
+                <!-- 编辑 -->
+                <menu id="Edit">
+                    <action id="Undo" />
+                    <action id="Redo" />
+                    <separator />
+                    <group id="CutCopyGroup">
+                        <action id="Cut" />
+                        <action id="Copy" />
+                        <action id="Paste" />
+                    </group>
+                    <separator />
+                    <group id="CreateDeleteGroup">
+                        <action id="Delete" />
+                    </group>
+                    <separator />
+                    <group id="EditorSelectGroup">
+                        <action id="SelectAll" />
+                        <action id="Deselect" />
+                    </group>
+                    <separator />
+                    <group id="EditorSearchGroup">
+                        <action id="Find" />
+                        <action id="Replace" />
+                        <separator />
+                    </group>
+                    <separator />
+                </menu>
+                <!-- 视图 -->
+                <menu id="View">
+                    <group id="Visibilities">
+                        <menu id="Appearance">
+                            <item id="MainMenuVisible" />
+                            <item id="MainToolbarVisible" />
+                            <item id="DockVisible" />
+                            <item id="StatusBarVisible" />
+                        </menu>
+                        <menu id="DockPanelsVisibility" />
+                        <menu id="FloatingPanelsVisibility" />
+                    </group>
+                    <separator />
+                </menu>
+                <!-- 播放 -->
+                <menu id="Playback">
+                    <group id="PlayControlGroup">
+                        <action id="Play" />
+                        <action id="Stop" />
+                        <action id="MoveToStart" />
+                        <action id="MoveToEnd" />
+                    </group>
+                    <separator />
+                    <menu id="PlayOptionsMenu">
+                        <action id="Metronome" />
+                        <action id="LoopPlay" />
+                    </menu>
+                </menu>
+                <!-- 帮助 -->
+                <menu id="Help">
+                    <group id="WelcomeGroup">
+                        <action id="ShowHome" />
+                        <action id="FindAction" />
+                    </group>
+                    <separator />
+                    <group id="AboutGroup">
+                        <action id="AboutPlugins" />
+                        <action id="AboutApp" />
+                        <action id="AboutQt" />
+                    </group>
+                </menu>
+            </menuBar>
+
+            <!-- 主工具栏 -->
+            <toolBar id="MainToolBar">
+                <action id="ShowHome" />
+                <separator />
+                <action id="OpenFile" />
+                <action id="SaveFile" />
+                <separator />
+                <action id="Undo" />
+                <action id="Redo" />
+                <stretch />
+                <action id="TimerLabel" />
+                <action id="QuantizeSelector" />
+                <separator />
+                <group id="PlayControlGroup" />
+                <separator />
+                <menu id="PlayOptionsMenu" expand="true" />
+                <separator />
+                <action id="FindAction" />
+                <action id="Settings" />
+            </toolBar>
+
+        </domain>
+    </domains>
+</actionSystem>

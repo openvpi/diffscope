@@ -1,0 +1,9 @@
+{
+    "MainMenu": {
+        "File": {
+            "ImportProject": "a.svg",
+            "AppendProject": "a.svg",
+            "ExportProject": "a.svg"
+        }
+    }
+}

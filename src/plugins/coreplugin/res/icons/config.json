@@ -1,0 +1,53 @@
+{
+    "MainMenu": {
+        "File": {
+            "NewFile": "a.svg",
+            "OpenFile": "a.svg",
+            "SaveFile": "a.svg",
+            "SaveAsFile": "a.svg",
+            "Preferences": {
+                "Settings": "a.svg",
+                "ColorThemes": "a.svg",
+                "Languages": "a.svg"
+            },
+            "CloseFile": "a.svg"
+        },
+        "Edit": {
+            "Undo": "a.svg",
+            "Redo": "a.svg",
+            "Cut": "a.svg",
+            "Copy": "a.svg",
+            "Paste": "a.svg",
+            "Delete": "a.svg",
+            "SelectAll": "a.svg",
+            "Deselect": "a.svg",
+            "Find": "a.svg",
+            "Replace": "a.svg"
+        },
+        "View": {
+            "Appearances": {
+                "MainMenuVisible": "a.svg",
+                "MainToolbarVisible": "a.svg",
+                "DockVisible": "a.svg",
+                "StatusBarVisible": "a.svg"
+            }
+        },
+        "Play": {
+            "Play": "a.svg",
+            "Stop": "a.svg",
+            "MoveToStart": "a.svg",
+            "MoveToEnd": "a.svg",
+            "PlayOptions": {
+                "Metronome": "a.svg",
+                "LoopPlay": "a.svg"
+            }
+        },
+        "Help": {
+            "ShowHome": "a.svg",
+            "FindAction": "a.svg",
+            "AboutPlugins": "a.svg",
+            "AboutApp": "a.svg",
+            "AboutQt": "a.svg"
+        }
+    }
+}

@@ -12,7 +12,7 @@ ck_add_plugin(${PROJECT_NAME}
 # Configure target
 file(GLOB_RECURSE _src *.h *.cpp)
 qm_configure_target(${PROJECT_NAME}
-    SOURCES ${_src}
+    SOURCES ${_src} res/core_res.qrc
     QT_LINKS
         Core
         Gui
@@ -51,7 +51,8 @@ qm_add_translation(${PROJECT_NAME}_translations
 
 # Add resources
 ck_add_attached_files(${PROJECT_NAME}
-    # SRC res/themes DEST .
+    SRC res/icons DEST .
+    SRC res/themes DEST .
     SRC ${CMAKE_CURRENT_BINARY_DIR}/res/translations DEST .
 )
 

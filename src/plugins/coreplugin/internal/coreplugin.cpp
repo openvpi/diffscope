@@ -84,7 +84,7 @@ namespace Core::Internal {
 
         // Add basic actions
         // auto actionMgr = icore->actionSystem();
-        // if (!actionMgr->loadDomainManifest(":/core_actions.xml")) {
+        // if (!actionMgr->loadDomainManifest(pluginSpec()->location() + "/config/actions.xml")) {
         //     *errorMessage = tr("Failed to load action configuration!");
         //     return false;
         // }
