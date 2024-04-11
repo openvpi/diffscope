@@ -18,7 +18,7 @@ namespace Audio {
     }
     VSTConnectionSystem::~VSTConnectionSystem() {
     }
-    bool VSTConnectionSystem::initialize() {
+    bool VSTConnectionSystem::createVSTConfig() {
         auto vstConfigPath = qAppExt->appDataDir() + "/vstconfig.json";
         qDebug() << "Audio::VSTConnectionSystem: VST config path" << vstConfigPath;
         QFile vstConfigFile(vstConfigPath);
@@ -33,15 +33,23 @@ namespace Audio {
         if (!obj.contains("vstPluginPort"))
             obj.insert("vstPluginPort", 28082);
         settings["Audio"] = obj;
-        auto editorPort = obj["vstEditorPort"].toInt();
-        auto pluginPort = obj["vstPluginPort"].toInt();
         QJsonDocument doc({
             {"editor",      QApplication::applicationFilePath()},
-            {"editorPort",  editorPort                 },
-            {"pluginPort",  pluginPort                 },
+            {"editorPort",  obj.value("vstEditorPort")},
+            {"pluginPort",  obj.value("vstPluginPort")},
             {"threadCount", QThread::idealThreadCount()},
+            {"theme",       obj.value("vstPluginEditorUsesCustomTheme").toBool() ? obj.value("vstTheme") : QJsonValue::Null},
         });
         vstConfigFile.write(doc.toJson());
+        return true;
+    }
+    bool VSTConnectionSystem::initialize() {
+        if (!createVSTConfig())
+            return false;
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        auto editorPort = obj["vstEditorPort"].toInt();
+        auto pluginPort = obj["vstPluginPort"].toInt();
         auto socket = std::make_unique<talcs::RemoteSocket>(editorPort, pluginPort, this);
         if (!socket->startServer(QThread::idealThreadCount())) {
             qWarning() << "Audio::VSTConnectionSystem: fatal: socket fails to start server";

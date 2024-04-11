@@ -213,6 +213,11 @@ namespace Audio {
     }
     void OutputSystem::setHotPlugNotificationMode(OutputSystem::HotPlugNotificationMode mode) {
         m_hotPlugNotificationMode = mode;
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        obj["hotPlugNotificationMode"] = mode;
+        settings["Audio"] = obj;
+        qDebug() << "Audio::OutputSystem: hot plug notification mode set to" << mode;
     }
     void OutputSystem::handleDeviceHotPlug() {
         qDebug() << "Audio::OutputSystem: hot plug detected";

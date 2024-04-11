@@ -15,7 +15,11 @@
 #include <QGraphicsView>
 #include <QColorDialog>
 
+#include <CoreApi/iloader.h>
+
 #include <SVSCraftWidgets/expressionspinbox.h>
+
+#include <vstconnectionsystem.h>
 
 namespace Audio {
 
@@ -224,13 +228,35 @@ namespace Audio {
         connect(m_pluginEditorUsesCustomThemeCheckBox, &QCheckBox::toggled, customizeThemeButton, &QPushButton::setEnabled);
         connect(customizeThemeButton, &QPushButton::clicked, m_customizeThemeDialog, &CustomizeThemeDialog::exec);
 
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        m_editorPortSpinBox->setValue(obj["vstEditorPort"].toInt(28081));
+        m_pluginPortSpinBox->setValue(obj["vstPluginPort"].toInt(28082));
+
+
         return m_widget;
     }
     bool VSTModePage::accept() {
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        obj["vstEditorPort"] = m_editorPortSpinBox->value();
+        obj["vstPluginPort"] = m_pluginPortSpinBox->value();
+        obj["vstTheme"] = QJsonObject({
+            {"foreground", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::Foreground).name()},
+            {"foregroundBorder", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::ForegroundBorder).name()},
+            {"foregroundLabel", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::ForegroundLabel).name()},
+            {"backgroundMain", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundMain).name()},
+            {"backgroundSidebar", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundSidebar).name()},
+            {"backgroundMessage", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundMessage).name()},
+            {"backgroundError", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundError).name()},
+        });
+        obj["vstPluginEditorUsesCustomTheme"] = m_pluginEditorUsesCustomThemeCheckBox->isChecked();
+        settings["Audio"] = obj;
+        VSTConnectionSystem::createVSTConfig();
         // TODO
         return true;
     }
     void VSTModePage::finish() {
-        m_widget.clear();
+
     }
 } // Audio

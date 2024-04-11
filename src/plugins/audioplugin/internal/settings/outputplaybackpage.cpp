@@ -107,14 +107,17 @@ namespace Audio {
 
         updateDriverComboBox();
 
+        m_hotPlugModeComboBox->setCurrentIndex(AudioSystem::outputSystem()->hotPlugNotificationMode());
+
         return m_widget;
     }
     bool OutputPlaybackPage::accept() {
+        AudioSystem::outputSystem()->setHotPlugNotificationMode(static_cast<OutputSystem::HotPlugNotificationMode>(m_hotPlugModeComboBox->currentIndex()));
         // TODO
         return true;
     }
     void OutputPlaybackPage::finish() {
-        m_widget.clear();
+
     }
 
     void OutputPlaybackPage::updateDriverComboBox() {

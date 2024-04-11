@@ -45,6 +45,7 @@ namespace Audio {
             Current,
             None,
         };
+        Q_ENUM(HotPlugNotificationMode)
         HotPlugNotificationMode hotPlugNotificationMode() const;
         void setHotPlugNotificationMode(HotPlugNotificationMode mode);
 

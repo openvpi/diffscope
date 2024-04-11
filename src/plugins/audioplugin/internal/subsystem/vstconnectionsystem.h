@@ -23,6 +23,8 @@ namespace Audio {
         explicit VSTConnectionSystem(QObject *parent = nullptr);
         ~VSTConnectionSystem() override;
 
+        static bool createVSTConfig();
+
         bool initialize() override;
 
         void setApplicationInitializing(bool);
