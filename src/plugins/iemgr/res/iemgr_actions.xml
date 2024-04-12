@@ -9,21 +9,20 @@
         <action id="ExportProject" command="Export;Export Project" />
     </items>
 
-    <domains>
+    <layouts>
+        <!-- 导入导出 -->
+        <group id="ImportExportGroup">
+            <action id="ImportProject" />
+            <action id="AppendProject" />
+            <action id="ExportProject" />
+        </group>
+    </layouts>
+
+    <insertions>
         <!-- 工程窗口 -->
-        <domain id="ProjectWindow">
-
-            <!-- 插入 -->
-            <insertion anchor="before" target="File;FileSaveGroup">
-                <!-- 导入导出 -->
-                <group id="ImportExportGroup">
-                    <action id="ImportProject" />
-                    <action id="AppendProject" />
-                    <action id="ExportProject" />
-                </group>
-                <separator />
-            </insertion>
-
-        </domain>
-    </domains>
+        <insertion domain="ProjectWindow" anchor="before" target="File;FileSaveGroup">
+            <group id="ImportExportGroup" />
+            <separator />
+        </insertion>
+    </insertions>
 </actionSystem>

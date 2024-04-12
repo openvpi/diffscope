@@ -34,7 +34,7 @@
         <action id="DockVisible" text="Dock Panel Bars" class="View" />
         <action id="StatusBarVisible" text="Status Bar" class="View" />
 
-        <!-- Play -->
+        <!-- Playback -->
         <action id="Play" class="Playback" shortcut="SPACE" />
         <action id="Stop" class="Playback" shortcut="F7" />
         <action id="MoveToStart" class="Playback" />
