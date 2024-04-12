@@ -112,6 +112,8 @@ namespace Audio {
         return m_widget;
     }
     bool OutputPlaybackPage::accept() {
+        if (!m_widget)
+            return true;
         AudioSystem::outputSystem()->setHotPlugNotificationMode(static_cast<OutputSystem::HotPlugNotificationMode>(m_hotPlugModeComboBox->currentIndex()));
         // TODO
         return true;

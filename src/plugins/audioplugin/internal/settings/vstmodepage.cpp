@@ -237,18 +237,20 @@ namespace Audio {
         return m_widget;
     }
     bool VSTModePage::accept() {
+        if (!m_widget)
+            return true;
         auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["vstEditorPort"] = m_editorPortSpinBox->value();
         obj["vstPluginPort"] = m_pluginPortSpinBox->value();
         obj["vstTheme"] = QJsonObject({
-            {"foreground", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::Foreground).name()},
-            {"foregroundBorder", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::ForegroundBorder).name()},
-            {"foregroundLabel", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::ForegroundLabel).name()},
-            {"backgroundMain", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundMain).name()},
-            {"backgroundSidebar", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundSidebar).name()},
-            {"backgroundMessage", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundMessage).name()},
-            {"backgroundError", m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundError).name()},
+            {"foreground", static_cast<int>(m_customizeThemeDialog->componentColor(CustomizeThemeDialog::Foreground).rgba())},
+            {"foregroundBorder", static_cast<int>(m_customizeThemeDialog->componentColor(CustomizeThemeDialog::ForegroundBorder).rgba())},
+            {"foregroundLabel", static_cast<int>(m_customizeThemeDialog->componentColor(CustomizeThemeDialog::ForegroundLabel).rgba())},
+            {"backgroundMain", static_cast<int>(m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundMain).rgba())},
+            {"backgroundSidebar", static_cast<int>(m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundSidebar).rgba())},
+            {"backgroundMessage", static_cast<int>(m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundMessage).rgba())},
+            {"backgroundError", static_cast<int>(m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundError).rgba())},
         });
         obj["vstPluginEditorUsesCustomTheme"] = m_pluginEditorUsesCustomThemeCheckBox->isChecked();
         settings["Audio"] = obj;
