@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionSystem>
     <version>2.0</version>
-    <namespace>Plugin;Import/Export Manager</namespace>
+    <namespace>Plugins;${PLUGIN_NAME}</namespace>
 
-    <actions>
-        <item id="ImportProject" command="Import: Import Project" />
-        <item id="AppendProject" command="Import: Append Project" />
-        <item id="ExportProject" command="Export: Export Project" />
-    </actions>
+    <items>
+        <action id="ImportProject" command="Import;Import Project" />
+        <action id="AppendProject" command="Import;Append Project" />
+        <action id="ExportProject" command="Export;Export Project" />
+    </items>
 
     <domains>
         <!-- 工程窗口 -->
-        <domain id="project">
+        <domain id="ProjectWindow">
 
             <!-- 插入 -->
             <insertion anchor="before" target="File;FileSaveGroup">
                 <!-- 导入导出 -->
                 <group id="ImportExportGroup">
-                    <action id="Import Project" />
-                    <action id="Append Project" />
-                    <action id="Export Project" />
+                    <action id="ImportProject" />
+                    <action id="AppendProject" />
+                    <action id="ExportProject" />
                 </group>
                 <separator />
             </insertion>

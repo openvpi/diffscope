@@ -4,59 +4,64 @@
 
     <items>
         <!-- File -->
-        <item id="NewFile" command="Create: New File" shortcut="Ctrl+N" />
-        <item id="OpenFile" command="File: Open File" shortcut="Ctrl+O" />
-        <item id="SaveFile" command="File: Save File" shortcut="Ctrl+S" />
-        <item id="SaveAsFile" command="File: Save As File" shortcut="Ctrl+Shift+S" />
-        <item id="CloseFile" command="File: Close File" />
+        <action id="NewFile" class="Create" shortcut="Ctrl+N" />
+        <action id="OpenFile" class="File" shortcut="Ctrl+O" />
+        <action id="SaveFile" class="File" shortcut="Ctrl+S" />
+        <action id="SaveAsFile" class="File" shortcut="Ctrl+Shift+S" />
+        <action id="CloseFile" class="File" />
 
         <!-- Preferences -->
-        <item id="Settings" command="Preferences: Settings" shortcut="Ctrl+," />
-        <item id="ColorThemes" command="Preferences: Color Themes" shortcut="Ctrl+K,Ctrl+T" />
-        <item id="Languages" command="Preferences: Locales And Languages" shortcut="Ctrl+K,Ctrl+L" />
+        <action id="Settings" class="Preferences" shortcut="Ctrl+," />
+        <action id="ColorThemes" class="Preferences" shortcut="Ctrl+K,Ctrl+T" />
+        <action id="Languages" text="Locales And Languages" class="Preferences"
+            shortcut="Ctrl+K,Ctrl+L" />
 
         <!-- Edit -->
-        <item id="Undo" command="Edit: Undo" shortcut="Ctrl+Z" />
-        <item id="Redo" command="Edit: Redo" shortcut="Ctrl+Shift+Z" />
-        <item id="Cut" command="Edit: Cut" shortcut="Ctrl+X" />
-        <item id="Copy" command="Edit: Copy" shortcut="Ctrl+C" />
-        <item id="Paste" command="Edit: Paste" shortcut="Ctrl+V" />
-        <item id="Delete" command="Edit: Delete" shortcut="Del" />
-        <item id="SelectAll" command="Edit: Select All" shortcut="Ctrl+A" />
-        <item id="Deselect" command="Edit: Deselect" />
-        <item id="Find" />
-        <item id="Replace" />
+        <action id="Undo" class="Edit" shortcut="Ctrl+Z" />
+        <action id="Redo" class="Edit" shortcut="Ctrl+Shift+Z" />
+        <action id="Cut" class="Edit" shortcut="Ctrl+X" />
+        <action id="Copy" class="Edit" shortcut="Ctrl+C" />
+        <action id="Paste" class="Edit" shortcut="Ctrl+V" />
+        <action id="Delete" class="Edit" shortcut="Del" />
+        <action id="SelectAll" class="Edit" shortcut="Ctrl+A" />
+        <action id="Deselect" class="Edit" />
+        <action id="Find" />
+        <action id="Replace" />
 
         <!-- Appearances -->
-        <item id="MainMenuVisible" command="View: Main Menu" />
-        <item id="MainToolbarVisible" command="View: Main Toolbar" />
-        <item id="DockVisible" command="View: Dock Panel Bars" />
-        <item id="StatusBarVisible" command="View: Status Bar" />
+        <action id="MainMenuVisible" text="Main Menu" class="View" />
+        <action id="MainToolbarVisible" text="Main Toolbar" class="View" />
+        <action id="DockVisible" text="Dock Panel Bars" class="View" />
+        <action id="StatusBarVisible" text="Status Bar" class="View" />
 
         <!-- Play -->
-        <item id="Play" command="Playback: Play" shortcut="SPACE" />
-        <item id="Stop" command="Playback: Stop" shortcut="F7" />
-        <item id="MoveToStart" command="Playback: Move To Start" />
-        <item id="MoveToEnd" command="Playback: Move To End" />
-        <item id="Metronome" command="Playback: Metronome" />
-        <item id="LoopPlay" command="Playback: Loop Play" />
+        <action id="Play" class="Playback" shortcut="SPACE" />
+        <action id="Stop" class="Playback" shortcut="F7" />
+        <action id="MoveToStart" class="Playback" />
+        <action id="MoveToEnd" class="Playback" />
+        <action id="Metronome" class="Playback" />
+        <action id="LoopPlay" class="Playback" />
 
         <!-- Help -->
-        <item id="ShowHome" command="Help: Show Home" />
-        <item id="FindAction" command="Help: Show All Actions" shortcut="Ctrl+Shift+P" />
-        <item id="AboutPlugins" command="About: About Plugins" />
-        <item id="AboutApp" command="About: About ${APPNAME}" />
-        <item id="AboutQt" command="About: About Qt" />
+        <action id="ShowHome" class="Help" />
+        <action id="FindAction" class="Help" shortcut="Ctrl+Shift+P" />
+        <action id="AboutPlugins" class="About" />
+        <action id="AboutApp" text="About ${APP_NAME}" class="About" />
+        <action id="AboutQt" class="About" />
 
         <!-- Invisible -->
-        <item id="ShowRecentFiles" command="File: Show Recent Files" />
-        <item id="SelectPianoKeyWidget" command="View: Select Piano Key Widget" />
+        <action id="ShowRecentFiles" class="File" />
+
+        <!-- Others -->
+        <group id="CreateDeleteGroup" text="Create/Delete Group"/>
+
+        <menu id="DockPanelsVisibility" text="Dock Panels" />
     </items>
 
-    <domains>
-        <!-- 工程窗口 -->
-        <domain id="project">
+    <layouts>
 
+        <!-- 工程窗口 -->
+        <domain id="ProjectWindow">
             <!-- 主菜单 -->
             <menuBar id="MainMenu">
                 <!-- 文件 -->
@@ -73,7 +78,7 @@
                     </group>
                     <separator />
                     <group id="PreferencesGroup">
-                        <menu id="PreferencesMenu">
+                        <menu id="Preferences">
                             <action id="Settings" />
                             <action id="ColorThemes" />
                             <action id="Languages" />
@@ -111,7 +116,7 @@
                 </menu>
                 <!-- 视图 -->
                 <menu id="View">
-                    <group id="Visibilities">
+                    <group id="VisibilityGroup">
                         <menu id="Appearance">
                             <item id="MainMenuVisible" />
                             <item id="MainToolbarVisible" />
@@ -119,7 +124,6 @@
                             <item id="StatusBarVisible" />
                         </menu>
                         <menu id="DockPanelsVisibility" />
-                        <menu id="FloatingPanelsVisibility" />
                     </group>
                     <separator />
                 </menu>
@@ -172,7 +176,7 @@
                 <action id="FindAction" />
                 <action id="Settings" />
             </toolBar>
-
         </domain>
-    </domains>
+
+    </layouts>
 </actionSystem>

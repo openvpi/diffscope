@@ -68,9 +68,6 @@ namespace Core {
             void _q_titleChanged(ISettingPage *page, const QString &title);
             void _q_descriptionChanged(ISettingPage *page, const QString &description);
 
-            void _q_pageAdded(ISettingPage *page);
-            void _q_pageRemoved(ISettingPage *page);
-
             void _q_currentItemChanged(QTreeWidgetItem *cur, QTreeWidgetItem *prev);
             void _q_searchBoxTextChanged(const QString &text);
         };

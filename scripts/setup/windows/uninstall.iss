@@ -16,7 +16,7 @@ chinesesimplified.RemovePluginsDesc=删除所有插件
 chinesetraditional.ButtonUninstall=解除安裝
 chinesetraditional.WizardSelectTasks=選擇附加的工作
 chinesetraditional.SelectTasksDesc=選擇要執行的附加工作。
-chinesetraditional.SelectTasksLabel2=選擇解除安裝程式要執行的附加工作，然後按 「解除安裝」。
+chinesetraditional.SelectTasksLabel2=選擇解除安裝程式要執行的附加工作，然後按「解除安裝」。
 chinesetraditional.RemoveUserDataDesc=刪除所有用戶數據與暫存檔案
 chinesetraditional.RemovePluginsDesc=刪除所有外掛程式
 

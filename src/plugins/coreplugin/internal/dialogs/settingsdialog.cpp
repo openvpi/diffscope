@@ -53,7 +53,7 @@ namespace Core {
             m_searchBox->setClearButtonEnabled(true);
 
             leftLayout = new QVBoxLayout();
-            leftLayout->setMargin(0);
+            leftLayout->setContentsMargins({});
             // leftLayout->setSpacing(0);
 
             leftLayout->addWidget(m_searchBox);
@@ -67,7 +67,7 @@ namespace Core {
             descriptionLabel = new QLabel();
 
             labelLayout = new QVBoxLayout();
-            labelLayout->setMargin(0);
+            labelLayout->setContentsMargins({});
             labelLayout->setSpacing(0);
 
             labelLayout->addWidget(titleLabel);
@@ -76,7 +76,7 @@ namespace Core {
             m_page = new QStackedWidget();
 
             rightLayout = new QVBoxLayout();
-            rightLayout->setMargin(0);
+            rightLayout->setContentsMargins({});
             // leftLayout->setSpacing(0);
 
             rightLayout->addLayout(labelLayout);
@@ -114,8 +114,6 @@ namespace Core {
             connect(sc, &SettingCatalog::titleChanged, this, &SettingsDialog::_q_titleChanged);
             connect(sc, &SettingCatalog::descriptionChanged, this,
                     &SettingsDialog::_q_descriptionChanged);
-            connect(sc, &SettingCatalog::pageAdded, this, &SettingsDialog::_q_pageAdded);
-            connect(sc, &SettingCatalog::pageRemoved, this, &SettingsDialog::_q_pageRemoved);
 
             qIDec->installLocale(this, _LOC(SettingsDialog, this));
 
@@ -168,8 +166,6 @@ namespace Core {
             for (auto it = m_treeIndexes.begin(); it != m_treeIndexes.end(); ++it) {
                 it.key()->finish();
             }
-
-            takeWidget();
         }
 
         QTreeWidgetItem *SettingsDialog::buildTreeWidgetItem(Core::ISettingPage *page) {
@@ -310,61 +306,6 @@ namespace Core {
             }
         }
 
-        void SettingsDialog::_q_pageAdded(ISettingPage *page) {
-            auto sc = ICore::instance()->settingCatalog();
-
-            auto item = buildTreeWidgetItem(page);
-            auto parent = page->parent();
-
-            Order o;
-            if (parent == sc) {
-                int i = 0;
-                for (; i < m_tree->topLevelItemCount(); ++i) {
-                    if (!o(m_tree->topLevelItem(i), item)) {
-                        break;
-                    }
-                }
-                m_tree->insertTopLevelItem(i, item);
-            } else {
-                auto parentItem =
-                    m_treeIndexes.value(qobject_cast<ISettingPage *>(parent), nullptr);
-                if (!parentItem) {
-                    return;
-                }
-
-                int i = 0;
-                for (; i < parentItem->childCount(); ++i) {
-                    if (!o(parentItem->child(i), item)) {
-                        break;
-                    }
-                }
-                parentItem->insertChild(i, item);
-            }
-
-            if (parent == m_currentPage && m_catalogWidget) {
-                showCatalog();
-            }
-        }
-
-        void SettingsDialog::_q_pageRemoved(ISettingPage *page) {
-            auto item = m_treeIndexes.value(page, nullptr);
-            if (!item) {
-                return;
-            }
-
-            for (const auto &sub : page->allPages()) {
-                m_treeIndexes.remove(sub);
-            }
-            m_treeIndexes.remove(page);
-            delete item;
-
-            if (page == m_currentPage) {
-                selectPage(QString());
-            } else if (page->parent() == m_currentPage && m_catalogWidget) {
-                showCatalog();
-            }
-        }
-
         void SettingsDialog::_q_currentItemChanged(QTreeWidgetItem *cur, QTreeWidgetItem *prev) {
             Q_UNUSED(prev);
 
@@ -381,7 +322,7 @@ namespace Core {
             if (w) {
                 titleLabel->setText(_getItemPathTitle(cur));
                 descriptionLabel->setText(page->description());
-                m_page->addWidget(page->widget());
+                m_page->addWidget(w);
             } else {
                 // Add a catalog widget with description
                 showCatalog();
