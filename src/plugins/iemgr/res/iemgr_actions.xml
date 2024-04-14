@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionSystem>
+<extension>
     <version>2.0</version>
-    <namespace>Plugins;${PLUGIN_NAME}</namespace>
+
+    <parserConfig>
+        <defaultCategory>Plugins;${PLUGIN_NAME}</defaultCategory>
+    </parserConfig>
 
     <items>
         <action id="ImportProject" command="Import;Import Project" />
@@ -18,11 +21,10 @@
         </group>
     </layouts>
 
-    <insertions>
-        <!-- 工程窗口 -->
-        <insertion domain="ProjectWindow" anchor="before" target="File;FileSaveGroup">
+    <routines>
+        <routine anchor="before" parent="File" relativeTo="FileSaveGroup">
             <group id="ImportExportGroup" />
             <separator />
-        </insertion>
-    </insertions>
-</actionSystem>
+        </routine>
+    </routines>
+</extension>

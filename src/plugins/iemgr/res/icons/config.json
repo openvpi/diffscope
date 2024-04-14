@@ -1,4 +1,7 @@
 {
+    "parserConfig": {
+        "baseDirectory": "."
+    },
     "MainMenu": {
         "File": {
             "ImportProject": "a.svg",
