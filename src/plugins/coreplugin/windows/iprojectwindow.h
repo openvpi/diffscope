@@ -31,8 +31,8 @@ namespace Core {
         QWidget *createWindow(QWidget *parent) const override;
         void nextLoadingState(Core::IWindow::State nextState) override;
 
-        void actionItemAdded(ActionMetaItem *item) override;
-        void actionItemRemoved(ActionMetaItem *item) override;
+        void actionItemAdded(ActionItem *item) override;
+        void actionItemRemoved(ActionItem *item) override;
     };
 
 }

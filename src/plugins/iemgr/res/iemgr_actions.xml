@@ -21,10 +21,10 @@
         </group>
     </layouts>
 
-    <routines>
-        <routine anchor="before" parent="File" relativeTo="FileSaveGroup">
+    <buildRoutines>
+        <buildRoutine anchor="before" parent="File" relativeTo="FileSaveGroup">
             <group id="ImportExportGroup" />
             <separator />
-        </routine>
-    </routines>
+        </buildRoutine>
+    </buildRoutines>
 </extension>

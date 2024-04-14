@@ -102,7 +102,7 @@ namespace Core {
         }
     }
 
-    void IProjectWindow::actionItemAdded(ActionMetaItem *item) {
+    void IProjectWindow::actionItemAdded(ActionItem *item) {
 //        if (item->isAction()) {
 //            window()->addAction(item->action());
 //        } else if (item->isMenu()) {
@@ -110,7 +110,7 @@ namespace Core {
 //        }
     }
 
-    void IProjectWindow::actionItemRemoved(ActionMetaItem *item) {
+    void IProjectWindow::actionItemRemoved(ActionItem *item) {
 //        if (item->isAction()) {
 //            window()->removeAction(item->action());
 //        } else if (item->isMenu()) {
