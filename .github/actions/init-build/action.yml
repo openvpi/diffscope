@@ -70,8 +70,8 @@ runs:
       run: |
         if (!(Test-Path vcpkg)) {
           git clone https://github.com/microsoft/vcpkg.git
-          git checkout 2024.02.14
           cd vcpkg
+          git checkout 2024.02.14
           ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
         } else {
           cd vcpkg
