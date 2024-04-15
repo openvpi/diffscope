@@ -56,20 +56,21 @@ runs:
         archives: ${{ inputs.os == 'ubuntu-latest' && 'icu qtbase' || 'qtbase' }} qtsvg qtdeclarative qtremoteobjects qttools
         cache: true
 
-    - name: Restore vcpkg from cache
-      id: cache_vcpkg
-      uses: actions/cache/restore@v4
-      with:
-        path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
-        restore-keys: |
-          ${{ runner.os }}-vcpkg-
+    # - name: Restore vcpkg from cache
+    #   id: cache_vcpkg
+    #   uses: actions/cache/restore@v4
+    #   with:
+    #     path: ${{ github.workspace }}/vcpkg
+    #     key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-vcpkg-
 
     - name: Install vcpkg dependencies
       shell: pwsh
       run: |
         if (!(Test-Path vcpkg)) {
           git clone https://github.com/microsoft/vcpkg.git
+          git checkout 2024.02.14
           cd vcpkg
           ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
         } else {
