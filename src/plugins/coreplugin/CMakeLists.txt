@@ -35,6 +35,7 @@ qm_configure_target(${PROJECT_NAME}
 ck_add_action_extension(_action_sources res/core_actions.xml
     DEFINES
         PLUGIN_NAME=Core
+        APP_NAME=${CK_APPLICATION_NAME}
 )
 target_sources(${PROJECT_NAME} PRIVATE ${_action_sources})
 
