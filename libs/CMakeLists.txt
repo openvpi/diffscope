@@ -21,3 +21,5 @@ add_subdirectory(substate)
 add_subdirectory(talcs)
 
 set(CK_CMAKE_MODULES_DIR ${CMAKE_CURRENT_LIST_DIR}/choruskit/cmake PARENT_SCOPE)
+
+set(CK_CKAEC_EXECUTABLE $<TARGET_FILE:ckaec> PARENT_SCOPE)
