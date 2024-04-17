@@ -62,6 +62,9 @@ namespace Audio {
             [this](bool *ok) { return getEditorData(ok); },
             [this](const QByteArray &data) { return setEditorData(data); },
             socket.get());
+        socket->bind("vstConnectionSystem", "setHostSpecs", [=](const std::string &hostExecutable, const std::string &pluginFormat) {
+            setHostSpecs(QString::fromStdString(hostExecutable), QString::fromStdString(pluginFormat));
+        });
         if (!socket->startClient()) {
             qWarning() << "Audio::VSTConnectionSystem: fatal: socket fails to start client";
             return false;
@@ -113,6 +116,9 @@ namespace Audio {
     VSTAddOn *VSTConnectionSystem::vstAddOn() const {
         return m_vstAddOn;
     }
+    QPair<QString, QString> VSTConnectionSystem::hostSpecs() const {
+        return m_hostSpecs;
+    }
     QByteArray VSTConnectionSystem::getEditorData(bool *ok) {
         return QByteArray();
     }
@@ -131,5 +137,9 @@ namespace Audio {
         }
         m_preMixer->open(bufferSize, sampleRate);
         emit deviceChanged();
+    }
+    void VSTConnectionSystem::setHostSpecs(const QString &hostExecutable, const QString &pluginFormat) {
+        m_hostSpecs = {hostExecutable, pluginFormat};
+        emit hostSpecsChanged(hostExecutable, pluginFormat);
     }
 } // Audio

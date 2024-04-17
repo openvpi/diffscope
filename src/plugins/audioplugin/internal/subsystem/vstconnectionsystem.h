@@ -41,6 +41,11 @@ namespace Audio {
         void setVSTAddOn(VSTAddOn *addOn);
         VSTAddOn *vstAddOn() const;
 
+        QPair<QString, QString> hostSpecs() const;
+
+    signals:
+        void hostSpecsChanged(const QString &hostExecutable, const QString &pluginFormat);
+
     private:
         talcs::RemoteSocket *m_socket = nullptr;
         QPointer<talcs::RemoteAudioDevice> m_dev;
@@ -49,9 +54,13 @@ namespace Audio {
 
         VSTAddOn *m_vstAddOn = nullptr;
 
+        QPair<QString, QString> m_hostSpecs;
+
         QByteArray getEditorData(bool *ok);
         bool setEditorData(const QByteArray &data);
         void handleRemoteDeviceRemoteOpened(qint64 bufferSize, double sampleRate, int maxChannelCount);
+
+        void setHostSpecs(const QString &hostExecutable, const QString &pluginFormat);
     };
 
 } // Audio

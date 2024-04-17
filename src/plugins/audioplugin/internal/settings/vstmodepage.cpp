@@ -14,11 +14,16 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QColorDialog>
+#include <QMessageBox>
 
 #include <CoreApi/iloader.h>
 
 #include <SVSCraftWidgets/expressionspinbox.h>
 
+#include <TalcsDevice/AudioDevice.h>
+#include <TalcsRemote/RemoteSocket.h>
+
+#include <audiosystem.h>
 #include <vstconnectionsystem.h>
 
 namespace Audio {
@@ -165,7 +170,7 @@ namespace Audio {
 
     VSTModePage::VSTModePage(QObject *parent) : Core::ISettingPage("audio.PluginMode", parent) {
         setTitle([] { return tr("Plugin Mode"); });
-        setDescription([] { return tr("Plug %1 to External Host Application.").arg(QApplication::applicationName()); });
+        setDescription([] { return tr("Plug %1 to external host application.").arg(QApplication::applicationName()); });
     }
 
     VSTModePage::~VSTModePage() = default;
@@ -220,6 +225,8 @@ namespace Audio {
         m_statusTreeWidget = new QTreeWidget;
         // TODO
         statusLayout->addWidget(m_statusTreeWidget);
+        auto testAudioButton = new QPushButton(tr("Test Audio"));
+        statusLayout->addWidget(testAudioButton);
         statusGroupBox->setLayout(statusLayout);
         mainLayout->addWidget(statusGroupBox, 1);
 
@@ -232,7 +239,82 @@ namespace Audio {
         auto obj = settings["Audio"].toObject();
         m_editorPortSpinBox->setValue(obj["vstEditorPort"].toInt(28081));
         m_pluginPortSpinBox->setValue(obj["vstPluginPort"].toInt(28082));
+        // TODO
+        m_pluginEditorUsesCustomThemeCheckBox->setChecked(obj["vstPluginEditorUsesCustomTheme"].toBool());
+        auto vstTheme = obj["vstTheme"].toObject();
+        if (vstTheme.contains("foreground"))
+            m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::Foreground, QColor(static_cast<QRgb>(vstTheme["foreground"].toInt())));
+        if (vstTheme.contains("foregroundBorder"))
+            m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::ForegroundBorder, QColor(static_cast<QRgb>(vstTheme["foregroundBorder"].toInt())));
+        if (vstTheme.contains("foregroundLabel"))
+            m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::ForegroundLabel, QColor(static_cast<QRgb>(vstTheme["foregroundLabel"].toInt())));
+        if (vstTheme.contains("backgroundMain"))
+            m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::BackgroundMain, QColor(static_cast<QRgb>(vstTheme["backgroundMain"].toInt())));
+        if (vstTheme.contains("backgroundSidebar"))
+            m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::BackgroundSidebar, QColor(static_cast<QRgb>(vstTheme["backgroundSidebar"].toInt())));
+        if (vstTheme.contains("backgroundMessage"))
+            m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::BackgroundMessage, QColor(static_cast<QRgb>(vstTheme["backgroundMessage"].toInt())));
+        if (vstTheme.contains("backgroundError"))
+            m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::BackgroundError, QColor(static_cast<QRgb>(vstTheme["backgroundError"].toInt())));
 
+        auto vstSys = AudioSystem::vstConnectionSystem();
+        
+        auto hostStatusItem = new QTreeWidgetItem({tr("Host")});
+        auto pluginFormatStatusItem = new QTreeWidgetItem({tr("Plugin Format")});
+        auto hostSpecsStatusChangeHandler = [=](const QString &hostExecutable, const QString &pluginFormat) {
+            hostStatusItem->setText(1, hostExecutable.isEmpty() ? tr("N/A") : hostExecutable);
+            pluginFormatStatusItem->setText(1, pluginFormat.isEmpty() ? tr("N/A") : pluginFormat);
+        };
+        connect(vstSys, &VSTConnectionSystem::hostSpecsChanged, m_widget, hostSpecsStatusChangeHandler);
+        hostSpecsStatusChangeHandler(vstSys->hostSpecs().first, vstSys->hostSpecs().second);
+
+        auto bufferSizeStatusItem = new QTreeWidgetItem({tr("Buffer Size")});
+        auto bufferSizeStatusChangeHandler = [=](qint64 bufferSize) {
+            bufferSizeStatusItem->setText(1, bufferSize ? QString::number(bufferSize) : tr("N/A"));
+        };
+        connect(vstSys, &AbstractOutputSystem::bufferSizeChanged, m_widget, bufferSizeStatusChangeHandler);
+        bufferSizeStatusChangeHandler(vstSys->device() ? vstSys->device()->bufferSize() : 0);
+
+        auto sampleRateStatusItem = new QTreeWidgetItem({tr("Sample Rate")});
+        auto sampleRateStatusChangeHandler = [=](double sampleRate) {
+            sampleRateStatusItem->setText(1, !qFuzzyIsNull(sampleRate) ? QString::number(sampleRate) : tr("N/A"));
+        };
+        connect(vstSys, &AbstractOutputSystem::sampleRateChanged, m_widget, sampleRateStatusChangeHandler);
+        sampleRateStatusChangeHandler(vstSys->device() ? vstSys->device()->sampleRate() : 0);
+
+        auto connectionStatusItem = new QTreeWidgetItem({tr("Connected")});
+        auto connectionStatusChangeHandler = [=](talcs::RemoteSocket::Status status) {
+            if (status == talcs::RemoteSocket::Connected) {
+                connectionStatusItem->setText(1, tr("Yes"));
+            } else {
+                connectionStatusItem->setText(1, tr("No"));
+                hostStatusItem->setText(1, tr("N/A"));
+                pluginFormatStatusItem->setText(1, tr("N/A"));
+                bufferSizeStatusItem->setText(1, tr("N/A"));
+                sampleRateStatusItem->setText(1, tr("N/A"));
+            }
+        };
+        connect(vstSys->socket(), &talcs::RemoteSocket::socketStatusChanged, m_widget, [=](int status) {
+            connectionStatusChangeHandler(talcs::RemoteSocket::Status(status));
+        });
+        connectionStatusChangeHandler(vstSys->socket()->status());
+
+        m_statusTreeWidget->setColumnCount(2);
+        m_statusTreeWidget->setHeaderLabels({tr("Property"), tr("Value")});
+        m_statusTreeWidget->addTopLevelItems({connectionStatusItem, hostStatusItem, pluginFormatStatusItem, bufferSizeStatusItem, sampleRateStatusItem});
+        m_statusTreeWidget->resizeColumnToContents(0);
+
+        connect(testAudioButton, &QPushButton::clicked, this, [=] {
+            if (!vstSys->makeReady()) {
+                QMessageBox msgBox(m_widget);
+                msgBox.setIcon(QMessageBox::Critical);
+                msgBox.setText(tr("Cannot start audio playback"));
+                msgBox.setInformativeText(tr("Please check the status of %1 Bridge and the host application.").arg(QApplication::applicationName()));
+                msgBox.exec();
+            } else {
+                vstSys->testDevice();
+            }
+        });
 
         return m_widget;
     }

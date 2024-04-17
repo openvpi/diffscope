@@ -90,7 +90,7 @@ namespace Audio {
 
         connect(testDeviceButton, &QPushButton::clicked, this, [=] {
             if (!outputSys->makeReady()) {
-                QMessageBox msgBox;
+                QMessageBox msgBox(m_widget);
                 msgBox.setIcon(QMessageBox::Critical);
                 msgBox.setText(tr("Cannot start audio playback"));
                 msgBox.setInformativeText(tr("Please check the status of the audio driver and device."));
