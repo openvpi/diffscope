@@ -1,8 +1,12 @@
 project(iemgr VERSION 0.1.0.0)
 
+set(_plugin_name IEMgr)
+set(_plugin_display_name "Import/Export Manager")
+
 # Add target
 ck_add_plugin(${PROJECT_NAME}
-    NAME IEMgr
+    NAME ${_plugin_name}
+    DISPLAY_NAME ${_plugin_display_name}
     COMPAT_VERSION 0.0.0.0
     VENDOR "Sine Striker"
     DESCRIPTION "${CURRENT_PLUGIN_DESC}"
@@ -27,7 +31,7 @@ qm_configure_target(${PROJECT_NAME}
 # Add action
 ck_add_action_extension(_action_sources res/iemgr_actions.xml
     DEFINES
-        "PLUGIN_NAME=Import/Export Manager"
+        PLUGIN_NAME=${_plugin_display_name}
         APP_NAME=${CK_APPLICATION_NAME}
 )
 target_sources(${PROJECT_NAME} PRIVATE ${_action_sources})
@@ -37,7 +41,7 @@ qm_import(Translate)
 qm_find_qt(LinguistTools)
 qm_add_translation(${PROJECT_NAME}_translations
     PREFIX
-        IEMgr
+        ${_plugin_name}
     TARGETS
         ${PROJECT_NAME}
     LOCALES

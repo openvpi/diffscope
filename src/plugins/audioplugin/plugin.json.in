@@ -1,6 +1,6 @@
 {
-    "Name": "Audio",
-    "DisplayName": "Audio",
+    "Name": "@PLUGIN_METADATA_NAME@",
+    "DisplayName": "@PLUGIN_METADATA_DISPLAY_NAME@",
     "Version": "@PLUGIN_METADATA_VERSION@",
     "CompatVersion": "@PLUGIN_METADATA_COMPAT_VERSION@",
     "DisabledByDefault": false,

@@ -1,8 +1,12 @@
 project(coreplugin VERSION ${APPLICATION_VERSION})
 
+set(_plugin_name Core)
+set(_plugin_display_name Core)
+
 # Add target
 ck_add_plugin(${PROJECT_NAME}
-    NAME Core
+    NAME ${_plugin_name}
+    DISPLAY_NAME ${_plugin_display_name}
     COMPAT_VERSION 0.0.0.0
     VENDOR "Sine Striker"
     DESCRIPTION "${CURRENT_PLUGIN_DESC}"
@@ -34,7 +38,7 @@ qm_configure_target(${PROJECT_NAME}
 # Add action
 ck_add_action_extension(_action_sources res/core_actions.xml
     DEFINES
-        PLUGIN_NAME=Core
+        PLUGIN_NAME=${_plugin_display_name}
         APP_NAME=${CK_APPLICATION_NAME}
 )
 target_sources(${PROJECT_NAME} PRIVATE ${_action_sources})
@@ -44,7 +48,7 @@ qm_import(Translate)
 qm_find_qt(LinguistTools)
 qm_add_translation(${PROJECT_NAME}_translations
     PREFIX
-        Core
+        ${_plugin_name}
     TARGETS
         ${PROJECT_NAME}
     LOCALES

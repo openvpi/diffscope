@@ -27,25 +27,17 @@ set(APP_CONFIG_PADDING_Y 62)
 set(_config_file ${CMAKE_CURRENT_BINARY_DIR}/config.json)
 configure_file(config.json.in ${_config_file} @ONLY)
 
-# Deploy docs
+# Deploy install phase files
 ck_add_shared_files(
     SKIP_BUILD
-    SRC ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE DEST ${CK_BUILD_DOC_DIR}
+    SRC ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE DEST ${CK_BUILD_DOC_DIR}  # doc
+    SRC conf/${CK_PLATFORM_LOWER}/qt.conf DEST ${CK_BUILD_QT_CONF_DIR}      # qt.conf
 )
 
-# Deploy resources
+# Deploy build & install phase files
 ck_add_shared_files(
-    SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${CK_BUILD_DATA_DIR}
-)
-
-# Deploy config files
-ck_add_shared_files(
-    SKIP_BUILD
-    SRC conf/${CK_PLATFORM_LOWER}/qt.conf DEST ${CK_BUILD_QT_CONF_DIR}
-)
-
-ck_add_shared_files(
-    SRC conf/${CK_PLATFORM_LOWER}/qtmediate.json DEST ${CK_BUILD_QT_CONF_DIR}
+    SRC ${_config_file} ${APP_CONFIG_SPLASH_IMAGE} DEST ${CK_BUILD_DATA_DIR}    # config.json
+    SRC conf/${CK_PLATFORM_LOWER}/qtmediate.json DEST ${CK_BUILD_QT_CONF_DIR}   # qtmediate.json
 )
 
 if(WIN32)

@@ -1,8 +1,12 @@
 project(audioplugin VERSION 0.1.0.0)
 
+set(_plugin_name Audio)
+set(_plugin_display_name Audio)
+
 # Add target
 ck_add_plugin(${PROJECT_NAME}
-    NAME Audio
+    NAME ${_plugin_name}
+    DISPLAY_NAME ${_plugin_display_name}
     COMPAT_VERSION 0.0.0.0
     VENDOR "CrSjimo"
     DESCRIPTION "${CURRENT_PLUGIN_DESC}"
@@ -23,7 +27,7 @@ qm_configure_target(${PROJECT_NAME}
 qm_import(Translate)
 qm_find_qt(LinguistTools)
 qm_add_translation(${PROJECT_NAME}_translations
-    PREFIX Audio
+    PREFIX ${_plugin_name}
     TARGETS ${PROJECT_NAME}
     LOCALES zh_CN zh_TW ja_JP
     TS_DIR res/translations
