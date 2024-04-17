@@ -2,8 +2,9 @@
 <extension>
     <version>2.0</version>
 
-    <items>
+    <objects>
         <!-- File -->
+        <menu id="File" text="&amp;File" />
         <action id="NewFile" class="Create" shortcut="Ctrl+N" />
         <action id="OpenFile" class="File" shortcut="Ctrl+O" />
         <action id="SaveFile" class="File" shortcut="Ctrl+S" />
@@ -13,12 +14,13 @@
         <!-- Preferences -->
         <action id="Settings" class="Preferences" shortcut="Ctrl+," />
         <action id="ColorThemes" class="Preferences" shortcut="Ctrl+K,Ctrl+T" />
-        <action id="Languages" text="Locales And Languages" class="Preferences"
+        <action id="Languages" text="Locales and Languages" class="Preferences"
             shortcut="Ctrl+K,Ctrl+L" />
 
         <!-- Edit -->
+        <menu id="Edit" text="&amp;Edit" />
         <action id="Undo" class="Edit" shortcut="Ctrl+Z" />
-        <action id="Redo" class="Edit" shortcut="Ctrl+Shift+Z" />
+        <action id="Redo" class="Edit" shortcut="Ctrl+Shift+Z;Ctrl+Y" />
         <action id="Cut" class="Edit" shortcut="Ctrl+X" />
         <action id="Copy" class="Edit" shortcut="Ctrl+C" />
         <action id="Paste" class="Edit" shortcut="Ctrl+V" />
@@ -35,6 +37,7 @@
         <action id="StatusBarVisible" text="Status Bar" class="View" />
 
         <!-- Playback -->
+        <menu id="Playback" text="&amp;Playback" />
         <action id="Play" class="Playback" shortcut="SPACE" />
         <action id="Stop" class="Playback" shortcut="F7" />
         <action id="MoveToStart" class="Playback" />
@@ -43,6 +46,7 @@
         <action id="LoopPlay" class="Playback" />
 
         <!-- Help -->
+        <menu id="Help" text="&amp;Help" />
         <action id="ShowHome" class="Help" />
         <action id="FindAction" class="Help" shortcut="Ctrl+Shift+P" />
         <action id="AboutPlugins" class="About" />
@@ -59,7 +63,7 @@
 
         <action id="TimerLabel" category="Display" />
         <action id="QuantizeSelector" category="Display" />
-    </items>
+    </objects>
 
     <layouts>
         <!-- 主菜单 -->
@@ -118,10 +122,10 @@
             <menu id="View">
                 <group id="VisibilityGroup">
                     <menu id="Appearance">
-                        <item id="MainMenuVisible" />
-                        <item id="MainToolbarVisible" />
-                        <item id="DockVisible" />
-                        <item id="StatusBarVisible" />
+                        <action id="MainMenuVisible" />
+                        <action id="MainToolbarVisible" />
+                        <action id="DockVisible" />
+                        <action id="StatusBarVisible" />
                     </menu>
                     <menu id="DockPanelsVisibility" />
                 </group>
