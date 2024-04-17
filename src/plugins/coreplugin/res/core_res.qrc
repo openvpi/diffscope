@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>core_actions.xml</file>
-    </qresource>
-</RCC>

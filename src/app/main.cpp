@@ -99,6 +99,11 @@ public:
 };
 
 int main(int argc, char *argv[]) {
+    // Make sure Qt uses the plugin path in qt.conf
+    if (qEnvironmentVariableIsSet("QT_PLUGIN_PATH")) {
+        qputenv("QT_PLUGIN_PATH", {});
+    }
+
     QApplication a(argc, argv);
     a.setApplicationName(QStringLiteral(APP_NAME));
     a.setApplicationVersion(QStringLiteral(APP_VERSION));

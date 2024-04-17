@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension>
+<actionExtension>
     <version>2.0</version>
 
     <objects>
-        <!-- File -->
+        <!-- Menus -->
         <menu id="File" text="&amp;File" />
+        <menu id="Edit" text="&amp;Edit" />
+        <menu id="View" text="&amp;View" />
+        <menu id="DockPanelsVisibility" text="Dock Panels" />
+        <menu id="Playback" text="&amp;Playback" />
+        <menu id="Help" text="&amp;Help" />
+
+        <!-- File -->
         <action id="NewFile" class="Create" shortcut="Ctrl+N" />
         <action id="OpenFile" class="File" shortcut="Ctrl+O" />
         <action id="SaveFile" class="File" shortcut="Ctrl+S" />
@@ -18,7 +25,6 @@
             shortcut="Ctrl+K,Ctrl+L" />
 
         <!-- Edit -->
-        <menu id="Edit" text="&amp;Edit" />
         <action id="Undo" class="Edit" shortcut="Ctrl+Z" />
         <action id="Redo" class="Edit" shortcut="Ctrl+Shift+Z;Ctrl+Y" />
         <action id="Cut" class="Edit" shortcut="Ctrl+X" />
@@ -37,7 +43,6 @@
         <action id="StatusBarVisible" text="Status Bar" class="View" />
 
         <!-- Playback -->
-        <menu id="Playback" text="&amp;Playback" />
         <action id="Play" class="Playback" shortcut="SPACE" />
         <action id="Stop" class="Playback" shortcut="F7" />
         <action id="MoveToStart" class="Playback" />
@@ -46,7 +51,6 @@
         <action id="LoopPlay" class="Playback" />
 
         <!-- Help -->
-        <menu id="Help" text="&amp;Help" />
         <action id="ShowHome" class="Help" />
         <action id="FindAction" class="Help" shortcut="Ctrl+Shift+P" />
         <action id="AboutPlugins" class="About" />
@@ -59,8 +63,7 @@
         <!-- Others -->
         <group id="CreateDeleteGroup" text="Create/Delete Group" />
 
-        <menu id="DockPanelsVisibility" text="Dock Panels" />
-
+        <!-- Widgets -->
         <action id="TimerLabel" category="Display" />
         <action id="QuantizeSelector" category="Display" />
     </objects>
@@ -181,5 +184,4 @@
             <action id="Settings" />
         </toolBar>
     </layouts>
-
-</extension>
+</actionExtension>

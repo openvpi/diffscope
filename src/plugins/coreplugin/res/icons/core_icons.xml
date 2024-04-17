@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iconExtension>
+    <parserConfig>
+        <baseDir>.</baseDir>
+    </parserConfig>
+
+    <icons theme="all">
+        <!-- 主菜单 -->
+        <menuBar id="MainMenu">
+            <!-- 文件 -->
+            <menu id="File">
+                <group id="FileOpenGroup">
+                    <action id="NewFile" />
+                    <action id="OpenFile" />
+                    <action id="OpenRecent" />
+                </group>
+                <separator />
+                <group id="FileSaveGroup">
+                    <action id="SaveFile" />
+                    <action id="SaveAsFile" />
+                </group>
+                <separator />
+                <group id="PreferencesGroup">
+                    <menu id="Preferences">
+                        <action id="Settings" />
+                        <action id="ColorThemes" />
+                        <action id="Languages" />
+                    </menu>
+                </group>
+                <separator />
+                <action id="CloseFile" />
+            </menu>
+            <!-- 编辑 -->
+            <menu id="Edit">
+                <action id="Undo" />
+                <action id="Redo" />
+                <separator />
+                <group id="CutCopyGroup">
+                    <action id="Cut" />
+                    <action id="Copy" />
+                    <action id="Paste" />
+                </group>
+                <separator />
+                <group id="CreateDeleteGroup">
+                    <action id="Delete" />
+                </group>
+                <separator />
+                <group id="EditorSelectGroup">
+                    <action id="SelectAll" />
+                    <action id="Deselect" />
+                </group>
+                <separator />
+                <group id="EditorSearchGroup">
+                    <action id="Find" />
+                    <action id="Replace" />
+                    <separator />
+                </group>
+                <separator />
+            </menu>
+            <!-- 视图 -->
+            <menu id="View">
+                <group id="VisibilityGroup">
+                    <menu id="Appearance">
+                        <action id="MainMenuVisible" />
+                        <action id="MainToolbarVisible" />
+                        <action id="DockVisible" />
+                        <action id="StatusBarVisible" />
+                    </menu>
+                    <menu id="DockPanelsVisibility" />
+                </group>
+                <separator />
+            </menu>
+            <!-- 播放 -->
+            <menu id="Playback">
+                <group id="PlayControlGroup">
+                    <action id="Play" />
+                    <action id="Stop" />
+                    <action id="MoveToStart" />
+                    <action id="MoveToEnd" />
+                </group>
+                <separator />
+                <menu id="PlayOptionsMenu">
+                    <action id="Metronome" />
+                    <action id="LoopPlay" />
+                </menu>
+            </menu>
+            <!-- 帮助 -->
+            <menu id="Help">
+                <group id="WelcomeGroup">
+                    <action id="ShowHome" />
+                    <action id="FindAction" />
+                </group>
+                <separator />
+                <group id="AboutGroup">
+                    <action id="AboutPlugins" />
+                    <action id="AboutApp" />
+                    <action id="AboutQt" />
+                </group>
+            </menu>
+        </menuBar>
+    </icons>
+</iconExtension>
