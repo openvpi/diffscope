@@ -6,11 +6,11 @@
         <defaultCategory>Plugins;${PLUGIN_NAME}</defaultCategory>
     </parserConfig>
 
-    <items>
+    <objects>
         <action id="ImportProject" command="Import;Import Project" />
         <action id="AppendProject" command="Import;Append Project" />
         <action id="ExportProject" command="Export;Export Project" />
-    </items>
+    </objects>
 
     <layouts>
         <!-- 导入导出 -->

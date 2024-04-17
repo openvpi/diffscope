@@ -2,6 +2,7 @@
 #define IPROJECTWINDOW_H
 
 #include <CoreApi/iwindow.h>
+#include <CoreApi/actiondomain.h>
 
 #include <coreplugin/coreglobal.h>
 
@@ -15,6 +16,8 @@ namespace Core {
     public:
         explicit IProjectWindow(QObject *parent = nullptr);
         ~IProjectWindow();
+
+        static ActionDomain *actionDomain();
 
     public:
         QMenuBar *menuBar() const override;

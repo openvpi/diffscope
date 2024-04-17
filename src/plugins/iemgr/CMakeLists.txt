@@ -24,6 +24,14 @@ qm_configure_target(${PROJECT_NAME}
         internal/**
 )
 
+# Add action
+ck_add_action_extension(_action_sources res/iemgr_actions.xml
+    DEFINES
+        "PLUGIN_NAME=Import/Export Manager"
+        APP_NAME=${CK_APPLICATION_NAME}
+)
+target_sources(${PROJECT_NAME} PRIVATE ${_action_sources})
+
 # Add translation
 qm_import(Translate)
 qm_find_qt(LinguistTools)

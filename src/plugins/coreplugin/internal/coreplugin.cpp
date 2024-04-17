@@ -14,6 +14,7 @@
 #include <QMWidgets/qmview.h>
 
 #include <CoreApi/iloader.h>
+#include <CoreApi/actiondomain.h>
 
 #include <appshared/initroutine.h>
 
@@ -33,9 +34,15 @@
 #include "displaypage.h"
 #include "keymappage.h"
 
+static inline auto getCoreActionExtension() {
+    return CK_STATIC_ACTION_EXTENSION(core_actions);
+};
+
 namespace Core::Internal {
 
     static ICore *icore = nullptr;
+
+    ActionDomain *projectActionDomain = nullptr;
 
     static int openFileFromCommand(QString workingDir, const QStringList &args, IWindow *iWin) {
         int cnt = 0;
@@ -88,12 +95,10 @@ namespace Core::Internal {
         // Init ICore instance
         icore = new ICore(this);
 
+        projectActionDomain = new ActionDomain(this);
+
         // Add basic actions
-        // auto actionMgr = icore->actionSystem();
-        // if (!actionMgr->loadDomainManifest(pluginSpec()->location() + "/config/actions.xml")) {
-        //     *errorMessage = tr("Failed to load action configuration!");
-        //     return false;
-        // }
+        projectActionDomain->addExtension(getCoreActionExtension());
 
         // Add addons
         auto winMgr = icore->windowSystem();
