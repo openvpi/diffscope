@@ -12,7 +12,7 @@ ck_add_plugin(${PROJECT_NAME}
 # Configure target
 file(GLOB_RECURSE _src *.h *.cpp)
 qm_configure_target(${PROJECT_NAME}
-    SOURCES ${_src} res/core_res.qrc
+    SOURCES ${_src}
     QT_LINKS
         Core
         Gui
