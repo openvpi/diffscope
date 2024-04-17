@@ -74,8 +74,7 @@ namespace Core {
                 auto win = window();
 
                 // Add window and menubar as basic shortcut contexts
-                addShortcutContext(win, IWindow::Resident);
-                addShortcutContext(menuBar(), IWindow::Resident);
+                addShortcutContext(menuBar(), IWindow::Stable);
 
                 //                auto actionMgr = ICore::instance()->actionSystem();
                 //                d->mainMenuDomain = actionMgr->domain(QStringLiteral("project"));
@@ -109,21 +108,4 @@ namespace Core {
                 break;
         }
     }
-
-    void IProjectWindow::actionItemAdded(ActionItem *item) {
-        //        if (item->isAction()) {
-        //            window()->addAction(item->action());
-        //        } else if (item->isMenu()) {
-        //            addShortcutContext(item->menu(), IWindow::Resident);
-        //        }
-    }
-
-    void IProjectWindow::actionItemRemoved(ActionItem *item) {
-        //        if (item->isAction()) {
-        //            window()->removeAction(item->action());
-        //        } else if (item->isMenu()) {
-        //            removeShortcutContext(item->menu());
-        //        }
-    }
-
 }

@@ -33,9 +33,6 @@ namespace Core {
         QString correctWindowTitle(const QString &title) const override;
         QWidget *createWindow(QWidget *parent) const override;
         void nextLoadingState(Core::IWindow::State nextState) override;
-
-        void actionItemAdded(ActionItem *item) override;
-        void actionItemRemoved(ActionItem *item) override;
     };
 
 }
