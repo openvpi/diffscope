@@ -3,9 +3,7 @@
 ## Install Qt 5.15.2
 
 + If you're using Arm64 (Aarch64 Linux or Apple M1/M2), you need to compile Qt from source and install yourself, or install with `homebrew`.
-
 + The online installers provide only x86_64 prebuilt binaries.
-
 + Building with Qt6 is in experiment phase, if using Qt6, change all Qt5 variables below to Qt6.
 
 ### Mirrors

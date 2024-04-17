@@ -14,19 +14,8 @@ namespace Core {
     class IProjectWindowPrivate : public IWindowPrivate {
         Q_DECLARE_PUBLIC(IProjectWindow)
     public:
-        ActionDomain *mainMenuDomain;
-
         void reloadMenuBar() {
             Q_Q(IProjectWindow);
-
-            qDebug() << mainMenuDomain->state();
-            mainMenuDomain->buildDomain(
-                {
-                    {
-                     "%MainMenu", q->menuBar(),
-                     }
-            },
-                q->actionItems(), mainMenuDomain->state());
         }
     };
 
@@ -77,14 +66,13 @@ namespace Core {
                 auto win = window();
 
                 // Add window and menubar as basic shortcut contexts
-                addShortcutContext(win, IWindow::Resident);
-                addShortcutContext(menuBar(), IWindow::Resident);
+                addShortcutContext(menuBar(), IWindow::Stable);
 
-                auto actionMgr = ICore::instance()->actionSystem();
-                d->mainMenuDomain = actionMgr->domain(QStringLiteral("project"));
-                if (!d->mainMenuDomain) {
-                    AppExtra::fatalError(win, tr("Failed to create main menu."));
-                }
+                //                auto actionMgr = ICore::instance()->actionSystem();
+                //                d->mainMenuDomain = actionMgr->domain(QStringLiteral("project"));
+                //                if (!d->mainMenuDomain) {
+                //                    AppExtra::fatalError(win, tr("Failed to create main menu."));
+                //                }
 
                 //                d->invisibleCtx = ICore::instance()->actionSystem()->context(
                 //                    QString("%1.InvisibleContext").arg(id()));
@@ -101,9 +89,9 @@ namespace Core {
             }
 
             case IWindow::Initialized: {
-                connect(d->mainMenuDomain, &ActionDomain::stateChanged, d,
-                        &IProjectWindowPrivate::reloadMenuBar);
-                d->reloadMenuBar();
+                //                connect(d->mainMenuDomain, &ActionDomain::stateChanged, d,
+                //                        &IProjectWindowPrivate::reloadMenuBar);
+                //                d->reloadMenuBar();
                 //                d->loadInvisibleContext();
                 break;
             }
@@ -112,21 +100,4 @@ namespace Core {
                 break;
         }
     }
-
-    void IProjectWindow::actionItemAdded(ActionItem *item) {
-        if (item->isAction()) {
-            window()->addAction(item->action());
-        } else if (item->isMenu()) {
-            addShortcutContext(item->menu(), IWindow::Resident);
-        }
-    }
-
-    void IProjectWindow::actionItemRemoved(ActionItem *item) {
-        if (item->isAction()) {
-            window()->removeAction(item->action());
-        } else if (item->isMenu()) {
-            removeShortcutContext(item->menu());
-        }
-    }
-
 }

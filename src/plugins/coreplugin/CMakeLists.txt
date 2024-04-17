@@ -31,6 +31,14 @@ qm_configure_target(${PROJECT_NAME}
         internal/**
 )
 
+# Add action
+ck_add_action_extension(_action_sources res/core_actions.xml
+    DEFINES
+        PLUGIN_NAME=Core
+        APP_NAME=${CK_APPLICATION_NAME}
+)
+target_sources(${PROJECT_NAME} PRIVATE ${_action_sources})
+
 # Add translation
 qm_import(Translate)
 qm_find_qt(LinguistTools)
@@ -60,6 +68,7 @@ ck_add_attached_files(${PROJECT_NAME}
 ck_sync_include(${PROJECT_NAME}
     OPTIONS
         EXCLUDE "internal/.+"
+        FORCE
 )
 
 ck_sync_include(${PROJECT_NAME}

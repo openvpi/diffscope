@@ -6,17 +6,18 @@
 
 namespace Core::Internal {
 
-    ActionConfigurePage::ActionConfigurePage(QObject *parent) : ISettingPage("core.ActionConfigure", parent) {
+    ActionConfigurePage::ActionConfigurePage(QObject *parent)
+        : ISettingPage(QStringLiteral("core.ActionConfigure"), parent) {
         m_widget = nullptr;
-        setTitle([]() { return tr("Actions and Toolbars"); });
-        setDescription([]() { return tr("Actions and Toolbars"); });
+        setTitle([]() { return tr("Action Layouts"); });
+        setDescription([]() { return tr("Action Layouts"); });
     }
 
     ActionConfigurePage::~ActionConfigurePage() {
     }
 
     QString ActionConfigurePage::sortKeyword() const {
-        return QStringLiteral("Actions and Toolbars");
+        return QStringLiteral("Action Layouts");
     }
 
     bool ActionConfigurePage::matches(const QString &word) const {
@@ -26,7 +27,7 @@ namespace Core::Internal {
     QWidget *ActionConfigurePage::widget() {
         if (!m_widget) {
             auto label = new QLabel();
-            label->setText("Action Configure");
+            label->setText("Action Layouts");
             m_widget = label;
         }
         return m_widget;

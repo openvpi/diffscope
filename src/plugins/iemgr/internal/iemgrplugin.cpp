@@ -13,6 +13,7 @@
 #include <appshared/initroutine.h>
 
 #include <coreplugin/icore.h>
+#include <coreplugin/iprojectwindow.h>
 
 #include "wizardmanager.h"
 #include "homeaddon.h"
@@ -21,6 +22,10 @@
 #include "opensvipwizard.h"
 #include "svipwizard.h"
 #include "ustwizard.h"
+
+static inline auto getIEMgrActionExtension() {
+    return CK_STATIC_ACTION_EXTENSION(iemgr_actions);
+};
 
 namespace IEMgr::Internal {
 
@@ -46,11 +51,7 @@ namespace IEMgr::Internal {
         auto icore = Core::ICore::instance();
 
         // Add basic actions
-        // auto actionMgr = icore->actionSystem();
-        // if (actionMgr->loadContexts(":/iemgr_actions.xml").isEmpty()) {
-        //     *errorMessage = tr("Failed to load action configuration!");
-        //     return false;
-        // }
+        icore->actionDomain()->addExtension(getIEMgrActionExtension());
 
         // Add basic windows and add-ons
         auto winMgr = icore->windowSystem();

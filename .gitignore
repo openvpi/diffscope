@@ -99,3 +99,6 @@ setup-vcpkg-temp*
 setup-inno*
 
 node_modules/
+
+qasc_*.cpp
+ckaec_*.cpp

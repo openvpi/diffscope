@@ -2,6 +2,7 @@
 #define IPROJECTWINDOW_H
 
 #include <CoreApi/iwindow.h>
+#include <CoreApi/actiondomain.h>
 
 #include <coreplugin/coreglobal.h>
 
@@ -30,9 +31,6 @@ namespace Core {
         QString correctWindowTitle(const QString &title) const override;
         QWidget *createWindow(QWidget *parent) const override;
         void nextLoadingState(Core::IWindow::State nextState) override;
-
-        void actionItemAdded(ActionItem *item) override;
-        void actionItemRemoved(ActionItem *item) override;
     };
 
 }

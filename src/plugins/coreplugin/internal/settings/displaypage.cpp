@@ -17,7 +17,8 @@
 
 namespace Core::Internal {
 
-    DisplayPage::DisplayPage(QObject *parent) : ISettingPage("core.Display", parent) {
+    DisplayPage::DisplayPage(QObject *parent)
+        : ISettingPage(QStringLiteral("core.Display"), parent) {
         m_widget = nullptr;
         setTitle([]() { return tr("Display"); });
         setDescription([]() { return tr("Display"); });

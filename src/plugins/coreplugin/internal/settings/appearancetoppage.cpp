@@ -7,8 +7,7 @@
 namespace Core::Internal {
 
     AppearanceTopPage::AppearanceTopPage(QObject *parent)
-        : ISettingPage("core.AppearanceTop", parent) {
-        m_widget = nullptr;
+        : ISettingPage(QStringLiteral("core.AppearanceTop"), parent) {
         setTitle([]() { return tr("Appearance"); });
         setDescription([]() { return tr("Application appearance."); });
     }
@@ -26,13 +25,6 @@ namespace Core::Internal {
 
     QWidget *AppearanceTopPage::widget() {
         return nullptr;
-
-        if (!m_widget) {
-            auto label = new QLabel();
-            label->setText("Appearance Top");
-            m_widget = label;
-        }
-        return m_widget;
     }
 
     bool AppearanceTopPage::accept() {
@@ -40,10 +32,6 @@ namespace Core::Internal {
     }
 
     void AppearanceTopPage::finish() {
-        if (m_widget) {
-            m_widget->deleteLater();
-            m_widget = nullptr;
-        }
     }
 
 }

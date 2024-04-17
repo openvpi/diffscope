@@ -1,15 +1,15 @@
-#ifndef CHORUSKIT_APPEARANCETOPPAGE_H
-#define CHORUSKIT_APPEARANCETOPPAGE_H
+#ifndef KEYMAPPAGE_H
+#define KEYMAPPAGE_H
 
 #include <CoreApi/isettingpage.h>
 
 namespace Core::Internal {
 
-    class AppearanceTopPage : public ISettingPage {
+    class KeymapPage : public ISettingPage {
         Q_OBJECT
     public:
-        explicit AppearanceTopPage(QObject *parent = nullptr);
-        ~AppearanceTopPage();
+        explicit KeymapPage(QObject *parent = nullptr);
+        ~KeymapPage();
 
     public:
         QString sortKeyword() const override;
@@ -21,9 +21,9 @@ namespace Core::Internal {
         void finish() override;
 
     private:
-        // QWidget *m_widget;
+        QWidget *m_widget;
     };
 
 }
 
-#endif // CHORUSKIT_APPEARANCETOPPAGE_H
+#endif // KEYMAPPAGE_H

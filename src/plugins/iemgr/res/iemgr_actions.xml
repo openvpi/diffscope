@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionSystem>
+<extension>
     <version>2.0</version>
-    <namespace>Plugins;${PLUGIN_NAME}</namespace>
 
-    <items>
-        <action id="ImportProject" command="Import;Import Project" />
-        <action id="AppendProject" command="Import;Append Project" />
-        <action id="ExportProject" command="Export;Export Project" />
-    </items>
+    <parserConfig>
+        <defaultCategory>Plugins;${PLUGIN_NAME}</defaultCategory>
+    </parserConfig>
 
-    <domains>
-        <!-- 工程窗口 -->
-        <domain id="ProjectWindow">
+    <objects>
+        <action id="ImportProject" class="Import" />
+        <action id="AppendProject" class="Import" />
+        <action id="ExportProject" class="Export" />
+    </objects>
 
-            <!-- 插入 -->
-            <insertion anchor="before" target="File;FileSaveGroup">
-                <!-- 导入导出 -->
-                <group id="ImportExportGroup">
-                    <action id="ImportProject" />
-                    <action id="AppendProject" />
-                    <action id="ExportProject" />
-                </group>
-                <separator />
-            </insertion>
+    <layouts>
+        <!-- 导入导出 -->
+        <group id="ImportExportGroup">
+            <action id="ImportProject" />
+            <action id="AppendProject" />
+            <action id="ExportProject" />
+        </group>
+    </layouts>
 
-        </domain>
-    </domains>
-</actionSystem>
+    <buildRoutines>
+        <buildRoutine anchor="before" parent="File" relativeTo="FileSaveGroup">
+            <group id="ImportExportGroup" />
+            <separator />
+        </buildRoutine>
+    </buildRoutines>
+</extension>
