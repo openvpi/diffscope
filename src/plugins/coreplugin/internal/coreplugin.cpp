@@ -42,8 +42,6 @@ namespace Core::Internal {
 
     static ICore *icore = nullptr;
 
-    ActionDomain *projectActionDomain = nullptr;
-
     static int openFileFromCommand(QString workingDir, const QStringList &args, IWindow *iWin) {
         int cnt = 0;
 
@@ -95,10 +93,8 @@ namespace Core::Internal {
         // Init ICore instance
         icore = new ICore(this);
 
-        projectActionDomain = new ActionDomain(this);
-
         // Add basic actions
-        projectActionDomain->addExtension(getCoreActionExtension());
+        icore->actionDomain()->addExtension(getCoreActionExtension());
 
         // Add addons
         auto winMgr = icore->windowSystem();

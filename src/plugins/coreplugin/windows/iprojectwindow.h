@@ -17,8 +17,6 @@ namespace Core {
         explicit IProjectWindow(QObject *parent = nullptr);
         ~IProjectWindow();
 
-        static ActionDomain *actionDomain();
-
     public:
         QMenuBar *menuBar() const override;
         void setMenuBar(QMenuBar *menuBar) override;

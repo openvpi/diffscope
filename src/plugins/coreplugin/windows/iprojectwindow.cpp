@@ -11,10 +11,6 @@
 
 namespace Core {
 
-    namespace Internal {
-        extern ActionDomain *projectActionDomain;
-    }
-
     class IProjectWindowPrivate : public IWindowPrivate {
         Q_DECLARE_PUBLIC(IProjectWindow)
     public:
@@ -28,10 +24,6 @@ namespace Core {
     }
 
     IProjectWindow::~IProjectWindow() {
-    }
-
-    ActionDomain *IProjectWindow::actionDomain() {
-        return Internal::projectActionDomain;
     }
 
     QMenuBar *IProjectWindow::menuBar() const {

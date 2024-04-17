@@ -34,7 +34,11 @@ namespace Core {
         }
 
         void init() {
+            Q_Q(ICore);
+            domain = new ActionDomain(q);
         }
+
+        ActionDomain *domain;
     };
 
     ICore *ICore::instance() {
@@ -73,6 +77,11 @@ namespace Core {
             return;
         }
         IWindow::create<IHomeWindow>();
+    }
+
+    ActionDomain *ICore::actionDomain() const {
+        Q_D(const ICore);
+        return d->domain;
     }
 
     void ICore::newFile() const {

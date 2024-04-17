@@ -68,6 +68,7 @@ ck_add_attached_files(${PROJECT_NAME}
 ck_sync_include(${PROJECT_NAME}
     OPTIONS
         EXCLUDE "internal/.+"
+        FORCE
 )
 
 ck_sync_include(${PROJECT_NAME}

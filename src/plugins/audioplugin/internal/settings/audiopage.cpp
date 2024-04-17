@@ -2,7 +2,8 @@
 
 namespace Audio {
 
-    AudioPage::AudioPage(QObject *parent) : Core::ISettingPage("audio.Audio", parent) {
+    AudioPage::AudioPage(QObject *parent)
+        : Core::ISettingPage(QStringLiteral("audio.Audio"), parent) {
         setTitle([] { return tr("Audio"); });
         setDescription([] { return tr("Configure Audio Preferences."); });
     }

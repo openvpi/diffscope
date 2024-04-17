@@ -7,7 +7,7 @@
 namespace Core::Internal {
 
     AppearanceTopPage::AppearanceTopPage(QObject *parent)
-        : ISettingPage("core.AppearanceTop", parent) {
+        : ISettingPage(QStringLiteral("core.AppearanceTop"), parent) {
         setTitle([]() { return tr("Appearance"); });
         setDescription([]() { return tr("Application appearance."); });
     }

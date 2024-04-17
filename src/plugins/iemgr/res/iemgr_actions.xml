@@ -7,9 +7,9 @@
     </parserConfig>
 
     <objects>
-        <action id="ImportProject" command="Import;Import Project" />
-        <action id="AppendProject" command="Import;Append Project" />
-        <action id="ExportProject" command="Export;Export Project" />
+        <action id="ImportProject" class="Import" />
+        <action id="AppendProject" class="Import" />
+        <action id="ExportProject" class="Export" />
     </objects>
 
     <layouts>

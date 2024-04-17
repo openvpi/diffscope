@@ -6,14 +6,13 @@
 
 namespace Core::Internal {
 
-    KeymapPage::KeymapPage(QObject *parent) : ISettingPage("core.Keymap", parent) {
+    KeymapPage::KeymapPage(QObject *parent) : ISettingPage(QStringLiteral("core.Keymap"), parent) {
         m_widget = nullptr;
         setTitle([]() { return tr("Keymap"); });
         setDescription([]() { return tr("Keyboard shortcuts."); });
     }
 
-    KeymapPage::~KeymapPage() {
-    }
+    KeymapPage::~KeymapPage() = default;
 
     QString KeymapPage::sortKeyword() const {
         return QStringLiteral("Keymap");
@@ -33,6 +32,7 @@ namespace Core::Internal {
     }
 
     bool KeymapPage::accept() {
+
         return true;
     }
 

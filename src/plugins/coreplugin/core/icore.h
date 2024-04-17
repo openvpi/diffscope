@@ -27,6 +27,10 @@ namespace Core {
         static void showPluginsDialog(QWidget *parent);
         static void showHome();
 
+    public:
+        ActionDomain *actionDomain() const;
+
+    public:
         void newFile() const;
         bool openFile(const QString &fileName, QWidget *parent = nullptr) const;
 
