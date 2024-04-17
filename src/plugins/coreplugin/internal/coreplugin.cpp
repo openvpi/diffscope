@@ -17,15 +17,21 @@
 
 #include <appshared/initroutine.h>
 
+#include "dspxspec.h"
+
+// Windows
 #include "ihomewindow.h"
 #include "iprojectwindow.h"
 
-#include "dspxspec.h"
+// Addons
 #include "homeaddon.h"
 #include "projectaddon.h"
+
+// Settings
 #include "actionconfigurepage.h"
 #include "appearancetoppage.h"
 #include "displaypage.h"
+#include "keymappage.h"
 
 namespace Core::Internal {
 
@@ -89,7 +95,7 @@ namespace Core::Internal {
         //     return false;
         // }
 
-        // Add basic windows and add-ons
+        // Add addons
         auto winMgr = icore->windowSystem();
         winMgr->addAddOn<HomeAddOn>(QStringLiteral("home"));
         winMgr->addAddOn<ProjectAddOn>(QStringLiteral("project"));
@@ -98,14 +104,17 @@ namespace Core::Internal {
         auto sc = icore->settingCatalog();
         {
             auto appearance = new AppearanceTopPage();
-
-            auto display = new DisplayPage();
-            auto actionConfigure = new ActionConfigurePage();
-
-            appearance->addPage(display);
-            appearance->addPage(actionConfigure);
-
             sc->addPage(appearance);
+            {
+                auto display = new DisplayPage();
+                appearance->addPage(display);
+
+                auto actionConfigure = new ActionConfigurePage();
+                appearance->addPage(actionConfigure);
+            }
+
+            auto keymap = new KeymapPage();
+            sc->addPage(keymap);
         }
 
         // Add document types
