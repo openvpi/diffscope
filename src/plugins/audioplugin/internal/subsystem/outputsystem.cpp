@@ -47,16 +47,17 @@ namespace Audio {
             postSetDevice(true);
             connect(m_drv, &talcs::AudioDriver::deviceChanged, this, &OutputSystem::handleDeviceHotPlug);
             qDebug() << "Audio::OutputSystem: initialized from saved device" << m_drv->name() << m_dev->name();
-            return true;
+            goto finish;
         } while (false);
         qDebug() << "Audio::OutputSystem: no saved device, try to enumerate devices";
         if (enumerateDevices(false)) {
             qDebug() << "Audio::OutputSystem: initialized by enumerating devices" << m_drv->name() << m_dev->name();
-            return true;
         } else {
             qWarning() << "Audio::OutputSystem: fatal: no available device";
             return false;
         }
+        finish:
+        return AbstractOutputSystem::initialize();
     }
     talcs::AudioDriverManager *OutputSystem::driverManager() const {
         return m_drvMgr;

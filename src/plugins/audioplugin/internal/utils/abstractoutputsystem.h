@@ -5,6 +5,9 @@
 
 #include <QObject>
 
+#include "addonloader.h"
+#include "ioutputsystemaddon.h"
+
 namespace talcs {
     class MixerAudioSource;
     class AudioSourcePlayback;
@@ -21,7 +24,7 @@ namespace Audio {
         explicit AbstractOutputSystem(QObject *parent = nullptr);
         ~AbstractOutputSystem() override;
 
-        virtual bool initialize() = 0;
+        virtual bool initialize();
         virtual talcs::AudioDevice *device() const = 0;
         talcs::MixerAudioSource *preMixer() const;
 
@@ -38,6 +41,9 @@ namespace Audio {
         talcs::MixerAudioSource *m_preMixer;
         std::unique_ptr<talcs::AudioSourcePlayback> m_playback;
         AudioDeviceTesterAudioSource *m_deviceTester;
+        AddOnLoader<IOutputSystemAddOn> m_addOnLoader;
+
+        // TODO add-on modifier
     };
 
 } // Audio

@@ -26,9 +26,6 @@ namespace Audio {
 
     bool AudioPlugin::initialize(const QStringList &arguments, QString *errorString) {
         qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
-        auto ir = AppShared::InitRoutine::instance();
-        qDebug() << "Audio::AudioPlugin: initializing";
-        ir->splash->showMessage(tr("Initializing audio plugin..."));
 
         auto settings = Core::ILoader::instance()->settings();
         if (!settings->contains("Audio"))
@@ -39,6 +36,21 @@ namespace Audio {
         if (arguments.contains("-vst")) {
             qDebug() << "Audio::AudioPlugin: started by an external host (primary instance)";
             AudioSystem::vstConnectionSystem()->setApplicationInitializing(true);
+        }
+
+        auto sc = Core::ICore::instance()->settingCatalog();
+        auto audioPage = new AudioPage;
+        audioPage->addPage(new OutputPlaybackPage);
+        audioPage->addPage(new VSTModePage);
+        sc->addPage(audioPage);
+        return true;
+    }
+    void AudioPlugin::extensionsInitialized() {
+        auto ir = AppShared::InitRoutine::instance();
+        qDebug() << "Audio::AudioPlugin: initializing";
+        ir->splash->showMessage(tr("Initializing audio plugin..."));
+        if (AudioSystem::vstConnectionSystem()->isApplicationInitializing()) {
+
         }
 
         if (!AudioSystem::outputSystem()->initialize()) {
@@ -56,17 +68,6 @@ namespace Audio {
             msgBox.exec();
         }
 
-        auto sc = Core::ICore::instance()->settingCatalog();
-        auto audioPage = new AudioPage;
-        audioPage->addPage(new OutputPlaybackPage);
-        audioPage->addPage(new VSTModePage);
-        sc->addPage(audioPage);
-        return true;
-    }
-    void AudioPlugin::extensionsInitialized() {
-        if (AudioSystem::vstConnectionSystem()->isApplicationInitializing()) {
-
-        }
     }
     bool AudioPlugin::delayedInitialize() {
         return false;

@@ -71,7 +71,7 @@ namespace Audio {
         }
         m_socket = socket.release();
         qDebug() << "Audio::VSTConnectionSystem: waiting for connection" << "editorPort =" << editorPort << "pluginPort =" << pluginPort;
-        return true;
+        return AbstractOutputSystem::initialize();
     }
     void VSTConnectionSystem::setApplicationInitializing(bool a) {
         m_isApplicationInitializing = a;
