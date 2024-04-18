@@ -18,6 +18,8 @@ namespace Audio {
 
     class AudioDeviceTesterAudioSource;
 
+    class IOutputSystemAddOn;
+
     class AbstractOutputSystem : public QObject {
         Q_OBJECT
     public:
@@ -30,7 +32,11 @@ namespace Audio {
 
         virtual bool makeReady() = 0;
 
-        void testDevice();
+        void setSubstitutedSource(talcs::AudioSource *source, IOutputSystemAddOn *substitutor);
+        talcs::AudioSource *substitutedSource() const;
+        IOutputSystemAddOn *sourceSubstitutor() const;
+        void resetSubstitutedSource();
+        talcs::AudioSource *currentSource() const;
 
     Q_SIGNALS:
         void bufferSizeChanged(qint64 bufferSize);
@@ -40,10 +46,10 @@ namespace Audio {
     protected:
         talcs::MixerAudioSource *m_preMixer;
         std::unique_ptr<talcs::AudioSourcePlayback> m_playback;
-        AudioDeviceTesterAudioSource *m_deviceTester;
-        AddOnLoader<IOutputSystemAddOn> m_addOnLoader;
 
         // TODO add-on modifier
+        talcs::AudioSource *m_substitutedSource = nullptr;
+        IOutputSystemAddOn *m_substitutor = nullptr;
     };
 
 } // Audio

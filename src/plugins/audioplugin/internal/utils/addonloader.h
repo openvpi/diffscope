@@ -10,7 +10,7 @@ namespace Audio {
     template <class AddonType>
     class AddOnLoader {
     public:
-        explicit AddOnLoader(const QList<QMetaObject *> &classList, QObject *context) : m_context(context) {
+        explicit AddOnLoader(const QList<const QMetaObject *> &classList, QObject *context) : m_context(context) {
             for (auto clazz: classList) {
                 m_addOns.append(qobject_cast<AddonType *>(clazz->newInstance(Q_ARG(QObject*, context))));
             }
@@ -21,9 +21,9 @@ namespace Audio {
             return m_addOns;
         }
 
-        bool initializeAll() {
-            return std::all_of(m_addOns.cbegin(), m_addOns.cend(), [](AddonType *addOn) {
-                return addOn->initialize();
+        void initializeAll() {
+            std::for_each(m_addOns.cbegin(), m_addOns.cend(), [](AddonType *addOn) {
+                addOn->initialize();
             });
         }
 

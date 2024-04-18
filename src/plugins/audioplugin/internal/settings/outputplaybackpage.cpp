@@ -17,8 +17,9 @@
 
 #include <SVSCraftWidgets/expressiondoublespinbox.h>
 
-#include "audiosystem.h"
-#include "outputsystem.h"
+#include <audioplugin/internal/audiosystem.h>
+#include <audioplugin/internal/outputsystem.h>
+#include <audioplugin/internal/devicetesteraddon.h>
 
 namespace Audio {
 
@@ -102,7 +103,7 @@ namespace Audio {
                     tr("Please check the status of the audio driver and device."));
                 msgBox.exec();
             } else {
-                outputSys->testDevice();
+                DeviceTesterAddOn::testDevice(false);
             }
         });
 

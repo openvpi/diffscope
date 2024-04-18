@@ -12,8 +12,6 @@ namespace talcs {
 
 namespace Audio {
 
-    class AudioDeviceTesterAudioSource;
-
     class OutputSystem : public AbstractOutputSystem {
         Q_OBJECT
     public:

@@ -23,8 +23,9 @@
 #include <TalcsDevice/AudioDevice.h>
 #include <TalcsRemote/RemoteSocket.h>
 
-#include <audiosystem.h>
-#include <vstconnectionsystem.h>
+#include <audioplugin/internal/audiosystem.h>
+#include <audioplugin/internal/vstconnectionsystem.h>
+#include <audioplugin/internal/devicetesteraddon.h>
 
 namespace Audio {
 
@@ -340,7 +341,7 @@ namespace Audio {
                 msgBox.setInformativeText(tr("Please check the status of %1 Bridge and the host application.").arg(QApplication::applicationName()));
                 msgBox.exec();
             } else {
-                vstSys->testDevice();
+                DeviceTesterAddOn::testDevice(true);
             }
         });
 
