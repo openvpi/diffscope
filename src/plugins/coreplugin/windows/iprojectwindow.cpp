@@ -30,14 +30,14 @@ namespace Core {
         void reloadLayouts() {
             auto domain = ICore::instance()->actionDomain();
             auto arr = actionItemMap.values();
-            domain->build(qIDec->theme(), {arr.begin(), arr.end()});
+            domain->buildLayouts(qIDec->theme(), {arr.begin(), arr.end()});
         }
 
         void reloadShortcuts() {
             auto domain = ICore::instance()->actionDomain();
             for (const auto &item : std::as_const(actionItemMap)) {
                 if (item->isAction()) {
-                    item->action()->setShortcuts(domain->shortcuts(item->id()));
+                    item->action()->setShortcuts(domain->objectShortcuts(item->id()));
                 }
             }
         }
