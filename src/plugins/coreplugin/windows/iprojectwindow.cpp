@@ -14,13 +14,37 @@ namespace Core {
     class IProjectWindowPrivate : public IWindowPrivate {
         Q_DECLARE_PUBLIC(IProjectWindow)
     public:
-        void reloadMenuBar() {
-            Q_Q(IProjectWindow);
+        IProjectWindowPrivate() {
+        }
+
+        void init() {
+            auto icore = ICore::instance();
+            connect(icore, &ICore::actionLayoutsReloaded, this,
+                    &IProjectWindowPrivate::reloadLayouts);
+            connect(icore, &ICore::actionShortcutsReloaded, this,
+                    &IProjectWindowPrivate::reloadShortcuts);
+        }
+
+        void reloadLayouts() {
+            auto domain = ICore::instance()->actionDomain();
+            auto arr = actionItemMap.values();
+            domain->build({arr.begin(), arr.end()});
+        }
+
+        void reloadShortcuts() {
+            auto domain = ICore::instance()->actionDomain();
+            for (const auto &item : std::as_const(actionItemMap)) {
+                if (item->isAction()) {
+                    item->action()->setShortcuts(domain->shortcuts(item->id()));
+                }
+            }
         }
     };
 
     IProjectWindow::IProjectWindow(QObject *parent)
         : IWindow(*new IProjectWindowPrivate(), QStringLiteral("project"), parent) {
+        Q_D(IProjectWindow);
+        d->init();
     }
 
     IProjectWindow::~IProjectWindow() {
@@ -63,36 +87,12 @@ namespace Core {
 
         switch (nextState) {
             case IWindow::WindowSetup: {
-                auto win = window();
-
-                // Add window and menubar as basic shortcut contexts
-                addShortcutContext(menuBar(), IWindow::Stable);
-
-                //                auto actionMgr = ICore::instance()->actionSystem();
-                //                d->mainMenuDomain = actionMgr->domain(QStringLiteral("project"));
-                //                if (!d->mainMenuDomain) {
-                //                    AppExtra::fatalError(win, tr("Failed to create main menu."));
-                //                }
-
-                //                d->invisibleCtx = ICore::instance()->actionSystem()->context(
-                //                    QString("%1.InvisibleContext").arg(id()));
-                //                if (!d->invisibleCtx) {
-                //                    ICore::fatalError(win, tr("Failed to create internal action
-                //                    context."));
-                //                }
-
-                // Init command palette
-                //                d->cp = new CommandPalette(win);
-
-                win->installEventFilter(d);
                 break;
             }
 
             case IWindow::Initialized: {
-                //                connect(d->mainMenuDomain, &ActionDomain::stateChanged, d,
-                //                        &IProjectWindowPrivate::reloadMenuBar);
-                //                d->reloadMenuBar();
-                //                d->loadInvisibleContext();
+                d->reloadLayouts();
+                d->reloadShortcuts();
                 break;
             }
 
@@ -100,4 +100,5 @@ namespace Core {
                 break;
         }
     }
+
 }

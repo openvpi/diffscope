@@ -34,9 +34,7 @@
 #include "displaypage.h"
 #include "keymappage.h"
 
-static inline auto getCoreActionExtension() {
-    return CK_STATIC_ACTION_EXTENSION(core_actions);
-};
+CK_STATIC_ACTION_EXTENSION_GETTER(core_actions, getMyActionExtension);
 
 namespace Core::Internal {
 
@@ -94,7 +92,7 @@ namespace Core::Internal {
         icore = new ICore(this);
 
         // Add basic actions
-        icore->actionDomain()->addExtension(getCoreActionExtension());
+        icore->actionDomain()->addExtension(getMyActionExtension());
 
         // Add addons
         auto winMgr = icore->windowSystem();

@@ -12,6 +12,15 @@ namespace Core::Internal {
         ~ProjectWindow();
 
         void reloadStrings();
+
+        inline QToolBar *toolBar() const {
+            return m_toolBar;
+        }
+
+    protected:
+        QToolBar *m_toolBar;
+        QMenuBar *m_menuBar;
+        QWidget *m_dock;
     };
 
 }

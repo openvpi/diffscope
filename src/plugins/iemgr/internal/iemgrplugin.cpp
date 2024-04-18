@@ -23,9 +23,7 @@
 #include "svipwizard.h"
 #include "ustwizard.h"
 
-static inline auto getIEMgrActionExtension() {
-    return CK_STATIC_ACTION_EXTENSION(iemgr_actions);
-};
+CK_STATIC_ACTION_EXTENSION_GETTER(iemgr_actions, getMyActionExtension);
 
 namespace IEMgr::Internal {
 
@@ -51,7 +49,7 @@ namespace IEMgr::Internal {
         auto icore = Core::ICore::instance();
 
         // Add basic actions
-        icore->actionDomain()->addExtension(getIEMgrActionExtension());
+        icore->actionDomain()->addExtension(getMyActionExtension());
 
         // Add basic windows and add-ons
         auto winMgr = icore->windowSystem();

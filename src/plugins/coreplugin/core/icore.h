@@ -5,6 +5,7 @@
 #include <QSettings>
 
 #include <CoreApi/icorebase.h>
+#include <CoreApi/actiondomain.h>
 
 #include <coreplugin/coreglobal.h>
 
@@ -22,7 +23,6 @@ namespace Core {
     public:
         static ICore *instance();
 
-    public:
         static int showSettingsDialog(const QString &id, QWidget *parent);
         static void showPluginsDialog(QWidget *parent);
         static void showHome();
@@ -33,6 +33,10 @@ namespace Core {
     public:
         void newFile() const;
         bool openFile(const QString &fileName, QWidget *parent = nullptr) const;
+
+    Q_SIGNALS:
+        void actionLayoutsReloaded();
+        void actionShortcutsReloaded();
 
     private:
         explicit ICore(QObject *parent = nullptr);
