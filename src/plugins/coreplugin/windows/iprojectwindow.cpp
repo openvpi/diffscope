@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QMenuBar>
 
+#include <QMWidgets/qmdecoratorv2.h>
+
 #include <CoreApi/private/iwindow_p.h>
 
 #include "appextra.h"
@@ -28,7 +30,7 @@ namespace Core {
         void reloadLayouts() {
             auto domain = ICore::instance()->actionDomain();
             auto arr = actionItemMap.values();
-            domain->build({arr.begin(), arr.end()});
+            domain->build(qIDec->theme(), {arr.begin(), arr.end()});
         }
 
         void reloadShortcuts() {
