@@ -24,8 +24,6 @@ qm_configure_target(${PROJECT_NAME}
 )
 
 # Add translation
-qm_import(Translate)
-qm_find_qt(LinguistTools)
 qm_add_translation(${PROJECT_NAME}_translations
     PREFIX ${_plugin_name}
     TARGETS ${PROJECT_NAME}

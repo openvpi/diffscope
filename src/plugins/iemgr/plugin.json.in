@@ -6,7 +6,7 @@
     "DisabledByDefault": false,
     "HiddenByDefault": false,
     "Vendor": "@PLUGIN_METADATA_VENDOR@",
-    "Copyright": "Copyright (C) @PLUGIN_METADATA_YEAR@ @PLUGIN_METADATA_VENDOR@",
+    "Copyright": "@PLUGIN_METADATA_COPYRIGHT@",
     "License": [
         "Apache 2.0"
     ],
