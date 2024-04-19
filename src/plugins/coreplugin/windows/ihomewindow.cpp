@@ -54,7 +54,7 @@ namespace Core {
         return new Internal::HomeWindow();
     }
 
-    void IHomeWindow::nextLoadingState(IWindow::State nextState) {
+    void IHomeWindow::nextLoadingState(State nextState) {
     }
 
 }

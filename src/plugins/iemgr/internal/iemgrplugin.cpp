@@ -8,11 +8,8 @@
 
 #include <extensionsystem/pluginspec.h>
 
-#include <CoreApi/iloader.h>
-
-#include <appshared/initroutine.h>
-
 #include <coreplugin/icore.h>
+#include <coreplugin/initroutine.h>
 #include <coreplugin/iprojectwindow.h>
 
 #include "wizardmanager.h"
@@ -40,8 +37,8 @@ namespace IEMgr::Internal {
         qIDec->addTranslationPath(pluginSpec()->location() + "/translations");
         qIDec->addThemePath(pluginSpec()->location() + "/themes");
 
-        auto ir = AppShared::InitRoutine::instance();
-        ir->splash->showMessage(tr("Initializing import/export manager..."));
+        auto splash = Core::InitRoutine::splash();
+        splash->showMessage(tr("Initializing import/export manager..."));
 
         // Init WizardManager instance
         imgr = new WizardManager(this);
@@ -69,12 +66,6 @@ namespace IEMgr::Internal {
 
     bool IEMgrPlugin::delayedInitialize() {
         return false;
-    }
-
-    // This scope is only to expose strings to Qt translation tool
-    static void _qt_translation_CommandCategory() {
-        QApplication::translate("Core::CommandCategory", "Import");
-        QApplication::translate("Core::CommandCategory", "Export");
     }
 
 }

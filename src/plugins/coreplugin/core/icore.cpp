@@ -27,6 +27,7 @@
 #include "plugindialog.h"
 
 namespace Core {
+
     class ICorePrivate : ICoreBasePrivate {
         Q_DECLARE_PUBLIC(ICore)
     public:

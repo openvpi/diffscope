@@ -1,14 +1,16 @@
 #include "audioplugin.h"
 
 #include <QMessageBox>
+#include <QApplication>
 
 #include <extensionsystem/pluginspec.h>
 
 #include <QMWidgets/qmdecoratorv2.h>
 
-#include <appshared/initroutine.h>
+#include <CoreApi/iloader.h>
 
-#include <icore.h>
+#include <coreplugin/icore.h>
+#include <coreplugin/initroutine.h>
 
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/outputsystem.h>
@@ -59,15 +61,15 @@ namespace Audio {
         return true;
     }
     void AudioPlugin::extensionsInitialized() {
-        auto ir = AppShared::InitRoutine::instance();
+        auto splash = Core::InitRoutine::splash();
         qDebug() << "Audio::AudioPlugin: initializing";
-        ir->splash->showMessage(tr("Initializing audio plugin..."));
+        splash->showMessage(tr("Initializing audio plugin..."));
         if (AudioSystem::vstConnectionSystem()->isApplicationInitializing()) {
 
         }
 
         if (!AudioSystem::outputSystem()->initialize()) {
-            QMessageBox msgBox(ir->splash);
+            QMessageBox msgBox(splash);
             msgBox.setIcon(QMessageBox::Warning);
             msgBox.setText(tr("Cannot initialize audio output system"));
             msgBox.setInformativeText(tr("%1 will not play any sound because no available audio output device found. Please check the status of the audio driver and device.").arg(QApplication::applicationName()));
@@ -77,7 +79,7 @@ namespace Audio {
         IAudio::instance()->outputSystemInterface()->d_func()->initializeAddOns();
         qDebug() << "Audio::AudioPlugin: add-ons of output system initialized";
         if (!AudioSystem::vstConnectionSystem()->initialize()) {
-            QMessageBox msgBox(ir->splash);
+            QMessageBox msgBox(splash);
             msgBox.setIcon(QMessageBox::Warning);
             msgBox.setText(tr("Cannot initialize Plugin Mode connection system"));
             msgBox.setInformativeText(tr("%1 will not be able to establish a connection with %1 Bridge. Please check the Plugin Mode configuration in Settings.").arg(QApplication::applicationName()));

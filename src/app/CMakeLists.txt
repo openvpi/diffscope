@@ -8,7 +8,7 @@ qm_configure_target(${PROJECT_NAME}
     QT_LINKS
         Core Widgets
     LINKS_PRIVATE
-        ChorusKit::Loader ChorusKit::AppCore appshared
+        ChorusKit::Loader ChorusKit::AppCore
     INCLUDE_PRIVATE
         ${CK_BUILD_INCLUDE_DIR}
 )

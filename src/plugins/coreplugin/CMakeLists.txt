@@ -28,7 +28,6 @@ qm_configure_target(${PROJECT_NAME}
     LINKS
         ChorusKit::AppCore
         svscraft::Widgets
-        appshared
         JetBrainsDockingSystem
     INCLUDE_PRIVATE
         core

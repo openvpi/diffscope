@@ -14,12 +14,11 @@
 #include <QMWidgets/qmdecoratorv2.h>
 
 #include <CoreApi/iloader.h>
+#include <CoreApi/private/iloader_p.h>
 
 #include <CkLoader/loaderconfig.h>
 
 #include <choruskit_config.h>
-
-#include <appshared/initroutine.h>
 
 class MyLoaderConfiguration : public Loader::LoaderConfiguration {
 public:
@@ -86,9 +85,8 @@ public:
                                QStringLiteral("%1/%2.settings.json")
                                    .arg(systemSettingsPath, QStringLiteral(APP_NAME)));
 
-        // Add initial routine, should be removed in core plugin
-        auto initRoutine = new AppShared::InitRoutine();
-        initRoutine->splash = splash;
+        // Pass splash screen to core plugin
+        Core::ILoaderPrivate::quickData(0) = splash;
     }
 
     void afterLoadPlugins() override {

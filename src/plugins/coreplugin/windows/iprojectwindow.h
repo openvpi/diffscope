@@ -30,7 +30,7 @@ namespace Core {
     protected:
         QString correctWindowTitle(const QString &title) const override;
         QWidget *createWindow(QWidget *parent) const override;
-        void nextLoadingState(Core::IWindow::State nextState) override;
+        void nextLoadingState(State nextState) override;
     };
 
 }

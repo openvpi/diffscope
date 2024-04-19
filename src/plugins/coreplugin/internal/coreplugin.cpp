@@ -14,11 +14,11 @@
 #include <QMWidgets/qmview.h>
 
 #include <CoreApi/iloader.h>
+#include <CoreApi/private/iloader_p.h>
 #include <CoreApi/actiondomain.h>
 
-#include <appshared/initroutine.h>
-
 #include "dspxspec.h"
+#include "initroutine_p.h"
 
 // Windows
 #include "ihomewindow.h"
@@ -39,6 +39,10 @@ CK_STATIC_ACTION_EXTENSION_GETTER(core_actions, getMyActionExtension);
 namespace Core::Internal {
 
     static ICore *icore = nullptr;
+
+    static QSplashScreen *splash = nullptr;
+
+    InitRoutinePrivate *ir = nullptr;
 
     static int openFileFromCommand(QString workingDir, const QStringList &args, IWindow *iWin) {
         int cnt = 0;
@@ -69,9 +73,7 @@ namespace Core::Internal {
 
     static void waitSplash(QWidget *w) {
         // Get splash screen handle
-        auto ir = AppShared::InitRoutine::instance();
-        ir->splash->finish(w);
-        delete ir;
+        splash->finish(w);
     }
 
     CorePlugin::CorePlugin() {
@@ -81,12 +83,18 @@ namespace Core::Internal {
     }
 
     bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage) {
+        // Receive splash screen
+        std::swap(splash, reinterpret_cast<QSplashScreen *&>(ILoaderPrivate::quickData(0)));
+
+        static InitRoutinePrivate ir1;
+        ir = &ir1;
+        ir->splash = splash;
+
         // Add resources
         qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
         qIDec->addThemePath(pluginSpec()->location() + QStringLiteral("/themes"));
 
-        auto ir = AppShared::InitRoutine::instance();
-        ir->splash->showMessage(tr("Initializing core plugin..."));
+        splash->showMessage(tr("Initializing core plugin..."));
 
         // Init ICore instance
         icore = new ICore(this);
@@ -141,8 +149,7 @@ namespace Core::Internal {
     }
 
     bool CorePlugin::delayedInitialize() {
-        auto ir = AppShared::InitRoutine::instance();
-        ir->splash->showMessage(tr("Initializing user interface..."));
+        splash->showMessage(tr("Initializing user interface..."));
 
         if (ir->entry) {
             waitSplash(ir->entry());
@@ -174,19 +181,6 @@ namespace Core::Internal {
                                 icore->windowSystem()->firstWindow());
         }
         return QObject::eventFilter(obj, event);
-    }
-
-    // This scope is only to expose strings to Qt translation tool
-    static void _qt_translation_CommandCategory() {
-        QApplication::translate("Core::CommandCategory", "Create");
-        QApplication::translate("Core::CommandCategory", "File");
-        QApplication::translate("Core::CommandCategory", "Preferences");
-        QApplication::translate("Core::CommandCategory", "Edit");
-        QApplication::translate("Core::CommandCategory", "View");
-        QApplication::translate("Core::CommandCategory", "Playback");
-        QApplication::translate("Core::CommandCategory", "Help");
-        QApplication::translate("Core::CommandCategory", "About");
-        QApplication::translate("Core::CommandCategory", "Edit Mode");
     }
 
 }

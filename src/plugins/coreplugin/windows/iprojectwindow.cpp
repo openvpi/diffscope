@@ -84,7 +84,7 @@ namespace Core {
         return new Internal::ProjectWindow(parent);
     }
 
-    void IProjectWindow::nextLoadingState(Core::IWindow::State nextState) {
+    void IProjectWindow::nextLoadingState(State nextState) {
         Q_D(IProjectWindow);
 
         switch (nextState) {
