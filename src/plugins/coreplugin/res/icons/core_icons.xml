@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<iconExtension>
+<iconConfiguration>
     <parserConfig>
         <baseDir>.</baseDir>
     </parserConfig>
 
-    <icons theme="all">
+    <icons>
         <!-- 主菜单 -->
         <menuBar id="MainMenu">
             <!-- 文件 -->
@@ -99,4 +99,4 @@
             </menu>
         </menuBar>
     </icons>
-</iconExtension>
+</iconConfiguration>

@@ -29,8 +29,7 @@ namespace Core {
 
         void reloadLayouts() {
             auto domain = ICore::instance()->actionDomain();
-            auto arr = actionItemMap.values();
-            domain->buildLayouts(qIDec->theme(), {arr.begin(), arr.end()});
+            domain->buildLayouts(qIDec->theme(), actionItemMap.values_qlist());
         }
 
         void reloadShortcuts() {

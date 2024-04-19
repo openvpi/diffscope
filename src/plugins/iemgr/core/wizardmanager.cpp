@@ -78,8 +78,7 @@ namespace IEMgr {
 
     QList<IWizard *> WizardManager::wizards() const {
         Q_D(const WizardManager);
-        auto arr = d->importWizards.values();
-        return {arr.begin(), arr.end()};
+        return d->importWizards.values_qlist();
     }
 
     void WizardManager::clearWizards() {

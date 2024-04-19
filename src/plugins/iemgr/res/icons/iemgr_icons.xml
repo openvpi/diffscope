@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iconConfiguration>
+    <parserConfig>
+        <baseDir>.</baseDir>
+    </parserConfig>
+
+    <icons>
+        <group id="ImportExportGroup">
+            <action id="ImportProject" />
+            <action id="AppendProject" />
+            <action id="ExportProject" />
+        </group>
+    </icons>
+</iconConfiguration>

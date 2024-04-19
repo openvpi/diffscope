@@ -64,8 +64,8 @@
         <group id="CreateDeleteGroup" text="Create/Delete Group" />
 
         <!-- Widgets -->
-        <action id="TimerLabel" category="Display" />
-        <action id="QuantizeSelector" category="Display" />
+        <action id="TimerLabel" category="Display;" />
+        <action id="QuantizeSelector" category="Display;" />
     </objects>
 
     <layouts>
