@@ -38,6 +38,13 @@ namespace Audio {
         void resetSubstitutedSource();
         talcs::AudioSource *currentSource() const;
 
+        void setGainAndPan(float gain, float pan);
+        float gain() const;
+        float pan() const;
+
+        float m_deviceGain = 1.0f;
+        float m_devicePan = 0.0f;
+
     Q_SIGNALS:
         void bufferSizeChanged(qint64 bufferSize);
         void sampleRateChanged(double sampleRate);

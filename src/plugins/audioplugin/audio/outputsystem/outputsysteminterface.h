@@ -12,8 +12,6 @@ namespace talcs {
 
 namespace Audio {
 
-    class AbstractOutputSystem;
-
     class AudioPlugin;
 
     class IOutputSystemAddOn;
@@ -39,7 +37,7 @@ namespace Audio {
         bool makeReady();
 
     private:
-        explicit OutputSystemInterface(AbstractOutputSystem *abstractOutputSystem, bool isVST, QObject *parent = nullptr);
+        explicit OutputSystemInterface(QObject *parent = nullptr);
         QScopedPointer<OutputSystemInterfacePrivate> d_ptr;
     };
 

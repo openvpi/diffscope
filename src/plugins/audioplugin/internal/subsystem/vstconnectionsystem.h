@@ -13,7 +13,7 @@ namespace talcs {
 
 namespace Audio {
 
-    class VSTAddOn;
+    class ProjectAddOn;
 
     class AudioDeviceTesterAudioSource;
 
@@ -38,8 +38,8 @@ namespace Audio {
 
         bool makeReady() override;
 
-        void setVSTAddOn(VSTAddOn *addOn);
-        VSTAddOn *vstAddOn() const;
+        void setVSTAddOn(ProjectAddOn *addOn);
+        ProjectAddOn *vstAddOn() const;
 
         QPair<QString, QString> hostSpecs() const;
 
@@ -52,7 +52,7 @@ namespace Audio {
         QPointer<talcs::RemoteEditor> m_editor;
         bool m_isApplicationInitializing = false;
 
-        VSTAddOn *m_vstAddOn = nullptr;
+        ProjectAddOn *m_vstAddOn = nullptr;
 
         QPair<QString, QString> m_hostSpecs;
 

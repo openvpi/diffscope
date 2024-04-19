@@ -40,4 +40,21 @@ namespace Audio {
     talcs::AudioSource *AbstractOutputSystem::currentSource() const {
         return m_substitutedSource ? m_substitutedSource : m_preMixer;
     }
+    void AbstractOutputSystem::setGainAndPan(float gain, float pan) {
+        m_deviceGain = gain;
+        m_devicePan = pan;
+        if (!m_substitutor) {
+            m_preMixer->setGain(gain);
+            m_preMixer->setPan(pan);
+        } else {
+            m_substitutor->handleSubstitutedSourceAfterControl(gain, pan);
+        }
+    }
+    float AbstractOutputSystem::gain() const {
+        return m_deviceGain;
+    }
+    float AbstractOutputSystem::pan() const {
+        return m_devicePan;
+    }
+
 } // Audio

@@ -31,7 +31,7 @@ namespace Audio {
 
         bool substituteSource(talcs::AudioSource *source);
         bool resetSource();
-        virtual void handleSubstitutedSourceAfterControl(double gain, double pan);
+        virtual void handleSubstitutedSourceAfterControl(float gain, float pan);
 
         OutputSystemInterface *outputSystemInterface() const;
 

@@ -11,17 +11,33 @@
 #include <QMessageBox>
 #include <QDebug>
 
+#include <TalcsCore/Decibels.h>
 #include <TalcsDevice/AudioDriverManager.h>
 #include <TalcsDevice/AudioDriver.h>
 #include <TalcsDevice/AudioDevice.h>
 
 #include <SVSCraftWidgets/expressiondoublespinbox.h>
 
+#include <CoreApi/iloader.h>
+
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/outputsystem.h>
 #include <audioplugin/internal/devicetesteraddon.h>
 
 namespace Audio {
+
+    static inline double sliderValueToGain(int sliderValue) {
+        return std::pow(sliderValue / 52056.0, 6);
+    }
+    static inline int gainToSliderValue(double gain) {
+        return static_cast<int>(std::pow(gain, 1.0 / 6.0) * 52056.0);
+    }
+    static inline double sliderValueToPan(int sliderValue) {
+        return (sliderValue - 32768) / 32768.0;
+    }
+    static inline int panToSliderValue(double pan) {
+        return static_cast<int>(pan * 32768.0) + 32768;
+    }
 
     OutputPlaybackPage::OutputPlaybackPage(QObject *parent)
         : Core::ISettingPage(QStringLiteral("audio.OutputPlayback"), parent) {
@@ -63,6 +79,30 @@ namespace Audio {
                                          tr("Notify when current device removed"),
                                          tr("Do not notify")});
         audioOutputLayout->addRow(tr("&Hot plug notification"), m_hotPlugModeComboBox);
+
+        auto deviceGainLayoutLabel = new QLabel(tr("Device &Gain (dB)"));
+        auto deviceGainLayout = new QHBoxLayout;
+        m_deviceGainSlider = new QSlider(Qt::Horizontal);
+        m_deviceGainSlider->setRange(0, 65535);
+        deviceGainLayout->addWidget(m_deviceGainSlider);
+        m_deviceGainSpinBox = new SVS::ExpressionDoubleSpinBox;
+        m_deviceGainSpinBox->setRange(-96, 6);
+        m_deviceGainSpinBox->setSpecialValueText("-INF");
+        deviceGainLayout->addWidget(m_deviceGainSpinBox);
+        deviceGainLayoutLabel->setBuddy(m_deviceGainSpinBox);
+        audioOutputLayout->addRow(deviceGainLayoutLabel, deviceGainLayout);
+        
+        auto devicePanLayoutLabel = new QLabel(tr("Device &Pan"));
+        auto devicePanLayout = new QHBoxLayout;
+        m_devicePanSlider = new QSlider(Qt::Horizontal);
+        m_devicePanSlider->setRange(0, 65536);
+        devicePanLayout->addWidget(m_devicePanSlider);
+        m_devicePanSpinBox = new SVS::ExpressionDoubleSpinBox;
+        m_devicePanSpinBox->setRange(-1, 1);
+        devicePanLayout->addWidget(m_devicePanSpinBox);
+        devicePanLayoutLabel->setBuddy(m_devicePanSpinBox);
+        audioOutputLayout->addRow(devicePanLayoutLabel, devicePanLayout);
+
         audioOutputGroupBox->setLayout(audioOutputLayout);
         mainLayout->addWidget(audioOutputGroupBox);
 
@@ -117,6 +157,23 @@ namespace Audio {
         m_hotPlugModeComboBox->setCurrentIndex(
             AudioSystem::outputSystem()->hotPlugNotificationMode());
 
+        m_deviceGainSlider->setValue(gainToSliderValue(outputSys->gain()));
+        connect(m_deviceGainSlider, &QSlider::valueChanged, this, [=](int value) {
+            updateGain(sliderValueToGain(value));
+        });
+        m_deviceGainSpinBox->setValue(talcs::Decibels::gainToDecibels(outputSys->gain()));
+        connect(m_deviceGainSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double value) {
+            updateGain(talcs::Decibels::decibelsToGain(static_cast<float>(value)));
+        });
+        m_devicePanSlider->setValue(panToSliderValue(outputSys->pan()));
+        connect(m_devicePanSlider, &QSlider::valueChanged, this, [=](int value) {
+            updatePan(sliderValueToPan(value));
+        });
+        m_devicePanSpinBox->setValue(outputSys->pan());
+        connect(m_devicePanSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double value) {
+            updatePan(value);
+        });
+
         return m_widget;
     }
     bool OutputPlaybackPage::accept() {
@@ -125,6 +182,11 @@ namespace Audio {
         AudioSystem::outputSystem()->setHotPlugNotificationMode(
             static_cast<OutputSystem::HotPlugNotificationMode>(
                 m_hotPlugModeComboBox->currentIndex()));
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        obj["deviceGain"] = AudioSystem::outputSystem()->gain();
+        obj["devicePan"] = AudioSystem::outputSystem()->pan();
+        settings["Audio"] = obj;
         // TODO
         return true;
     }
@@ -263,6 +325,22 @@ namespace Audio {
                     auto newSampleRate = m_sampleRateComboBox->itemData(index).value<double>();
                     outputSys->setAdoptedSampleRate(newSampleRate);
                 });
+    }
+    void OutputPlaybackPage::updateGain(double gain) {
+        QSignalBlocker sliderBlocker(m_deviceGainSlider);
+        QSignalBlocker spinBoxBlocker(m_deviceGainSpinBox);
+
+        m_deviceGainSlider->setValue(gainToSliderValue(gain));
+        m_deviceGainSpinBox->setValue(talcs::Decibels::gainToDecibels(static_cast<float>(gain)));
+        AudioSystem::outputSystem()->setGainAndPan(static_cast<float>(gain), AudioSystem::outputSystem()->pan());
+    }
+    void OutputPlaybackPage::updatePan(double pan) {
+        QSignalBlocker sliderBlocker(m_devicePanSlider);
+        QSignalBlocker spinBoxBlocker(m_devicePanSpinBox);
+        
+        m_devicePanSlider->setValue(panToSliderValue(pan));
+        m_devicePanSpinBox->setValue(pan);
+        AudioSystem::outputSystem()->setGainAndPan(AudioSystem::outputSystem()->gain(), static_cast<float>(pan));
     }
 
 } // Audio

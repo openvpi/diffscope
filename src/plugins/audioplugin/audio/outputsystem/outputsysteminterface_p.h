@@ -18,6 +18,7 @@ namespace Audio {
         bool isVST;
         QScopedPointer<AddOnLoader<IOutputSystemAddOn>> addOnLoader;
 
+        void init(AbstractOutputSystem *abstractOutputSystem, bool isVST);
         void initializeAddOns();
     };
 

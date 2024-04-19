@@ -36,7 +36,7 @@ namespace Audio {
         d->outputSystemInterface->d_func()->abstractOutputSystem->resetSubstitutedSource();
         return true;
     }
-    void IOutputSystemAddOn::handleSubstitutedSourceAfterControl(double gain, double pan) {
+    void IOutputSystemAddOn::handleSubstitutedSourceAfterControl(float gain, float pan) {
     }
     OutputSystemInterface *IOutputSystemAddOn::outputSystemInterface() const {
         Q_D(const IOutputSystemAddOn);

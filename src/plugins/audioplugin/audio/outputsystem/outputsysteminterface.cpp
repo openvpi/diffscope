@@ -7,6 +7,11 @@
 
 namespace Audio {
 
+    void OutputSystemInterfacePrivate::init(AbstractOutputSystem *abstractOutputSystem_, bool isVST_) {
+        abstractOutputSystem = abstractOutputSystem_;
+        isVST = isVST_;
+    }
+
     void OutputSystemInterfacePrivate::initializeAddOns() {
         Q_Q(OutputSystemInterface);
         addOnLoader.reset(new AddOnLoader<IOutputSystemAddOn>(IAudio::instance()->outputSystemAddons(), q));
@@ -18,11 +23,9 @@ namespace Audio {
         addOnLoader->delayedInitializeAll();
     }
 
-    OutputSystemInterface::OutputSystemInterface(AbstractOutputSystem *abstractOutputSystem, bool isVST, QObject *parent) : QObject(parent), d_ptr(new OutputSystemInterfacePrivate) {
+    OutputSystemInterface::OutputSystemInterface(QObject *parent) : QObject(parent), d_ptr(new OutputSystemInterfacePrivate) {
         Q_D(OutputSystemInterface);
         d->q_ptr = this;
-        d->abstractOutputSystem = abstractOutputSystem;
-        d->isVST = isVST;
     }
     OutputSystemInterface::~OutputSystemInterface() {
     }

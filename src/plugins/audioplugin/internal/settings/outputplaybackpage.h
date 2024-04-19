@@ -7,6 +7,7 @@
 
 class QComboBox;
 class QCheckBox;
+class QSlider;
 
 namespace SVS {
     class ExpressionDoubleSpinBox;
@@ -34,6 +35,10 @@ namespace Audio {
         QComboBox *m_bufferSizeComboBox;
         QComboBox *m_sampleRateComboBox;
         QComboBox *m_hotPlugModeComboBox;
+        QSlider *m_deviceGainSlider;
+        SVS::ExpressionDoubleSpinBox *m_deviceGainSpinBox;
+        QSlider *m_devicePanSlider;
+        SVS::ExpressionDoubleSpinBox *m_devicePanSpinBox;
         QComboBox *m_playHeadBehaviorComboBox;
         QCheckBox *m_closeDeviceOnPlaybackStopCheckBox;
         SVS::ExpressionDoubleSpinBox *m_fileBufferSizeMsecSpinBox;
@@ -41,6 +46,9 @@ namespace Audio {
         void updateDriverComboBox();
         void updateDeviceComboBox();
         void updateBufferSizeAndSampleRateComboBox();
+
+        void updateGain(double gain);
+        void updatePan(double pan);
     };
 
 } // Audio

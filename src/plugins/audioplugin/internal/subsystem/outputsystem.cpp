@@ -24,10 +24,17 @@ namespace Audio {
     }
     bool OutputSystem::initialize() {
         const auto &settings = *Core::ILoader::instance()->settings();
-        m_adoptedBufferSize = settings["Audio"]["adoptedBufferSize"].toInt();
-        m_adoptedSampleRate = settings["Audio"]["adoptedSampleRate"].toDouble();
-        auto savedDriverName = settings["Audio"]["driverName"].toString();
-        auto savedDeviceName = settings["Audio"]["deviceName"].toString();
+        auto obj = settings["Audio"].toObject();
+        m_adoptedBufferSize = obj["adoptedBufferSize"].toInt();
+        m_adoptedSampleRate = obj["adoptedSampleRate"].toDouble();
+        auto savedDriverName = obj["driverName"].toString();
+        auto savedDeviceName = obj["deviceName"].toString();
+        if (!obj.contains("deviceGain"))
+            obj["deviceGain"] = 1.0f;
+        if (!obj.contains("devicePan"))
+            obj["devicePan"] = 0.0f;
+        settings["Audio"] = obj;
+        setGainAndPan(static_cast<float>(obj["deviceGain"].toDouble()), static_cast<float>(obj["devicePan"].toDouble()));
         do {
             if (savedDriverName.isEmpty() || savedDeviceName.isEmpty())
                 break;

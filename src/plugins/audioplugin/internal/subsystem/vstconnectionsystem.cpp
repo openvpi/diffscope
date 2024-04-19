@@ -110,10 +110,10 @@ namespace Audio {
         }
         return true;
     }
-    void VSTConnectionSystem::setVSTAddOn(VSTAddOn *addOn) {
+    void VSTConnectionSystem::setVSTAddOn(ProjectAddOn *addOn) {
         m_vstAddOn = addOn;
     }
-    VSTAddOn *VSTConnectionSystem::vstAddOn() const {
+    ProjectAddOn *VSTConnectionSystem::vstAddOn() const {
         return m_vstAddOn;
     }
     QPair<QString, QString> VSTConnectionSystem::hostSpecs() const {

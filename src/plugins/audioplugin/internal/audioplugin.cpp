@@ -41,8 +41,10 @@ namespace Audio {
         new AudioSystem(this);
 
         auto iAudio = new IAudio;
-        iAudio->d_func()->outputSystemInterface = new OutputSystemInterface(AudioSystem::outputSystem(), false, this);
-        iAudio->d_func()->vstOutputSystemInterface = new OutputSystemInterface(AudioSystem::vstConnectionSystem(), true, this);
+        iAudio->d_func()->outputSystemInterface = new OutputSystemInterface(this);
+        iAudio->d_func()->outputSystemInterface->d_func()->init(AudioSystem::outputSystem(), false);
+        iAudio->d_func()->vstOutputSystemInterface = new OutputSystemInterface(this);
+        iAudio->d_func()->vstOutputSystemInterface->d_func()->init(AudioSystem::vstConnectionSystem(), true);
 
         if (arguments.contains("-vst")) {
             qDebug() << "Audio::AudioPlugin: started by an external host (primary instance)";

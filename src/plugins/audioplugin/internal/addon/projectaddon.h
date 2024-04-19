@@ -1,15 +1,15 @@
-#ifndef AUDIO_VSTADDON_H
-#define AUDIO_VSTADDON_H
+#ifndef AUDIO_PROJECTADDON_H
+#define AUDIO_PROJECTADDON_H
 
 #include <CoreApi/iwindowaddon.h>
 
 namespace Audio {
 
-    class VSTAddOn : public Core::IWindowAddOn {
+    class ProjectAddOn : public Core::IWindowAddOn {
         Q_OBJECT
     public:
-        explicit VSTAddOn(QObject *parent = nullptr);
-        ~VSTAddOn();
+        explicit ProjectAddOn(QObject *parent = nullptr);
+        ~ProjectAddOn();
 
         void initialize() override;
         void extensionsInitialized() override;
@@ -18,4 +18,4 @@ namespace Audio {
 
 } // Audio
 
-#endif // AUDIO_VSTADDON_H
+#endif // AUDIO_PROJECTADDON_H
