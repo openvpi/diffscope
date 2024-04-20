@@ -162,6 +162,16 @@ namespace Core::Internal {
             waitSplash(IWindow::create<IHomeWindow>()->window());
         }
 
+        //        {
+        //            QFile file("D:\\actions.xml");
+        //            file.open(QIODevice::WriteOnly);
+        //            file.write(icore->actionDomain()->saveLayouts());
+        //        }
+        //        {
+        //            QFile file("D:\\keys.json");
+        //            file.open(QIODevice::WriteOnly);
+        //            file.write(icore->actionDomain()->saveOverriddenShortcuts());
+        //        }
         return false;
     }
 
