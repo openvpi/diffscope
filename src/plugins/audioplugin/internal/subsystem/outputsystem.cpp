@@ -77,7 +77,7 @@ namespace Audio {
     }
     bool OutputSystem::setDriver(const QString &driverName) {
         // Note: If this function fails, m_drv will become null.
-        if (driverName == m_drv->name())
+        if (m_drv && driverName == m_drv->name())
             return true;
         if (m_dev) {
             qDebug() << "Audio::OutputSystem: destroy device because driver will be reset:" << m_dev->name();

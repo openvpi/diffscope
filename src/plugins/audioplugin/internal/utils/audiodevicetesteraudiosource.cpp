@@ -1,5 +1,7 @@
 #include "audiodevicetesteraudiosource.h"
 
+#include <cmath>
+
 namespace Audio {
 
     AudioDeviceTesterAudioSource::AudioDeviceTesterAudioSource() = default;

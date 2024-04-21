@@ -1,5 +1,7 @@
 #include "outputplaybackpage.h"
 
+#include <cmath>
+
 #include <QComboBox>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
@@ -237,7 +239,7 @@ namespace Audio {
                         QMessageBox::warning(
                             m_widget, {},
                             tr("Cannot initialize %1 driver")
-                                .arg(OutputSystem::driverDisplayName(outputSys->driver()->name())));
+                                .arg(OutputSystem::driverDisplayName(newDrvName)));
                         if (m_driverComboBox->itemData(m_driverComboBox->count() - 1).isNull()) {
                             m_driverComboBox->setCurrentIndex(m_driverComboBox->count() - 1);
                         } else {
