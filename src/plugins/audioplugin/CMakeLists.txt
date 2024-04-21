@@ -38,7 +38,7 @@ qm_add_translation(${PROJECT_NAME}_translations
 ck_add_attached_files(${PROJECT_NAME}
 
     # SRC Res/themes DEST .
-    SRC ${CMAKE_CURRENT_BINARY_DIR}/Res/translations DEST .
+    SRC ${CMAKE_CURRENT_BINARY_DIR}/res/translations DEST .
 )
 
 # Add install command

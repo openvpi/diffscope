@@ -54,7 +54,7 @@ qm_add_translation(${PROJECT_NAME}_translations
 
 # Add resources
 ck_add_attached_files(${PROJECT_NAME}
-    SRC Res/icons DEST .
+    SRC res/icons DEST .
     # SRC Res/themes DEST .
     SRC ${CMAKE_CURRENT_BINARY_DIR}/res/translations DEST .
 )
