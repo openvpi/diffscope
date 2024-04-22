@@ -29,7 +29,10 @@ namespace Core {
 
         void reloadLayouts() {
             auto domain = ICore::instance()->actionDomain();
-            domain->buildLayouts(qIDec->theme(), actionItemMap.values_qlist());
+            auto actions = actionItemMap.values_qlist();
+            domain->buildLayouts(actions);
+            domain->updateTexts(actions);
+            domain->updateIcons(qIDec->theme(), actions);
         }
 
         void reloadShortcuts() {
@@ -39,6 +42,10 @@ namespace Core {
                     item->action()->setShortcuts(domain->objectShortcuts(item->id()));
                 }
             }
+        }
+
+        void reloadStrings() {
+            ICore::instance()->actionDomain()->updateTexts(actionItemMap.values_qlist());
         }
     };
 
@@ -52,27 +59,31 @@ namespace Core {
     }
 
     QMenuBar *IProjectWindow::menuBar() const {
-        return qobject_cast<Internal::ProjectWindow *>(window())->menuBar();
+        return static_cast<Internal::ProjectWindow *>(window())->menuBar();
     }
 
     void IProjectWindow::setMenuBar(QMenuBar *menuBar) {
-        qobject_cast<Internal::ProjectWindow *>(window())->setMenuBar(menuBar);
+        static_cast<Internal::ProjectWindow *>(window())->setMenuBar(menuBar);
     }
 
     QWidget *IProjectWindow::centralWidget() const {
-        return qobject_cast<Internal::ProjectWindow *>(window())->centralWidget();
+        return static_cast<Internal::ProjectWindow *>(window())->centralWidget();
     }
 
     void IProjectWindow::setCentralWidget(QWidget *widget) {
-        qobject_cast<Internal::ProjectWindow *>(window())->setCentralWidget(widget);
+        static_cast<Internal::ProjectWindow *>(window())->setCentralWidget(widget);
     }
 
     QStatusBar *IProjectWindow::statusBar() const {
-        return qobject_cast<Internal::ProjectWindow *>(window())->statusBar();
+        return static_cast<Internal::ProjectWindow *>(window())->statusBar();
     }
 
     void IProjectWindow::setStatusBar(QStatusBar *statusBar) {
-        qobject_cast<Internal::ProjectWindow *>(window())->setStatusBar(statusBar);
+        static_cast<Internal::ProjectWindow *>(window())->setStatusBar(statusBar);
+    }
+
+    QToolBar *IProjectWindow::mainToolbar() const {
+        return static_cast<Internal::ProjectWindow *>(window())->toolBar();
     }
 
     QString IProjectWindow::correctWindowTitle(const QString &title) const {
@@ -88,6 +99,8 @@ namespace Core {
 
         switch (nextState) {
             case IWindow::WindowSetup: {
+                // Install before all addons
+                qIDec->installLocale(this, _LOC(IProjectWindowPrivate, d));
                 break;
             }
 

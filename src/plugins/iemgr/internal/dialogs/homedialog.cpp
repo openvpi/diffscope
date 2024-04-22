@@ -177,7 +177,7 @@ namespace IEMgr::Internal {
     }
 
     void HomeDialog::_q_itemButtonClicked() {
-        auto btn = qobject_cast<QAbstractButton *>(sender());
+        auto btn = static_cast<QAbstractButton *>(sender());
         auto wizard = btn->property("wizard").value<IWizard *>();
 
         if (!wizard) {

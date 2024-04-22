@@ -25,6 +25,7 @@
 #include "ihomewindow.h"
 #include "settingsdialog.h"
 #include "plugindialog.h"
+#include "appextra.h"
 
 namespace Core {
 
@@ -37,13 +38,14 @@ namespace Core {
         void init() {
             Q_Q(ICore);
             domain = new ActionDomain(q);
+            domain->setDefaultMenuFactory(AppExtra::createCoreMenu);
         }
 
         ActionDomain *domain;
     };
 
     ICore *ICore::instance() {
-        return qobject_cast<ICore *>(ICoreBase::instance());
+        return static_cast<ICore *>(ICoreBase::instance());
     }
 
     int ICore::showSettingsDialog(const QString &id, QWidget *parent) {

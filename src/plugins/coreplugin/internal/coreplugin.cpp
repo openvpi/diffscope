@@ -159,7 +159,7 @@ namespace Core::Internal {
         if (openFileFromCommand({}, ExtensionSystem::PluginManager::arguments(), nullptr) > 0) {
             waitSplash(icore->windowSystem()->firstWindow()->window());
         } else {
-            waitSplash(IWindow::create<IHomeWindow>()->window());
+            waitSplash(IWindow::create<IProjectWindow>()->window());
         }
 
         //        {

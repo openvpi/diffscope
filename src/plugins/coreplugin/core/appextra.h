@@ -3,6 +3,8 @@
 
 #include <QtWidgets/QMenu>
 
+#include <CoreApi/actionitem.h>
+
 #include <coreplugin/coreglobal.h>
 
 namespace Core {
@@ -22,6 +24,9 @@ namespace Core {
 
         static QString fileManagerName();
         static inline QString allFilesFilter();
+
+        static inline ActionItem *actionItem(const QString &id, QObject *parent = nullptr);
+        static inline ActionItem *menuItem(const QString &id, QObject *parent = nullptr);
     };
 
     inline QString AppExtra::allFilesFilter() {
@@ -32,6 +37,14 @@ namespace Core {
             QStringLiteral("*")
 #endif
                 ;
+    }
+
+    ActionItem *AppExtra::actionItem(const QString &id, QObject *parent) {
+        return new ActionItem(id, new QAction(), parent);
+    }
+
+    ActionItem *AppExtra::menuItem(const QString &id, QObject *parent) {
+        return new ActionItem(id, ActionItem::MenuFactory(createCoreMenu), parent);
     }
 
 }

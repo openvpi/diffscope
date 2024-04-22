@@ -27,6 +27,8 @@ namespace Core {
         QStatusBar *statusBar() const override;
         void setStatusBar(QStatusBar *statusBar) override;
 
+        QToolBar *mainToolbar() const;
+
     protected:
         QString correctWindowTitle(const QString &title) const override;
         QWidget *createWindow(QWidget *parent) const override;
