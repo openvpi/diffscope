@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include <audioplugin/audioglobal.h>
+
 namespace talcs {
     class AudioSource;
 }
@@ -14,7 +16,7 @@ namespace Audio {
 
     class IOutputSystemAddOnPrivate;
 
-    class IOutputSystemAddOn : public QObject {
+    class AUDIO_EXPORT IOutputSystemAddOn : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(IOutputSystemAddOn)
         friend class OutputSystemInterfacePrivate;

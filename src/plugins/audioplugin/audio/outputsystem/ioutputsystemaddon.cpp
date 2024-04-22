@@ -24,7 +24,7 @@ namespace Audio {
     }
     bool IOutputSystemAddOn::substituteSource(talcs::AudioSource *source) {
         Q_D(IOutputSystemAddOn);
-        if (d->outputSystemInterface->isSourceSubstituted())
+        if (d->outputSystemInterface->substitutedSource())
             return false;
         d->outputSystemInterface->d_func()->abstractOutputSystem->setSubstitutedSource(source, this);
         return true;

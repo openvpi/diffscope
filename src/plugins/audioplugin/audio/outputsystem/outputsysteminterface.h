@@ -3,7 +3,10 @@
 
 #include <QObject>
 
+#include <audioplugin/audioglobal.h>
+
 namespace talcs {
+    class AudioSource;
     class AudioDriverManager;
     class AudioDriver;
     class AudioDevice;
@@ -18,7 +21,7 @@ namespace Audio {
 
     class OutputSystemInterfacePrivate;
 
-    class OutputSystemInterface : public QObject {
+    class AUDIO_EXPORT OutputSystemInterface : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(OutputSystemInterface)
         friend class AudioPlugin;
@@ -32,7 +35,7 @@ namespace Audio {
         talcs::AudioDevice *audioDevice() const;
         talcs::MixerAudioSource *preMixer() const;
 
-        bool isSourceSubstituted() const;
+        talcs::AudioSource *substitutedSource() const;
 
         bool makeReady();
 
