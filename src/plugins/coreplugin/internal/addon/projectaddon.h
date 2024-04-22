@@ -58,26 +58,15 @@ namespace Core::Internal {
             Core::ActionItem *AboutApp;
             Core::ActionItem *AboutQt;
             Core::ActionItem *ShowRecentFiles;
-            Core::ActionItem *OpenRecent;
-        };
 
-        struct WidgetItems {
             Core::ActionItem *TimerLabel;
             Core::ActionItem *QuantizeSelector;
-        };
 
-        struct TopLevelItems {
             Core::ActionItem *MainMenu;
             Core::ActionItem *MainToolBar;
         };
 
-        struct ActionExtensionItems {
-            ActionItems a;
-            WidgetItems w;
-            TopLevelItems t;
-        };
-
-        ActionExtensionItems aei;
+        ActionItems ai;
     };
 
 }

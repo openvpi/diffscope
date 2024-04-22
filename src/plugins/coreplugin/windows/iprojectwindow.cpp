@@ -30,7 +30,7 @@ namespace Core {
         void reloadLayouts() {
             auto domain = ICore::instance()->actionDomain();
             auto actions = actionItemMap.values_qlist();
-            domain->buildLayouts(actions);
+            domain->buildLayouts(actions, AppExtra::createCoreMenu);
             domain->updateTexts(actions);
             domain->updateIcons(qIDec->theme(), actions);
         }

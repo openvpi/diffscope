@@ -38,7 +38,6 @@ namespace Core {
         void init() {
             Q_Q(ICore);
             domain = new ActionDomain(q);
-            domain->setDefaultMenuFactory(AppExtra::createCoreMenu);
         }
 
         ActionDomain *domain;

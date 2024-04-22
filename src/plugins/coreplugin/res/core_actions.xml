@@ -7,9 +7,12 @@
         <menu id="File" text="&amp;File" />
         <menu id="Edit" text="&amp;Edit" />
         <menu id="View" text="&amp;View" />
-        <menu id="DockPanelsVisibility" text="Dock Panels" />
         <menu id="Playback" text="&amp;Playback" />
         <menu id="Help" text="&amp;Help" />
+
+        <menu id="OpenRecent" top="true" />
+        <menu id="Appearance" top="true" />
+        <menu id="DockPanelsVisibility" text="Dock Panels" top="true" />
 
         <!-- File -->
         <action id="NewFile" class="Create" shortcut="Ctrl+N" />
@@ -36,7 +39,7 @@
         <action id="Find" />
         <action id="Replace" />
 
-        <!-- Appearances -->
+        <!-- Appearance -->
         <action id="MainMenuVisible" text="Main Menu" class="View" />
         <action id="MainToolbarVisible" text="Main Toolbar" class="View" />
         <action id="DockVisible" text="Dock Panel Bars" class="View" />
@@ -76,7 +79,7 @@
                 <group id="FileOpenGroup">
                     <action id="NewFile" />
                     <action id="OpenFile" />
-                    <action id="OpenRecent" />
+                    <menu id="OpenRecent" />
                 </group>
                 <separator />
                 <group id="FileSaveGroup">
