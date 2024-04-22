@@ -7,7 +7,7 @@
 
 namespace Core::Internal {
 
-    class HomeAddOn : public Core::IWindowAddOn {
+    class HomeAddOn : public IWindowAddOn {
         Q_OBJECT
     public:
         explicit HomeAddOn(QObject *parent = nullptr);

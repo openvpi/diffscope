@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
 #include "iprojectwindow.h"
 #include "icore.h"
@@ -9,7 +10,7 @@
 
 namespace Core::Internal {
 
-    ProjectAddOn::ProjectAddOn(QObject *parent) : Core::IWindowAddOn(parent) {
+    ProjectAddOn::ProjectAddOn(QObject *parent) : IWindowAddOn(parent) {
     }
 
     ProjectAddOn::~ProjectAddOn() {
@@ -26,6 +27,7 @@ namespace Core::Internal {
 
     void ProjectAddOn::initActions() {
         auto iWin = windowHandle()->cast<IProjectWindow>();
+        auto win = iWin->window();
 
         // Actions
         ai.NewFile = AppExtra::actionItem(QStringLiteral("NewFile"), this);
@@ -65,20 +67,19 @@ namespace Core::Internal {
 
         // Widgets
         ai.QuantizeSelector = new ActionItem(QStringLiteral("QuantizeSelector"),
-                                                ActionItem::WidgetFactory([](QWidget *parent) {
-                                                    return new QLabel("1/4", parent); //
-                                                }),
-                                                this);
+                                             ActionItem::WidgetFactory([](QWidget *parent) {
+                                                 return new QLabel("1/4", parent); //
+                                             }),
+                                             this);
         ai.TimerLabel = new ActionItem(QStringLiteral("TimerLabel"),
-                                          ActionItem::WidgetFactory([](QWidget *parent) {
-                                              return new QLabel("00:00:00", parent); //
-                                          }),
-                                          this);
+                                       ActionItem::WidgetFactory([](QWidget *parent) {
+                                           return new QLabel("00:00:00", parent); //
+                                       }),
+                                       this);
 
         // TopLevels
         ai.MainMenu = new ActionItem(QStringLiteral("MainMenu"), iWin->menuBar(), this);
-        ai.MainToolBar =
-            new ActionItem(QStringLiteral("MainToolBar"), iWin->mainToolbar(), this);
+        ai.MainToolBar = new ActionItem(QStringLiteral("MainToolBar"), iWin->mainToolbar(), this);
 
         iWin->addActionItems({
             ai.NewFile,
@@ -121,6 +122,17 @@ namespace Core::Internal {
 
             ai.MainMenu,
             ai.MainToolBar,
+        });
+
+        // Signals and slots
+        connect(ai.AboutPlugins->action(), &QAction::triggered, this, [win]() {
+            ICore::showPluginsDialog(win); //
+        });
+        connect(ai.AboutApp->action(), &QAction::triggered, this, [win]() {
+            AppExtra::aboutApp(win); //
+        });
+        connect(ai.AboutQt->action(), &QAction::triggered, this, [win]() {
+            QMessageBox::aboutQt(win); //
         });
     }
 

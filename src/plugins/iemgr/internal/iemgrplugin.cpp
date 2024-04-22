@@ -12,13 +12,17 @@
 #include <coreplugin/initroutine.h>
 #include <coreplugin/iprojectwindow.h>
 
-#include "wizardmanager.h"
+// Addons
 #include "homeaddon.h"
+#include "projectaddon.h"
 
+// Wizards
 #include "midiwizard.h"
 #include "opensvipwizard.h"
 #include "svipwizard.h"
 #include "ustwizard.h"
+
+#include "wizardmanager.h"
 
 CK_STATIC_ACTION_EXTENSION_GETTER(iemgr_actions, getMyActionExtension);
 
@@ -51,6 +55,7 @@ namespace IEMgr::Internal {
         // Add basic windows and add-ons
         auto winMgr = icore->windowSystem();
         winMgr->addAddOn<HomeAddOn>(QStringLiteral("home"));
+        winMgr->addAddOn<ProjectAddOn>(QStringLiteral("project"));
 
         // Add wizards
         imgr->addWizard(new MidiWizard());

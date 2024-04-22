@@ -10,7 +10,7 @@
 
 namespace Core::Internal {
 
-    HomeAddOn::HomeAddOn(QObject *parent) : Core::IWindowAddOn(parent) {
+    HomeAddOn::HomeAddOn(QObject *parent) : IWindowAddOn(parent) {
     }
 
     HomeAddOn::~HomeAddOn() = default;
@@ -22,7 +22,7 @@ namespace Core::Internal {
         openButton = new CTabButton();
         connect(openButton, &QAbstractButton::clicked, this, &HomeAddOn::_q_openButtonClicked);
 
-        auto iWin = windowHandle()->cast<Core::IHomeWindow>();
+        auto iWin = windowHandle()->cast<IHomeWindow>();
         iWin->addFileButton(newButton);
         iWin->addFileButton(openButton);
 

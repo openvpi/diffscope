@@ -8,7 +8,7 @@
 
 namespace Core::Internal {
 
-    class ProjectAddOn : public Core::IWindowAddOn {
+    class ProjectAddOn : public IWindowAddOn {
         Q_OBJECT
     public:
         explicit ProjectAddOn(QObject *parent = nullptr);
@@ -24,46 +24,46 @@ namespace Core::Internal {
         void initActions();
 
         struct ActionItems {
-            Core::ActionItem *NewFile;
-            Core::ActionItem *OpenFile;
-            Core::ActionItem *SaveFile;
-            Core::ActionItem *SaveAsFile;
-            Core::ActionItem *CloseFile;
-            Core::ActionItem *Settings;
-            Core::ActionItem *ColorThemes;
-            Core::ActionItem *Languages;
-            Core::ActionItem *Undo;
-            Core::ActionItem *Redo;
-            Core::ActionItem *Cut;
-            Core::ActionItem *Copy;
-            Core::ActionItem *Paste;
-            Core::ActionItem *Delete;
-            Core::ActionItem *SelectAll;
-            Core::ActionItem *Deselect;
-            Core::ActionItem *Find;
-            Core::ActionItem *Replace;
-            Core::ActionItem *MainMenuVisible;
-            Core::ActionItem *MainToolbarVisible;
-            Core::ActionItem *DockVisible;
-            Core::ActionItem *StatusBarVisible;
-            Core::ActionItem *Play;
-            Core::ActionItem *Stop;
-            Core::ActionItem *MoveToStart;
-            Core::ActionItem *MoveToEnd;
-            Core::ActionItem *Metronome;
-            Core::ActionItem *LoopPlay;
-            Core::ActionItem *ShowHome;
-            Core::ActionItem *FindAction;
-            Core::ActionItem *AboutPlugins;
-            Core::ActionItem *AboutApp;
-            Core::ActionItem *AboutQt;
-            Core::ActionItem *ShowRecentFiles;
+            ActionItem *NewFile;
+            ActionItem *OpenFile;
+            ActionItem *SaveFile;
+            ActionItem *SaveAsFile;
+            ActionItem *CloseFile;
+            ActionItem *Settings;
+            ActionItem *ColorThemes;
+            ActionItem *Languages;
+            ActionItem *Undo;
+            ActionItem *Redo;
+            ActionItem *Cut;
+            ActionItem *Copy;
+            ActionItem *Paste;
+            ActionItem *Delete;
+            ActionItem *SelectAll;
+            ActionItem *Deselect;
+            ActionItem *Find;
+            ActionItem *Replace;
+            ActionItem *MainMenuVisible;
+            ActionItem *MainToolbarVisible;
+            ActionItem *DockVisible;
+            ActionItem *StatusBarVisible;
+            ActionItem *Play;
+            ActionItem *Stop;
+            ActionItem *MoveToStart;
+            ActionItem *MoveToEnd;
+            ActionItem *Metronome;
+            ActionItem *LoopPlay;
+            ActionItem *ShowHome;
+            ActionItem *FindAction;
+            ActionItem *AboutPlugins;
+            ActionItem *AboutApp;
+            ActionItem *AboutQt;
+            ActionItem *ShowRecentFiles;
 
-            Core::ActionItem *TimerLabel;
-            Core::ActionItem *QuantizeSelector;
+            ActionItem *TimerLabel;
+            ActionItem *QuantizeSelector;
 
-            Core::ActionItem *MainMenu;
-            Core::ActionItem *MainToolBar;
+            ActionItem *MainMenu;
+            ActionItem *MainToolBar;
         };
 
         ActionItems ai;
