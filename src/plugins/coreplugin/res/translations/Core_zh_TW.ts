@@ -60,6 +60,11 @@ The application is about to exit because an unresolvable exception has occurred,
         <source>File Manager</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../../app/main.cpp" line="45"/>
+        <source>Failed to create data or temp directories!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Application::ActionText</name>

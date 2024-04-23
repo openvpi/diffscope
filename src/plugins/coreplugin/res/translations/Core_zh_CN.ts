@@ -70,6 +70,11 @@ The application is about to exit because an unresolvable exception has occurred,
         <source>File Manager</source>
         <translation>文件管理器</translation>
     </message>
+    <message>
+        <location filename="../../../../app/main.cpp" line="45"/>
+        <source>Failed to create data or temp directories!</source>
+        <translation>无法创建数据与临时文件目录！</translation>
+    </message>
 </context>
 <context>
     <name>Application::ActionText</name>
@@ -566,7 +571,7 @@ The application is about to exit because an unresolvable exception has occurred,
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2193"/>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2212"/>
         <source>Main Menu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">主菜单</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2194"/>

@@ -10,15 +10,71 @@
     </message>
 </context>
 <context>
-    <name>Core::CommandCategory</name>
+    <name>ChorusKit::ActionCategory</name>
     <message>
-        <location filename="../../internal/iemgrplugin.cpp" line="77"/>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="227"/>
+        <source>Plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="228"/>
+        <source>Import/Export Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="229"/>
+        <source>Import Export Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="230"/>
+        <source>Import Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="231"/>
+        <source>Append Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="232"/>
+        <source>Export Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChorusKit::ActionClass</name>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="223"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/iemgrplugin.cpp" line="78"/>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="224"/>
         <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChorusKit::ActionText</name>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="217"/>
+        <source>Import Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="218"/>
+        <source>Append Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="219"/>
+        <source>Export Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/iemgr/res/ckaec_iemgr_actions.cpp" line="220"/>
+        <source>Import Export Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -57,7 +113,7 @@
 <context>
     <name>IEMgr::Internal::IEMgrPlugin</name>
     <message>
-        <location filename="../../internal/iemgrplugin.cpp" line="41"/>
+        <location filename="../../internal/iemgrplugin.cpp" line="45"/>
         <source>Initializing import/export manager...</source>
         <translation type="unfinished"></translation>
     </message>

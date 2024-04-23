@@ -48,7 +48,7 @@ qm_add_translation(${PROJECT_NAME}_translations
     PREFIX
         ${_plugin_name}
     TARGETS
-        ${PROJECT_NAME}
+        ${CK_APPLICATION_NAME} ${PROJECT_NAME}
     LOCALES
         zh_CN zh_TW ja_JP
     TS_DIR
