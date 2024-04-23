@@ -1,8 +1,16 @@
 #include "keymappage.h"
 
 #include <QMWidgets/qmdecoratorv2.h>
+#include <QMWidgets/qmappextension.h>
 
 #include <QLabel>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+
+#include <QLabel>
+
+#include "icore.h"
 
 namespace Core::Internal {
 

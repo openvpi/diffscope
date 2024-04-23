@@ -50,7 +50,8 @@ namespace IEMgr::Internal {
         auto icore = Core::ICore::instance();
 
         // Add basic actions
-        icore->actionDomain()->addExtension(getMyActionExtension());
+        auto domain = icore->actionManager()->domain();
+        domain->addExtension(getMyActionExtension());
 
         // Add basic windows and add-ons
         auto winMgr = icore->windowSystem();

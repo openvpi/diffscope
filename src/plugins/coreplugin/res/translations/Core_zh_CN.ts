@@ -793,8 +793,8 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::ActionConfigurePage</name>
     <message>
-        <location filename="../../internal/settings/actionconfigurepage.cpp" line="12"/>
-        <location filename="../../internal/settings/actionconfigurepage.cpp" line="13"/>
+        <location filename="../../internal/settings/actionconfigurepage.cpp" line="18"/>
+        <location filename="../../internal/settings/actionconfigurepage.cpp" line="19"/>
         <source>Action Layouts</source>
         <translation>命令布局</translation>
     </message>
@@ -815,12 +815,12 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::CorePlugin</name>
     <message>
-        <location filename="../../internal/coreplugin.cpp" line="99"/>
+        <location filename="../../internal/coreplugin.cpp" line="100"/>
         <source>Initializing core plugin...</source>
         <translation>初始化核心插件...</translation>
     </message>
     <message>
-        <location filename="../../internal/coreplugin.cpp" line="154"/>
+        <location filename="../../internal/coreplugin.cpp" line="167"/>
         <source>Initializing user interface...</source>
         <translation>初始化用户界面...</translation>
     </message>
@@ -926,12 +926,12 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::KeymapPage</name>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="11"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="19"/>
         <source>Keymap</source>
         <translation>键盘映射</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="12"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="20"/>
         <source>Keyboard shortcuts.</source>
         <translation>键盘映射。</translation>
     </message>

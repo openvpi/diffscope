@@ -12,6 +12,7 @@
 
 #include <QMWidgets/qmdecoratorv2.h>
 #include <QMWidgets/qmview.h>
+#include <QMWidgets/qmappextension.h>
 
 #include <CoreApi/iloader.h>
 #include <CoreApi/private/iloader_p.h>
@@ -102,7 +103,8 @@ namespace Core::Internal {
         icore = new ICore(this);
 
         // Add basic actions
-        icore->actionDomain()->addExtension(getMyActionExtension());
+        auto domain = icore->actionManager()->domain();
+        domain->addExtension(getMyActionExtension());
 
         // Add addons
         auto winMgr = icore->windowSystem();
@@ -148,6 +150,17 @@ namespace Core::Internal {
         if (!qIDec->themes().contains(qIDec->theme())) {
             qIDec->setTheme(QStringLiteral("Visual Studio Code - Dark"));
         }
+
+        // Load actions
+        auto actionMgr = icore->actionManager();
+        std::ignore = actionMgr->loadLayouts();
+        std::ignore = actionMgr->saveLayouts();
+        if (!actionMgr->loadIcons()) {
+            actionMgr->saveIcons();
+        }
+        if (!actionMgr->loadShortcuts()) {
+            actionMgr->saveShortcuts();
+        }
     }
 
     bool CorePlugin::delayedInitialize() {
@@ -167,12 +180,12 @@ namespace Core::Internal {
         //        {
         //            QFile file("D:\\actions.xml");
         //            file.open(QIODevice::WriteOnly);
-        //            file.write(icore->actionDomain()->saveLayouts());
+        //            file.write(icore->domain()->saveLayouts());
         //        }
         //        {
         //            QFile file("D:\\keys.json");
         //            file.open(QIODevice::WriteOnly);
-        //            file.write(icore->actionDomain()->saveOverriddenShortcuts());
+        //            file.write(icore->domain()->saveOverriddenShortcuts());
         //        }
         return false;
     }

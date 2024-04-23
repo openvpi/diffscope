@@ -1,8 +1,14 @@
 #include "actionconfigurepage.h"
 
 #include <QMWidgets/qmdecoratorv2.h>
+#include <QMWidgets/qmappextension.h>
 
 #include <QLabel>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+
+#include "icore.h"
 
 namespace Core::Internal {
 

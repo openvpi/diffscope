@@ -20,15 +20,15 @@ namespace Core {
         }
 
         void init() {
-            auto icore = ICore::instance();
-            connect(icore, &ICore::actionLayoutsReloaded, this,
+            auto actionMgr = ICore::instance()->actionManager();
+            connect(actionMgr, &ActionManager::layoutsReloaded, this,
                     &IProjectWindowPrivate::reloadLayouts);
-            connect(icore, &ICore::actionShortcutsReloaded, this,
+            connect(actionMgr, &ActionManager::shortcutsReloaded, this,
                     &IProjectWindowPrivate::reloadShortcuts);
         }
 
         void reloadLayouts() {
-            auto domain = ICore::instance()->actionDomain();
+            auto domain = ICore::instance()->actionManager()->domain();
             auto actions = actionItemMap.values_qlist();
             domain->buildLayouts(actions, AppExtra::createCoreMenu);
             domain->updateTexts(actions);
@@ -36,7 +36,7 @@ namespace Core {
         }
 
         void reloadShortcuts() {
-            auto domain = ICore::instance()->actionDomain();
+            auto domain = ICore::instance()->actionManager()->domain();
             for (const auto &item : std::as_const(actionItemMap)) {
                 if (item->isAction()) {
                     item->action()->setShortcuts(domain->objectShortcuts(item->id()));
@@ -45,7 +45,8 @@ namespace Core {
         }
 
         void reloadStrings() {
-            ICore::instance()->actionDomain()->updateTexts(actionItemMap.values_qlist());
+            auto domain = ICore::instance()->actionManager()->domain();
+            domain->updateTexts(actionItemMap.values_qlist());
         }
     };
 
