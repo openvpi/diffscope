@@ -99,8 +99,10 @@ namespace Core::Internal {
 
     void HomeWindow::_q_configureButtonClicked() {
         auto menu = AppExtra::createCoreMenu(this);
-        auto pluginsAction = menu->addAction(tr("Plugins"));
-        auto settingsAction = menu->addAction(tr("Settings"));
+        auto pluginsAction =
+            menu->addAction(QCoreApplication::translate("Application::ActionText", "Plugins"));
+        auto settingsAction =
+            menu->addAction(QCoreApplication::translate("Application::ActionText", "Settings"));
         auto action = menu->exec(QCursor::pos());
         if (action == pluginsAction) {
             ICore::showPluginsDialog(this);

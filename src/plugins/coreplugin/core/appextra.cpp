@@ -176,11 +176,11 @@ namespace Core {
 
     QString AppExtra::fileManagerName() {
 #ifdef Q_OS_WINDOWS
-        return QCoreApplication::translate("QMSystem", "Explorer");
+        return QCoreApplication::translate("Application", "Explorer");
 #elif defined(Q_OS_MAC)
-        return QCoreApplication::translate("QMSystem", "Finder");
+        return QCoreApplication::translate("Application", "Finder");
 #else
-        return QCoreApplication::translate("QMSystem", "File Manager");
+        return QCoreApplication::translate("Application", "File Manager");
 #endif
     }
 

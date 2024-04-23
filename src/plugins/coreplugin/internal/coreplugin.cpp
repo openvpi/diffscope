@@ -34,6 +34,8 @@
 #include "displaypage.h"
 #include "keymappage.h"
 
+extern const Core::ActionExtension *ckGetStaticActionExtension_core_actions();
+
 CK_STATIC_ACTION_EXTENSION_GETTER(core_actions, getMyActionExtension);
 
 namespace Core::Internal {

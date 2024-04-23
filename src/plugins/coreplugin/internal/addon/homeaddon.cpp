@@ -33,8 +33,8 @@ namespace Core::Internal {
     }
 
     void HomeAddOn::reloadStrings() {
-        newButton->setText(QApplication::translate("Application", "New"));
-        openButton->setText(QApplication::translate("Application", "Open"));
+        newButton->setText(QApplication::translate("Application::ActionText", "New"));
+        openButton->setText(QApplication::translate("Application::ActionText", "Open"));
     }
 
     void HomeAddOn::_q_newButtonClicked() {

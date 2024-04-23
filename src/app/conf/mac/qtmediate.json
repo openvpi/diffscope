@@ -4,6 +4,7 @@
     "Share": "Resources",
     "Plugins": [],
     "Translations": [
+        "Resources/share/qt/translations",
         "Resources/share/ChorusKit/translations",
         "Resources/share/svscraft/translations"
     ],
