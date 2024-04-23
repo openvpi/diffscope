@@ -115,7 +115,7 @@ namespace Core {
             connect(sc, &SettingCatalog::descriptionChanged, this,
                     &SettingsDialog::_q_descriptionChanged);
 
-            qIDec->installLocale(this, _LOC(SettingsDialog, this));
+            qIDec->installLocale(this);
 
             // Init window sizes
             auto winMgr = ICore::instance()->windowSystem();

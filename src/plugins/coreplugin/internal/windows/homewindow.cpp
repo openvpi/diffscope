@@ -68,7 +68,7 @@ namespace Core::Internal {
         connect(recentBottomWidget, &HomeRecentBottomFrame::openFileRequested, this,
                 &HomeWindow::_q_openFileRequested);
 
-        qIDec->installLocale(this, _LOC(HomeWindow, this));
+        qIDec->installLocale(this);
         qIDec->installTheme(this, "core.HomeWindow");
     }
 

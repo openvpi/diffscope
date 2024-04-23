@@ -125,6 +125,9 @@ namespace Core::Internal {
         });
 
         // Signals and slots
+        connect(ai.Settings->action(), &QAction::triggered, this, [win]() {
+            ICore::showSettingsDialog({}, win); //
+        });
         connect(ai.AboutPlugins->action(), &QAction::triggered, this, [win]() {
             ICore::showPluginsDialog(win); //
         });

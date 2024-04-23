@@ -26,7 +26,7 @@ namespace Core::Internal {
         iWin->addFileButton(newButton);
         iWin->addFileButton(openButton);
 
-        qIDec->installLocale(this, _LOC(HomeAddOn, this));
+        qIDec->installLocale(this);
     }
 
     void HomeAddOn::extensionsInitialized() {

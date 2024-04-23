@@ -34,7 +34,7 @@ namespace Core::Internal {
         setLayout(topLayout);
         connect(searchBox, &QLineEdit::textChanged, this, &HomeRecentTopFrame::textChanged);
 
-        qIDec->installLocale(this, _LOC(HomeRecentTopFrame, this));
+        qIDec->installLocale(this);
     }
 
     HomeRecentTopFrame::~HomeRecentTopFrame() {
@@ -87,7 +87,7 @@ namespace Core::Internal {
         // Reload recent files once
         reloadRecentFiles();
 
-        qIDec->installLocale(this, _LOC(HomeRecentBottomFrame, this));
+        qIDec->installLocale(this);
     }
 
     HomeRecentBottomFrame::~HomeRecentBottomFrame() {
@@ -230,7 +230,7 @@ namespace Core::Internal {
         setStretchFactor(0, 0);
         setStretchFactor(1, 1);
 
-        qIDec->installLocale(this, _LOC(HomeRecentWidget, this));
+        qIDec->installLocale(this);
 
         connect(topWidget, &HomeRecentTopFrame::textChanged, this,
                 &HomeRecentWidget::_q_searchTextChanged);

@@ -100,7 +100,7 @@ namespace Core {
         switch (nextState) {
             case IWindow::WindowSetup: {
                 // Install before all addons
-                qIDec->installLocale(this, _LOC(IProjectWindowPrivate, d));
+                qIDec->installLocale(this, d);
                 break;
             }
 

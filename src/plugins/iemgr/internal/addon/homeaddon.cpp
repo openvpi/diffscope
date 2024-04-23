@@ -21,7 +21,7 @@ namespace IEMgr::Internal {
         connect(importButton, &QAbstractButton::clicked, this, &HomeAddOn::_q_importButtonClicked);
         windowHandle()->cast<Core::IHomeWindow>()->addFileButton(importButton);
 
-        qIDec->installLocale(this, _LOC(HomeAddOn, this));
+        qIDec->installLocale(this);
     }
 
     void HomeAddOn::extensionsInitialized() {
