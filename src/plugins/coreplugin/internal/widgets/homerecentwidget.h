@@ -10,8 +10,8 @@
 #include <QVBoxLayout>
 
 #include <QMWidgets/ctabbutton.h>
-#include <QMWidgets/qmequalboxlayout.h>
 #include <QMWidgets/cbasicframe.h>
+#include <QMWidgets/qmequalboxlayout.h>
 
 #include <SVSCraftWidgets/linearscrollarea.h>
 #include <SVSCraftWidgets/titlelistwidget.h>

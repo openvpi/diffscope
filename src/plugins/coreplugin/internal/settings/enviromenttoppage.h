@@ -1,15 +1,15 @@
-#ifndef CHORUSKIT_ACTIONCONFIGUREPAGE_H
-#define CHORUSKIT_ACTIONCONFIGUREPAGE_H
+#ifndef ENVIROMENTTOPPAGE_H
+#define ENVIROMENTTOPPAGE_H
 
 #include <CoreApi/isettingpage.h>
 
 namespace Core::Internal {
 
-    class ActionConfigurePage : public ISettingPage {
+    class EnvironmentTopPage : public ISettingPage {
         Q_OBJECT
     public:
-        explicit ActionConfigurePage(QObject *parent = nullptr);
-        ~ActionConfigurePage();
+        explicit EnvironmentTopPage(QObject *parent = nullptr);
+        ~EnvironmentTopPage();
 
     public:
         QString sortKeyword() const override;
@@ -21,9 +21,9 @@ namespace Core::Internal {
         void finish() override;
 
     private:
-        QWidget *m_widget;
+        // QWidget *m_widget;
     };
 
 }
 
-#endif // CHORUSKIT_ACTIONCONFIGUREPAGE_H
+#endif // ENVIROMENTTOPPAGE_H

@@ -1,4 +1,4 @@
-#include "actionconfigurepage.h"
+#include "actionlayoutspage.h"
 
 #include <QMWidgets/qmdecoratorv2.h>
 #include <QMWidgets/qmappextension.h>
@@ -12,25 +12,25 @@
 
 namespace Core::Internal {
 
-    ActionConfigurePage::ActionConfigurePage(QObject *parent)
-        : ISettingPage(QStringLiteral("core.ActionConfigure"), parent) {
+    ActionLayoutsPage::ActionLayoutsPage(QObject *parent)
+        : ISettingPage(QStringLiteral("core.ActionLayout"), parent) {
         m_widget = nullptr;
         setTitle([]() { return tr("Action Layouts"); });
         setDescription([]() { return tr("Action Layouts"); });
     }
 
-    ActionConfigurePage::~ActionConfigurePage() {
+    ActionLayoutsPage::~ActionLayoutsPage() {
     }
 
-    QString ActionConfigurePage::sortKeyword() const {
+    QString ActionLayoutsPage::sortKeyword() const {
         return QStringLiteral("Action Layouts");
     }
 
-    bool ActionConfigurePage::matches(const QString &word) const {
+    bool ActionLayoutsPage::matches(const QString &word) const {
         return ISettingPage::matches(word);
     }
 
-    QWidget *ActionConfigurePage::widget() {
+    QWidget *ActionLayoutsPage::widget() {
         if (!m_widget) {
             auto label = new QLabel();
             label->setText("Action Layouts");
@@ -39,11 +39,11 @@ namespace Core::Internal {
         return m_widget;
     }
 
-    bool ActionConfigurePage::accept() {
+    bool ActionLayoutsPage::accept() {
         return true;
     }
 
-    void ActionConfigurePage::finish() {
+    void ActionLayoutsPage::finish() {
         if (m_widget) {
             m_widget->deleteLater();
             m_widget = nullptr;

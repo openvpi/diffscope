@@ -30,9 +30,9 @@
 #include "projectaddon.h"
 
 // Settings
-#include "actionconfigurepage.h"
-#include "appearancetoppage.h"
-#include "displaypage.h"
+#include "enviromenttoppage.h"
+#include "appearancepage.h"
+#include "actionlayoutspage.h"
 #include "keymappage.h"
 
 extern const Core::ActionExtension *ckGetStaticActionExtension_core_actions();
@@ -114,18 +114,18 @@ namespace Core::Internal {
         // Add setting panels
         auto sc = icore->settingCatalog();
         {
-            auto appearance = new AppearanceTopPage();
-            sc->addPage(appearance);
+            auto environmentTop = new EnvironmentTopPage();
+            sc->addPage(environmentTop);
             {
-                auto display = new DisplayPage();
-                appearance->addPage(display);
+                auto appearance = new AppearancePage();
+                environmentTop->addPage(appearance);
 
-                auto actionConfigure = new ActionConfigurePage();
-                appearance->addPage(actionConfigure);
+                auto actionLayouts = new ActionLayoutsPage();
+                environmentTop->addPage(actionLayouts);
+
+                auto keymap = new KeymapPage();
+                environmentTop->addPage(keymap);
             }
-
-            auto keymap = new KeymapPage();
-            sc->addPage(keymap);
         }
 
         // Add document types

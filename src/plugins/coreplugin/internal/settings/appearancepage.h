@@ -1,5 +1,5 @@
-#ifndef CHORUSKIT_DISPLAYPAGE_H
-#define CHORUSKIT_DISPLAYPAGE_H
+#ifndef APPEARANCEPAGE_H
+#define APPEARANCEPAGE_H
 
 #include <QFont>
 
@@ -7,11 +7,11 @@
 
 namespace Core::Internal {
 
-    class DisplayPage : public ISettingPage {
+    class AppearancePage : public ISettingPage {
         Q_OBJECT
     public:
-        explicit DisplayPage(QObject *parent = nullptr);
-        ~DisplayPage();
+        explicit AppearancePage(QObject *parent = nullptr);
+        ~AppearancePage();
 
     public:
         QString sortKeyword() const override;
@@ -34,4 +34,4 @@ namespace Core::Internal {
 
 }
 
-#endif // CHORUSKIT_DISPLAYPAGE_H
+#endif // APPEARANCEPAGE_H

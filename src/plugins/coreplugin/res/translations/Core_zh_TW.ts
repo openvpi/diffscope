@@ -46,17 +46,17 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="179"/>
+        <location filename="../../core/appextra.cpp" line="180"/>
         <source>Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="181"/>
+        <location filename="../../core/appextra.cpp" line="182"/>
         <source>Finder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="183"/>
+        <location filename="../../core/appextra.cpp" line="184"/>
         <source>File Manager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -122,257 +122,257 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2244"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2246"/>
         <source>File Open Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2245"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2294"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2246"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2244"/>
         <source>Visibility Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2272"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2245"/>
         <source>Dock Panels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2249"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
         <source>New File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2249"/>
         <source>File Save Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2253"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
         <source>Save as File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2254"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
         <source>Close File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2255"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2253"/>
         <source>Preferences Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2256"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2254"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2257"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2255"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2258"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2256"/>
         <source>Color Themes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2259"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2257"/>
         <source>Locales and Languages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2260"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2258"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2261"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2259"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2262"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2260"/>
         <source>Cut Copy Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2263"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2261"/>
         <source>Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2264"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2262"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2265"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2263"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2266"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2264"/>
         <source>Create/Delete Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2267"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2265"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2268"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2266"/>
         <source>Editor Select Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2269"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2267"/>
         <source>Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2270"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2268"/>
         <source>Deselect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2271"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2269"/>
         <source>Editor Search Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2272"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2270"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2273"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2271"/>
         <source>Replace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2274"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2273"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2275"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2274"/>
         <source>Dock Panel Bars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2276"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2275"/>
         <source>Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2277"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2276"/>
         <source>Play Control Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2278"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2277"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2279"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2278"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2280"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2279"/>
         <source>Move to Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2280"/>
         <source>Move to End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2282"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
         <source>Play Options Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2283"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2282"/>
         <source>Metronome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2284"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2283"/>
         <source>Loop Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2285"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2284"/>
         <source>Welcome Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2286"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2285"/>
         <source>Show Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2287"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2286"/>
         <source>Find Action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2288"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2287"/>
         <source>About Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2289"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2288"/>
         <source>About Plugins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2290"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2289"/>
         <source>About DiffScope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2291"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2290"/>
         <source>About Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2292"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2291"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2293"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2292"/>
         <source>Timer Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2294"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2293"/>
         <source>Quantize Selector</source>
         <translation type="unfinished"></translation>
     </message>
@@ -453,243 +453,243 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2172"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2212"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2220"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2174"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2172"/>
         <source>Dock Panels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
         <source>New File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2176"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2174"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2178"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2176"/>
         <source>Save as File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2179"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
         <source>Close File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2180"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2178"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2181"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2179"/>
         <source>Color Themes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2182"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2180"/>
         <source>Locales and Languages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2183"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2181"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2184"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2182"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2185"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2183"/>
         <source>Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2186"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2184"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2187"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2185"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2188"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2186"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2189"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2187"/>
         <source>Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2190"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2188"/>
         <source>Deselect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2191"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2189"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2192"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2190"/>
         <source>Replace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2193"/>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2212"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2191"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2210"/>
         <source>Main Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2194"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2192"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2195"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2193"/>
         <source>Dock Panel Bars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2196"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2194"/>
         <source>Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2197"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2195"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2198"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2196"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2199"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2197"/>
         <source>Move to Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2200"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2198"/>
         <source>Move to End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2201"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2199"/>
         <source>Metronome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2202"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2200"/>
         <source>Loop Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2203"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2201"/>
         <source>Show Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2204"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2202"/>
         <source>Find Action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2205"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2203"/>
         <source>About Plugins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2206"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2204"/>
         <source>About DiffScope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2207"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2205"/>
         <source>About Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2208"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2206"/>
         <source>Show Recent Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2209"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2207"/>
         <source>Create/Delete Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2210"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2208"/>
         <source>Timer Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2211"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2209"/>
         <source>Quantize Selector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2213"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2211"/>
         <source>File Open Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2214"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2213"/>
         <source>File Save Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2215"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2214"/>
         <source>Preferences Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2216"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2215"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2217"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2216"/>
         <source>Cut Copy Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2218"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2217"/>
         <source>Editor Select Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2219"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2218"/>
         <source>Editor Search Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2220"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2219"/>
         <source>Visibility Group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -781,24 +781,35 @@ The application is about to exit because an unresolvable exception has occurred,
     </message>
 </context>
 <context>
-    <name>Core::Internal::ActionConfigurePage</name>
+    <name>Core::Internal::ActionLayoutsPage</name>
     <message>
-        <location filename="../../internal/settings/actionconfigurepage.cpp" line="18"/>
-        <location filename="../../internal/settings/actionconfigurepage.cpp" line="19"/>
+        <location filename="../../internal/settings/actionlayoutspage.cpp" line="18"/>
+        <location filename="../../internal/settings/actionlayoutspage.cpp" line="19"/>
         <source>Action Layouts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>Core::Internal::AppearanceTopPage</name>
+    <name>Core::Internal::AppearancePage</name>
     <message>
-        <location filename="../../internal/settings/appearancetoppage.cpp" line="11"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="23"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="24"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancetoppage.cpp" line="12"/>
-        <source>Application appearance.</source>
+        <location filename="../../internal/settings/appearancepage.cpp" line="49"/>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="53"/>
+        <source>Font: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="59"/>
+        <source>Pick a Font...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -816,26 +827,15 @@ The application is about to exit because an unresolvable exception has occurred,
     </message>
 </context>
 <context>
-    <name>Core::Internal::DisplayPage</name>
+    <name>Core::Internal::EnvironmentTopPage</name>
     <message>
-        <location filename="../../internal/settings/displaypage.cpp" line="23"/>
-        <location filename="../../internal/settings/displaypage.cpp" line="24"/>
-        <source>Display</source>
+        <location filename="../../internal/settings/enviromenttoppage.cpp" line="11"/>
+        <source>Environment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/displaypage.cpp" line="49"/>
-        <source>Italic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../internal/settings/displaypage.cpp" line="53"/>
-        <source>Font: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../internal/settings/displaypage.cpp" line="59"/>
-        <source>Pick a Font...</source>
+        <location filename="../../internal/settings/enviromenttoppage.cpp" line="12"/>
+        <source>Application general environment and behaviors.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,4 +1,4 @@
-#include "displaypage.h"
+#include "appearancepage.h"
 
 #include <QMWidgets/qmdecoratorv2.h>
 
@@ -17,11 +17,11 @@
 
 namespace Core::Internal {
 
-    DisplayPage::DisplayPage(QObject *parent)
-        : ISettingPage(QStringLiteral("core.Display"), parent) {
+    AppearancePage::AppearancePage(QObject *parent)
+        : ISettingPage(QStringLiteral("core.Appearance"), parent) {
         m_widget = nullptr;
-        setTitle([]() { return tr("Display"); });
-        setDescription([]() { return tr("Display"); });
+        setTitle([]() { return tr("Appearance"); });
+        setDescription([]() { return tr("Appearance"); });
 
         QFont resultFont;
         if (!loadFontSettings(resultFont))
@@ -29,18 +29,18 @@ namespace Core::Internal {
         font = resultFont;
     }
 
-    DisplayPage::~DisplayPage() {
+    AppearancePage::~AppearancePage() {
     }
 
-    QString DisplayPage::sortKeyword() const {
-        return QStringLiteral("Display");
+    QString AppearancePage::sortKeyword() const {
+        return QStringLiteral("Appearance");
     }
 
-    bool DisplayPage::matches(const QString &word) const {
+    bool AppearancePage::matches(const QString &word) const {
         return ISettingPage::matches(word);
     }
 
-    QWidget *DisplayPage::widget() {
+    QWidget *AppearancePage::widget() {
         if (!m_widget) {
             auto getLabelFontStr = [this](QFont &font) {
                 auto family = font.family() + " ";
@@ -123,20 +123,20 @@ namespace Core::Internal {
         return m_widget;
     }
 
-    bool DisplayPage::accept() {
+    bool AppearancePage::accept() {
         if (!saveFontSettings(font))
             return false;
         return true;
     }
 
-    void DisplayPage::finish() {
+    void AppearancePage::finish() {
         if (m_widget) {
             m_widget->deleteLater();
             m_widget = nullptr;
         }
     }
 
-    bool DisplayPage::loadFontSettings(QFont &font) {
+    bool AppearancePage::loadFontSettings(QFont &font) {
         auto appPath = QCoreApplication::applicationDirPath();
         auto jsonPath =
             QDir::cleanPath(appPath + QDir::separator() + QString("qtmediate.user.json"));
@@ -171,7 +171,7 @@ namespace Core::Internal {
         return true;
     }
 
-    bool DisplayPage::saveFontSettings(const QFont &font) {
+    bool AppearancePage::saveFontSettings(const QFont &font) {
         // Create qtmediate.user.json if not exist.
         auto appPath = QCoreApplication::applicationDirPath();
         auto jsonPath =
@@ -210,7 +210,7 @@ namespace Core::Internal {
         return true;
     }
 
-    bool DisplayPage::loadJsonFile(const QString &filename, QJsonObject *jsonObj) {
+    bool AppearancePage::loadJsonFile(const QString &filename, QJsonObject *jsonObj) {
         // Deserialize json
         QFile loadFile(filename);
         if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -232,7 +232,7 @@ namespace Core::Internal {
         return true;
     }
 
-    bool DisplayPage::saveJsonFile(const QString &filename, QJsonObject &jsonObj) {
+    bool AppearancePage::saveJsonFile(const QString &filename, QJsonObject &jsonObj) {
         QJsonDocument document;
         document.setObject(jsonObj);
 
@@ -253,7 +253,7 @@ namespace Core::Internal {
         return true;
     }
 
-    QString DisplayPage::getFontWeightStr(const QFont::Weight &weight) {
+    QString AppearancePage::getFontWeightStr(const QFont::Weight &weight) {
         switch (weight) {
             case QFont::Thin:
                 // TODO: translation.
