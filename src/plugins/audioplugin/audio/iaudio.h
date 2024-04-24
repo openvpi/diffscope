@@ -24,8 +24,12 @@ namespace Audio {
 
         OutputSystemInterface *outputSystemInterface() const;
         OutputSystemInterface *vstOutputSystemInterface() const;
+
         void installOutputSystemAddOn(const QMetaObject *clazz);
-        QList<const QMetaObject *> outputSystemAddons() const;
+        QList<const QMetaObject *> outputSystemAddOns() const;
+
+        void installAudioContextAddOn(const QMetaObject *clazz);
+        QList<const QMetaObject *> audioContextAddOns() const;
 
     private:
         QScopedPointer<IAudioPrivate> d_ptr;

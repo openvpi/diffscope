@@ -1,7 +1,15 @@
-//
-// Created by Crs_1 on 2024/4/17.
-//
-
 #include "iaudiocontextaddon.h"
+#include "iaudiocontextaddon_p.h"
 
-namespace Audio {} // Audio
+namespace Audio {
+    IAudioContextAddOn::IAudioContextAddOn(QObject *parent) : QObject(parent), d_ptr(new IAudioContextAddOnPrivate) {
+        Q_D(IAudioContextAddOn);
+        d->q_ptr = this;
+    }
+
+    IAudioContextAddOn::~IAudioContextAddOn() = default;
+
+    bool IAudioContextAddOn::delayedInitialize() {
+        return false;
+    }
+} // Audio

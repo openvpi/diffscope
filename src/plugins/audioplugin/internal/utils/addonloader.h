@@ -28,7 +28,7 @@ namespace Audio {
         }
 
         void extensionInitializedAll() {
-            std::for_each(m_addOns.cbegin(), m_addOns.cend(), [](AddonType *addOn) {
+            std::for_each(m_addOns.crbegin(), m_addOns.crend(), [](AddonType *addOn) {
                 addOn->extensionInitialized();
             });
         }

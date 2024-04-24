@@ -11,6 +11,7 @@ namespace Audio {
         OutputSystemInterface *outputSystemInterface;
         OutputSystemInterface *vstOutputSystemInterface;
         QList<const QMetaObject *> outputSystemAddOnClasses;
+        QList<const QMetaObject *> audioContextAddOnClasses;
     };
 }
 

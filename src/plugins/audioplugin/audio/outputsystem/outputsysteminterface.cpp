@@ -14,7 +14,7 @@ namespace Audio {
 
     void OutputSystemInterfacePrivate::initializeAddOns() {
         Q_Q(OutputSystemInterface);
-        addOnLoader.reset(new AddOnLoader<IOutputSystemAddOn>(IAudio::instance()->outputSystemAddons(), q));
+        addOnLoader = std::make_unique<AddOnLoader<IOutputSystemAddOn>>(IAudio::instance()->outputSystemAddOns(), q);
         for (auto addOn : addOnLoader->addOns()) {
             addOn->d_func()->outputSystemInterface = q;
         }

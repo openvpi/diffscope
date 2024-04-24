@@ -24,8 +24,16 @@ namespace Audio {
         Q_D(IAudio);
         d->outputSystemAddOnClasses.append(clazz);
     }
-    QList<const QMetaObject *> IAudio::outputSystemAddons() const {
+    QList<const QMetaObject *> IAudio::outputSystemAddOns() const {
         Q_D(const IAudio);
         return d->outputSystemAddOnClasses;
+    }
+    void IAudio::installAudioContextAddOn(const QMetaObject *clazz) {
+        Q_D(IAudio);
+        d->audioContextAddOnClasses.append(clazz);
+    }
+    QList<const QMetaObject *> IAudio::audioContextAddOns() const {
+        Q_D(const IAudio);
+        return d->audioContextAddOnClasses;
     }
 } // Audio

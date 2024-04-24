@@ -1,6 +1,8 @@
 #ifndef AUDIO_OUTPUTSYSTEMINTERFACE_P_H
 #define AUDIO_OUTPUTSYSTEMINTERFACE_P_H
 
+#include <memory>
+
 #include <audioplugin/outputsysteminterface.h>
 #include <audioplugin/internal/addonloader.h>
 
@@ -16,7 +18,7 @@ namespace Audio {
 
         AbstractOutputSystem *abstractOutputSystem;
         bool isVST;
-        QScopedPointer<AddOnLoader<IOutputSystemAddOn>> addOnLoader;
+        std::unique_ptr<AddOnLoader<IOutputSystemAddOn>> addOnLoader;
 
         void init(AbstractOutputSystem *abstractOutputSystem, bool isVST);
         void initializeAddOns();

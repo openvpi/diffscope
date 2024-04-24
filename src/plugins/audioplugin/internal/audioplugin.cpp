@@ -23,6 +23,7 @@
 #include <audioplugin/outputsysteminterface.h>
 #include <audioplugin/private/outputsysteminterface_p.h>
 #include <audioplugin/internal/devicetesteraddon.h>
+#include <audioplugin/internal/projectaddon.h>
 
 namespace Audio {
 
@@ -41,9 +42,9 @@ namespace Audio {
         new AudioSystem(this);
 
         auto iAudio = new IAudio;
-        iAudio->d_func()->outputSystemInterface = new OutputSystemInterface(this);
+        iAudio->d_func()->outputSystemInterface = new OutputSystemInterface(AudioSystem::outputSystem());
         iAudio->d_func()->outputSystemInterface->d_func()->init(AudioSystem::outputSystem(), false);
-        iAudio->d_func()->vstOutputSystemInterface = new OutputSystemInterface(this);
+        iAudio->d_func()->vstOutputSystemInterface = new OutputSystemInterface(AudioSystem::vstConnectionSystem());
         iAudio->d_func()->vstOutputSystemInterface->d_func()->init(AudioSystem::vstConnectionSystem(), true);
 
         if (arguments.contains("-vst")) {
@@ -57,6 +58,8 @@ namespace Audio {
         audioPage->addPage(new VSTModePage);
         sc->addPage(audioPage);
 
+        auto iCore = Core::ICore::instance();
+        iCore->windowSystem()->addAddOn<ProjectAddOn>("project");
 
         iAudio->installOutputSystemAddOn(&DeviceTesterAddOn::staticMetaObject);
 
@@ -66,9 +69,6 @@ namespace Audio {
         auto splash = Core::InitRoutine::splash();
         qDebug() << "Audio::AudioPlugin: initializing";
         splash->showMessage(tr("Initializing audio plugin..."));
-        if (AudioSystem::vstConnectionSystem()->isApplicationInitializing()) {
-
-        }
 
         if (!AudioSystem::outputSystem()->initialize()) {
             QMessageBox msgBox(splash);
@@ -90,6 +90,10 @@ namespace Audio {
         qDebug() << "Audio::AudioPlugin: initializing add-ons of VST connection system";
         IAudio::instance()->vstOutputSystemInterface()->d_func()->initializeAddOns();
         qDebug() << "Audio::AudioPlugin: add-ons of VST connection system initialized";
+
+        if (AudioSystem::vstConnectionSystem()->isApplicationInitializing()) {
+            // TODO open VST window
+        }
 
     }
     bool AudioPlugin::delayedInitialize() {
