@@ -26,6 +26,8 @@ namespace Core {
         static inline QString allFilesFilter();
 
         static inline ActionItem *actionItem(const QString &id, QObject *parent = nullptr);
+        static inline ActionItem *actionItem(const QString &id, QAction::MenuRole role,
+                                             QObject *parent = nullptr);
         static inline ActionItem *menuItem(const QString &id, QObject *parent = nullptr);
     };
 
@@ -39,11 +41,18 @@ namespace Core {
                 ;
     }
 
-    ActionItem *AppExtra::actionItem(const QString &id, QObject *parent) {
-        return new ActionItem(id, new QAction(), parent);
+    inline ActionItem *AppExtra::actionItem(const QString &id, QObject *parent) {
+        return actionItem(id, QAction::NoRole, parent);
     }
 
-    ActionItem *AppExtra::menuItem(const QString &id, QObject *parent) {
+    inline ActionItem *AppExtra::actionItem(const QString &id, QAction::MenuRole role,
+                                            QObject *parent) {
+        auto action = new QAction();
+        action->setMenuRole(role);
+        return new ActionItem(id, action, parent);
+    }
+
+    inline ActionItem *AppExtra::menuItem(const QString &id, QObject *parent) {
         return new ActionItem(id, ActionItem::MenuFactory(createCoreMenu), parent);
     }
 

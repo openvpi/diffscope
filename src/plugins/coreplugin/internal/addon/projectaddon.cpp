@@ -60,9 +60,10 @@ namespace Core::Internal {
         ai.LoopPlay = AppExtra::actionItem(QStringLiteral("LoopPlay"), this);
         ai.ShowHome = AppExtra::actionItem(QStringLiteral("ShowHome"), this);
         ai.FindAction = AppExtra::actionItem(QStringLiteral("FindAction"), this);
-        ai.AboutPlugins = AppExtra::actionItem(QStringLiteral("AboutPlugins"), this);
-        ai.AboutApp = AppExtra::actionItem(QStringLiteral("AboutApp"), this);
-        ai.AboutQt = AppExtra::actionItem(QStringLiteral("AboutQt"), this);
+        ai.AboutPlugins =
+            AppExtra::actionItem(QStringLiteral("AboutPlugins"), QAction::NoRole, this);
+        ai.AboutApp = AppExtra::actionItem(QStringLiteral("AboutApp"), QAction::AboutRole, this);
+        ai.AboutQt = AppExtra::actionItem(QStringLiteral("AboutQt"), QAction::AboutQtRole, this);
         ai.ShowRecentFiles = AppExtra::actionItem(QStringLiteral("ShowRecentFiles"), this);
 
         // Widgets

@@ -11,6 +11,7 @@
         <menu id="Help" text="&amp;Help" />
 
         <menu id="OpenRecent" top="true" />
+        <menu id="Preferences" top="true" />
         <menu id="Appearance" top="true" />
         <menu id="DockPanelsVisibility" text="Dock Panels" top="true" />
 
