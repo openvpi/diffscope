@@ -10,10 +10,7 @@
         <menu id="Playback" text="&amp;Playback" />
         <menu id="Help" text="&amp;Help" />
 
-        <menu id="OpenRecent" top="true" />
-        <menu id="Preferences" top="true" />
-        <menu id="Appearance" top="true" />
-        <menu id="DockPanelsVisibility" text="Dock Panels" top="true" />
+        <menu id="DockPanelsVisibility" text="Dock Panels" mode="unique" />
 
         <!-- File -->
         <action id="NewFile" class="Create" shortcut="Ctrl+N" />
