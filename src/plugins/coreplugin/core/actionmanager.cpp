@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 
+#include <QMCore/qmchronomap.h>
 #include <QMWidgets/qmappextension.h>
 
 #include <CoreApi/actiondomain.h>
@@ -47,7 +48,11 @@ namespace Core {
         }
 
         ActionManager *q_ptr;
+
         ActionDomain *domain;
+
+        QMChronoMap<QString, QJsonObject> shortcutFamilies;
+        QString currentShortcutFamily;
     };
 
     static ActionManager *m_instance = nullptr;
@@ -69,11 +74,11 @@ namespace Core {
         Q_D(ActionManager);
         QFile file(actionLayoutsDataPath());
         if (!file.exists()) {
-            qDebug() << "Core: action layouts data not found";
+            qDebug() << "Core::ActionManager: action layouts data not found";
             return false;
         }
         if (!file.open(QIODevice::ReadOnly)) {
-            qWarning() << "Core: failed to read action layouts data";
+            qWarning() << "Core::ActionManager: failed to read action layouts data";
             return false;
         }
         d->domain->restoreLayouts(file.readAll());
@@ -84,7 +89,7 @@ namespace Core {
         QFile file(actionLayoutsDataPath());
         makeDirectories(file.fileName());
         if (!file.open(QIODevice::WriteOnly)) {
-            qWarning() << "Core: failed to create action layouts data";
+            qWarning() << "Core::ActionManager: failed to create action layouts data";
             return false;
         }
         file.write(d->domain->saveLayouts());
@@ -94,11 +99,11 @@ namespace Core {
         Q_D(ActionManager);
         QFile file(actionIconsDataPath());
         if (!file.exists()) {
-            qDebug() << "Core: action icons data not found";
+            qDebug() << "Core::ActionManager: action icons data not found";
             return false;
         }
         if (!file.open(QIODevice::ReadOnly)) {
-            qWarning() << "Core: failed to read action icons data";
+            qWarning() << "Core::ActionManager: failed to read action icons data";
             return false;
         }
 
@@ -106,7 +111,8 @@ namespace Core {
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &err);
         if (err.error != QJsonParseError::NoError || !doc.isObject()) {
             qWarning().noquote().nospace()
-                << "Core: failed to parse read action icons data: " << err.errorString();
+                << "Core::ActionManager: failed to parse read action icons data: "
+                << err.errorString();
             return false;
         }
 
@@ -120,7 +126,7 @@ namespace Core {
         QFile file(actionIconsDataPath());
         makeDirectories(file.fileName());
         if (!file.open(QIODevice::WriteOnly)) {
-            qWarning() << "Core: failed to create action icons data";
+            qWarning() << "Core::ActionManager: failed to create action icons data";
             return false;
         }
         file.write(QJsonDocument(d->domain->saveOverriddenIcons()).toJson());
@@ -130,11 +136,11 @@ namespace Core {
         Q_D(ActionManager);
         QFile file(actionShortcutsDataPath());
         if (!file.exists()) {
-            qDebug() << "Core: action shortcuts data not found";
+            qDebug() << "Core::ActionManager: action shortcuts data not found";
             return false;
         }
         if (!file.open(QIODevice::ReadOnly)) {
-            qWarning() << "Core: failed to read action shortcuts data";
+            qWarning() << "Core::ActionManager: failed to read action shortcuts data";
             return false;
         }
 
@@ -142,7 +148,8 @@ namespace Core {
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &err);
         if (err.error != QJsonParseError::NoError || !doc.isObject()) {
             qWarning().noquote().nospace()
-                << "Core: failed to parse read action shortcuts data: " << err.errorString();
+                << "Core::ActionManager: failed to parse read action shortcuts data: "
+                << err.errorString();
             return false;
         }
 
@@ -150,7 +157,7 @@ namespace Core {
         if (auto obj = object.value(QStringLiteral("shortcuts")).toObject(); !obj.isEmpty()) {
             d->domain->restoreOverriddenShortcuts(obj);
         }
-        // TODO: current keymap family
+        d->currentShortcutFamily = object.value(QStringLiteral("family")).toString();
         return false;
     }
     bool ActionManager::saveShortcuts() const {
@@ -159,15 +166,43 @@ namespace Core {
         QFile file(actionShortcutsDataPath());
         makeDirectories(file.fileName());
         if (!file.open(QIODevice::WriteOnly)) {
-            qWarning() << "Core: failed to create action shortcuts data";
+            qWarning() << "Core::ActionManager: failed to create action shortcuts data";
             return false;
         }
 
         QJsonObject object;
         object.insert(QStringLiteral("shortcuts"), d->domain->saveOverriddenShortcuts());
-        // TODO: current keymap family
+        object.insert(QStringLiteral("family"), d->currentShortcutFamily);
         file.write(QJsonDocument(object).toJson());
         return true;
+    }
+    QString ActionManager::currentShortcutFamily() const {
+        Q_D(const ActionManager);
+        return d->currentShortcutFamily;
+    }
+    void ActionManager::setCurrentShortcutFamily(const QString &id) {
+        Q_D(ActionManager);
+        d->currentShortcutFamily = id;
+    }
+    QJsonObject ActionManager::shortcutFamily(const QString &id) const {
+        Q_D(const ActionManager);
+        return d->shortcutFamilies.value(id);
+    }
+    QStringList ActionManager::shortcutFamilies() const {
+        Q_D(const ActionManager);
+        return d->shortcutFamilies.keys_qlist();
+    }
+    void ActionManager::addShortcutFamily(const QString &id, const QJsonObject &family) {
+        Q_D(ActionManager);
+        d->shortcutFamilies.append(id, family);
+    }
+    void ActionManager::removeShortcutFamily(const QString &id) {
+        Q_D(ActionManager);
+        d->shortcutFamilies.remove(id);
+    }
+    void ActionManager::clearShortcutFamilies() {
+        Q_D(ActionManager);
+        d->shortcutFamilies.clear();
     }
     ActionManager::ActionManager(ActionManagerPrivate &d, QObject *parent)
         : QObject(parent), d_ptr(&d) {
