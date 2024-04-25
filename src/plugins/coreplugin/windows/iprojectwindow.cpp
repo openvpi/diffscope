@@ -16,7 +16,7 @@ namespace Core {
     class IProjectWindowPrivate : public IWindowPrivate {
         Q_DECLARE_PUBLIC(IProjectWindow)
     public:
-        IProjectWindowPrivate() {
+        IProjectWindowPrivate(IProjectWindow::Mode mode) : mode(mode) {
         }
 
         void init() {
@@ -48,15 +48,26 @@ namespace Core {
             auto domain = ICore::instance()->actionManager()->domain();
             domain->updateTexts(actionItemMap.values_qlist());
         }
+
+        IProjectWindow::Mode mode;
     };
 
-    IProjectWindow::IProjectWindow(QObject *parent)
-        : IWindow(*new IProjectWindowPrivate(), QStringLiteral("project"), parent) {
+    IProjectWindow::IProjectWindow(QObject *parent) : IProjectWindow(Standalone, parent) {
+    }
+
+    IProjectWindow::IProjectWindow(IProjectWindow::Mode mode, QObject *parent)
+        : IWindow(*new IProjectWindowPrivate(mode), QStringLiteral("project"), parent) {
         Q_D(IProjectWindow);
         d->init();
     }
 
-    IProjectWindow::~IProjectWindow() {
+    IProjectWindow::Mode IProjectWindow::mode() const {
+        Q_D(const IProjectWindow);
+        return d->mode;
+    }
+
+    bool IProjectWindow::eventFilter(QObject *obj, QEvent *event) {
+        return QObject::eventFilter(obj, event);
     }
 
     QMenuBar *IProjectWindow::menuBar() const {
@@ -85,6 +96,9 @@ namespace Core {
 
     QToolBar *IProjectWindow::mainToolbar() const {
         return static_cast<Internal::ProjectWindow *>(window())->toolBar();
+    }
+
+    IProjectWindow::~IProjectWindow() {
     }
 
     QString IProjectWindow::correctWindowTitle(const QString &title) const {

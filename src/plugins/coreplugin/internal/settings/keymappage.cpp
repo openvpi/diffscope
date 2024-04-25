@@ -24,8 +24,15 @@
 
 namespace Core::Internal {
 
+    class KeymapPageWidget : public QWidget {
+    public:
+        explicit KeymapPageWidget(QWidget *parent = nullptr) : QWidget(parent) {
+        }
+
+    private:
+    };
+
     KeymapPage::KeymapPage(QObject *parent) : ISettingPage(QStringLiteral("core.Keymap"), parent) {
-        m_widget = nullptr;
         setTitle([]() { return tr("Keymap"); });
         setDescription([]() { return tr("Keyboard shortcuts."); });
     }
@@ -42,15 +49,14 @@ namespace Core::Internal {
 
     QWidget *KeymapPage::widget() {
         if (!m_widget) {
-            auto label = new QLabel();
-            label->setText("Keymap");
-            m_widget = label;
+            m_widget = new KeymapPageWidget();
         }
         return m_widget;
     }
 
     bool KeymapPage::accept() {
-
+        if (!m_widget)
+            return true;
         return true;
     }
 

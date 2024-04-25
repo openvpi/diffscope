@@ -154,7 +154,7 @@ namespace Core::Internal {
         // Load actions
         auto actionMgr = icore->actionManager();
         std::ignore = actionMgr->loadLayouts();
-        std::ignore = actionMgr->saveLayouts();
+        // std::ignore = actionMgr->saveLayouts();
         if (!actionMgr->loadIcons()) {
             actionMgr->saveIcons();
         }

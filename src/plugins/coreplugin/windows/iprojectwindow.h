@@ -14,8 +14,17 @@ namespace Core {
         Q_OBJECT
         Q_DECLARE_PRIVATE(IProjectWindow)
     public:
+        enum Mode {
+            Standalone,
+            VST,
+        };
+
         explicit IProjectWindow(QObject *parent = nullptr);
+        explicit IProjectWindow(Mode mode, QObject *parent = nullptr);
         ~IProjectWindow();
+
+        Mode mode() const;
+        inline bool isVST() const;
 
     public:
         QMenuBar *menuBar() const override;
@@ -30,10 +39,17 @@ namespace Core {
         QToolBar *mainToolbar() const;
 
     protected:
+        bool eventFilter(QObject *obj, QEvent *event) override;
+
+    protected:
         QString correctWindowTitle(const QString &title) const override;
         QWidget *createWindow(QWidget *parent) const override;
         void nextLoadingState(State nextState) override;
     };
+
+    inline bool IProjectWindow::isVST() const {
+        return mode() == VST;
+    }
 
 }
 

@@ -1,9 +1,13 @@
 #ifndef KEYMAPPAGE_H
 #define KEYMAPPAGE_H
 
+#include <QPointer>
+
 #include <CoreApi/isettingpage.h>
 
 namespace Core::Internal {
+
+    class KeymapPageWidget;
 
     class KeymapPage : public ISettingPage {
         Q_OBJECT
@@ -21,7 +25,7 @@ namespace Core::Internal {
         void finish() override;
 
     private:
-        QWidget *m_widget;
+        QPointer<KeymapPageWidget> m_widget;
     };
 
 }
