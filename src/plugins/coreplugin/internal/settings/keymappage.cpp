@@ -12,6 +12,16 @@
 
 #include "icore.h"
 
+// Setting Page Roles
+// 1. Action Shortcuts
+//      - Object:   ActionManager::instance()->actionDomain()
+//      - Property: overriddenShortcuts
+//      - Type:     QJsonObject
+// 2. Current Action Family
+//      - Object:   ActionManager::instance()
+//      - Property: currentShortcutFamily
+//      - Type:     QString
+
 namespace Core::Internal {
 
     KeymapPage::KeymapPage(QObject *parent) : ISettingPage(QStringLiteral("core.Keymap"), parent) {

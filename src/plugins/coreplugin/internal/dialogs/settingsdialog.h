@@ -9,6 +9,7 @@
 #include <QSplitter>
 #include <QStackedWidget>
 #include <QTreeWidget>
+#include <QJsonObject>
 
 #include <QMWidgets/ctabbutton.h>
 #include <QMWidgets/qmequalboxlayout.h>
@@ -58,6 +59,8 @@ namespace Core {
             QHash<ISettingPage *, QTreeWidgetItem *> m_treeIndexes;
             ISettingPage *m_currentPage;
             QWidget *m_catalogWidget;
+
+            QJsonObject m_settings;
 
             QTreeWidgetItem *buildTreeWidgetItem(ISettingPage *page);
 

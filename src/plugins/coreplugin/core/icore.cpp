@@ -51,7 +51,8 @@ namespace Core {
         static Internal::SettingsDialog *dlg = nullptr;
 
         if (dlg) {
-            dlg->selectPage(id);
+            if (!id.isEmpty())
+                dlg->selectPage(id);
             return -1;
         }
 
@@ -59,7 +60,8 @@ namespace Core {
         {
             Internal::SettingsDialog dlg2(parent);
             dlg = &dlg2;
-            dlg2.selectPage(id);
+            if (!id.isEmpty())
+                dlg2.selectPage(id);
             code = dlg2.exec();
             dlg = nullptr;
         }

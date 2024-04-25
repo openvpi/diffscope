@@ -137,11 +137,6 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
-        <source>Save as...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
@@ -162,11 +157,6 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
-        <source>Open...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2272"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
@@ -177,8 +167,18 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2249"/>
         <source>File Save Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
+        <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -774,8 +774,8 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::ActionLayoutsPage</name>
     <message>
-        <location filename="../../internal/settings/actionlayoutspage.cpp" line="18"/>
-        <location filename="../../internal/settings/actionlayoutspage.cpp" line="19"/>
+        <location filename="../../internal/settings/actionlayoutspage.cpp" line="28"/>
+        <location filename="../../internal/settings/actionlayoutspage.cpp" line="29"/>
         <source>Action Layouts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -783,43 +783,48 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::AppearancePage</name>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="33"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="58"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="50"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="72"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="53"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="75"/>
         <source>Use system font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="67"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="84"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="68"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="85"/>
         <source>Zoom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="69"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="86"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="115"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="88"/>
+        <source>The font change takes effect only after the restart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="177"/>
         <source>Select Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="124"/>
-        <location filename="../../internal/settings/appearancepage.cpp" line="125"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="188"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="189"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -923,12 +928,12 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::KeymapPage</name>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="19"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="29"/>
         <source>Keymap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="20"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="30"/>
         <source>Keyboard shortcuts.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -974,12 +979,12 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::SettingsDialog</name>
     <message>
-        <location filename="../../internal/dialogs/settingsdialog.cpp" line="134"/>
+        <location filename="../../internal/dialogs/settingsdialog.cpp" line="144"/>
         <source>Search for settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/dialogs/settingsdialog.cpp" line="136"/>
+        <location filename="../../internal/dialogs/settingsdialog.cpp" line="146"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>

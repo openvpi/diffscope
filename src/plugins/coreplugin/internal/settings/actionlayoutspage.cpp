@@ -10,6 +10,16 @@
 
 #include "icore.h"
 
+// Setting Page Roles
+// 1. Action Layouts:
+//      - Object:   ActionManager::instance()->actionDomain()
+//      - Property: layouts
+//      - Type:     QByteArray
+// 2. Action Icons
+//      - Object:   ActionManager::instance()->actionDomain()
+//      - Property: overriddenIcons
+//      - Type:     QJsonObject
+
 namespace Core::Internal {
 
     ActionLayoutsPage::ActionLayoutsPage(QObject *parent)

@@ -56,24 +56,42 @@ public:
         // Restore language and themes
         {
             auto settings = ExtensionSystem::PluginManager::settings();
-            settings->beginGroup("Preferences");
-            auto value = settings->value("Translation");
-            if (value.type() == QVariant::String) {
+            settings->beginGroup(QStringLiteral("Preferences"));
+            auto value = settings->value(QStringLiteral("Translation"));
+            if (!value.isNull()) {
                 qIDec->setLocale(value.toString());
             }
 
-            value = settings->value("Theme");
-            if (value.type() == QVariant::String) {
+            value = settings->value(QStringLiteral("Theme"));
+            if (!value.isNull()) {
                 qIDec->setTheme(value.toString());
             }
 
-            value = settings->value("Font");
-            if (value.type() == QVariant::String) {
+            value = settings->value(QStringLiteral("Zoom"));
+            if (!value.isNull()) {
+                qIDec->setZoomRatio(value.toString().toDouble() / 100);
+            }
+
+            value = settings->value(QStringLiteral("Font"));
+            if (!value.isNull()) {
                 QFont font;
                 if (font.fromString(value.toString())) {
                     qApp->setFont(font);
                 }
+                if (font.pixelSize() <= 0) {
+                    font.setPixelSize(12);
+                }
+                qIDec->setFontRatio(font.pixelSize() / 12.0);
             }
+
+            value = settings->value(QStringLiteral("UseSystemFont"));
+            if (value.type() == QVariant::String) {
+                qApp->setProperty("useSystemFont",
+                                  value.toString().toLower() == QStringLiteral("true"));
+            } else {
+                qApp->setProperty("useSystemFont", true);
+            }
+
             settings->endGroup();
         }
 
@@ -112,7 +130,7 @@ int main(int argc, char *argv[]) {
     QMAppExtension host;
 
 #ifdef CONFIG_ENABLE_BREAKPAD
-    QBreakpadInstance.setDumpPath(host.appDataDir() + "/crashes");
+    QBreakpadInstance.setDumpPath(host.appDataDir() + QStringLiteral("/crashes"));
 #endif
 
     Core::ILoader loader;

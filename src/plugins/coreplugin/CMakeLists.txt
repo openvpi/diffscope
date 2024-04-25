@@ -13,6 +13,8 @@ ck_add_plugin(${PROJECT_NAME}
     MACRO_PREFIX CORE
 )
 
+find_package(ExtensionSystem REQUIRED)
+
 # Configure target
 file(GLOB_RECURSE _src *.h *.cpp)
 qm_configure_target(${PROJECT_NAME}
@@ -26,6 +28,7 @@ qm_configure_target(${PROJECT_NAME}
         Gui
         Widgets
     LINKS
+        ExtensionSystem::ExtensionSystem
         ChorusKit::AppCore
         svscraft::Widgets
         JetBrainsDockingSystem

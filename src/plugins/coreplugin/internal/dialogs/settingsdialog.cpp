@@ -16,7 +16,9 @@ namespace Core {
     static int TitleRole = Qt::UserRole + 1000;
     static int EntityRole = TitleRole + 1;
 
-    static const char settingCategoryC[] = "Core/SettingDialog";
+    static const char settingCatalogC[] = "Core/SettingCatalog";
+
+    static const char lastSettingPageIdC[] = "LastSettingPageId";
 
     namespace Internal {
 
@@ -121,9 +123,17 @@ namespace Core {
             auto winMgr = ICore::instance()->windowSystem();
             winMgr->loadWindowGeometry(metaObject()->className(), this, {1280, 720});
             winMgr->loadSplitterSizes(metaObject()->className(), topSplitter, {250, width() - 250});
+
+            // Init last page id
+            m_settings = ILoader::instance()->settings()->value(settingCatalogC).toObject();
+            selectPage(m_settings.value(lastSettingPageIdC).toString());
         }
 
         SettingsDialog::~SettingsDialog() {
+            // Save last page id
+            m_settings.insert(lastSettingPageIdC, m_currentPage ? m_currentPage->id() : QString());
+            ILoader::instance()->settings()->insert(settingCatalogC, m_settings);
+
             // Save window sizes
             auto winMgr = ICore::instance()->windowSystem();
             winMgr->saveSplitterSizes(metaObject()->className(), topSplitter);
@@ -146,11 +156,13 @@ namespace Core {
                     return;
                 }
             }
+            if (!id.isEmpty()) {
+                return;
+            }
             if (m_tree->topLevelItemCount()) {
                 m_tree->setCurrentItem(m_tree->topLevelItem(0));
                 return;
             }
-
             clearPage();
         }
 

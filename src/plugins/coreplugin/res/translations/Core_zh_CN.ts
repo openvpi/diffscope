@@ -119,17 +119,17 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2241"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">视图</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2242"/>
         <source>Playback</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">播放</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2243"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">帮助</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2246"/>
@@ -139,31 +139,32 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新建</translation>
     </message>
     <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
         <source>Open</source>
-        <translation type="vanished">打开</translation>
+        <translation>打开</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">保存</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关闭</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
         <source>Play Options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">播放选项</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2294"/>
         <source>Open Recent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">打开最近</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2244"/>
@@ -171,18 +172,19 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
         <source>Save as</source>
-        <translation type="vanished">另存为</translation>
+        <translation>另存为</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2272"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">外观</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2245"/>
         <source>Dock Panels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">停靠面板</translation>
     </message>
     <message>
         <source>New File</source>
@@ -202,16 +204,6 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="obsolete">保存文件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
-        <source>Open...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
-        <source>Save as...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2253"/>
         <source>Preferences Group</source>
         <translation type="unfinished"></translation>
@@ -219,32 +211,32 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2254"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">首选项</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2255"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">设置</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2256"/>
         <source>Color Themes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">颜色主题</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2257"/>
         <source>Locales and Languages</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">地区和语言</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2258"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">撤销</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2259"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">重做</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2260"/>
@@ -254,17 +246,17 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2261"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">剪切</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2262"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">复制</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2263"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">粘贴</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2264"/>
@@ -274,7 +266,7 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2265"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">删除</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2266"/>
@@ -284,12 +276,12 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2267"/>
         <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">全选</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2268"/>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">取消选择</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2269"/>
@@ -299,27 +291,27 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2270"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">查找</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2271"/>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">替换</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2273"/>
         <source>Main Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">主工具栏</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2274"/>
         <source>Dock Panel Bars</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">停靠栏</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2275"/>
         <source>Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">状态栏</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2276"/>
@@ -329,32 +321,32 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2277"/>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">播放</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2278"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">停止</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2279"/>
         <source>Move to Start</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">移动到开始</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2280"/>
         <source>Move to End</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">移动到结束</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2282"/>
         <source>Metronome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">节拍器</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2283"/>
         <source>Loop Play</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">循环播放</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2284"/>
@@ -364,12 +356,12 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2285"/>
         <source>Show Home</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">显示主界面</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2286"/>
         <source>Find Action</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">查找命令</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2287"/>
@@ -379,32 +371,32 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2288"/>
         <source>About Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关于插件</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2289"/>
         <source>About DiffScope</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关于 DiffScope</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2290"/>
         <source>About Qt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关于 Qt</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2291"/>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">显示</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2292"/>
         <source>Timer Label</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">时间标签</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2293"/>
         <source>Quantize Selector</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">量化选择器</translation>
     </message>
 </context>
 <context>
@@ -819,8 +811,8 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::ActionLayoutsPage</name>
     <message>
-        <location filename="../../internal/settings/actionlayoutspage.cpp" line="18"/>
-        <location filename="../../internal/settings/actionlayoutspage.cpp" line="19"/>
+        <location filename="../../internal/settings/actionlayoutspage.cpp" line="28"/>
+        <location filename="../../internal/settings/actionlayoutspage.cpp" line="29"/>
         <source>Action Layouts</source>
         <translation>命令布局</translation>
     </message>
@@ -828,43 +820,48 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::AppearancePage</name>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="33"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="58"/>
         <source>Display</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="50"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="72"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="53"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="75"/>
         <source>Use system font</source>
         <translation>使用系统字体</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="67"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="84"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="68"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="85"/>
         <source>Zoom</source>
         <translation>缩放</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="69"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="86"/>
         <source>Font</source>
         <translation>字体</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="115"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="88"/>
+        <source>The font change takes effect only after the restart.</source>
+        <translation>字体修改后，需要重启才能生效。</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="177"/>
         <source>Select Font</source>
         <translation>选择字体</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="124"/>
-        <location filename="../../internal/settings/appearancepage.cpp" line="125"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="188"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="189"/>
         <source>Appearance</source>
         <translation>外观</translation>
     </message>
@@ -990,12 +987,12 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::KeymapPage</name>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="19"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="29"/>
         <source>Keymap</source>
         <translation>键盘映射</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="20"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="30"/>
         <source>Keyboard shortcuts.</source>
         <translation>键盘映射。</translation>
     </message>
@@ -1041,12 +1038,12 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::SettingsDialog</name>
     <message>
-        <location filename="../../internal/dialogs/settingsdialog.cpp" line="134"/>
+        <location filename="../../internal/dialogs/settingsdialog.cpp" line="144"/>
         <source>Search for settings</source>
         <translation>搜索设置项</translation>
     </message>
     <message>
-        <location filename="../../internal/dialogs/settingsdialog.cpp" line="136"/>
+        <location filename="../../internal/dialogs/settingsdialog.cpp" line="146"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
