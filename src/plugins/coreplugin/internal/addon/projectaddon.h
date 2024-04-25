@@ -63,7 +63,7 @@ namespace Core::Internal {
             ActionItem *QuantizeSelector;
 
             ActionItem *MainMenu;
-            ActionItem *MainToolBar;
+            ActionItem *MainToolbar;
         };
 
         ActionItems ai;

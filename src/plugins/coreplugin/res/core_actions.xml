@@ -13,11 +13,11 @@
         <menu id="DockPanelsVisibility" text="Dock Panels" mode="unique" />
 
         <!-- File -->
-        <action id="NewFile" class="Create" shortcut="Ctrl+N" />
-        <action id="OpenFile" class="File" shortcut="Ctrl+O" />
-        <action id="SaveFile" class="File" shortcut="Ctrl+S" />
-        <action id="SaveAsFile" class="File" shortcut="Ctrl+Shift+S" />
-        <action id="CloseFile" class="File" />
+        <action id="NewFile" text="New" class="Create" shortcut="Ctrl+N" />
+        <action id="OpenFile" text="Open..." class="File" shortcut="Ctrl+O" />
+        <action id="SaveFile" text="Save" class="File" shortcut="Ctrl+S" />
+        <action id="SaveAsFile" text="Save as..." class="File" shortcut="Ctrl+Shift+S" />
+        <action id="CloseFile" text="Close" class="File" />
 
         <!-- Preferences -->
         <action id="Settings" class="Preferences" shortcut="Ctrl+," />
@@ -144,7 +144,7 @@
                     <action id="MoveToEnd" />
                 </group>
                 <separator />
-                <menu id="PlayOptionsMenu">
+                <menu id="PlayOptions">
                     <action id="Metronome" />
                     <action id="LoopPlay" />
                 </menu>
@@ -165,7 +165,7 @@
         </menuBar>
 
         <!-- 主工具栏 -->
-        <toolBar id="MainToolBar">
+        <toolBar id="MainToolbar">
             <action id="ShowHome" />
             <separator />
             <action id="OpenFile" />
@@ -179,7 +179,7 @@
             <separator />
             <group id="PlayControlGroup" />
             <separator />
-            <menu id="PlayOptionsMenu" flat="true" />
+            <menu id="PlayOptions" flat="true" />
             <separator />
             <action id="FindAction" />
             <action id="Settings" />

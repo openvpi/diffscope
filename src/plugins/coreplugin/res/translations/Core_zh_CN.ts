@@ -42,12 +42,12 @@
         <translation>关于 %1</translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="133"/>
+        <location filename="../../core/appextra.cpp" line="134"/>
         <source>Fatal Error</source>
         <translation>致命错误</translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="136"/>
+        <location filename="../../core/appextra.cpp" line="137"/>
         <source>%1
 
 The application is about to exit because an unresolvable exception has occurred, which may be caused by an illegal operation of an plugin.</source>
@@ -56,17 +56,17 @@ The application is about to exit because an unresolvable exception has occurred,
 程序遇到不可修复的异常，需要立即退出。这可能是插件的非法操作导致的。</translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="180"/>
+        <location filename="../../core/appextra.cpp" line="181"/>
         <source>Explorer</source>
         <translation>文件资源管理器</translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="182"/>
+        <location filename="../../core/appextra.cpp" line="183"/>
         <source>Finder</source>
         <translation>访达</translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="184"/>
+        <location filename="../../core/appextra.cpp" line="185"/>
         <source>File Manager</source>
         <translation>文件管理器</translation>
     </message>
@@ -104,17 +104,17 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2238"/>
         <source>Main Menu</source>
-        <translation type="unfinished">主菜单</translation>
+        <translation>主菜单</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2239"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2240"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2241"/>
@@ -129,11 +129,35 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2243"/>
         <source>Help</source>
-        <translation type="unfinished">帮助</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2246"/>
         <source>File Open Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="vanished">打开</translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
+        <source>Play Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -147,9 +171,13 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Save as</source>
+        <translation type="vanished">另存为</translation>
+    </message>
+    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2272"/>
         <source>Appearance</source>
-        <translation type="unfinished">外观</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2245"/>
@@ -157,14 +185,12 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
         <source>New File</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">新建文件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
         <source>Open File</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">打开文件</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2249"/>
@@ -172,18 +198,17 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
         <source>Save File</source>
+        <translation type="obsolete">保存文件</translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
+        <source>Open...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
-        <source>Save as File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
-        <source>Close File</source>
+        <source>Save as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -199,7 +224,7 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2255"/>
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2256"/>
@@ -322,11 +347,6 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
-        <source>Play Options Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2282"/>
         <source>Metronome</source>
         <translation type="unfinished"></translation>
@@ -359,22 +379,22 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2288"/>
         <source>About Plugins</source>
-        <translation type="unfinished">关于插件</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2289"/>
         <source>About DiffScope</source>
-        <translation type="unfinished">关于 DiffScope</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2290"/>
         <source>About Qt</source>
-        <translation type="unfinished">关于 Qt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2291"/>
         <source>Display</source>
-        <translation type="unfinished">显示</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2292"/>
@@ -386,53 +406,48 @@ The application is about to exit because an unresolvable exception has occurred,
         <source>Quantize Selector</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2295"/>
-        <source>Main Tool Bar</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ChorusKit::ActionClass</name>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2228"/>
         <source>Create</source>
-        <translation type="unfinished"></translation>
+        <translation>创建</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2229"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2230"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>首选项</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2231"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2232"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>视图</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2233"/>
         <source>Playback</source>
-        <translation type="unfinished"></translation>
+        <translation>播放</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2234"/>
         <source>Help</source>
-        <translation type="unfinished">帮助</translation>
+        <translation>帮助</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2235"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>关于</translation>
     </message>
 </context>
 <context>
@@ -440,193 +455,202 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2167"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>文件(&amp;F)</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2168"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑(&amp;E)</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2169"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>视图(&amp;V)</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2170"/>
         <source>&amp;Playback</source>
-        <translation type="unfinished"></translation>
+        <translation>播放(&amp;P)</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2171"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>帮助(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
+        <source>New</source>
+        <translation>新建</translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="vanished">打开</translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
+        <source>Close</source>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2212"/>
         <source>Open Recent</source>
-        <translation type="unfinished"></translation>
+        <translation>打开最近</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2220"/>
         <source>Appearance</source>
-        <translation type="unfinished">外观</translation>
+        <translation>外观</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2172"/>
         <source>Dock Panels</source>
-        <translation type="unfinished"></translation>
+        <translation>停靠面板</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
-        <source>New File</source>
-        <translation type="unfinished"></translation>
+        <source>Save as</source>
+        <translation type="vanished">另存为</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2174"/>
-        <source>Open File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
-        <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <source>Open...</source>
+        <translation>打开...</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2176"/>
-        <source>Save as File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
-        <source>Close File</source>
-        <translation type="unfinished"></translation>
+        <source>Save as...</source>
+        <translation>另存为...</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2178"/>
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2179"/>
         <source>Color Themes</source>
-        <translation type="unfinished"></translation>
+        <translation>颜色主题</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2180"/>
         <source>Locales and Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>地区和语言</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2181"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>撤销</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2182"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>重做</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2183"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>剪切</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2184"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>复制</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2185"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>粘贴</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2186"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2187"/>
         <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>全选</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2188"/>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation>取消选择</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2189"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>查找</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2190"/>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>替换</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2191"/>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2210"/>
         <source>Main Menu</source>
-        <translation type="unfinished">主菜单</translation>
+        <translation>主菜单</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2192"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2225"/>
         <source>Main Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>主工具栏</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2193"/>
         <source>Dock Panel Bars</source>
-        <translation type="unfinished"></translation>
+        <translation>停靠栏</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2194"/>
         <source>Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>状态栏</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2195"/>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>播放</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2196"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>停止</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2197"/>
         <source>Move to Start</source>
-        <translation type="unfinished"></translation>
+        <translation>移动到开始</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2198"/>
         <source>Move to End</source>
-        <translation type="unfinished"></translation>
+        <translation>移动到结束</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2199"/>
         <source>Metronome</source>
-        <translation type="unfinished"></translation>
+        <translation>节拍器</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2200"/>
         <source>Loop Play</source>
-        <translation type="unfinished"></translation>
+        <translation>循环播放</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2201"/>
         <source>Show Home</source>
-        <translation type="unfinished"></translation>
+        <translation>显示主界面</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2202"/>
         <source>Find Action</source>
-        <translation type="unfinished"></translation>
+        <translation>查找命令</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2203"/>
@@ -646,7 +670,7 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2206"/>
         <source>Show Recent Files</source>
-        <translation type="unfinished"></translation>
+        <translation>显示最近文件</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2207"/>
@@ -656,12 +680,12 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2208"/>
         <source>Timer Label</source>
-        <translation type="unfinished"></translation>
+        <translation>时间标签</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2209"/>
         <source>Quantize Selector</source>
-        <translation type="unfinished"></translation>
+        <translation>量化选择器</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2211"/>
@@ -681,7 +705,7 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2215"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>首选项</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2216"/>
@@ -710,8 +734,8 @@ The application is about to exit because an unresolvable exception has occurred,
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2222"/>
-        <source>Play Options Menu</source>
-        <translation type="unfinished"></translation>
+        <source>Play Options</source>
+        <translation>播放选项</translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2223"/>
@@ -721,11 +745,6 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2224"/>
         <source>About Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2225"/>
-        <source>Main Tool Bar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -809,25 +828,45 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::AppearancePage</name>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="23"/>
-        <location filename="../../internal/settings/appearancepage.cpp" line="24"/>
-        <source>Appearance</source>
-        <translation>外观</translation>
+        <location filename="../../internal/settings/appearancepage.cpp" line="33"/>
+        <source>Display</source>
+        <translation>显示</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="49"/>
-        <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../internal/settings/appearancepage.cpp" line="50"/>
+        <source>Select</source>
+        <translation>选择</translation>
     </message>
     <message>
         <location filename="../../internal/settings/appearancepage.cpp" line="53"/>
-        <source>Font: </source>
-        <translation type="unfinished"></translation>
+        <source>Use system font</source>
+        <translation>使用系统字体</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="59"/>
-        <source>Pick a Font...</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../internal/settings/appearancepage.cpp" line="67"/>
+        <source>Theme</source>
+        <translation>主题</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="68"/>
+        <source>Zoom</source>
+        <translation>缩放</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="69"/>
+        <source>Font</source>
+        <translation>字体</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="115"/>
+        <source>Select Font</source>
+        <translation>选择字体</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="124"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="125"/>
+        <source>Appearance</source>
+        <translation>外观</translation>
     </message>
 </context>
 <context>

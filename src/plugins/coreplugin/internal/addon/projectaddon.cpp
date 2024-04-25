@@ -80,7 +80,7 @@ namespace Core::Internal {
 
         // TopLevels
         ai.MainMenu = new ActionItem(QStringLiteral("MainMenu"), iWin->menuBar(), this);
-        ai.MainToolBar = new ActionItem(QStringLiteral("MainToolBar"), iWin->mainToolbar(), this);
+        ai.MainToolbar = new ActionItem(QStringLiteral("MainToolbar"), iWin->mainToolbar(), this);
 
         iWin->addActionItems({
             ai.NewFile,
@@ -122,7 +122,7 @@ namespace Core::Internal {
             ai.QuantizeSelector,
 
             ai.MainMenu,
-            ai.MainToolBar,
+            ai.MainToolbar,
         });
 
         // Signals and slots

@@ -34,29 +34,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="133"/>
+        <location filename="../../core/appextra.cpp" line="134"/>
         <source>Fatal Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="136"/>
+        <location filename="../../core/appextra.cpp" line="137"/>
         <source>%1
 
 The application is about to exit because an unresolvable exception has occurred, which may be caused by an illegal operation of an plugin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="180"/>
+        <location filename="../../core/appextra.cpp" line="181"/>
         <source>Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="182"/>
+        <location filename="../../core/appextra.cpp" line="183"/>
         <source>Finder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="184"/>
+        <location filename="../../core/appextra.cpp" line="185"/>
         <source>File Manager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -127,6 +127,31 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
+        <source>Save as...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
+        <source>Play Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2294"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
@@ -134,6 +159,11 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2244"/>
         <source>Visibility Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
+        <source>Open...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -147,33 +177,8 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
-        <source>New File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
-        <source>Open File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2249"/>
         <source>File Save Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
-        <source>Save File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
-        <source>Save as File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
-        <source>Close File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -312,11 +317,6 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
-        <source>Play Options Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2282"/>
         <source>Metronome</source>
         <translation type="unfinished"></translation>
@@ -374,11 +374,6 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2293"/>
         <source>Quantize Selector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2295"/>
-        <source>Main Tool Bar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -453,6 +448,21 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2212"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
@@ -468,28 +478,13 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
-        <source>New File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2174"/>
-        <source>Open File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
-        <source>Save File</source>
+        <source>Open...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2176"/>
-        <source>Save as File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
-        <source>Close File</source>
+        <source>Save as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -565,6 +560,7 @@ The application is about to exit because an unresolvable exception has occurred,
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2192"/>
+        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2225"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -700,7 +696,7 @@ The application is about to exit because an unresolvable exception has occurred,
     </message>
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2222"/>
-        <source>Play Options Menu</source>
+        <source>Play Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -711,11 +707,6 @@ The application is about to exit because an unresolvable exception has occurred,
     <message>
         <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2224"/>
         <source>About Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2225"/>
-        <source>Main Tool Bar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -792,24 +783,44 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::AppearancePage</name>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="23"/>
-        <location filename="../../internal/settings/appearancepage.cpp" line="24"/>
-        <source>Appearance</source>
+        <location filename="../../internal/settings/appearancepage.cpp" line="33"/>
+        <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="49"/>
-        <source>Italic</source>
+        <location filename="../../internal/settings/appearancepage.cpp" line="50"/>
+        <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../internal/settings/appearancepage.cpp" line="53"/>
-        <source>Font: </source>
+        <source>Use system font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="59"/>
-        <source>Pick a Font...</source>
+        <location filename="../../internal/settings/appearancepage.cpp" line="67"/>
+        <source>Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="68"/>
+        <source>Zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="69"/>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="115"/>
+        <source>Select Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/appearancepage.cpp" line="124"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="125"/>
+        <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

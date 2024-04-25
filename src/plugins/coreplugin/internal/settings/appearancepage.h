@@ -27,12 +27,6 @@ namespace Core::Internal {
 
     private:
         QPointer<AppearancePageWidget> m_widget;
-        QFont font;
-        QString getFontWeightStr(const QFont::Weight &weight);
-        bool loadJsonFile(const QString &filename, QJsonObject *jsonObj);
-        bool saveJsonFile(const QString &filename, QJsonObject &jsonObj);
-        bool loadFontSettings(QFont &font);
-        bool saveFontSettings(const QFont &font);
     };
 
 }
