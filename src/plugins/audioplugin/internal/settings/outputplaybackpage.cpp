@@ -345,4 +345,4 @@ namespace Audio {
         AudioSystem::outputSystem()->setGainAndPan(AudioSystem::outputSystem()->gain(), static_cast<float>(pan));
     }
 
-} // Audio
+}

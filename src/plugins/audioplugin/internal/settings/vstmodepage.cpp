@@ -30,6 +30,7 @@
 namespace Audio {
 
     class CustomizeThemeDialog : public QDialog {
+        Q_OBJECT
     public:
         explicit CustomizeThemeDialog(QWidget *parent = nullptr) : QDialog(parent) {
             auto mainLayout = new QVBoxLayout;
@@ -392,4 +393,6 @@ namespace Audio {
     void VSTModePage::finish() {
     }
 
-} // Audio
+}
+
+#include "vstmodepage.moc"

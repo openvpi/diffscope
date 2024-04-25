@@ -51,6 +51,6 @@ namespace Audio {
         void updatePan(double pan);
     };
 
-} // Audio
+}
 
 #endif // AUDIO_OUTPUTPLAYBACKPAGE_H

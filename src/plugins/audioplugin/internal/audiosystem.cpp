@@ -24,4 +24,4 @@ namespace Audio {
     VSTConnectionSystem *AudioSystem::vstConnectionSystem() {
         return m_instance->m_vstConnectionSystem;
     }
-} // Audio
+}

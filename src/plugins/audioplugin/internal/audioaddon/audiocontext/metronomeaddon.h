@@ -5,6 +5,6 @@ namespace Audio {
 
     class MetronomeAddOn {};
 
-} // Audio
+}
 
 #endif // AUDIO_METRONOMEADDON_H

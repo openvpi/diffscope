@@ -63,6 +63,6 @@ namespace Audio {
         void setHostSpecs(const QString &hostExecutable, const QString &pluginFormat);
     };
 
-} // Audio
+}
 
 #endif // AUDIO_VSTCONNECTIONSYSTEM_H

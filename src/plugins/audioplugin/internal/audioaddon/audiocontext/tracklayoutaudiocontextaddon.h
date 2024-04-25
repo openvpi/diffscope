@@ -1,0 +1,10 @@
+#ifndef AUDIO_TRACKLAYOUTAUDIOCONTEXTADDON_H
+#define AUDIO_TRACKLAYOUTAUDIOCONTEXTADDON_H
+
+namespace Audio {
+
+    class TrackLayoutAudioContextAddOn {};
+
+}
+
+#endif // AUDIO_TRACKLAYOUTAUDIOCONTEXTADDON_H

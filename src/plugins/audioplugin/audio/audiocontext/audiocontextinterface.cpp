@@ -1,28 +1,15 @@
 #include "audiocontextinterface.h"
 #include "audiocontextinterface_p.h"
 
-#include <coreplugin/iprojectwindow.h>
+#include <CoreApi/iwindow.h>
 
 #include <audioplugin/iaudio.h>
-#include <audioplugin/iaudiocontextaddon.h>
 #include <audioplugin/internal/projectaddon.h>
-#include <audioplugin/private/iaudiocontextaddon_p.h>
 
 namespace Audio {
 
     void AudioContextInterfacePrivate::init(ProjectAddOn *projectAddOn_) {
         projectAddOn = projectAddOn_;
-    }
-
-    void AudioContextInterfacePrivate::initializeAddOns() {
-        Q_Q(AudioContextInterface);
-        addOnLoader = std::make_unique<AddOnLoader<IAudioContextAddOn>>(IAudio::instance()->audioContextAddOns(), q);
-        for (auto addOn : addOnLoader->addOns()) {
-            addOn->d_func()->audioContextInterface = q;
-        }
-        addOnLoader->initializeAll();
-        addOnLoader->extensionInitializedAll();
-        addOnLoader->delayedInitializeAll();
     }
 
     AudioContextInterface::AudioContextInterface(QObject *parent) : QObject(parent), d_ptr(new AudioContextInterfacePrivate) {
@@ -52,13 +39,13 @@ namespace Audio {
         return d->projectAddOn->masterTrackMixer();
     }
 
-    talcs::PositionableAudioSource *AudioContextInterface::substitutedSource() const {
+    Core::IWindow *AudioContextInterface::windowHandle() const {
         Q_D(const AudioContextInterface);
-        return d->projectAddOn->substitutedSource();
+        return d->projectAddOn->windowHandle();
     }
 
-    Core::IProjectWindow *AudioContextInterface::windowHandle() const {
-        Q_D(const AudioContextInterface);
-        return static_cast<Core::IProjectWindow *>(d->projectAddOn->windowHandle());
+    AudioContextInterface *AudioContextInterface::get(Core::IWindow *win) {
+        return win->getFirstObject<AudioContextInterface>();
     }
-} // Audio
+
+}

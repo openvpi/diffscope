@@ -142,4 +142,4 @@ namespace Audio {
         m_hostSpecs = {hostExecutable, pluginFormat};
         emit hostSpecsChanged(hostExecutable, pluginFormat);
     }
-} // Audio
+}

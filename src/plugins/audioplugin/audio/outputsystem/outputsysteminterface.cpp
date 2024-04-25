@@ -53,12 +53,8 @@ namespace Audio {
         Q_D(const OutputSystemInterface);
         return d->abstractOutputSystem->preMixer();
     }
-    talcs::AudioSource *OutputSystemInterface::substitutedSource() const {
-        Q_D(const OutputSystemInterface);
-        return d->abstractOutputSystem->substitutedSource();
-    }
     bool OutputSystemInterface::makeReady() {
         Q_D(OutputSystemInterface);
         return d->abstractOutputSystem->makeReady();
     }
-} // Audio
+}

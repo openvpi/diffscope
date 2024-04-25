@@ -23,6 +23,6 @@ namespace Audio {
 
     };
 
-} // Audio
+}
 
 #endif // AUDIO_DEVICETESTERADDON_H

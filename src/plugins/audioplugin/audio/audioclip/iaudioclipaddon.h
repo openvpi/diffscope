@@ -5,6 +5,6 @@ namespace Audio {
 
     class IAudioClipAddOn {};
 
-} // Audio
+}
 
 #endif // AUDIO_IAUDIOCLIPADDON_H

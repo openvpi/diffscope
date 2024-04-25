@@ -36,24 +36,18 @@ namespace Audio {
         talcs::PositionableMixerAudioSource *postMixer() const;
         talcs::PositionableMixerAudioSource *masterTrackMixer() const;
 
-        void setSubstitutedSource(talcs::PositionableAudioSource *source, IAudioContextAddOn *substitutor);
-        talcs::PositionableAudioSource *substitutedSource() const;
-        IAudioContextAddOn *sourceSubstitutor() const;
-        void resetSubstitutedSource();
-        talcs::PositionableAudioSource *currentSource() const;
-
     private:
         std::unique_ptr<talcs::MixerAudioSource> m_preMixer;
         talcs::TransportAudioSource *m_tpSrc;
         talcs::PositionableMixerAudioSource *m_postMixer;
+        talcs::PositionableMixerAudioSource *m_masterTrackControlMixer;
         std::unique_ptr<talcs::PositionableMixerAudioSource> m_masterTrackMixer;
 
         talcs::PositionableAudioSource *m_substitutedSource = nullptr;
-        IAudioContextAddOn *m_substitutor = nullptr;
 
         AudioContextInterface *m_audioContextInterface;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_PROJECTADDON_H

@@ -31,7 +31,7 @@ namespace Audio {
     void AudioDeviceTesterAudioSource::close() {
         AudioStreamBase::close();
     }
-    qint64 AudioDeviceTesterAudioSource::read(const talcs::AudioSourceReadData &readData) {
+    qint64 AudioDeviceTesterAudioSource::processReading(const talcs::AudioSourceReadData &readData) {
         qint64 pos = m_pos;
         qint64 length = qMin(readData.length, m_sound.sampleCount() - pos);
         for (int ch = 0; ch < readData.buffer->channelCount(); ch++) {
@@ -46,4 +46,4 @@ namespace Audio {
     void AudioDeviceTesterAudioSource::playTestSound() {
         m_pos = 0;
     }
-} // Audio
+}

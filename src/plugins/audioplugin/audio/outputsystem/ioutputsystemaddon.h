@@ -31,10 +31,6 @@ namespace Audio {
         virtual void handleSampleRateChange();
         virtual void handleDeviceChange();
 
-        bool substituteSource(talcs::AudioSource *source);
-        bool resetSource();
-        virtual void handleSubstitutedSourceAfterControl(float gain, float pan);
-
         OutputSystemInterface *outputSystemInterface() const;
 
     protected:
@@ -45,6 +41,6 @@ namespace Audio {
 
     };
 
-} // Audio
+}
 
 #endif // AUDIO_IOUTPUTSYSTEMADDON_H

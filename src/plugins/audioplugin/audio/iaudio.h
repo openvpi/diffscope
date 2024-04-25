@@ -35,6 +35,6 @@ namespace Audio {
         QScopedPointer<IAudioPrivate> d_ptr;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_IAUDIO_H

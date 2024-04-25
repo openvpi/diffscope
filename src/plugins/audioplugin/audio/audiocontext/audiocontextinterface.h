@@ -13,7 +13,7 @@ namespace talcs {
 }
 
 namespace Core {
-    class IProjectWindow;
+    class IWindow;
 }
 
 namespace Audio {
@@ -26,6 +26,7 @@ namespace Audio {
         Q_OBJECT
         Q_DECLARE_PRIVATE(AudioContextInterface)
         friend class ProjectAddOn;
+
     public:
         ~AudioContextInterface() override;
 
@@ -34,16 +35,14 @@ namespace Audio {
         talcs::PositionableMixerAudioSource *postMixer() const;
         talcs::PositionableMixerAudioSource *masterTrackMixer() const;
 
-        talcs::PositionableAudioSource *substitutedSource() const;
-
-        Core::IProjectWindow *windowHandle() const;
+        Core::IWindow *windowHandle() const;
+        static AudioContextInterface *get(Core::IWindow *win);
 
     private:
         explicit AudioContextInterface(QObject *parent = nullptr);
         QScopedPointer<AudioContextInterfacePrivate> d_ptr;
-
     };
 
-} // Audio
+}
 
 #endif // AUDIO_AUDIOCONTEXTINTERFACE_H

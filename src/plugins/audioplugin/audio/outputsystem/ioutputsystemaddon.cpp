@@ -22,24 +22,8 @@ namespace Audio {
     }
     void IOutputSystemAddOn::handleDeviceChange() {
     }
-    bool IOutputSystemAddOn::substituteSource(talcs::AudioSource *source) {
-        Q_D(IOutputSystemAddOn);
-        if (d->outputSystemInterface->substitutedSource())
-            return false;
-        d->outputSystemInterface->d_func()->abstractOutputSystem->setSubstitutedSource(source, this);
-        return true;
-    }
-    bool IOutputSystemAddOn::resetSource() {
-        Q_D(IOutputSystemAddOn);
-        if (d->outputSystemInterface->d_func()->abstractOutputSystem->sourceSubstitutor() != this)
-            return false;
-        d->outputSystemInterface->d_func()->abstractOutputSystem->resetSubstitutedSource();
-        return true;
-    }
-    void IOutputSystemAddOn::handleSubstitutedSourceAfterControl(float gain, float pan) {
-    }
     OutputSystemInterface *IOutputSystemAddOn::outputSystemInterface() const {
         Q_D(const IOutputSystemAddOn);
         return d->outputSystemInterface;
     }
-} // Audio
+}

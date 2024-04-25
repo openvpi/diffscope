@@ -10,6 +10,6 @@ namespace Audio {
         static QString getDisplayNameOf(const QString &deviceName);
     };
 
-} // Audio
+}
 
 #endif // AUDIO_SDLAUDIODEVICEDISPLAYNAMEHELPER_H

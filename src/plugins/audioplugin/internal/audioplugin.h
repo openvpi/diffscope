@@ -19,6 +19,6 @@ namespace Audio {
         QObject *remoteCommand(const QStringList &, const QString &, const QStringList &) override;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_AUDIOPLUGIN_H

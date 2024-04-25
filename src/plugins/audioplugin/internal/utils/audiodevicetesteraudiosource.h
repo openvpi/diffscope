@@ -13,15 +13,17 @@ namespace Audio {
 
         bool open(qint64 bufferSize, double sampleRate) override;
         void close() override;
-        qint64 read(const talcs::AudioSourceReadData &readData) override;
 
         void playTestSound();
+
+    protected:
+        qint64 processReading(const talcs::AudioSourceReadData &readData) override;
 
     private:
         talcs::AudioBuffer m_sound;
         QAtomicInteger<qint64> m_pos = 0;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_AUDIODEVICETESTERAUDIOSOURCE_H

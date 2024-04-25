@@ -32,12 +32,6 @@ namespace Audio {
 
         virtual bool makeReady() = 0;
 
-        void setSubstitutedSource(talcs::AudioSource *source, IOutputSystemAddOn *substitutor);
-        talcs::AudioSource *substitutedSource() const;
-        IOutputSystemAddOn *sourceSubstitutor() const;
-        void resetSubstitutedSource();
-        talcs::AudioSource *currentSource() const;
-
         void setGainAndPan(float gain, float pan);
         float gain() const;
         float pan() const;
@@ -53,12 +47,8 @@ namespace Audio {
     protected:
         talcs::MixerAudioSource *m_preMixer;
         std::unique_ptr<talcs::AudioSourcePlayback> m_playback;
-
-        // TODO add-on modifier
-        talcs::AudioSource *m_substitutedSource = nullptr;
-        IOutputSystemAddOn *m_substitutor = nullptr;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_ABSTRACTOUTPUTSYSTEM_H

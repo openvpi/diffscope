@@ -19,6 +19,6 @@ namespace Audio {
         void finish() override;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_AUDIOPAGE_H

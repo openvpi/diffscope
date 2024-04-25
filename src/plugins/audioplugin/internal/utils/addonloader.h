@@ -59,6 +59,6 @@ namespace Audio {
         QObject *m_context;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_ADDONLOADER_H

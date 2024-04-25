@@ -21,34 +21,11 @@ namespace Audio {
     talcs::MixerAudioSource *AbstractOutputSystem::preMixer() const {
         return m_preMixer;
     }
-    void AbstractOutputSystem::setSubstitutedSource(talcs::AudioSource *source, IOutputSystemAddOn *substitutor) {
-        m_substitutedSource = source;
-        m_substitutor = substitutor;
-        m_playback->setSource(source, false, false);
-    }
-    talcs::AudioSource *AbstractOutputSystem::substitutedSource() const {
-        return m_substitutedSource;
-    }
-    IOutputSystemAddOn *AbstractOutputSystem::sourceSubstitutor() const {
-        return m_substitutor;
-    }
-    void AbstractOutputSystem::resetSubstitutedSource() {
-        m_substitutedSource = nullptr;
-        m_substitutor = nullptr;
-        m_playback->setSource(m_preMixer, false, false);
-    }
-    talcs::AudioSource *AbstractOutputSystem::currentSource() const {
-        return m_substitutedSource ? m_substitutedSource : m_preMixer;
-    }
     void AbstractOutputSystem::setGainAndPan(float gain, float pan) {
         m_deviceGain = gain;
         m_devicePan = pan;
-        if (!m_substitutor) {
-            m_preMixer->setGain(gain);
-            m_preMixer->setPan(pan);
-        } else {
-            m_substitutor->handleSubstitutedSourceAfterControl(gain, pan);
-        }
+        m_preMixer->setGain(gain);
+        m_preMixer->setPan(pan);
     }
     float AbstractOutputSystem::gain() const {
         return m_deviceGain;
@@ -57,4 +34,4 @@ namespace Audio {
         return m_devicePan;
     }
 
-} // Audio
+}

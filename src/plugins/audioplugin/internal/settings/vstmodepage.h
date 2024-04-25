@@ -41,6 +41,6 @@ namespace Audio {
         QTreeWidget *m_statusTreeWidget;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_VSTMODEPAGE_H

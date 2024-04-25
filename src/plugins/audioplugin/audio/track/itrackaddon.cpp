@@ -4,4 +4,4 @@
 
 #include "itrackaddon.h"
 
-namespace Audio {} // Audio
+namespace Audio {}

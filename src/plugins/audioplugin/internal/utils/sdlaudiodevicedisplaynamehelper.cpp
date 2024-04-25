@@ -39,4 +39,4 @@ namespace Audio {
         };
         return map.value(deviceName, deviceName);
     }
-} // Audio
+}

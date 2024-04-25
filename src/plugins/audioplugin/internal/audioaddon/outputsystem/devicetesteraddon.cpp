@@ -34,4 +34,4 @@ namespace Audio {
     }
     void DeviceTesterAddOn::extensionInitialized() {
     }
-} // Audio
+}

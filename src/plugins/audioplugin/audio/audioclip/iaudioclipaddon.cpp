@@ -4,4 +4,4 @@
 
 #include "iaudioclipaddon.h"
 
-namespace Audio {} // Audio
+namespace Audio {}

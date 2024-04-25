@@ -23,6 +23,6 @@ namespace Audio {
         VSTConnectionSystem *m_vstConnectionSystem;
     };
 
-} // Audio
+}
 
 #endif // DIFFSCOPE_AUDIOSYSTEM_H

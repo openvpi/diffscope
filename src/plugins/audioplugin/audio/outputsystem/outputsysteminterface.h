@@ -35,8 +35,6 @@ namespace Audio {
         talcs::AudioDevice *audioDevice() const;
         talcs::MixerAudioSource *preMixer() const;
 
-        talcs::AudioSource *substitutedSource() const;
-
         bool makeReady();
 
     private:
@@ -44,6 +42,6 @@ namespace Audio {
         QScopedPointer<OutputSystemInterfacePrivate> d_ptr;
     };
 
-} // Audio
+}
 
 #endif // AUDIO_OUTPUTSYSTEMINTERFACE_H

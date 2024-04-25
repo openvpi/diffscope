@@ -36,4 +36,4 @@ namespace Audio {
         Q_D(const IAudio);
         return d->audioContextAddOnClasses;
     }
-} // Audio
+}

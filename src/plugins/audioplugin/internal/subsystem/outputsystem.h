@@ -64,6 +64,6 @@ namespace Audio {
         void postSetDevice(bool saveToSettings);
     };
 
-} // Audio
+}
 
 #endif // AUDIO_OUTPUTSYSTEM_H
