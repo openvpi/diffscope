@@ -114,6 +114,7 @@ namespace Core {
         msgBox.setWindowTitle(
             QApplication::translate("Application", "About %1").arg(qApp->applicationName()));
         msgBox.setText(translatedTextAboutQtCaption);
+        msgBox.setIcon(QMessageBox::Information);
 
         double ratio = (msgBox.screen()->logicalDotsPerInch() / QM::unitDpi());
 

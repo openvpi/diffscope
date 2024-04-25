@@ -1,7 +1,5 @@
 #include "appearancepage.h"
 
-#include <QMWidgets/qmdecoratorv2.h>
-
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
@@ -14,12 +12,116 @@
 #include <QPushButton>
 #include <QStyledItemDelegate>
 #include <QVBoxLayout>
+#include <QFormLayout>
+#include <QGroupBox>
+#include <QListView>
+#include <QPushButton>
+#include <QCheckBox>
+
+#include <QMWidgets/ccombobox.h>
+#include <QMWidgets/clineedit.h>
+#include <QMWidgets/qmdecoratorv2.h>
 
 namespace Core::Internal {
 
+    static const int zoomRatioList[] = {
+        100, 110, 125, 150, 175, 200,
+    };
+
+    class AppearancePageWidget : public QWidget {
+    public:
+        AppearancePageWidget(QWidget *parent = nullptr) : QWidget(parent) {
+            auto displayGroup = new QGroupBox(AppearancePage::tr("Display"));
+            auto displayLayout = new QFormLayout();
+
+            themeComboBox = new CComboBox();
+            themeComboBox->addItems(qIDec->themes());
+            themeComboBox->setCurrentText(qIDec->theme());
+
+            zoomComboBox = new CComboBox();
+            for (const auto &item : std::as_const(zoomRatioList)) {
+                zoomComboBox->addItem(QString::asprintf("%d%%", item));
+            }
+            zoomComboBox->setCurrentIndex(0);
+
+            fontText = new CLineEdit();
+            fontText->setReadOnly(true);
+            fontText->setText(QApplication::font().family());
+
+            selectFontButton = new QPushButton(AppearancePage::tr("Select"));
+            connect(selectFontButton, &QPushButton::clicked, this,
+                    &AppearancePageWidget::showFontDialog);
+            useSystemFontCheckBox = new QCheckBox(AppearancePage::tr("Use system font"));
+            connect(useSystemFontCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
+                if (checked) {
+                    fontText->setText(QApplication::font().family());
+                }
+                selectFontButton->setDisabled(checked);
+            });
+
+            auto fontLayout = new QHBoxLayout();
+            fontLayout->addWidget(fontText);
+            fontLayout->addWidget(selectFontButton);
+            fontLayout->addWidget(useSystemFontCheckBox);
+
+            displayLayout->addRow(AppearancePage::tr("Theme"), themeComboBox);
+            displayLayout->addRow(AppearancePage::tr("Zoom"), zoomComboBox);
+            displayLayout->addRow(AppearancePage::tr("Font"), fontLayout);
+
+            displayGroup->setLayout(displayLayout);
+
+            auto mainLayout = new QVBoxLayout();
+            mainLayout->addWidget(displayGroup);
+            mainLayout->addStretch();
+            setLayout(mainLayout);
+
+        }
+
+        QComboBox *themeComboBox;
+        QComboBox *zoomComboBox;
+        QLineEdit *fontText;
+        QPushButton *selectFontButton;
+        QCheckBox *useSystemFontCheckBox;
+
+    private:
+        static QFont getFont(bool *ok, const QFont &initial, QWidget *parent,
+                             const QString &title = {},
+                             QFontDialog::FontDialogOptions options = {}) {
+            QFontDialog dlg(parent);
+            dlg.setOptions(options);
+            dlg.setCurrentFont(initial);
+            dlg.resize(640, 640);
+            if (!title.isEmpty())
+                dlg.setWindowTitle(title);
+
+            auto combos = dlg.findChildren<QComboBox *>();
+            for (auto combo : qAsConst(combos)) {
+                qDebug() << combo;
+                combo->setItemDelegate(new QStyledItemDelegate());
+            }
+
+            int ret = (dlg.exec() || (options & QFontDialog::NoButtons));
+            if (ok)
+                *ok = !!ret;
+            if (ret) {
+                return dlg.selectedFont();
+            } else {
+                return initial;
+            }
+        };
+
+        void showFontDialog() {
+            bool ok = false;
+            auto font =
+                getFont(&ok, QFont(fontText->text()), this, AppearancePage::tr("Select Font"));
+            if (ok) {
+                fontText->setText(font.family());
+            }
+        }
+    };
+
     AppearancePage::AppearancePage(QObject *parent)
         : ISettingPage(QStringLiteral("core.Appearance"), parent) {
-        m_widget = nullptr;
         setTitle([]() { return tr("Appearance"); });
         setDescription([]() { return tr("Appearance"); });
 
@@ -42,83 +144,7 @@ namespace Core::Internal {
 
     QWidget *AppearancePage::widget() {
         if (!m_widget) {
-            auto getLabelFontStr = [this](QFont &font) {
-                auto family = font.family() + " ";
-                auto size = QString::number(font.pointSize()) + "pt ";
-                auto weight = getFontWeightStr(QFont::Weight(font.weight())) + " ";
-                auto italic = font.italic() ? QString(tr("Italic")) : QString("");
-                return family + size + weight + italic;
-            };
-
-            auto lbFont = new QLabel(tr("Font: "));
-
-            auto lbCurrentFontInfo = new QLabel();
-            lbCurrentFontInfo->setText(getLabelFontStr(font));
-
-            auto btnPickFont = new QPushButton();
-            btnPickFont->setText(tr("Pick a Font..."));
-
-            auto horizontalSpacer =
-                new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-            auto fontSettingsBox = new QHBoxLayout;
-            fontSettingsBox->addWidget(lbFont);
-            fontSettingsBox->addWidget(lbCurrentFontInfo);
-            fontSettingsBox->addWidget(btnPickFont);
-            fontSettingsBox->addItem(horizontalSpacer);
-
-            auto verticalSpacerMain =
-                new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-            auto mainLayout = new QVBoxLayout;
-            mainLayout->addLayout(fontSettingsBox);
-            mainLayout->addItem(verticalSpacerMain);
-
-            auto mainWidget = new QWidget;
-            mainWidget->setLayout(mainLayout);
-
-            connect(btnPickFont, &QPushButton::clicked, this, [=]() {
-                bool ok;
-
-                auto getFont = [](bool *ok, const QFont &initial, QWidget *parent,
-                                  const QString &title = {},
-                                  QFontDialog::FontDialogOptions options = {}) {
-                    /// auto f = QApplication::font();
-                    // qApp->setFont(QFontDatabase::systemFont(QFontDatabase::TitleFont));
-
-                    QFontDialog dlg(parent);
-                    dlg.setOptions(options);
-                    dlg.setCurrentFont(initial);
-                    dlg.resize(640, 640);
-                    if (!title.isEmpty())
-                        dlg.setWindowTitle(title);
-
-                    auto combos = dlg.findChildren<QComboBox *>();
-                    for (auto combo : qAsConst(combos)) {
-                        qDebug() << combo;
-                        combo->setItemDelegate(new QStyledItemDelegate());
-                    }
-
-                    // qApp->setFont(f);
-
-                    int ret = (dlg.exec() || (options & QFontDialog::NoButtons));
-                    if (ok)
-                        *ok = !!ret;
-                    if (ret) {
-                        return dlg.selectedFont();
-                    } else {
-                        return initial;
-                    }
-                };
-
-                auto resultFont = getFont(&ok, font, mainWidget);
-                if (ok) {
-                    font = resultFont;
-                    lbCurrentFontInfo->setText(getLabelFontStr(font));
-                }
-            });
-
-            m_widget = mainWidget;
+            m_widget = new AppearancePageWidget();
         }
         return m_widget;
     }

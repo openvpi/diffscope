@@ -2,10 +2,13 @@
 #define APPEARANCEPAGE_H
 
 #include <QFont>
+#include <QPointer>
 
 #include <CoreApi/isettingpage.h>
 
 namespace Core::Internal {
+
+    class AppearancePageWidget;
 
     class AppearancePage : public ISettingPage {
         Q_OBJECT
@@ -23,7 +26,7 @@ namespace Core::Internal {
         void finish() override;
 
     private:
-        QWidget *m_widget;
+        QPointer<AppearancePageWidget> m_widget;
         QFont font;
         QString getFontWeightStr(const QFont::Weight &weight);
         bool loadJsonFile(const QString &filename, QJsonObject *jsonObj);
