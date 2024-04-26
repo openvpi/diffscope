@@ -3,7 +3,7 @@
 
 #include <QtWidgets/QAbstractButton>
 
-#include <CoreApi/iwindowaddon.h>
+#include <CoreApi/iwindow.h>
 
 namespace IEMgr::Internal {
 

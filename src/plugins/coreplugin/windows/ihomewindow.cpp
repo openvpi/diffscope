@@ -9,8 +9,7 @@ namespace Core {
 
     static IHomeWindow *m_instance = nullptr;
 
-    IHomeWindow::IHomeWindow(QObject *parent)
-        : IWindow(*new IWindowPrivate(), QStringLiteral("home"), parent) {
+    IHomeWindow::IHomeWindow(QObject *parent) : IWindow(*new IWindowPrivate(), parent) {
         m_instance = this;
     }
 
@@ -55,6 +54,11 @@ namespace Core {
     }
 
     void IHomeWindow::nextLoadingState(State nextState) {
+    }
+
+    IHomeWindowRegistry *IHomeWindowRegistry::instance() {
+        static IHomeWindowRegistry reg;
+        return &reg;
     }
 
 }

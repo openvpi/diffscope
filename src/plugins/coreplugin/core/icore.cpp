@@ -80,7 +80,7 @@ namespace Core {
             QMView::raiseWindow(inst->window());
             return;
         }
-        IWindow::create<IHomeWindow>();
+        IHomeWindowRegistry::instance()->create();
     }
 
     ActionManager *ICore::actionManager() const {

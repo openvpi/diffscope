@@ -56,7 +56,7 @@ namespace Core {
     }
 
     IProjectWindow::IProjectWindow(IProjectWindow::Mode mode, QObject *parent)
-        : IWindow(*new IProjectWindowPrivate(mode), QStringLiteral("project"), parent) {
+        : IWindow(*new IProjectWindowPrivate(mode), parent) {
         Q_D(IProjectWindow);
         d->init();
     }
@@ -113,7 +113,7 @@ namespace Core {
         Q_D(IProjectWindow);
 
         switch (nextState) {
-            case IWindow::WindowSetup: {
+            case IWindow::Preparatory: {
                 // Install before all addons
                 qIDec->installLocale(this, d);
                 break;
@@ -128,6 +128,11 @@ namespace Core {
             default:
                 break;
         }
+    }
+
+    IProjectWindowRegistry *IProjectWindowRegistry::instance() {
+        static IProjectWindowRegistry reg;
+        return &reg;
     }
 
 }

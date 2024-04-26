@@ -5,7 +5,7 @@
 
 #include <TalcsCore/MetronomeAudioSource.h>
 
-#include <CoreApi/iwindowaddon.h>
+#include <CoreApi/iwindow.h>
 
 namespace talcs {
     class MixerAudioSource;

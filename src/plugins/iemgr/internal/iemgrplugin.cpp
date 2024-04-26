@@ -10,6 +10,7 @@
 
 #include <coreplugin/icore.h>
 #include <coreplugin/initroutine.h>
+#include <coreplugin/ihomewindow.h>
 #include <coreplugin/iprojectwindow.h>
 
 // Addons
@@ -54,9 +55,8 @@ namespace IEMgr::Internal {
         domain->addExtension(getMyActionExtension());
 
         // Add basic windows and add-ons
-        auto winMgr = icore->windowSystem();
-        winMgr->addAddOn<HomeAddOn>(QStringLiteral("home"));
-        winMgr->addAddOn<ProjectAddOn>(QStringLiteral("project"));
+        Core::IHomeWindowRegistry::instance()->attach<HomeAddOn>();
+        Core::IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
 
         // Add wizards
         imgr->addWizard(new MidiWizard());

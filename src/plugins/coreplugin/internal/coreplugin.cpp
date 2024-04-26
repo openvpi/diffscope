@@ -107,9 +107,8 @@ namespace Core::Internal {
         domain->addExtension(getMyActionExtension());
 
         // Add addons
-        auto winMgr = icore->windowSystem();
-        winMgr->addAddOn<HomeAddOn>(QStringLiteral("home"));
-        winMgr->addAddOn<ProjectAddOn>(QStringLiteral("project"));
+        IHomeWindowRegistry::instance()->attach<HomeAddOn>();
+        IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
 
         // Add setting panels
         auto sc = icore->settingCatalog();
@@ -174,7 +173,7 @@ namespace Core::Internal {
         if (openFileFromCommand({}, ExtensionSystem::PluginManager::arguments(), nullptr) > 0) {
             waitSplash(icore->windowSystem()->firstWindow()->window());
         } else {
-            waitSplash(IWindow::create<IProjectWindow>()->window());
+            waitSplash(IProjectWindowRegistry::instance()->create()->window());
         }
 
         //        {

@@ -3,7 +3,7 @@
 
 #include <QtWidgets/QAbstractButton>
 
-#include <CoreApi/iwindowaddon.h>
+#include <CoreApi/iwindow.h>
 #include <CoreApi/actionitem.h>
 
 namespace Core::Internal {

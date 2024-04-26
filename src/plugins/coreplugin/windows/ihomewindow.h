@@ -36,6 +36,11 @@ namespace Core {
         void nextLoadingState(State nextState) override;
     };
 
+    class CORE_EXPORT IHomeWindowRegistry : public IExecutiveRegistry<IHomeWindow> {
+    public:
+        static IHomeWindowRegistry *instance();
+    };
+
 }
 
 #endif // IHOMEWINDOW_H

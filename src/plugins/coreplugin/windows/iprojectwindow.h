@@ -51,6 +51,11 @@ namespace Core {
         return mode() == VST;
     }
 
+    class CORE_EXPORT IProjectWindowRegistry : public IExecutiveRegistry<IProjectWindow> {
+    public:
+        static IProjectWindowRegistry *instance();
+    };
+
 }
 
 #endif // IPROJECTWINDOW_H

@@ -121,7 +121,7 @@ namespace Core {
 
             // Init window sizes
             auto winMgr = ICore::instance()->windowSystem();
-            winMgr->loadWindowGeometry(metaObject()->className(), this, {1280, 720});
+            winMgr->loadGeometry(metaObject()->className(), this, {1280, 720});
             winMgr->loadSplitterSizes(metaObject()->className(), topSplitter, {250, width() - 250});
 
             // Init last page id
@@ -137,7 +137,7 @@ namespace Core {
             // Save window sizes
             auto winMgr = ICore::instance()->windowSystem();
             winMgr->saveSplitterSizes(metaObject()->className(), topSplitter);
-            winMgr->saveWindowGeometry(metaObject()->className(), this);
+            winMgr->saveGeometry(metaObject()->className(), this);
         }
 
         void SettingsDialog::reloadStrings() {

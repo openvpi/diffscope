@@ -10,6 +10,7 @@
 #include <CoreApi/iloader.h>
 
 #include <coreplugin/icore.h>
+#include <coreplugin/iprojectwindow.h>
 #include <coreplugin/initroutine.h>
 
 #include <audioplugin/internal/audiosystem.h>
@@ -58,8 +59,7 @@ namespace Audio {
         audioPage->addPage(new VSTModePage);
         sc->addPage(audioPage);
 
-        auto iCore = Core::ICore::instance();
-        iCore->windowSystem()->addAddOn<ProjectAddOn>("project");
+        Core::IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
 
         qDebug() << "Audio::AudioPlugin: initializing";
         auto splash = Core::InitRoutine::splash();
