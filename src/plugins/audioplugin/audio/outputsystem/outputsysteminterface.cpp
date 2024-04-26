@@ -3,24 +3,12 @@
 
 #include <audioplugin/internal/outputsystem.h>
 #include <audioplugin/iaudio.h>
-#include <audioplugin/private/ioutputsystemaddon_p.h>
 
 namespace Audio {
 
     void OutputSystemInterfacePrivate::init(AbstractOutputSystem *abstractOutputSystem_, bool isVST_) {
         abstractOutputSystem = abstractOutputSystem_;
         isVST = isVST_;
-    }
-
-    void OutputSystemInterfacePrivate::initializeAddOns() {
-        Q_Q(OutputSystemInterface);
-        addOnLoader = std::make_unique<AddOnLoader<IOutputSystemAddOn>>(IAudio::instance()->outputSystemAddOns(), q);
-        for (auto addOn : addOnLoader->addOns()) {
-            addOn->d_func()->outputSystemInterface = q;
-        }
-        addOnLoader->initializeAll();
-        addOnLoader->extensionInitializedAll();
-        addOnLoader->delayedInitializeAll();
     }
 
     OutputSystemInterface::OutputSystemInterface(QObject *parent) : QObject(parent), d_ptr(new OutputSystemInterfacePrivate) {

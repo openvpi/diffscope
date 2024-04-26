@@ -1,10 +1,7 @@
 #ifndef AUDIO_AUDIOCONTEXTINTERFACE_P_H
 #define AUDIO_AUDIOCONTEXTINTERFACE_P_H
 
-#include <memory>
-
 #include <audioplugin/audiocontextinterface.h>
-#include <audioplugin/internal/addonloader.h>
 
 namespace Audio {
 

@@ -17,15 +17,12 @@ namespace Audio {
 
     class AudioPlugin;
 
-    class IOutputSystemAddOn;
-
     class OutputSystemInterfacePrivate;
 
     class AUDIO_EXPORT OutputSystemInterface : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(OutputSystemInterface)
         friend class AudioPlugin;
-        friend class IOutputSystemAddOn;
     public:
         ~OutputSystemInterface() override;
 

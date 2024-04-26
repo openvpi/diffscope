@@ -24,7 +24,7 @@
 
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/outputsystem.h>
-#include <audioplugin/internal/devicetesteraddon.h>
+#include <audioplugin/internal/devicetester.h>
 
 namespace Audio {
 
@@ -145,7 +145,7 @@ namespace Audio {
                     tr("Please check the status of the audio driver and device."));
                 msgBox.exec();
             } else {
-                DeviceTesterAddOn::testDevice(false);
+                DeviceTester::playTestSound(false);
             }
         });
 

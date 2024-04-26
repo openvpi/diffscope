@@ -25,7 +25,7 @@
 
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
-#include <audioplugin/internal/devicetesteraddon.h>
+#include <audioplugin/internal/devicetester.h>
 
 namespace Audio {
 
@@ -342,7 +342,7 @@ namespace Audio {
                 msgBox.setInformativeText(tr("Please check the status of %1 Bridge and the host application.").arg(QApplication::applicationName()));
                 msgBox.exec();
             } else {
-                DeviceTesterAddOn::testDevice(true);
+                DeviceTester::playTestSound(true);
             }
         });
 

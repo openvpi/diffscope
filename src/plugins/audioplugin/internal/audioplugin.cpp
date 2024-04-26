@@ -22,7 +22,7 @@
 #include <audioplugin/private/iaudio_p.h>
 #include <audioplugin/outputsysteminterface.h>
 #include <audioplugin/private/outputsysteminterface_p.h>
-#include <audioplugin/internal/devicetesteraddon.h>
+#include <audioplugin/internal/devicetester.h>
 #include <audioplugin/internal/projectaddon.h>
 
 namespace Audio {
@@ -61,13 +61,8 @@ namespace Audio {
         auto iCore = Core::ICore::instance();
         iCore->windowSystem()->addAddOn<ProjectAddOn>("project");
 
-        iAudio->installOutputSystemAddOn(&DeviceTesterAddOn::staticMetaObject);
-
-        return true;
-    }
-    void AudioPlugin::extensionsInitialized() {
-        auto splash = Core::InitRoutine::splash();
         qDebug() << "Audio::AudioPlugin: initializing";
+        auto splash = Core::InitRoutine::splash();
         splash->showMessage(tr("Initializing audio plugin..."));
 
         if (!AudioSystem::outputSystem()->initialize()) {
@@ -77,9 +72,6 @@ namespace Audio {
             msgBox.setInformativeText(tr("%1 will not play any sound because no available audio output device found. Please check the status of the audio driver and device.").arg(QApplication::applicationName()));
             msgBox.exec();
         }
-        qDebug() << "Audio::AudioPlugin: initializing add-ons of output system";
-        IAudio::instance()->outputSystemInterface()->d_func()->initializeAddOns();
-        qDebug() << "Audio::AudioPlugin: add-ons of output system initialized";
         if (!AudioSystem::vstConnectionSystem()->initialize()) {
             QMessageBox msgBox(splash);
             msgBox.setIcon(QMessageBox::Warning);
@@ -87,10 +79,13 @@ namespace Audio {
             msgBox.setInformativeText(tr("%1 will not be able to establish a connection with %1 Bridge. Please check the Plugin Mode configuration in Settings.").arg(QApplication::applicationName()));
             msgBox.exec();
         }
-        qDebug() << "Audio::AudioPlugin: initializing add-ons of VST connection system";
-        IAudio::instance()->vstOutputSystemInterface()->d_func()->initializeAddOns();
-        qDebug() << "Audio::AudioPlugin: add-ons of VST connection system initialized";
 
+        new DeviceTester(iAudio->outputSystemInterface(), iAudio->outputSystemInterface());
+        new DeviceTester(iAudio->vstOutputSystemInterface(), iAudio->vstOutputSystemInterface());
+
+        return true;
+    }
+    void AudioPlugin::extensionsInitialized() {
         if (AudioSystem::vstConnectionSystem()->isApplicationInitializing()) {
             // TODO open VST window
         }

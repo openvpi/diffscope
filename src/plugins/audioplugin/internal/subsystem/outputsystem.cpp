@@ -9,7 +9,6 @@
 #include <icore.h>
 #include <CoreApi/iloader.h>
 
-#include "audiodevicetesteraudiosource.h"
 #include "sdlaudiodevicedisplaynamehelper.h"
 
 namespace Audio {

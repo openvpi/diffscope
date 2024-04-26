@@ -5,9 +5,6 @@
 
 #include <QObject>
 
-#include "addonloader.h"
-#include "ioutputsystemaddon.h"
-
 namespace talcs {
     class MixerAudioSource;
     class AudioSourcePlayback;
