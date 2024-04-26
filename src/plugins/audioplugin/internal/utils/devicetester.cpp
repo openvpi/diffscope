@@ -17,7 +17,6 @@ namespace Audio {
         outputSystemInterface->preMixer()->addSource(this);
     }
     DeviceTester::~DeviceTester() {
-        m_outputSystemInterface->preMixer()->removeSource(this);
         if (m_instance[0] == this) {
             m_instance[0] = nullptr;
         } else if (m_instance[1] == this) {
