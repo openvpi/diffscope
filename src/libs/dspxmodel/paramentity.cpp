@@ -1,6 +1,7 @@
 #include "paramentity.h"
 
 #include <substate/structnode.h>
+#include <substate/sheetnode.h>
 
 #include "dspxconst.h"
 #include "dspxmodelglobal_p.h"

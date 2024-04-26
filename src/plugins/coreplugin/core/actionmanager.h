@@ -20,8 +20,6 @@ namespace Core {
         explicit ActionManager(QObject *parent = nullptr);
         ~ActionManager();
 
-        static ActionManager *instance();
-
     public:
         ActionDomain *domain() const;
 

@@ -1,6 +1,8 @@
 #include "baseentity.h"
 
 #include <substate/structnode.h>
+#include <substate/sheetnode.h>
+#include <substate/vectornode.h>
 
 #include "dspxconst.h"
 #include "dspxmodelglobal_p.h"

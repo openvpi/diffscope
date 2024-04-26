@@ -11,8 +11,7 @@ namespace QDspx {
     inline T *tagged_node(const std::string &key, Args &&...arguments) {
         static_assert(std::is_base_of<Substate::Node, T>::value,
                       "T should inherit from Substate::Node");
-        auto p = new T(arguments...);
-        p->setDynamicData(Substate::entity_dyn_key, key);
+        auto p = new T(key, arguments...);
         return p;
     }
 

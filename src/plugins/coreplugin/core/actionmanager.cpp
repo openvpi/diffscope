@@ -63,9 +63,6 @@ namespace Core {
     ActionManager::~ActionManager() {
         m_instance = nullptr;
     }
-    ActionManager *ActionManager::instance() {
-        return m_instance;
-    }
     ActionDomain *ActionManager::domain() const {
         Q_D(const ActionManager);
         return d->domain;
