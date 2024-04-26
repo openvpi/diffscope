@@ -4,6 +4,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
+#include <QMWidgets/qmdecoratorv2.h>
+
 #include "iprojectwindow.h"
 #include "icore.h"
 #include "appextra.h"

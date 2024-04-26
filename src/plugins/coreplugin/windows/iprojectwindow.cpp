@@ -113,7 +113,7 @@ namespace Core {
         Q_D(IProjectWindow);
 
         switch (nextState) {
-            case IWindow::Preparatory: {
+            case IWindow::Starting: {
                 // Install before all addons
                 qIDec->installLocale(this, d);
                 break;

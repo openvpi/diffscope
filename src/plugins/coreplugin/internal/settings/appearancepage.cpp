@@ -49,7 +49,7 @@
 namespace Core::Internal {
 
     static const int zoomRatioList[] = {
-        100, 125, 150, 175, 200, 225, 250,
+        50, 75, 100, 125, 150, 175, 200, 225, 250,
     };
 
     class AppearancePageWidget : public QWidget {
@@ -101,7 +101,7 @@ namespace Core::Internal {
             }
             themeComboBox->setCurrentText(qIDec->theme());
             {
-                auto idx = int((qIDec->zoomRatio() - 1) * 4);
+                auto idx = int((qIDec->zoomRatio() - 0.5) * 4);
                 if (idx >= 0 && idx < sizeof(zoomRatioList)) {
                     zoomComboBox->setCurrentIndex(idx);
                 } else {
