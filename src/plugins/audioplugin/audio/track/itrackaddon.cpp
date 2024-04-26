@@ -1,7 +1,13 @@
-//
-// Created by Crs_1 on 2024/4/17.
-//
-
 #include "itrackaddon.h"
 
-namespace Audio {}
+#include <audioplugin/trackinterface.h>
+
+namespace Audio {
+    ITrackAddOn::~ITrackAddOn() = default;
+
+    TrackInterface *ITrackAddOn::trackInterface() const {
+        return static_cast<TrackInterface *>(host());
+    }
+    ITrackAddOn::ITrackAddOn(QObject *parent) : IExecutiveAddOn(parent) {
+    }
+}

@@ -3,6 +3,9 @@
 
 #include <audioplugin/audiocontextinterface.h>
 
+#include <audioplugin/itrackaddon.h>
+#include <audioplugin/trackinterface.h>
+
 namespace Audio {
 
     class IAudioContextAddOn;
@@ -11,7 +14,10 @@ namespace Audio {
         Q_DECLARE_PUBLIC(AudioContextInterface)
     public:
         AudioContextInterface *q_ptr;
+
         ProjectAddOn *projectAddOn;
+        Core::IExecutiveRegistry<TrackInterface> trackRegistry;
+        QHash<QDspx::TrackEntity *, TrackInterface *> tracks;
 
         void init(ProjectAddOn *projectAddOn);
 

@@ -8,8 +8,10 @@
 
 namespace Audio {
     AbstractOutputSystem::AbstractOutputSystem(QObject *parent) : QObject(parent) {
-        m_preMixer = new talcs::MixerAudioSource(this);
-        m_playback = std::make_unique<talcs::AudioSourcePlayback>(m_preMixer, false, false);
+        m_deviceControlMixer = new talcs::MixerAudioSource;
+        m_preMixer = new talcs::MixerAudioSource;
+        m_deviceControlMixer->addSource(m_preMixer, true);
+        m_playback = std::make_unique<talcs::AudioSourcePlayback>(m_deviceControlMixer, true, false);
     }
 
     AbstractOutputSystem::~AbstractOutputSystem() = default;
@@ -22,16 +24,14 @@ namespace Audio {
         return m_preMixer;
     }
     void AbstractOutputSystem::setGainAndPan(float gain, float pan) {
-        m_deviceGain = gain;
-        m_devicePan = pan;
-        m_preMixer->setGain(gain);
-        m_preMixer->setPan(pan);
+        m_deviceControlMixer->setGain(gain);
+        m_deviceControlMixer->setPan(pan);
     }
     float AbstractOutputSystem::gain() const {
-        return m_deviceGain;
+        return m_deviceControlMixer->gain();
     }
     float AbstractOutputSystem::pan() const {
-        return m_devicePan;
+        return m_deviceControlMixer->pan();
     }
 
 }

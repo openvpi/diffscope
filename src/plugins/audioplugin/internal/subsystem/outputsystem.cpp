@@ -171,7 +171,7 @@ namespace Audio {
         auto obj = settings["Audio"].toObject();
         obj["adoptedBufferSize"] = m_adoptedBufferSize;
         settings["Audio"] = obj;
-        m_preMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
+        m_deviceControlMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
     }
     double OutputSystem::adoptedSampleRate() const {
         return m_adoptedSampleRate;
@@ -187,7 +187,7 @@ namespace Audio {
         auto obj = settings["Audio"].toObject();
         obj["adoptedSampleRate"] = m_adoptedSampleRate;
         settings["Audio"] = obj;
-        m_preMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
+        m_deviceControlMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
     }
     bool OutputSystem::makeReady() {
         if (!m_dev) {
@@ -202,7 +202,7 @@ namespace Audio {
             qWarning() << "Audio::OutputSystem: fatal: cannot make ready because cannot open audio device";
             return false;
         }
-        if (!m_preMixer->isOpen() && !m_preMixer->open(m_adoptedBufferSize, m_adoptedSampleRate)) {
+        if (!m_deviceControlMixer->isOpen() && !m_deviceControlMixer->open(m_adoptedBufferSize, m_adoptedSampleRate)) {
             qWarning() << "Audio::OutputSystem: fatal: cannot make ready because cannot open pre-mixer";
             return false;
         }
@@ -251,7 +251,7 @@ namespace Audio {
             m_adoptedSampleRate = m_dev->sampleRate();
             emit sampleRateChanged(m_adoptedSampleRate);
         }
-        m_preMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
+        m_deviceControlMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
         if (saveToSettings) {
             qDebug() << "Audio::OutputSystem: device info saved to settings" << m_drv->name() << m_dev->name() << m_adoptedBufferSize << m_adoptedSampleRate;
             auto obj = settings["Audio"].toObject();

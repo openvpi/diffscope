@@ -45,7 +45,20 @@ namespace Audio {
     }
 
     AudioContextInterface *AudioContextInterface::get(Core::IWindow *win) {
-        return win->getFirstObject<AudioContextInterface>();
+        return static_cast<AudioContextInterface *>(win->getFirstObject("Audio.AudioContextInterface"));
+    }
+
+    Core::IExecutiveRegistry<TrackInterface> *AudioContextInterface::trackRegistry() const {
+        return &d_ptr->trackRegistry;
+    }
+
+    QList<TrackInterface *> AudioContextInterface::tracks() const {
+        Q_D(const AudioContextInterface);
+        return d->tracks.values();
+    }
+    TrackInterface *AudioContextInterface::getTrack(QDspx::TrackEntity *entity) const {
+        Q_D(const AudioContextInterface);
+        return d->tracks.value(entity);
     }
 
 }

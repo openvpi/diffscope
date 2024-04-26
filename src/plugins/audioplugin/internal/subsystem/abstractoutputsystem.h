@@ -13,10 +13,6 @@ namespace talcs {
 
 namespace Audio {
 
-    class AudioDeviceTesterAudioSource;
-
-    class IOutputSystemAddOn;
-
     class AbstractOutputSystem : public QObject {
         Q_OBJECT
     public:
@@ -33,15 +29,13 @@ namespace Audio {
         float gain() const;
         float pan() const;
 
-        float m_deviceGain = 1.0f;
-        float m_devicePan = 0.0f;
-
     Q_SIGNALS:
         void bufferSizeChanged(qint64 bufferSize);
         void sampleRateChanged(double sampleRate);
         void deviceChanged();
 
     protected:
+        talcs::MixerAudioSource *m_deviceControlMixer;
         talcs::MixerAudioSource *m_preMixer;
         std::unique_ptr<talcs::AudioSourcePlayback> m_playback;
     };

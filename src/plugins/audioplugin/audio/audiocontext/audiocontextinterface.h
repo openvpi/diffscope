@@ -14,11 +14,18 @@ namespace talcs {
 
 namespace Core {
     class IWindow;
+    template <class T> class IExecutiveRegistry;
+}
+
+namespace QDspx {
+    class TrackEntity;
 }
 
 namespace Audio {
 
     class ProjectAddOn;
+
+    class TrackInterface;
 
     class AudioContextInterfacePrivate;
 
@@ -37,6 +44,11 @@ namespace Audio {
 
         Core::IWindow *windowHandle() const;
         static AudioContextInterface *get(Core::IWindow *win);
+
+        Core::IExecutiveRegistry<TrackInterface> *trackRegistry() const;
+
+        QList<TrackInterface *> tracks() const;
+        TrackInterface *getTrack(QDspx::TrackEntity *entity) const;
 
     private:
         explicit AudioContextInterface(QObject *parent = nullptr);

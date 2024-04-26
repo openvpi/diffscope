@@ -1,7 +1,7 @@
 #ifndef AUDIO_OUTPUTSYSTEMINTERFACE_H
 #define AUDIO_OUTPUTSYSTEMINTERFACE_H
 
-#include <QObject>
+#include <CoreApi/iexecutive.h>
 
 #include <audioplugin/audioglobal.h>
 
