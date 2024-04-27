@@ -7,7 +7,7 @@
 #include <audioplugin/audiocontextinterface.h>
 
 namespace Audio {
-    TrackInterface::TrackInterface(QDspx::TrackEntity *entity, AudioContextInterface *context, QObject *parent) : Core::IExecutive(parent) {
+    TrackInterface::TrackInterface(QDspx::TrackEntity *entity, AudioContextInterface *context, QObject *parent) : TrackInterface(*new TrackInterfacePrivate, parent) {
         Q_D(TrackInterface);
         d->entity = entity;
         d->context = context;
@@ -16,7 +16,7 @@ namespace Audio {
         d->trackControlMixer = std::make_unique<talcs::PositionableMixerAudioSource>();
         context->masterTrackMixer()->addSource(d->trackControlMixer.get());
     }
-    TrackInterface::TrackInterface(TrackInterfacePrivate &d) : d_ptr(&d) {
+    TrackInterface::TrackInterface(TrackInterfacePrivate &d, QObject *parent) : Core::IExecutive(parent), d_ptr(&d) {
         d.q_ptr = this;
     }
     TrackInterface::~TrackInterface() {

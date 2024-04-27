@@ -52,6 +52,10 @@ namespace Audio {
         return &d_ptr->trackRegistry;
     }
 
+    Core::IExecutiveRegistry<AudioClipInterface> *AudioContextInterface::audioClipRegistry() const {
+        return &d_ptr->audioClipRegistry;
+    }
+
     QList<TrackInterface *> AudioContextInterface::tracks() const {
         Q_D(const AudioContextInterface);
         return d->tracks.values();

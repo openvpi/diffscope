@@ -27,6 +27,8 @@ namespace Audio {
 
     class TrackInterface;
 
+    class AudioClipInterface;
+
     class AudioContextInterfacePrivate;
 
     class AUDIO_EXPORT AudioContextInterface : public QObject {
@@ -46,6 +48,7 @@ namespace Audio {
         static AudioContextInterface *get(Core::IWindow *win);
 
         Core::IExecutiveRegistry<TrackInterface> *trackRegistry() const;
+        Core::IExecutiveRegistry<AudioClipInterface> *audioClipRegistry() const;
 
         QList<TrackInterface *> tracks() const;
         TrackInterface *getTrack(QDspx::TrackEntity *entity) const;

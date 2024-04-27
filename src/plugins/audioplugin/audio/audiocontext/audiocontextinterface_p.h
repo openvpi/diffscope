@@ -5,6 +5,8 @@
 
 #include <audioplugin/itrackaddon.h>
 #include <audioplugin/trackinterface.h>
+#include <audioplugin/iaudioclipaddon.h>
+#include <audioplugin/audioclipinterface.h>
 
 namespace Audio {
 
@@ -17,6 +19,7 @@ namespace Audio {
 
         ProjectAddOn *projectAddOn;
         Core::IExecutiveRegistry<TrackInterface> trackRegistry;
+        Core::IExecutiveRegistry<AudioClipInterface> audioClipRegistry;
         QHash<QDspx::TrackEntity *, TrackInterface *> tracks;
 
         void init(ProjectAddOn *projectAddOn);

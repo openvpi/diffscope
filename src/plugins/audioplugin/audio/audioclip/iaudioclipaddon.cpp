@@ -1,7 +1,14 @@
-//
-// Created by Crs_1 on 2024/4/17.
-//
-
 #include "iaudioclipaddon.h"
 
-namespace Audio {}
+#include <audioplugin/audioclipinterface.h>
+
+namespace Audio {
+    IAudioClipAddOn::IAudioClipAddOn(QObject *parent) : Core::IExecutiveAddOn(parent) {
+    }
+
+    IAudioClipAddOn::~IAudioClipAddOn() = default;
+
+    AudioClipInterface *IAudioClipAddOn::audioClipInterface() const {
+        return static_cast<AudioClipInterface *>(host());
+    }
+}

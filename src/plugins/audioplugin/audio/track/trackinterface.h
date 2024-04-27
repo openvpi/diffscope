@@ -28,7 +28,6 @@ namespace Audio {
         Q_DECLARE_PRIVATE(TrackInterface)
         friend class Core::IExecutiveRegistry<TrackInterface>;
         using AddOnType = ITrackAddOn;
-
     public:
         ~TrackInterface() override;
 
@@ -43,7 +42,7 @@ namespace Audio {
 
     protected:
         explicit TrackInterface(QDspx::TrackEntity *entity, AudioContextInterface *context, QObject *parent = nullptr);
-        explicit TrackInterface(TrackInterfacePrivate &d);
+        explicit TrackInterface(TrackInterfacePrivate &d, QObject *parent);
 
     private:
         QScopedPointer<TrackInterfacePrivate> d_ptr;

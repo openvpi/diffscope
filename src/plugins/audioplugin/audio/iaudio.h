@@ -18,20 +18,14 @@ namespace Audio {
         Q_DECLARE_PRIVATE(IAudio)
         friend class AudioPlugin;
     public:
-        explicit IAudio(QObject *parent = nullptr);
         ~IAudio() override;
         static IAudio *instance();
 
         OutputSystemInterface *outputSystemInterface() const;
         OutputSystemInterface *vstOutputSystemInterface() const;
 
-        void installOutputSystemAddOn(const QMetaObject *clazz);
-        QList<const QMetaObject *> outputSystemAddOns() const;
-
-        void installAudioContextAddOn(const QMetaObject *clazz);
-        QList<const QMetaObject *> audioContextAddOns() const;
-
     private:
+        explicit IAudio(QObject *parent = nullptr);
         QScopedPointer<IAudioPrivate> d_ptr;
     };
 
