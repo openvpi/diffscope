@@ -35,11 +35,11 @@
 //      - Type:     double
 // 3. Font
 //      - Object:   QGuiApplication::instance()
-//      - Property: font
+//      - Property: userFont
 //      - Type:     QFont
 //    Font Ratio
 //      - Object:   QMDecoratorV2::instance()
-//      - Property: fontRatio
+//      - Property: userFont
 //      - Type:     double
 //    Use System Font
 //      - Object:   QApplication::instance()
@@ -55,6 +55,8 @@ namespace Core::Internal {
     class AppearancePageWidget : public QWidget {
     public:
         explicit AppearancePageWidget(QWidget *parent = nullptr) : QWidget(parent) {
+            recordCurrentArguments();
+
             auto displayGroup = new QGroupBox(AppearancePage::tr("Display"));
             auto displayLayout = new QFormLayout();
 
@@ -70,11 +72,7 @@ namespace Core::Internal {
             fontText->setReadOnly(true);
 
             selectFontButton = new QPushButton(AppearancePage::tr("Select"));
-            connect(selectFontButton, &QPushButton::clicked, this,
-                    &AppearancePageWidget::showFontDialog);
             useSystemFontCheckBox = new QCheckBox(AppearancePage::tr("Use system font"));
-            connect(useSystemFontCheckBox, &QCheckBox::toggled, this,
-                    &AppearancePageWidget::setUseSystemFont);
 
             auto fontLayout = new QHBoxLayout();
             fontLayout->addWidget(fontText);
@@ -94,20 +92,34 @@ namespace Core::Internal {
             mainLayout->addStretch();
             setLayout(mainLayout);
 
-            currentFont = QGuiApplication::font();
+            currentFont = originalFont;
             updateFontText();
-            if (qApp->property("useSystemFont").toBool()) {
-                useSystemFontCheckBox->setChecked(true);
-            }
-            themeComboBox->setCurrentText(qIDec->theme());
+            useSystemFontCheckBox->setChecked(originalUseSystemFont);
+            themeComboBox->setCurrentText(originalTheme);
             {
-                auto idx = int((qIDec->zoomRatio() - 0.5) * 4);
+                auto idx = int((originalZoomRatio - 0.5) * 4);
                 if (idx >= 0 && idx < sizeof(zoomRatioList)) {
                     zoomComboBox->setCurrentIndex(idx);
                 } else {
                     zoomComboBox->setCurrentIndex(0);
                 }
             }
+
+            connect(themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+                    &AppearancePageWidget::_q_themeComboBoxIndexChanged);
+            connect(zoomComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+                    &AppearancePageWidget::_q_zoomComboBoxIndexChanged);
+            connect(selectFontButton, &QPushButton::clicked, this,
+                    &AppearancePageWidget::showFontDialog);
+            connect(useSystemFontCheckBox, &QCheckBox::toggled, this,
+                    &AppearancePageWidget::_q_useSystemFontButtonToggled);
+        }
+
+        void recordCurrentArguments() {
+            originalTheme = qIDec->theme();
+            originalZoomRatio = qIDec->zoomRatio();
+            originalFont = qApp->property("userFont").value<QFont>();
+            originalUseSystemFont = qApp->property("useSystemFont").toBool();
         }
 
         QComboBox *themeComboBox;
@@ -118,6 +130,11 @@ namespace Core::Internal {
 
         QFont currentFont;
 
+        QString originalTheme;
+        double originalZoomRatio;
+        QFont originalFont;
+        bool originalUseSystemFont;
+
         static QFont systemFont() {
             auto font = qAppExt->systemDefaultFont();
             font.setPixelSize(12);
@@ -125,13 +142,24 @@ namespace Core::Internal {
         }
 
     private:
-        void setUseSystemFont(bool on) {
-            if (on) {
+        void _q_useSystemFontButtonToggled(bool checked) {
+            if (checked) {
                 currentFont = systemFont();
                 updateFontText();
             }
-            fontText->setDisabled(on);
-            selectFontButton->setDisabled(on);
+            fontText->setDisabled(checked);
+            selectFontButton->setDisabled(checked);
+            qApp->setProperty("useSystemFont", checked);
+        }
+
+        void _q_themeComboBoxIndexChanged(int index) {
+            Q_UNUSED(this)
+            qIDec->setTheme(themeComboBox->itemText(index));
+        }
+
+        void _q_zoomComboBoxIndexChanged(int index) {
+            Q_UNUSED(this)
+            qIDec->setZoomRatio(double(zoomRatioList[index]) / 100);
         }
 
         void updateFontText() const {
@@ -157,7 +185,6 @@ namespace Core::Internal {
 
             auto combos = dlg.findChildren<QComboBox *>();
             for (auto combo : qAsConst(combos)) {
-                qDebug() << combo;
                 combo->setItemDelegate(new QStyledItemDelegate());
             }
 
@@ -173,12 +200,15 @@ namespace Core::Internal {
 
         void showFontDialog() {
             bool ok = false;
-            auto font =
-                getFont(&ok, QFont(fontText->text()), this, AppearancePage::tr("Select Font"));
+            auto initialFont = currentFont;
+            initialFont.setPointSize(initialFont.pixelSize());
+            auto font = getFont(&ok, initialFont, this, AppearancePage::tr("Select Font"));
             if (ok) {
                 currentFont = font;
                 currentFont.setPixelSize(font.pointSize());
                 updateFontText();
+
+                qApp->setProperty("userFont", currentFont);
             }
         }
     };
@@ -210,31 +240,28 @@ namespace Core::Internal {
         if (!m_widget)
             return true;
 
-        QString theme = m_widget->themeComboBox->currentText();
-        int zoomPercent = zoomRatioList[m_widget->zoomComboBox->currentIndex()];
-        QFont currentFont = m_widget->currentFont;
-        bool useSystemFont = m_widget->useSystemFontCheckBox->isChecked();
-
-        // Save Settings
-        {
-            auto settings = ExtensionSystem::PluginManager::settings();
-            settings->beginGroup("Preferences");
-            settings->setValue(QStringLiteral("Theme"), theme);
-            settings->setValue(QStringLiteral("Zoom"), zoomPercent);
-            settings->setValue(QStringLiteral("Font"), currentFont.toString());
-            settings->setValue(QStringLiteral("UseSystemFont"), useSystemFont);
-            settings->endGroup();
-        }
-
-        qIDec->setTheme(theme);
-        qIDec->setZoomRatio(double(zoomPercent) / 100);
-        QGuiApplication::setFont(currentFont);
-        qApp->setProperty("useSystemFont", useSystemFont);
+        // Record arguments
+        m_widget->recordCurrentArguments();
         return true;
     }
 
     void AppearancePage::finish() {
         if (m_widget) {
+            // Maybe canceled
+            qIDec->setTheme(m_widget->originalTheme);
+            qIDec->setZoomRatio(m_widget->originalZoomRatio);
+            qApp->setProperty("userFont", m_widget->originalFont);
+            qApp->setProperty("useSystemFont", m_widget->originalUseSystemFont);
+
+            // Save recorded arguments
+            auto settings = ExtensionSystem::PluginManager::settings();
+            settings->beginGroup("Preferences");
+            settings->setValue(QStringLiteral("Theme"), m_widget->originalTheme);
+            settings->setValue(QStringLiteral("Zoom"), int(m_widget->originalZoomRatio * 100));
+            settings->setValue(QStringLiteral("Font"), m_widget->originalFont.toString());
+            settings->setValue(QStringLiteral("UseSystemFont"), m_widget->originalUseSystemFont);
+            settings->endGroup();
+
             m_widget->deleteLater();
             m_widget = nullptr;
         }

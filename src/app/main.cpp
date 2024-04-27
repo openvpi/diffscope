@@ -76,13 +76,17 @@ public:
             if (!value.isNull()) {
                 QFont font;
                 if (font.fromString(value.toString())) {
-                    qApp->setFont(font);
+                    QGuiApplication::setFont(font);
                 }
                 if (font.pixelSize() <= 0) {
                     font.setPixelSize(12);
                 }
                 qIDec->setFontRatio(font.pixelSize() / 12.0);
             }
+            // The application font is determined at startup and remains unchanged, using the
+            // `userFont` property to record the changes made by the user during the current
+            // application life.
+            qApp->setProperty("userFont", QGuiApplication::font());
 
             value = settings->value(QStringLiteral("UseSystemFont"));
             if (value.type() == QVariant::String) {
