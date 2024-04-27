@@ -9,15 +9,14 @@
 
 namespace Core {
 
+    class IHomeWindowRegistry;
+
     class IHomeWindowPrivate;
 
     class CORE_EXPORT IHomeWindow : public IWindow {
         Q_OBJECT
         Q_DECLARE_PRIVATE(IHomeWindow)
     public:
-        explicit IHomeWindow(QObject *parent = nullptr);
-        ~IHomeWindow();
-
         static IHomeWindow *instance();
 
     public:
@@ -34,6 +33,12 @@ namespace Core {
         QString correctWindowTitle(const QString &title) const override;
         QWidget *createWindow(QWidget *parent) const override;
         void nextLoadingState(State nextState) override;
+
+    protected:
+        explicit IHomeWindow(QObject *parent = nullptr);
+        ~IHomeWindow();
+
+        friend class IExecutiveRegistry<IHomeWindow>;
     };
 
     class CORE_EXPORT IHomeWindowRegistry : public IExecutiveRegistry<IHomeWindow> {

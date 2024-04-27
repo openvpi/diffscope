@@ -52,15 +52,6 @@ namespace Core {
         IProjectWindow::Mode mode;
     };
 
-    IProjectWindow::IProjectWindow(QObject *parent) : IProjectWindow(Standalone, parent) {
-    }
-
-    IProjectWindow::IProjectWindow(IProjectWindow::Mode mode, QObject *parent)
-        : IWindow(*new IProjectWindowPrivate(mode), parent) {
-        Q_D(IProjectWindow);
-        d->init();
-    }
-
     IProjectWindow::Mode IProjectWindow::mode() const {
         Q_D(const IProjectWindow);
         return d->mode;
@@ -98,9 +89,6 @@ namespace Core {
         return static_cast<Internal::ProjectWindow *>(window())->toolBar();
     }
 
-    IProjectWindow::~IProjectWindow() {
-    }
-
     QString IProjectWindow::correctWindowTitle(const QString &title) const {
         return IWindow::correctWindowTitle(AppExtra::displayTitle(title));
     }
@@ -128,6 +116,18 @@ namespace Core {
             default:
                 break;
         }
+    }
+
+    IProjectWindow::IProjectWindow(QObject *parent) : IProjectWindow(Standalone, parent) {
+    }
+
+    IProjectWindow::IProjectWindow(IProjectWindow::Mode mode, QObject *parent)
+        : IWindow(*new IProjectWindowPrivate(mode), parent) {
+        Q_D(IProjectWindow);
+        d->init();
+    }
+
+    IProjectWindow::~IProjectWindow() {
     }
 
     IProjectWindowRegistry *IProjectWindowRegistry::instance() {

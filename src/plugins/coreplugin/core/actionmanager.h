@@ -4,6 +4,7 @@
 #include <optional>
 
 #include <QObject>
+#include <QSettings>
 
 #include <CoreApi/actiondomain.h>
 
@@ -20,6 +21,11 @@ namespace Core {
         explicit ActionManager(QObject *parent = nullptr);
         ~ActionManager();
 
+        enum Scope {
+            System,
+            User,
+        };
+
     public:
         ActionDomain *domain() const;
 
@@ -33,14 +39,15 @@ namespace Core {
         bool loadShortcuts();
         bool saveShortcuts() const;
 
-        QString currentShortcutFamily() const;
-        void setCurrentShortcutFamily(const QString &id);
+        QPair<QString, Scope> currentShortcutsFamily() const;
+        void setCurrentShortcutsFamily(const QString &id, Scope scope);
 
-        QJsonObject shortcutFamily(const QString &id) const;
-        QStringList shortcutFamilies() const;
-        void addShortcutFamily(const QString &id, const QJsonObject &family);
-        void removeShortcutFamily(const QString &id);
-        void clearShortcutFamilies();
+        ActionDomain::ShortcutsFamily shortcutsFamily(const QString &id, Scope scope = System) const;
+        QStringList shortcutFamilies(Scope scope = System) const;
+        void addShortcutsFamily(const QString &id, const ActionDomain::ShortcutsFamily &family,
+                               Scope scope = System);
+        void removeShortcutsFamily(const QString &id, Scope scope = System);
+        void clearShortcutFamilies(Scope scope = System);
 
     Q_SIGNALS:
         void layoutsReloaded();
@@ -48,7 +55,6 @@ namespace Core {
 
     protected:
         QScopedPointer<ActionManagerPrivate> d_ptr;
-        ActionManager(ActionManagerPrivate &d, QObject *parent = nullptr);
     };
 
 }

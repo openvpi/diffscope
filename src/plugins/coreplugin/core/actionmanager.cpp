@@ -6,6 +6,8 @@
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonParseError>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <QMCore/qmchronomap.h>
 #include <QMWidgets/qmappextension.h>
@@ -36,6 +38,83 @@ namespace Core {
         return path;
     }
 
+    static QJsonObject serializeShortcuts(const ActionDomain::ShortcutsFamily &shortcutsFamily) {
+        QJsonObject rootObj;
+        for (auto it = shortcutsFamily.begin(); it != shortcutsFamily.end(); ++it) {
+            const auto &key = it.key();
+            QJsonValue value = QJsonValue::Null;
+            if (const auto &val = it.value()) {
+                QJsonArray arr;
+                for (const auto &subItem : val.value()) {
+                    arr.push_back(subItem.toString());
+                }
+                value = arr;
+            }
+            rootObj.insert(key, value);
+        }
+        return rootObj;
+    }
+
+    static bool deserializeShortcuts(const QJsonObject &object,
+                                     ActionDomain::ShortcutsFamily &out) {
+        ActionDomain::ShortcutsFamily result;
+        for (auto it = object.begin(); it != object.end(); ++it) {
+            const auto &key = it.key();
+            const auto &value = it.value();
+            if (value.isNull()) {
+                result.insert(key, {});
+                continue;
+            }
+            auto arr = value.toObject();
+            QList<QKeySequence> shortcuts;
+            shortcuts.reserve(arr.size());
+            for (const auto &item : std::as_const(arr)) {
+                QKeySequence ks = QKeySequence::fromString(item.toString());
+                if (!ks.isEmpty()) {
+                    shortcuts.append(ks);
+                }
+            }
+            result.insert(key, shortcuts);
+        }
+        out = result;
+        return true;
+    }
+
+    static QJsonObject serializeIcons(const ActionDomain::IconFamily &iconFamily) {
+        QJsonObject rootObj;
+        for (auto it = iconFamily.begin(); it != iconFamily.end(); ++it) {
+            const auto &key = it.key();
+            QJsonValue value = QJsonValue::Null;
+            if (const auto &val = it.value()) {
+                QJsonObject obj;
+                obj.insert(QStringLiteral("fromFile"), val->fromFile());
+                obj.insert(QStringLiteral("data"), val->data());
+                value = obj;
+            }
+            rootObj.insert(key, value);
+        }
+        return rootObj;
+    }
+
+    static bool deserializeIcons(const QJsonObject &object, ActionDomain::IconFamily &out) {
+        ActionDomain::IconFamily result;
+        for (auto it = object.begin(); it != object.end(); ++it) {
+            const auto &key = it.key();
+            const auto &value = it.value();
+            if (value.isNull()) {
+                result.insert(key, {});
+                continue;
+            }
+            auto obj = value.toObject();
+            result.insert(key, ActionDomain::IconReference{
+                                   obj.value(QStringLiteral("data")).toString(),
+                                   obj.value(QStringLiteral("fromFile")).toBool(),
+                               });
+        }
+        out = result;
+        return true;
+    }
+
     class ActionManagerPrivate {
         Q_DECLARE_PUBLIC(ActionManager)
     public:
@@ -51,14 +130,19 @@ namespace Core {
 
         ActionDomain *domain;
 
-        QMChronoMap<QString, QJsonObject> shortcutFamilies;
-        QString currentShortcutFamily;
+        QMChronoMap<QString, ActionDomain::ShortcutsFamily> systemFamilies;
+        QMChronoMap<QString, ActionDomain::ShortcutsFamily> userFamilies;
+        QPair<QString, ActionManager::Scope> currentFamily;
     };
 
     static ActionManager *m_instance = nullptr;
 
     ActionManager::ActionManager(QObject *parent)
-        : ActionManager(*new ActionManagerPrivate(), parent) {
+        : QObject(parent), d_ptr(new ActionManagerPrivate()) {
+        Q_D(ActionManager);
+        m_instance = this;
+        d->q_ptr = this;
+        d->init();
     }
     ActionManager::~ActionManager() {
         m_instance = nullptr;
@@ -114,7 +198,10 @@ namespace Core {
         }
 
         if (auto obj = doc.object(); !obj.isEmpty()) {
-            d->domain->restoreOverriddenIcons(doc.object());
+            ActionDomain::IconFamily iconFamily;
+            if (deserializeIcons(doc.object(), iconFamily)) {
+                d->domain->setIconFamily(iconFamily);
+            }
         }
         return true;
     }
@@ -126,7 +213,7 @@ namespace Core {
             qWarning() << "Core::ActionManager: failed to create action icons data";
             return false;
         }
-        file.write(QJsonDocument(d->domain->saveOverriddenIcons()).toJson());
+        file.write(QJsonDocument(serializeIcons(d->domain->iconFamily())).toJson());
         return true;
     }
     bool ActionManager::loadShortcuts() {
@@ -152,9 +239,13 @@ namespace Core {
 
         auto object = doc.object();
         if (auto obj = object.value(QStringLiteral("shortcuts")).toObject(); !obj.isEmpty()) {
-            d->domain->restoreOverriddenShortcuts(obj);
+            ActionDomain::ShortcutsFamily shortcutsFamily;
+            if (deserializeShortcuts(doc.object(), shortcutsFamily)) {
+                d->domain->setShortcutsFamily(shortcutsFamily);
+            }
         }
-        d->currentShortcutFamily = object.value(QStringLiteral("family")).toString();
+        d->currentFamily.first = object.value(QStringLiteral("family")).toString();
+        d->currentFamily.second = object.value(QStringLiteral("system")).toBool() ? System : User;
         return false;
     }
     bool ActionManager::saveShortcuts() const {
@@ -168,45 +259,48 @@ namespace Core {
         }
 
         QJsonObject object;
-        object.insert(QStringLiteral("shortcuts"), d->domain->saveOverriddenShortcuts());
-        object.insert(QStringLiteral("family"), d->currentShortcutFamily);
+        object.insert(QStringLiteral("shortcuts"),
+                      serializeShortcuts(d->domain->shortcutsFamily()));
+        object.insert(QStringLiteral("family"), d->currentFamily.first);
+        object.insert(QStringLiteral("system"), d->currentFamily.second == System);
         file.write(QJsonDocument(object).toJson());
         return true;
     }
-    QString ActionManager::currentShortcutFamily() const {
+    QPair<QString, ActionManager::Scope> ActionManager::currentShortcutsFamily() const {
         Q_D(const ActionManager);
-        return d->currentShortcutFamily;
+        return d->currentFamily;
     }
-    void ActionManager::setCurrentShortcutFamily(const QString &id) {
+    void ActionManager::setCurrentShortcutsFamily(const QString &id, ActionManager::Scope scope) {
         Q_D(ActionManager);
-        d->currentShortcutFamily = id;
+        d->currentFamily = {id, scope};
     }
-    QJsonObject ActionManager::shortcutFamily(const QString &id) const {
+    ActionDomain::ShortcutsFamily ActionManager::shortcutsFamily(const QString &id,
+                                                                 ActionManager::Scope scope) const {
         Q_D(const ActionManager);
-        return d->shortcutFamilies.value(id);
+        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
+        return families.value(id);
     }
-    QStringList ActionManager::shortcutFamilies() const {
+    QStringList ActionManager::shortcutFamilies(ActionManager::Scope scope) const {
         Q_D(const ActionManager);
-        return d->shortcutFamilies.keys_qlist();
+        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
+        return families.keys_qlist();
     }
-    void ActionManager::addShortcutFamily(const QString &id, const QJsonObject &family) {
+    void ActionManager::addShortcutsFamily(const QString &id,
+                                          const ActionDomain::ShortcutsFamily &family,
+                                          ActionManager::Scope scope) {
         Q_D(ActionManager);
-        d->shortcutFamilies.append(id, family);
+        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
+        families.append(id, family);
     }
-    void ActionManager::removeShortcutFamily(const QString &id) {
+    void ActionManager::removeShortcutsFamily(const QString &id, ActionManager::Scope scope) {
         Q_D(ActionManager);
-        d->shortcutFamilies.remove(id);
+        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
+        families.remove(id);
     }
-    void ActionManager::clearShortcutFamilies() {
+    void ActionManager::clearShortcutFamilies(ActionManager::Scope scope) {
         Q_D(ActionManager);
-        d->shortcutFamilies.clear();
-    }
-    ActionManager::ActionManager(ActionManagerPrivate &d, QObject *parent)
-        : QObject(parent), d_ptr(&d) {
-        m_instance = this;
-
-        d.q_ptr = this;
-        d.init();
+        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
+        families.clear();
     }
 
 }

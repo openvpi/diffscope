@@ -9,14 +9,6 @@ namespace Core {
 
     static IHomeWindow *m_instance = nullptr;
 
-    IHomeWindow::IHomeWindow(QObject *parent) : IWindow(*new IWindowPrivate(), parent) {
-        m_instance = this;
-    }
-
-    IHomeWindow::~IHomeWindow() {
-        m_instance = nullptr;
-    }
-
     IHomeWindow *IHomeWindow::instance() {
         return m_instance;
     }
@@ -54,6 +46,14 @@ namespace Core {
     }
 
     void IHomeWindow::nextLoadingState(State nextState) {
+    }
+
+    IHomeWindow::IHomeWindow(QObject *parent) : IWindow(*new IWindowPrivate(), parent) {
+        m_instance = this;
+    }
+
+    IHomeWindow::~IHomeWindow() {
+        m_instance = nullptr;
     }
 
     IHomeWindowRegistry *IHomeWindowRegistry::instance() {

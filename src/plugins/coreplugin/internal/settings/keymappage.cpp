@@ -19,7 +19,7 @@
 //      - Type:     QJsonObject
 // 2. Current Action Family
 //      - Object:   ActionManager::instance()
-//      - Property: currentShortcutFamily
+//      - Property: currentShortcutsFamily
 //      - Type:     QString
 
 namespace Core::Internal {

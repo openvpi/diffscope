@@ -19,10 +19,6 @@ namespace Core {
             VST,
         };
 
-        explicit IProjectWindow(QObject *parent = nullptr);
-        explicit IProjectWindow(Mode mode, QObject *parent = nullptr);
-        ~IProjectWindow();
-
         Mode mode() const;
         inline bool isVST() const;
 
@@ -45,6 +41,13 @@ namespace Core {
         QString correctWindowTitle(const QString &title) const override;
         QWidget *createWindow(QWidget *parent) const override;
         void nextLoadingState(State nextState) override;
+
+    protected:
+        explicit IProjectWindow(QObject *parent = nullptr);
+        explicit IProjectWindow(Mode mode, QObject *parent = nullptr);
+        ~IProjectWindow();
+
+        friend class IExecutiveRegistry<IProjectWindow>;
     };
 
     inline bool IProjectWindow::isVST() const {
