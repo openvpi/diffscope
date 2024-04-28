@@ -47,7 +47,7 @@ namespace Core {
         void addShortcutsFamily(const QString &id, const ActionDomain::ShortcutsFamily &family,
                                Scope scope = System);
         void removeShortcutsFamily(const QString &id, Scope scope = System);
-        void clearShortcutFamilies(Scope scope = System);
+        void clearShortcutsFamilies(Scope scope = System);
 
     Q_SIGNALS:
         void layoutsReloaded();

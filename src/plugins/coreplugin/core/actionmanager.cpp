@@ -297,7 +297,7 @@ namespace Core {
         auto &families = scope == System ? d->systemFamilies : d->userFamilies;
         families.remove(id);
     }
-    void ActionManager::clearShortcutFamilies(ActionManager::Scope scope) {
+    void ActionManager::clearShortcutsFamilies(ActionManager::Scope scope) {
         Q_D(ActionManager);
         auto &families = scope == System ? d->systemFamilies : d->userFamilies;
         families.clear();

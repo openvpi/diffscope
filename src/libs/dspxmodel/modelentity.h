@@ -58,7 +58,7 @@ namespace QDspx {
         TimelineEntity *timeline() const;
         TrackListEntity *tracks() const;
 
-    protected:
+    public:
         ModelEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
         friend class DspxInitializer;
     };

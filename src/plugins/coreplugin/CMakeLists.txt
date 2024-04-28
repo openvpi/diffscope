@@ -32,6 +32,8 @@ qm_configure_target(${PROJECT_NAME}
         ChorusKit::AppCore
         svscraft::Widgets
         JetBrainsDockingSystem
+        dspxmodel
+        opendspx::opendspx
     INCLUDE_PRIVATE
         core
         windows
