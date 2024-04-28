@@ -5,6 +5,10 @@
 
 #include <audioplugin/trackinterface.h>
 
+namespace QDspx {
+    class ClipEntity;
+}
+
 namespace Audio {
 
     class TrackInterfacePrivate {
@@ -20,6 +24,14 @@ namespace Audio {
         talcs::AudioSourceClipSeries *clipSeries;
 
         QHash<QDspx::AudioClipEntity *, AudioClipInterface *> clips;
+
+        void handleEntityGainChange(double gainDecibel) const;
+        void handleEntityPanChange(double pan) const;
+        void handleEntityMuteChange(bool isMuted) const;
+        void handleEntitySoloChange(bool isSolo) const;
+
+        void handleClipInserted(QDspx::ClipEntity *clipEntity);
+        void handleClipAboutToRemove(QDspx::ClipEntity *clipEntity);
     };
 
 }

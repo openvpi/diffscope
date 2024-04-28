@@ -3,10 +3,22 @@
 
 #include <TalcsCore/PositionableMixerAudioSource.h>
 #include <TalcsCore/AudioSourceClipSeries.h>
+#include <TalcsCore/Decibels.h>
 
 #include <audioplugin/trackinterface.h>
 
 namespace Audio {
+
+    void AudioClipInterfacePrivate::handleEntityGainChange(double gainDecibel) const {
+        clipControlMixer->setGain(talcs::Decibels::decibelsToGain(static_cast<float>(gainDecibel)));
+    }
+    void AudioClipInterfacePrivate::handleEntityPanChange(double pan) const {
+        clipControlMixer->setPan(static_cast<float>(pan));
+    }
+    void AudioClipInterfacePrivate::handleEntityMuteChange(bool isMute) const {
+        clipControlMixer->setSilentFlags(isMute ? -1 : 0);
+    }
+
     AudioClipInterface::AudioClipInterface(QDspx::AudioClipEntity *entity, TrackInterface *track, QObject *parent) : AudioClipInterface(*new AudioClipInterfacePrivate, parent) {
         Q_D(AudioClipInterface);
         d->entity = entity;

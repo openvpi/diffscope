@@ -17,6 +17,10 @@ namespace Audio {
         std::unique_ptr<talcs::PositionableMixerAudioSource> clipControlMixer;
         talcs::PositionableMixerAudioSource *clipMixer;
         talcs::PositionableAudioSource *clipAudioSource;
+
+        void handleEntityGainChange(double gainDecibel) const;
+        void handleEntityPanChange(double pan) const;
+        void handleEntityMuteChange(bool isMute) const;
     };
 }
 

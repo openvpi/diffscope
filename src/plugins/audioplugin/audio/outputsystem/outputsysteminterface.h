@@ -34,6 +34,11 @@ namespace Audio {
 
         bool makeReady();
 
+    Q_SIGNALS:
+        void bufferSizeChanged(qint64 bufferSize);
+        void sampleRateChanged(double sampleRate);
+        void deviceChanged();
+
     private:
         explicit OutputSystemInterface(QObject *parent = nullptr);
         QScopedPointer<OutputSystemInterfacePrivate> d_ptr;

@@ -41,11 +41,13 @@ namespace Audio {
         talcs::TransportAudioSource *m_tpSrc;
         talcs::PositionableMixerAudioSource *m_postMixer;
         talcs::PositionableMixerAudioSource *m_masterTrackControlMixer;
-        std::unique_ptr<talcs::PositionableMixerAudioSource> m_masterTrackMixer;
-
-        talcs::PositionableAudioSource *m_substitutedSource = nullptr;
+        talcs::PositionableMixerAudioSource *m_masterTrackMixer;
 
         AudioContextInterface *m_audioContextInterface;
+
+        void handleEntityGainChange(double gainDecibel) const;
+        void handleEntityPanChange(double pan) const;
+        void handleEntityMuteChange(bool isMute) const;
     };
 
 }

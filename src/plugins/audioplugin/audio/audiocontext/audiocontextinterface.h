@@ -25,6 +25,8 @@ namespace Audio {
 
     class ProjectAddOn;
 
+    class OutputSystemInterface;
+
     class TrackInterface;
 
     class AudioClipInterface;
@@ -46,6 +48,8 @@ namespace Audio {
 
         Core::IWindow *windowHandle() const;
         static AudioContextInterface *get(Core::IWindow *win);
+
+        OutputSystemInterface *outputSystem() const;
 
         Core::IExecutiveRegistry<TrackInterface> *trackRegistry() const;
         Core::IExecutiveRegistry<AudioClipInterface> *audioClipRegistry() const;

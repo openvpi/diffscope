@@ -21,8 +21,7 @@ namespace Audio {
         ~IAudio() override;
         static IAudio *instance();
 
-        OutputSystemInterface *outputSystemInterface() const;
-        OutputSystemInterface *vstOutputSystemInterface() const;
+        OutputSystemInterface *outputSystemInterface(bool isVST) const;
 
     private:
         explicit IAudio(QObject *parent = nullptr);

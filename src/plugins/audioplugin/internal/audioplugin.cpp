@@ -80,8 +80,8 @@ namespace Audio {
             msgBox.exec();
         }
 
-        new DeviceTester(iAudio->outputSystemInterface(), iAudio->outputSystemInterface());
-        new DeviceTester(iAudio->vstOutputSystemInterface(), iAudio->vstOutputSystemInterface());
+        new DeviceTester(iAudio->outputSystemInterface(true), iAudio->outputSystemInterface(true));
+        new DeviceTester(iAudio->outputSystemInterface(false), iAudio->outputSystemInterface(false));
 
         return true;
     }

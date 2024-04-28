@@ -7,8 +7,12 @@
 namespace Audio {
 
     void OutputSystemInterfacePrivate::init(AbstractOutputSystem *abstractOutputSystem_, bool isVST_) {
+        Q_Q(OutputSystemInterface);
         abstractOutputSystem = abstractOutputSystem_;
         isVST = isVST_;
+        QObject::connect(abstractOutputSystem, &AbstractOutputSystem::bufferSizeChanged, q, &OutputSystemInterface::bufferSizeChanged);
+        QObject::connect(abstractOutputSystem, &AbstractOutputSystem::sampleRateChanged, q, &OutputSystemInterface::sampleRateChanged);
+        QObject::connect(abstractOutputSystem, &AbstractOutputSystem::deviceChanged, q, &OutputSystemInterface::deviceChanged);
     }
 
     OutputSystemInterface::OutputSystemInterface(QObject *parent) : QObject(parent), d_ptr(new OutputSystemInterfacePrivate) {

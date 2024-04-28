@@ -10,6 +10,20 @@ namespace Audio {
 
     void AudioContextInterfacePrivate::init(ProjectAddOn *projectAddOn_) {
         projectAddOn = projectAddOn_;
+        // TODO connect doc signals
+    }
+    void AudioContextInterfacePrivate::handleTrackInserted(QDspx::TrackEntity *trackEntity) {
+        Q_Q(AudioContextInterface);
+        auto track = trackRegistry.create(trackEntity, q, q);
+        tracks.insert(trackEntity, track);
+    }
+    void AudioContextInterfacePrivate::handleTrackAboutToRemove(QDspx::TrackEntity *trackEntity) {
+        auto track = tracks.value(trackEntity);
+        if (track) {
+            track->quit();
+            delete track;
+            tracks.remove(trackEntity);
+        }
     }
 
     AudioContextInterface::AudioContextInterface(QObject *parent) : QObject(parent), d_ptr(new AudioContextInterfacePrivate) {
@@ -46,6 +60,11 @@ namespace Audio {
 
     AudioContextInterface *AudioContextInterface::get(Core::IWindow *win) {
         return static_cast<AudioContextInterface *>(win->getFirstObject("Audio.AudioContextInterface"));
+    }
+
+    OutputSystemInterface *AudioContextInterface::outputSystem() const {
+        Q_D(const AudioContextInterface);
+        return IAudio::instance()->outputSystemInterface(d->projectAddOn->isVST());
     }
 
     Core::IExecutiveRegistry<TrackInterface> *AudioContextInterface::trackRegistry() const {

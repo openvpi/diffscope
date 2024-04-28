@@ -12,12 +12,8 @@ namespace Audio {
     IAudio *IAudio::instance() {
         return m_instance;
     }
-    OutputSystemInterface *IAudio::outputSystemInterface() const {
+    OutputSystemInterface *IAudio::outputSystemInterface(bool isVST) const {
         Q_D(const IAudio);
-        return d->outputSystemInterface;
-    }
-    OutputSystemInterface *IAudio::vstOutputSystemInterface() const {
-        Q_D(const IAudio);
-        return d->vstOutputSystemInterface;
+        return isVST ? d->vstOutputSystemInterface : d->outputSystemInterface;
     }
 }

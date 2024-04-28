@@ -24,6 +24,9 @@ namespace Audio {
 
         void init(ProjectAddOn *projectAddOn);
 
+        void handleTrackInserted(QDspx::TrackEntity *trackEntity);
+        void handleTrackAboutToRemove(QDspx::TrackEntity *trackEntity);
+
     };
 }
 
