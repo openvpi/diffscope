@@ -149,7 +149,11 @@ namespace Core {
     }
 
     bool DspxDocumentPrivate::create(const QDspxModel &model) {
+        Q_Q(DspxDocument);
+
         if (objModel) {
+            Q_EMIT q->docReset();
+
             delete objModel;
             delete dataModel;
 
@@ -375,6 +379,8 @@ namespace Core {
     }
 
     void DspxDocument::setAccepted(bool accepted) {
+        Q_D(DspxDocument);
+        d->accepted = accepted;
     }
 
     bool DspxDocument::open(const QString &fileName) {

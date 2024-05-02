@@ -110,6 +110,9 @@ namespace Core {
 
         void close() override;
 
+    Q_SIGNALS:
+        void docReset();
+
     protected:
         friend class DspxSpec;
     };
