@@ -256,7 +256,7 @@ namespace Core {
     bool DspxDocumentPrivate::makeNew() {
         QDspxModel model;
         model.version = QDspx::Version;
-        model.content.metadata.name = QStringLiteral("New Project");
+        model.content.global.name = QStringLiteral("New Project");
         return create(model);
     }
 

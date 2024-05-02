@@ -22,11 +22,15 @@ namespace QDspx {
         friend class DspxInitializer;
     };
 
-    class DSPXMODEL_EXPORT FileMetaEntity : public Substate::StructEntityBase {
+    class DSPXMODEL_EXPORT FileGlobalEntity : public Substate::StructEntityBase {
         Q_OBJECT
+        Q_PROPERTY(QString author READ author WRITE setAuthor NOTIFY authorChanged)
+        Q_PROPERTY(
+            QString projectName READ projectName WRITE setProjectName NOTIFY projectNameChanged)
+        Q_PROPERTY(int centShift READ centShift WRITE setCentShift NOTIFY centShiftChanged)
     public:
-        explicit FileMetaEntity(QObject *parent = nullptr);
-        ~FileMetaEntity();
+        explicit FileGlobalEntity(QObject *parent = nullptr);
+        ~FileGlobalEntity();
 
     public:
         QString author() const;
@@ -35,14 +39,18 @@ namespace QDspx {
         QString projectName() const;
         void setProjectName(const QString &projectName);
 
+        int centShift() const;
+        void setCentShift(int centShift);
+
     Q_SIGNALS:
         void authorChanged(const QString &author);
         void projectNameChanged(const QString &projectName);
+        void centShiftChanged(int centShift);
 
     protected:
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
-        FileMetaEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
+        FileGlobalEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
         friend class DspxInitializer;
     };
 
@@ -53,7 +61,7 @@ namespace QDspx {
         ~ModelEntity();
 
     public:
-        FileMetaEntity *metadata() const;
+        FileGlobalEntity *global() const;
         MasterEntity *master() const;
         TimelineEntity *timeline() const;
         TrackListEntity *tracks() const;

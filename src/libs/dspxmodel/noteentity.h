@@ -123,7 +123,10 @@ namespace QDspx {
         Q_PROPERTY(int position READ position WRITE setPosition NOTIFY positionChanged)
         Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
         Q_PROPERTY(int keyNumber READ keyNumber WRITE setKeyNumber NOTIFY keyNumberChanged)
+        Q_PROPERTY(int centShift READ centShift WRITE setCentShift NOTIFY centShiftChanged)
         Q_PROPERTY(QString lyric READ lyric WRITE setLyric NOTIFY lyricChanged)
+        Q_PROPERTY(QString orgPronunciation READ orgPronunciation WRITE setOrgPronunciation NOTIFY
+                       orgPronunciationChanged)
         Q_PROPERTY(QString pronunciation READ pronunciation WRITE setPronunciation NOTIFY
                        pronunciationChanged)
     public:
@@ -139,6 +142,9 @@ namespace QDspx {
 
         int keyNumber() const;
         void setKeyNumber(int keyNumber);
+
+        int centShift() const;
+        void setCentShift(int centShift);
 
         QString lyric() const;
         void setLyric(const QString &lyric);
@@ -156,6 +162,7 @@ namespace QDspx {
         void positionChanged(int position);
         void lengthChanged(int length);
         void keyNumberChanged(int keyNumber);
+        void centShiftChanged(int centShift);
         void lyricChanged(const QString &lyric);
         void orgPronunciationChanged(const QString &orgPronunciation);
         void pronunciationChanged(const QString &pronunciation);

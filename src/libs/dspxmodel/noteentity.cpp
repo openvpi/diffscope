@@ -216,6 +216,7 @@ namespace QDspx {
         NS_Position,
         NS_Length,
         NS_KeyNumber,
+        NS_CentShift,
         NS_Lyric,
         NS_OrgPronunciation,
         NS_Pronunciation,
@@ -251,6 +252,14 @@ namespace QDspx {
 
     void NoteEntity::setKeyNumber(int keyNumber) {
         setVariantImpl(NS_KeyNumber, keyNumber);
+    }
+
+    int NoteEntity::centShift() const {
+        return valueImpl(NS_CentShift).variant->toInt();
+    }
+
+    void NoteEntity::setCentShift(int centShift) {
+        setVariantImpl(NS_CentShift, centShift);
     }
 
     QString NoteEntity::lyric() const {
@@ -297,6 +306,9 @@ namespace QDspx {
             case NS_KeyNumber:
                 Q_EMIT keyNumberChanged(val.variant->toInt());
                 return;
+            case NS_CentShift:
+                Q_EMIT centShiftChanged(val.variant->toInt());
+                return;
             case NS_Lyric:
                 Q_EMIT lyricChanged(val.variant->toString());
                 return;
@@ -317,6 +329,7 @@ namespace QDspx {
             setPosition(DefaultNotePos);
             setLength(DefaultNoteLength);
             setKeyNumber(DefaultNoteKeyNum);
+            setCentShift(DefaultCentShift);
             setLyric(DefaultNoteLyric);
             setPronunciation(DefaultNotePronunciation);
             setValueImpl(NS_PhonemeInfo, new PhonemeInfoEntity());

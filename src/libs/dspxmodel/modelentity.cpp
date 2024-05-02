@@ -60,7 +60,7 @@ namespace QDspx {
             REGISTER_FACTORY_CONTAINER(TrackListEntity, "dspx_track_list")
 
             REGISTER_FACTORY(MasterEntity, "dspx_master")
-            REGISTER_FACTORY(FileMetaEntity, "dspx_file_meta")
+            REGISTER_FACTORY(FileGlobalEntity, "dspx_file_meta")
             REGISTER_FACTORY(ModelEntity, "dspx_model")
         }
 
@@ -110,26 +110,33 @@ namespace QDspx {
     enum FileMetaSubscript {
         FMS_Author,
         FMS_ProjectName,
+        FMS_CentShift,
     };
 
-    FileMetaEntity::FileMetaEntity(QObject *parent)
-        : FileMetaEntity(tagged_node<StructNode>("dspx_file_meta", 4), true, parent) {
+    FileGlobalEntity::FileGlobalEntity(QObject *parent)
+        : FileGlobalEntity(tagged_node<StructNode>("dspx_file_meta", 4), true, parent) {
     }
-    FileMetaEntity::~FileMetaEntity() = default;
-    QString FileMetaEntity::author() const {
+    FileGlobalEntity::~FileGlobalEntity() = default;
+    QString FileGlobalEntity::author() const {
         return valueImpl(FMS_Author).variant->toString();
     }
-    void FileMetaEntity::setAuthor(const QString &author) {
+    void FileGlobalEntity::setAuthor(const QString &author) {
         setVariantImpl(FMS_Author, author);
     }
-    QString FileMetaEntity::projectName() const {
+    QString FileGlobalEntity::projectName() const {
         return valueImpl(FMS_ProjectName).variant->toString();
     }
-    void FileMetaEntity::setProjectName(const QString &projectName) {
+    void FileGlobalEntity::setProjectName(const QString &projectName) {
         setVariantImpl(FMS_ProjectName, projectName);
     }
-    void FileMetaEntity::sendAssigned(int index, const Entity::Value &val,
-                                      const Entity::Value &oldVal) {
+    int FileGlobalEntity::centShift() const {
+        return valueImpl(FMS_CentShift).variant->toInt();
+    }
+    void FileGlobalEntity::setCentShift(int centShift) {
+        setVariantImpl(FMS_CentShift, centShift);
+    }
+    void FileGlobalEntity::sendAssigned(int index, const Entity::Value &val,
+                                        const Entity::Value &oldVal) {
         switch (index) {
             case FMS_Author:
                 Q_EMIT authorChanged(val.variant->toString());
@@ -137,15 +144,19 @@ namespace QDspx {
             case FMS_ProjectName:
                 Q_EMIT projectNameChanged(val.variant->toString());
                 return;
+            case FMS_CentShift:
+                Q_EMIT centShiftChanged(val.variant->toInt());
+                return;
             default:
                 break;
         }
     }
-    FileMetaEntity::FileMetaEntity(Node *node, bool init, QObject *parent)
+    FileGlobalEntity::FileGlobalEntity(Node *node, bool init, QObject *parent)
         : StructEntityBase(node, parent) {
         if (init) {
             setAuthor(DefaultAuthor);
             setProjectName(DefaultProjectName);
+            setCentShift(DefaultCentShift);
         }
     }
 
@@ -168,7 +179,7 @@ namespace QDspx {
     }
 
     enum ModelSubscript {
-        MS_Metadata,
+        MS_Global,
         MS_Master,
         MS_Timeline,
         MS_Track,
@@ -178,8 +189,8 @@ namespace QDspx {
         : ModelEntity(tagged_node<StructNode>("dspx_model", 4), true, parent) {
     }
     ModelEntity::~ModelEntity() = default;
-    FileMetaEntity *ModelEntity::metadata() const {
-        return static_cast<FileMetaEntity *>(valueImpl(MS_Metadata).item);
+    FileGlobalEntity *ModelEntity::global() const {
+        return static_cast<FileGlobalEntity *>(valueImpl(MS_Global).item);
     }
     MasterEntity *ModelEntity::master() const {
         return static_cast<MasterEntity *>(valueImpl(MS_Master).item);
@@ -193,7 +204,7 @@ namespace QDspx {
     ModelEntity::ModelEntity(Node *node, bool init, QObject *parent)
         : StructEntityBase(node, parent) {
         if (init) {
-            setValueImpl(MS_Metadata, new FileMetaEntity());
+            setValueImpl(MS_Global, new FileGlobalEntity());
             setValueImpl(MS_Master, new MasterEntity());
             setValueImpl(MS_Timeline, new TimelineEntity());
             setValueImpl(MS_Track, new TrackListEntity());

@@ -7,6 +7,7 @@ namespace QDspx {
     const char Version[] = "1.0.0";
     const char DefaultAuthor[] = "";
     const char DefaultProjectName[] = "New Project";
+    const int DefaultCentShift = 0;
 
     // Control
     const double DefaultGain = 0;

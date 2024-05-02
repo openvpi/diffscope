@@ -12,6 +12,7 @@ namespace QDspx {
 
     enum BusControlSubscript {
         BCS_Gain,
+        BCS_Pan,
         BCS_Mute,
     };
 
@@ -29,8 +30,16 @@ namespace QDspx {
         setVariantImpl(BCS_Gain, gain);
     }
 
+    double BusControlEntity::pan() const {
+        return valueImpl(BCS_Pan).variant->toDouble();
+    }
+
+    void BusControlEntity::setPan(double gain) {
+        setVariantImpl(BCS_Pan, gain);
+    }
+
     bool BusControlEntity::mute() const {
-        return valueImpl(BCS_Gain).variant->toBool();
+        return valueImpl(BCS_Mute).variant->toBool();
     }
 
     void BusControlEntity::setMute(bool mute) {
@@ -41,6 +50,9 @@ namespace QDspx {
         switch (index) {
             case BCS_Gain:
                 Q_EMIT gainChanged(val.variant->toDouble());
+                return;
+            case BCS_Pan:
+                Q_EMIT panChanged(val.variant->toDouble());
                 return;
             case BCS_Mute:
                 Q_EMIT muteChanged(val.variant->toBool());
@@ -54,13 +66,13 @@ namespace QDspx {
         : StructEntityBase(node, parent) {
         if (init) {
             setGain(DefaultGain);
+            setPan(DefaultPan);
             setMute(DefaultMute);
         }
     }
 
     enum TrackControlSubscript {
-        TCS_Pan = 2,
-        TCS_Solo,
+        TCS_Solo = 3,
     };
 
     TrackControlEntity::TrackControlEntity(QObject *parent)
@@ -68,14 +80,6 @@ namespace QDspx {
     }
 
     TrackControlEntity::~TrackControlEntity() = default;
-
-    double TrackControlEntity::pan() const {
-        return valueImpl(TCS_Pan).variant->toDouble();
-    }
-
-    void TrackControlEntity::setPan(double pan) {
-        setVariantImpl(TCS_Pan, pan);
-    }
 
     bool TrackControlEntity::solo() const {
         return valueImpl(TCS_Solo).variant->toBool();
@@ -87,9 +91,6 @@ namespace QDspx {
 
     void TrackControlEntity::sendAssigned(int index, const Value &val, const Value &oldVal) {
         switch (index) {
-            case TCS_Pan:
-                Q_EMIT panChanged(val.variant->toDouble());
-                return;
             case TCS_Solo:
                 Q_EMIT soloChanged(val.variant->toBool());
                 return;
@@ -102,7 +103,6 @@ namespace QDspx {
     TrackControlEntity::TrackControlEntity(Node *node, bool init, QObject *parent)
         : BusControlEntity(node, init, parent) {
         if (init) {
-            setPan(DefaultPan);
             setSolo(DefaultSolo);
         }
     }

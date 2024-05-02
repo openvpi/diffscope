@@ -15,6 +15,7 @@ namespace QDspx {
     class DSPXMODEL_EXPORT BusControlEntity : public Substate::StructEntityBase {
         Q_OBJECT
         Q_PROPERTY(double gain READ gain WRITE setGain NOTIFY gainChanged)
+        Q_PROPERTY(double pan READ pan WRITE setPan NOTIFY panChanged)
         Q_PROPERTY(bool mute READ mute WRITE setMute NOTIFY muteChanged)
     public:
         explicit BusControlEntity(QObject *parent = nullptr);
@@ -24,11 +25,15 @@ namespace QDspx {
         double gain() const;
         void setGain(double gain);
 
+        double pan() const;
+        void setPan(double pan);
+
         bool mute() const;
         void setMute(bool mute);
 
     Q_SIGNALS:
         void gainChanged(double gain);
+        void panChanged(double pan);
         void muteChanged(bool mute);
 
     protected:
@@ -40,21 +45,16 @@ namespace QDspx {
 
     class DSPXMODEL_EXPORT TrackControlEntity : public BusControlEntity {
         Q_OBJECT
-        Q_PROPERTY(double pan READ pan WRITE setPan NOTIFY panChanged)
         Q_PROPERTY(bool solo READ solo WRITE setSolo NOTIFY soloChanged)
     public:
         explicit TrackControlEntity(QObject *parent = nullptr);
         ~TrackControlEntity();
 
     public:
-        double pan() const;
-        void setPan(double pan);
-
         bool solo() const;
         void setSolo(bool solo);
 
     Q_SIGNALS:
-        void panChanged(double pan);
         void soloChanged(bool solo);
 
     protected:
