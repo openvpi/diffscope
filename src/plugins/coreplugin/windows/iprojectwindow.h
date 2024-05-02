@@ -4,7 +4,7 @@
 #include <CoreApi/iwindow.h>
 #include <CoreApi/actiondomain.h>
 
-#include <coreplugin/coreglobal.h>
+#include <coreplugin/dspxdocument.h>
 
 namespace Core {
 
@@ -21,6 +21,8 @@ namespace Core {
 
         Mode mode() const;
         inline bool isVST() const;
+
+        DspxDocument *doc() const;
 
     public:
         QMenuBar *menuBar() const override;
@@ -43,7 +45,6 @@ namespace Core {
         void nextLoadingState(State nextState) override;
 
     protected:
-        explicit IProjectWindow(QObject *parent = nullptr);
         explicit IProjectWindow(Mode mode, QObject *parent = nullptr);
         ~IProjectWindow();
 

@@ -74,7 +74,7 @@ ck_add_attached_files(${PROJECT_NAME}
 # Add install command
 ck_sync_include(${PROJECT_NAME}
     OPTIONS
-        EXCLUDE "internal/.+"
+        EXCLUDE "${PROJECT_NAME}/internal/.+"
         FORCE
 )
 

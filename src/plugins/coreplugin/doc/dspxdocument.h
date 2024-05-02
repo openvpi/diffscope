@@ -20,7 +20,7 @@ namespace Core {
         explicit DspxDocument(QObject *parent = nullptr);
         ~DspxDocument();
 
-        class Model {
+        class CORE_EXPORT DataModel {
         public:
             enum StateFlag {
                 TransactionFlag = 1,
@@ -36,7 +36,7 @@ namespace Core {
                 Redo = RedoFlag | UndoRedoFlag,
             };
 
-            inline Model() : d(nullptr) {
+            inline DataModel() : d(nullptr) {
             }
 
             inline bool isNull() const {
@@ -51,11 +51,15 @@ namespace Core {
                 return state() & UndoRedoFlag;
             }
 
+            QVariantHash stepMessage(int index) const;
+
+            int minimumStep() const;
+            int maximumStep() const;
+            int currentStep() const;
+
             void beginTransaction();
             void abortTransaction();
             void commitTransaction(const QVariantHash &message);
-
-            QVariantHash stepMessage(int index) const;
 
             void undo();
             void redo();
@@ -67,10 +71,6 @@ namespace Core {
                 return currentStep() < maximumStep();
             }
 
-            int minimumStep() const;
-            int maximumStep() const;
-            int currentStep() const;
-
             QDspx::ModelEntity *model() const;
 
         protected:
@@ -79,11 +79,14 @@ namespace Core {
             friend class DspxDocument;
         };
 
-        Model model() const;
+        DataModel dataModel() const;
 
     public:
         QString dataDirectory() const;
         void setDataDirectory(const QString &dir);
+
+        bool accepted() const;
+        void setAccepted(bool accepted);
 
     public:
         bool open(const QString &fileName) override;
@@ -92,8 +95,9 @@ namespace Core {
         bool recover(const QString &fileName);
 
         bool save(const QString &fileName) override;
-        QByteArray saveRawData() const;
+        void changeSavedState(bool saved);
 
+        QByteArray rawData() const;
         bool isOpened() const;
         bool isFile() const;
 

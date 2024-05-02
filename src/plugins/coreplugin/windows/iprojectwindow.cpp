@@ -25,6 +25,9 @@ namespace Core {
                     &IProjectWindowPrivate::reloadLayouts);
             connect(actionMgr, &ActionManager::shortcutsReloaded, this,
                     &IProjectWindowPrivate::reloadShortcuts);
+
+            Q_Q(IProjectWindow);
+            doc.reset(new DspxDocument(q));
         }
 
         void reloadLayouts() {
@@ -50,11 +53,17 @@ namespace Core {
         }
 
         IProjectWindow::Mode mode;
+        QScopedPointer<DspxDocument> doc;
     };
 
     IProjectWindow::Mode IProjectWindow::mode() const {
         Q_D(const IProjectWindow);
         return d->mode;
+    }
+
+    DspxDocument *IProjectWindow::doc() const {
+        Q_D(const IProjectWindow);
+        return d->doc.data();
     }
 
     bool IProjectWindow::eventFilter(QObject *obj, QEvent *event) {
@@ -118,17 +127,13 @@ namespace Core {
         }
     }
 
-    IProjectWindow::IProjectWindow(QObject *parent) : IProjectWindow(Standalone, parent) {
-    }
-
     IProjectWindow::IProjectWindow(IProjectWindow::Mode mode, QObject *parent)
         : IWindow(*new IProjectWindowPrivate(mode), parent) {
         Q_D(IProjectWindow);
         d->init();
     }
 
-    IProjectWindow::~IProjectWindow() {
-    }
+    IProjectWindow::~IProjectWindow() = default;
 
     IProjectWindowRegistry *IProjectWindowRegistry::instance() {
         static IProjectWindowRegistry reg;

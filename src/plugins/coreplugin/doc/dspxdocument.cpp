@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QVersionNumber>
+#include <QReadWriteLock>
 
 #include <opendspx/qdspxmodel.h>
 
@@ -49,17 +50,19 @@ namespace Core {
         bool watched;
         int initialStep;
         int savedStep;
+        bool accepted;
 
         QString logDir;
+        QString usedLogDir;
 
         QDspx::ModelEntity *objModel;
         Substate::Model *dataModel;
 
         inline void changeToOpen();
         inline void changeToSaved();
+        inline void changeToUnsaved();
         inline void changeToWatched();
         inline void unshiftToRecent();
-        inline bool checkNotOpened() const;
 
         bool create(const QDspxModel &model);
         bool read(const QByteArray &data);
@@ -75,14 +78,25 @@ namespace Core {
         watched = false;
         initialStep = 0;
         savedStep = -1;
+        accepted = false;
 
         objModel = nullptr;
         dataModel = nullptr;
     }
 
     DspxDocumentPrivate::~DspxDocumentPrivate() {
+        if (!objModel)
+            return;
+
         delete objModel;
         delete dataModel;
+
+        if (accepted) {
+            QDir dir(usedLogDir);
+            if (dir.isAbsolute()) {
+                dir.removeRecursively();
+            }
+        }
     }
 
     void DspxDocumentPrivate::init() {
@@ -101,7 +115,13 @@ namespace Core {
         Q_Q(DspxDocument);
 
         savedStep = dataModel->currentStep();
+        Q_EMIT q->changed();
+    }
 
+    inline void DspxDocumentPrivate::changeToUnsaved() {
+        Q_Q(DspxDocument);
+
+        savedStep = -1;
         Q_EMIT q->changed();
     }
 
@@ -120,13 +140,6 @@ namespace Core {
         ICore::instance()->documentSystem()->addRecentFile(q->filePath());
     }
 
-    bool DspxDocumentPrivate::checkNotOpened() const {
-        if (!opened)
-            return true;
-        errMsg = DspxDocument::tr("File is opened");
-        return false;
-    }
-
     static void dataToModel(const QDspxModel &model, QDspx::ModelEntity *modelEntity) {
         // TODO
     }
@@ -136,6 +149,44 @@ namespace Core {
     }
 
     bool DspxDocumentPrivate::create(const QDspxModel &model) {
+        if (objModel) {
+            delete objModel;
+            delete dataModel;
+
+            objModel = nullptr;
+            dataModel = nullptr;
+        }
+
+        {
+            // Remove previous dir
+            QDir dir(usedLogDir);
+            if (dir.isAbsolute() && !dir.removeRecursively()) {
+                errMsg = DspxDocument::tr("%1: Failed to remove old directory.").arg(usedLogDir);
+                return false;
+            }
+            usedLogDir.clear();
+        }
+
+        {
+            QDir dir(logDir);
+
+            // In case the log dir is empty
+            if (!dir.isAbsolute()) {
+                errMsg = DspxDocument::tr("Directory not set.");
+                return false;
+            }
+            // Remove old dir
+            if (dir.exists() && !dir.removeRecursively()) {
+                errMsg = DspxDocument::tr("%1: Failed to remove old directory.").arg(usedLogDir);
+                return false;
+            }
+            // Create current dir
+            if (!dir.mkpath(logDir)) {
+                errMsg = DspxDocument::tr("%1: Failed to create directory.").arg(usedLogDir);
+                return false;
+            }
+        }
+
         // Initialize filesystem engine
 #if 1
         auto engine = new Substate::FileSystemEngine();
@@ -158,6 +209,9 @@ namespace Core {
         dataModel->commitTransaction({
             {"open_dspx", "true"}
         });
+
+        usedLogDir = logDir;
+        savedStep = dataModel->currentStep();
         return true;
     }
 
@@ -253,22 +307,10 @@ namespace Core {
 
     DspxDocument::~DspxDocument() = default;
 
-    void DspxDocument::Model::beginTransaction() {
-        d->dataModel->beginTransaction();
+    DspxDocument::DataModel::State DspxDocument::DataModel::state() const {
+        return static_cast<State>(d->dataModel->state());
     }
-    void DspxDocument::Model::abortTransaction() {
-        d->dataModel->abortTransaction();
-    }
-    void DspxDocument::Model::commitTransaction(const QVariantHash &message) {
-        Substate::Engine::StepMessage msg;
-        msg.reserve(message.size());
-        for (auto it = message.begin(); it != message.end(); ++it) {
-            msg.insert(
-                std::make_pair(it.key().toStdString(), Substate::Variant::fromValue(it.value())));
-        }
-        d->dataModel->commitTransaction(msg);
-    }
-    QVariantHash DspxDocument::Model::stepMessage(int index) const {
+    QVariantHash DspxDocument::DataModel::stepMessage(int index) const {
         QVariantHash msg;
         const auto &message = d->dataModel->stepMessage(index);
         msg.reserve(int(message.size()));
@@ -277,31 +319,43 @@ namespace Core {
         }
         return msg;
     }
-    void DspxDocument::Model::undo() {
-        d->dataModel->undo();
-    }
-    void DspxDocument::Model::redo() {
-        d->dataModel->redo();
-    }
-    DspxDocument::Model::State DspxDocument::Model::state() const {
-        return static_cast<State>(d->dataModel->state());
-    }
-    int DspxDocument::Model::minimumStep() const {
+    int DspxDocument::DataModel::minimumStep() const {
         return qMax(d->dataModel->minimumStep(), d->initialStep);
     }
-    int DspxDocument::Model::maximumStep() const {
+    int DspxDocument::DataModel::maximumStep() const {
         return d->dataModel->maximumStep();
     }
-    int DspxDocument::Model::currentStep() const {
+    int DspxDocument::DataModel::currentStep() const {
         return d->dataModel->currentStep();
     }
-    QDspx::ModelEntity *DspxDocument::Model::model() const {
+    void DspxDocument::DataModel::beginTransaction() {
+        d->dataModel->beginTransaction();
+    }
+    void DspxDocument::DataModel::abortTransaction() {
+        d->dataModel->abortTransaction();
+    }
+    void DspxDocument::DataModel::commitTransaction(const QVariantHash &message) {
+        Substate::Engine::StepMessage msg;
+        msg.reserve(message.size());
+        for (auto it = message.begin(); it != message.end(); ++it) {
+            msg.insert(
+                std::make_pair(it.key().toStdString(), Substate::Variant::fromValue(it.value())));
+        }
+        d->dataModel->commitTransaction(msg);
+    }
+    void DspxDocument::DataModel::undo() {
+        d->dataModel->undo();
+    }
+    void DspxDocument::DataModel::redo() {
+        d->dataModel->redo();
+    }
+    QDspx::ModelEntity *DspxDocument::DataModel::model() const {
         return d->objModel;
     }
 
-    DspxDocument::Model DspxDocument::model() const {
+    DspxDocument::DataModel DspxDocument::dataModel() const {
         Q_D(const DspxDocument);
-        Model model;
+        DataModel model;
         model.d = d;
         return model;
     }
@@ -313,18 +367,18 @@ namespace Core {
 
     void DspxDocument::setDataDirectory(const QString &dir) {
         Q_D(DspxDocument);
-        if (!d->checkNotOpened()) {
-            return;
-        }
         d->logDir = dir;
+    }
+
+    bool DspxDocument::accepted() const {
+        return false;
+    }
+
+    void DspxDocument::setAccepted(bool accepted) {
     }
 
     bool DspxDocument::open(const QString &fileName) {
         Q_D(DspxDocument);
-
-        if (!d->checkNotOpened()) {
-            return false;
-        }
 
         QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly)) {
@@ -349,9 +403,6 @@ namespace Core {
     bool DspxDocument::openRawData(const QString &suggestFileName, const QByteArray &data) {
         Q_D(DspxDocument);
 
-        if (!d->checkNotOpened()) {
-            return false;
-        }
         if (!d->read(data)) {
             return false;
         }
@@ -366,9 +417,6 @@ namespace Core {
     bool DspxDocument::makeNew(const QString &suggestFileName) {
         Q_D(DspxDocument);
 
-        if (!d->checkNotOpened()) {
-            return false;
-        }
         if (!d->makeNew()) {
             return false;
         }
@@ -383,10 +431,6 @@ namespace Core {
 
     bool DspxDocument::recover(const QString &filename) {
         Q_D(DspxDocument);
-
-        if (!d->checkNotOpened()) {
-            return false;
-        }
 
         if (!d->recover()) {
             return false;
@@ -419,7 +463,15 @@ namespace Core {
         return true;
     }
 
-    QByteArray DspxDocument::saveRawData() const {
+    void DspxDocument::changeSavedState(bool saved) {
+        Q_D(DspxDocument);
+        if (saved)
+            d->changeToSaved();
+        else
+            d->changeToUnsaved();
+    }
+
+    QByteArray DspxDocument::rawData() const {
         Q_D(const DspxDocument);
         return d->save();
     }
@@ -456,8 +508,8 @@ namespace Core {
         IDocument::close();
     }
 
-    IDocument::ReloadBehavior DspxDocument::reloadBehavior(IDocument::ChangeTrigger state,
-                                                           IDocument::ChangeType type) const {
+    IDocument::ReloadBehavior DspxDocument::reloadBehavior(ChangeTrigger state,
+                                                           ChangeType type) const {
         switch (type) {
             case TypePermissions:
                 return BehaviorSilent;
@@ -471,10 +523,13 @@ namespace Core {
         return BehaviorAsk;
     }
 
-    bool DspxDocument::reload(IDocument::ReloadFlag flag, IDocument::ChangeType type) {
-        Q_UNUSED(flag)
+    bool DspxDocument::reload(ReloadFlag flag, ChangeType type) {
+        Q_D(DspxDocument);
         Q_UNUSED(type)
         // Content changed
+        if (flag == FlagReload) {
+            d->savedStep = -1;
+        }
         Q_EMIT changed();
         return true;
     }
