@@ -10,6 +10,7 @@ namespace Audio {
         IAudio *q_ptr;
         OutputSystemInterface *outputSystemInterface;
         OutputSystemInterface *vstOutputSystemInterface;
+        FormatManager *formatManager;
     };
 }
 

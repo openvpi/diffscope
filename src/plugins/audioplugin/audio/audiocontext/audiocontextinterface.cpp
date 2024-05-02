@@ -1,10 +1,15 @@
 #include "audiocontextinterface.h"
 #include "audiocontextinterface_p.h"
 
+#include <TalcsCore/BufferingAudioSource.h>
+#include <TalcsFormat/AudioFormatInputSource.h>
+
 #include <CoreApi/iwindow.h>
 
 #include <audioplugin/iaudio.h>
 #include <audioplugin/internal/projectaddon.h>
+#include <audioplugin/formatmanager.h>
+#include <audioplugin/formatentry.h>
 
 namespace Audio {
 
@@ -82,6 +87,19 @@ namespace Audio {
     TrackInterface *AudioContextInterface::getTrack(QDspx::TrackEntity *entity) const {
         Q_D(const AudioContextInterface);
         return d->tracks.value(entity);
+    }
+
+    talcs::PositionableAudioSource *AudioContextInterface::getFormatSource(const QString &filename, const QVariant &userData, bool isInternal) {
+        Q_D(AudioContextInterface);
+        for (auto entry : IAudio::instance()->formatManager()->entries()) {
+            auto io = entry->getFormatLoad(filename, userData, {}, d->projectAddOn->windowHandle()->window());
+            if (!io)
+                continue;
+            auto src = new talcs::AudioFormatInputSource(io, true);
+            // TODO
+
+        }
+        return nullptr;
     }
 
 }

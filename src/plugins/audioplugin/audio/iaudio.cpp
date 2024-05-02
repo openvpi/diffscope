@@ -16,4 +16,8 @@ namespace Audio {
         Q_D(const IAudio);
         return isVST ? d->vstOutputSystemInterface : d->outputSystemInterface;
     }
+    FormatManager *IAudio::formatManager() const {
+        Q_D(const IAudio);
+        return d->formatManager;
+    }
 }

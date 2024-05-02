@@ -11,6 +11,8 @@ namespace Audio {
 
     class OutputSystemInterface;
 
+    class FormatManager;
+
     class IAudioPrivate;
 
     class AUDIO_EXPORT IAudio : public QObject {
@@ -22,6 +24,8 @@ namespace Audio {
         static IAudio *instance();
 
         OutputSystemInterface *outputSystemInterface(bool isVST) const;
+
+        FormatManager *formatManager() const;
 
     private:
         explicit IAudio(QObject *parent = nullptr);

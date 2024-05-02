@@ -57,6 +57,8 @@ namespace Audio {
         QList<TrackInterface *> tracks() const;
         TrackInterface *getTrack(QDspx::TrackEntity *entity) const;
 
+        talcs::PositionableAudioSource *getFormatSource(const QString &filename, const QVariant &userData, bool isInternal = true);
+
     private:
         explicit AudioContextInterface(QObject *parent = nullptr);
         QScopedPointer<AudioContextInterfacePrivate> d_ptr;

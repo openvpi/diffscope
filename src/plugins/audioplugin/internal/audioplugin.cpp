@@ -25,6 +25,7 @@
 #include <audioplugin/private/outputsysteminterface_p.h>
 #include <audioplugin/internal/devicetester.h>
 #include <audioplugin/internal/projectaddon.h>
+#include <audioplugin/formatmanager.h>
 
 namespace Audio {
 
@@ -47,6 +48,7 @@ namespace Audio {
         iAudio->d_func()->outputSystemInterface->d_func()->init(AudioSystem::outputSystem(), false);
         iAudio->d_func()->vstOutputSystemInterface = new OutputSystemInterface(AudioSystem::vstConnectionSystem());
         iAudio->d_func()->vstOutputSystemInterface->d_func()->init(AudioSystem::vstConnectionSystem(), true);
+        iAudio->d_func()->formatManager = new FormatManager(this);
 
         if (arguments.contains("-vst")) {
             qDebug() << "Audio::AudioPlugin: started by an external host (primary instance)";
