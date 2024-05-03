@@ -4,14 +4,32 @@
 #include <TalcsCore/PositionableMixerAudioSource.h>
 #include <TalcsCore/TransportAudioSource.h>
 #include <TalcsCore/Decibels.h>
+#include <TalcsFormat/AudioFormatInputSource.h>
 
 #include <coreplugin/iprojectwindow.h>
 
 #include <audioplugin/iaudio.h>
 #include <audioplugin/outputsysteminterface.h>
 #include <audioplugin/private/audiocontextinterface_p.h>
+#include <audioplugin/internal/audiosystem.h>
+#include <audioplugin/internal/outputsystem.h>
+#include <audioplugin/internal/vstconnectionsystem.h>
 
 namespace Audio {
+
+    class BufferingAudioObjectSource : public QObject, public talcs::BufferingAudioSource {
+    public:
+        explicit BufferingAudioObjectSource(PositionableAudioSource *src, bool takeOwnership,
+                                            int channelCount, qint64 readAheadSize,
+                                            bool autoBuffering = true,
+                                            QThreadPool *threadPool = nullptr,
+                                            QObject *parent = nullptr)
+            : QObject(parent), talcs::BufferingAudioSource(src, takeOwnership, channelCount,
+                                                           readAheadSize, autoBuffering,
+                                                           threadPool) {
+        }
+        ~BufferingAudioObjectSource() override = default;
+    };
 
     ProjectAddOn::ProjectAddOn(QObject *parent) : Core::IWindowAddOn(parent) {
         m_masterTrackMixer = new talcs::PositionableMixerAudioSource();
@@ -37,7 +55,22 @@ namespace Audio {
         auto iAudio = IAudio::instance();
         iAudio->outputSystemInterface(isVST())->preMixer()->addSource(m_preMixer.get());
         windowHandle()->addObject("Audio.AudioContextInterface", m_audioContextInterface);
-        // TODO connect doc signals
+
+        auto model = static_cast<Core::IProjectWindow *>(windowHandle())->doc()->dataModel().model();
+
+        connect(model->master()->control(), &QDspx::BusControlEntity::gainChanged, this, [=](double gainDecibel) {
+            handleEntityGainChange(gainDecibel);
+        });
+        connect(model->master()->control(), &QDspx::BusControlEntity::panChanged, this, [=](double pan) {
+            handleEntityPanChange(pan);
+        });
+        connect(model->master()->control(), &QDspx::BusControlEntity::muteChanged, this, [=](bool isMuted) {
+            handleEntityMuteChange(isMuted);
+        });
+
+        handleEntityGainChange(model->master()->control()->gain());
+        handleEntityPanChange(model->master()->control()->pan());
+        handleEntityMuteChange(model->master()->control()->mute());
     }
 
     void ProjectAddOn::extensionsInitialized() {
@@ -49,8 +82,7 @@ namespace Audio {
     }
 
     bool ProjectAddOn::isVST() const {
-        // TODO
-        return false;
+        return static_cast<Core::IProjectWindow *>(windowHandle())->isVST();
     }
 
     talcs::MixerAudioSource *ProjectAddOn::preMixer() const {
@@ -67,6 +99,22 @@ namespace Audio {
 
     talcs::PositionableMixerAudioSource *ProjectAddOn::masterTrackMixer() const {
         return m_masterTrackMixer;
+    }
+
+    talcs::PositionableAudioSource *ProjectAddOn::postGetFormat(talcs::AbstractAudioFormatIO *io, const QString &filename, bool isInternal) {
+        auto fmtSrc = new talcs::AudioFormatInputSource(io, true);
+        fmtSrc->setStereoize(true);
+        AbstractOutputSystem *outputSys = isVST() ? static_cast<AbstractOutputSystem *>(AudioSystem::vstConnectionSystem()) : static_cast<AbstractOutputSystem *>(AudioSystem::outputSystem());
+        auto readAheadSize = outputSys->fileBufferingReadAheadSize();
+        auto bufSrc = new BufferingAudioObjectSource(fmtSrc, true, 2, readAheadSize, true, nullptr, this);
+        connect(outputSys, &AbstractOutputSystem::fileBufferingReadAheadSizeChanged, bufSrc, [=](qint64 size) {
+            bufSrc->setReadAheadSize(size);
+        });
+        connect(bufSrc, &QObject::destroyed, this, [=] {
+            files.remove(bufSrc);
+        });
+        files.append(bufSrc, {filename, bufSrc, io, isInternal});
+        return bufSrc;
     }
 
     void ProjectAddOn::handleEntityGainChange(double gainDecibel) const {

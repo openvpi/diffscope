@@ -7,4 +7,8 @@ namespace Audio {
 
     FormatEntry::~FormatEntry() = default;
 
+    QStringList FormatEntry::extensionHints() const {
+        return {};
+    }
+
 }

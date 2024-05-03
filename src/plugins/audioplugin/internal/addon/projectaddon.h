@@ -4,6 +4,9 @@
 #include <memory>
 
 #include <TalcsCore/MetronomeAudioSource.h>
+#include <TalcsCore/BufferingAudioSource.h>
+
+#include <QMCore/qmchronomap.h>
 
 #include <CoreApi/iwindow.h>
 
@@ -12,6 +15,7 @@ namespace talcs {
     class TransportAudioSource;
     class PositionableMixerAudioSource;
     class PositionableAudioSource;
+    class AbstractAudioFormatIO;
 }
 
 namespace Audio {
@@ -36,6 +40,8 @@ namespace Audio {
         talcs::PositionableMixerAudioSource *postMixer() const;
         talcs::PositionableMixerAudioSource *masterTrackMixer() const;
 
+        talcs::PositionableAudioSource *postGetFormat(talcs::AbstractAudioFormatIO *io, const QString &filename, bool isInternal);
+
     private:
         std::unique_ptr<talcs::MixerAudioSource> m_preMixer;
         talcs::TransportAudioSource *m_tpSrc;
@@ -44,6 +50,15 @@ namespace Audio {
         talcs::PositionableMixerAudioSource *m_masterTrackMixer;
 
         AudioContextInterface *m_audioContextInterface;
+
+        struct FileInfo {
+            QString filename;
+            talcs::BufferingAudioSource *bufSrc;
+            talcs::AbstractAudioFormatIO *io;
+            bool isInternal;
+        };
+
+        QMChronoMap<talcs::BufferingAudioSource *, FileInfo> files;
 
         void handleEntityGainChange(double gainDecibel) const;
         void handleEntityPanChange(double pan) const;

@@ -119,6 +119,12 @@ namespace Audio {
     QPair<QString, QString> VSTConnectionSystem::hostSpecs() const {
         return m_hostSpecs;
     }
+    void VSTConnectionSystem::setFileBufferingMsec(double msec) {
+        if (!m_dev)
+            setFileBufferingReadAheadSize(0);
+        else
+            setFileBufferingReadAheadSize(static_cast<qint64>(msec * m_dev->sampleRate() / 1000.0));
+    }
     QByteArray VSTConnectionSystem::getEditorData(bool *ok) {
         return QByteArray();
     }
@@ -133,6 +139,9 @@ namespace Audio {
             emit bufferSizeChanged(bufferSize);
         }
         if (!qFuzzyCompare(sampleRate, oldSampleRate)) {
+            auto &settings = *Core::ILoader::instance()->settings();
+            auto obj = settings["Audio"].toObject();
+            setFileBufferingReadAheadSize(static_cast<qint64>(obj["fileBufferingReadAheadSize"].toInt() * sampleRate / 1000.0));
             emit sampleRateChanged(sampleRate);
         }
         m_preMixer->open(bufferSize, sampleRate);

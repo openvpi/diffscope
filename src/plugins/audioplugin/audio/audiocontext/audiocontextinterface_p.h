@@ -3,6 +3,8 @@
 
 #include <audioplugin/audiocontextinterface.h>
 
+#include <TalcsCore/BufferingAudioSource.h>
+
 #include <QMCore/qmchronomap.h>
 
 #include <audioplugin/itrackaddon.h>
@@ -11,7 +13,6 @@
 #include <audioplugin/audioclipinterface.h>
 
 namespace talcs {
-    class BufferingAudioSource;
     class AbstractAudioFormatIO;
 }
 
@@ -28,15 +29,6 @@ namespace Audio {
         Core::IExecutiveRegistry<TrackInterface> trackRegistry;
         Core::IExecutiveRegistry<AudioClipInterface> audioClipRegistry;
         QHash<QDspx::TrackEntity *, TrackInterface *> tracks;
-
-        struct FileInfo {
-            QString filename;
-            talcs::BufferingAudioSource *bufSrc;
-            talcs::AbstractAudioFormatIO *io;
-            bool isInternal;
-        };
-
-        QMChronoMap<talcs::BufferingAudioSource *, FileInfo> files;
 
         void init(ProjectAddOn *projectAddOn);
 

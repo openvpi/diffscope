@@ -13,7 +13,7 @@ namespace talcs {
 }
 
 namespace Core {
-    class IWindow;
+    class IProjectWindow;
     template <class T> class IExecutiveRegistry;
 }
 
@@ -46,8 +46,8 @@ namespace Audio {
         talcs::PositionableMixerAudioSource *postMixer() const;
         talcs::PositionableMixerAudioSource *masterTrackMixer() const;
 
-        Core::IWindow *windowHandle() const;
-        static AudioContextInterface *get(Core::IWindow *win);
+        Core::IProjectWindow *windowHandle() const;
+        static AudioContextInterface *get(Core::IProjectWindow *win);
 
         OutputSystemInterface *outputSystem() const;
 

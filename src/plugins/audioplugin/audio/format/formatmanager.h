@@ -5,6 +5,10 @@
 
 #include <audioplugin/audioglobal.h>
 
+namespace talcs {
+    class AbstractAudioFormatIO;
+}
+
 namespace Audio {
 
     class AudioPlugin;
@@ -22,8 +26,12 @@ namespace Audio {
 
         void addEntry(FormatEntry *entry);
         QList<FormatEntry *> entries() const;
+        QStringList extensionHints() const;
         QStringList filters() const;
-        FormatEntry *getEntryByFilter(const QString &filter) const;
+
+        FormatEntry *hintFromExtension(const QString &extension) const;
+
+        talcs::AbstractAudioFormatIO *getFormatLoad(const QString &filename, const QVariant &userData) const;
 
     private:
         explicit FormatManager(QObject *parent = nullptr);

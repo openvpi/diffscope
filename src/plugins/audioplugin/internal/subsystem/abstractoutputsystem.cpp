@@ -23,8 +23,10 @@ namespace Audio {
     talcs::MixerAudioSource *AbstractOutputSystem::preMixer() const {
         return m_preMixer;
     }
-    void AbstractOutputSystem::setGainAndPan(float gain, float pan) {
+    void AbstractOutputSystem::setGain(float gain) {
         m_deviceControlMixer->setGain(gain);
+    }
+    void AbstractOutputSystem::setPan(float pan) {
         m_deviceControlMixer->setPan(pan);
     }
     float AbstractOutputSystem::gain() const {
@@ -32,6 +34,16 @@ namespace Audio {
     }
     float AbstractOutputSystem::pan() const {
         return m_deviceControlMixer->pan();
+    }
+
+    void AbstractOutputSystem::setFileBufferingReadAheadSize(qint64 size) {
+        if (m_fileBufferingReadAheadSize != size) {
+            m_fileBufferingReadAheadSize = size;
+            emit fileBufferingReadAheadSizeChanged(size);
+        }
+    }
+    qint64 AbstractOutputSystem::fileBufferingReadAheadSize() const {
+        return m_fileBufferingReadAheadSize;
     }
 
 }

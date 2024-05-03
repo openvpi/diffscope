@@ -33,7 +33,9 @@ namespace Audio {
         if (!obj.contains("devicePan"))
             obj["devicePan"] = 0.0f;
         settings["Audio"] = obj;
-        setGainAndPan(static_cast<float>(obj["deviceGain"].toDouble()), static_cast<float>(obj["devicePan"].toDouble()));
+        setGain(static_cast<float>(obj["deviceGain"].toDouble()));
+        setPan(static_cast<float>(obj["devicePan"].toDouble()));
+        setFileBufferingMsec(obj["fileBufferingMsec"].toDouble());
         do {
             if (savedDriverName.isEmpty() || savedDeviceName.isEmpty())
                 break;
@@ -53,7 +55,7 @@ namespace Audio {
             postSetDevice(true);
             connect(m_drv, &talcs::AudioDriver::deviceChanged, this, &OutputSystem::handleDeviceHotPlug);
             qDebug() << "Audio::OutputSystem: initialized from saved device" << m_drv->name() << m_dev->name();
-            goto finish;
+            return AbstractOutputSystem::initialize();
         } while (false);
         qDebug() << "Audio::OutputSystem: no saved device, try to enumerate devices";
         if (enumerateDevices(false)) {
@@ -62,7 +64,6 @@ namespace Audio {
             qWarning() << "Audio::OutputSystem: fatal: no available device";
             return false;
         }
-        finish:
         return AbstractOutputSystem::initialize();
     }
     talcs::AudioDriverManager *OutputSystem::driverManager() const {
@@ -225,6 +226,9 @@ namespace Audio {
         obj["hotPlugNotificationMode"] = mode;
         settings["Audio"] = obj;
         qDebug() << "Audio::OutputSystem: hot plug notification mode set to" << mode;
+    }
+    void OutputSystem::setFileBufferingMsec(double msec) {
+        setAdoptedBufferSize(static_cast<qint64>(msec * m_adoptedSampleRate / 1000));
     }
     void OutputSystem::handleDeviceHotPlug() {
         qDebug() << "Audio::OutputSystem: hot plug detected";

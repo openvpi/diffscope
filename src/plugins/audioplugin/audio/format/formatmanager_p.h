@@ -2,6 +2,7 @@
 #define AUDIO_FORMATMANAGER_P_H
 
 #include <QList>
+#include <QHash>
 
 #include <audioplugin/formatmanager.h>
 
@@ -12,6 +13,7 @@ namespace Audio {
     public:
         FormatManager *q_ptr;
         QList<FormatEntry *> entries;
+        QHash<QString, FormatEntry *> extensionHintDict;
     };
 
 }

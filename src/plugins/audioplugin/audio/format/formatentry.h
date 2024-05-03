@@ -17,8 +17,9 @@ namespace Audio {
         ~FormatEntry() override;
 
         virtual QStringList filters() const = 0;
-        virtual talcs::AbstractAudioFormatIO *getFormatOpen(const QString &filename, QVariant &userData, const QString &filter, QWidget *win) = 0;
-        virtual talcs::AbstractAudioFormatIO *getFormatLoad(const QString &filename, const QVariant &userData, const QString &filter, QWidget *win) = 0;
+        virtual QStringList extensionHints() const;
+        virtual talcs::AbstractAudioFormatIO *getFormatOpen(const QString &filename, QVariant &userData, QWidget *win) = 0;
+        virtual talcs::AbstractAudioFormatIO *getFormatLoad(const QString &filename, const QVariant &userData) = 0;
 
     protected:
         explicit FormatEntry(QObject *parent = nullptr);

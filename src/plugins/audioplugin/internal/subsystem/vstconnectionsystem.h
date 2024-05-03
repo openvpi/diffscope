@@ -43,6 +43,8 @@ namespace Audio {
 
         QPair<QString, QString> hostSpecs() const;
 
+        void setFileBufferingMsec(double msec) override;
+
     signals:
         void hostSpecsChanged(const QString &hostExecutable, const QString &pluginFormat);
 

@@ -26,6 +26,7 @@
 #include <audioplugin/internal/devicetester.h>
 #include <audioplugin/internal/projectaddon.h>
 #include <audioplugin/formatmanager.h>
+#include <audioplugin/internal/builtinformatentry.h>
 
 namespace Audio {
 
@@ -37,9 +38,21 @@ namespace Audio {
     bool AudioPlugin::initialize(const QStringList &arguments, QString *errorString) {
         qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
 
+        qDebug() << "Audio::AudioPlugin: initializing";
+        auto splash = Core::InitRoutine::splash();
+        splash->showMessage(tr("Initializing audio plugin..."));
+
         auto settings = Core::ILoader::instance()->settings();
         if (!settings->contains("Audio"))
             settings->insert("Audio", QJsonObject());
+
+        auto sc = Core::ICore::instance()->settingCatalog();
+        auto audioPage = new AudioPage;
+        audioPage->addPage(new OutputPlaybackPage);
+        audioPage->addPage(new VSTModePage);
+        sc->addPage(audioPage);
+
+        Core::IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
 
         new AudioSystem(this);
 
@@ -50,22 +63,12 @@ namespace Audio {
         iAudio->d_func()->vstOutputSystemInterface->d_func()->init(AudioSystem::vstConnectionSystem(), true);
         iAudio->d_func()->formatManager = new FormatManager(this);
 
+        iAudio->formatManager()->addEntry(new BuiltInFormatEntry);
+
         if (arguments.contains("-vst")) {
             qDebug() << "Audio::AudioPlugin: started by an external host (primary instance)";
             AudioSystem::vstConnectionSystem()->setApplicationInitializing(true);
         }
-
-        auto sc = Core::ICore::instance()->settingCatalog();
-        auto audioPage = new AudioPage;
-        audioPage->addPage(new OutputPlaybackPage);
-        audioPage->addPage(new VSTModePage);
-        sc->addPage(audioPage);
-
-        Core::IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
-
-        qDebug() << "Audio::AudioPlugin: initializing";
-        auto splash = Core::InitRoutine::splash();
-        splash->showMessage(tr("Initializing audio plugin..."));
 
         if (!AudioSystem::outputSystem()->initialize()) {
             QMessageBox msgBox(splash);

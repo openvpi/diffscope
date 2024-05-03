@@ -25,6 +25,7 @@
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/outputsystem.h>
 #include <audioplugin/internal/devicetester.h>
+#include <audioplugin/internal/vstconnectionsystem.h>
 
 namespace Audio {
 
@@ -184,10 +185,13 @@ namespace Audio {
         AudioSystem::outputSystem()->setHotPlugNotificationMode(
             static_cast<OutputSystem::HotPlugNotificationMode>(
                 m_hotPlugModeComboBox->currentIndex()));
+        AudioSystem::outputSystem()->setFileBufferingMsec(m_fileBufferSizeMsecSpinBox->value());
+        AudioSystem::vstConnectionSystem()->setFileBufferingMsec(m_fileBufferSizeMsecSpinBox->value());
         auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["deviceGain"] = AudioSystem::outputSystem()->gain();
         obj["devicePan"] = AudioSystem::outputSystem()->pan();
+        obj["fileBufferingMsec"] = m_fileBufferSizeMsecSpinBox->value();
         settings["Audio"] = obj;
         // TODO
         return true;
@@ -334,7 +338,7 @@ namespace Audio {
 
         m_deviceGainSlider->setValue(gainToSliderValue(gain));
         m_deviceGainSpinBox->setValue(talcs::Decibels::gainToDecibels(static_cast<float>(gain)));
-        AudioSystem::outputSystem()->setGainAndPan(static_cast<float>(gain), AudioSystem::outputSystem()->pan());
+        AudioSystem::outputSystem()->setGain(static_cast<float>(gain));
     }
     void OutputPlaybackPage::updatePan(double pan) {
         QSignalBlocker sliderBlocker(m_devicePanSlider);
@@ -342,7 +346,7 @@ namespace Audio {
         
         m_devicePanSlider->setValue(panToSliderValue(pan));
         m_devicePanSpinBox->setValue(pan);
-        AudioSystem::outputSystem()->setGainAndPan(AudioSystem::outputSystem()->gain(), static_cast<float>(pan));
+        AudioSystem::outputSystem()->setPan(static_cast<float>(pan));
     }
 
 }

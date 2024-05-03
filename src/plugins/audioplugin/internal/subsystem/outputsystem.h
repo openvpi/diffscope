@@ -47,6 +47,8 @@ namespace Audio {
         HotPlugNotificationMode hotPlugNotificationMode() const;
         void setHotPlugNotificationMode(HotPlugNotificationMode mode);
 
+        void setFileBufferingMsec(double msec) override;
+
     Q_SIGNALS:
         void deviceHotPlugged();
 

@@ -1,10 +1,7 @@
 #include "audiocontextinterface.h"
 #include "audiocontextinterface_p.h"
 
-#include <TalcsCore/BufferingAudioSource.h>
-#include <TalcsFormat/AudioFormatInputSource.h>
-
-#include <CoreApi/iwindow.h>
+#include <coreplugin/iprojectwindow.h>
 
 #include <audioplugin/iaudio.h>
 #include <audioplugin/internal/projectaddon.h>
@@ -14,7 +11,24 @@
 namespace Audio {
 
     void AudioContextInterfacePrivate::init(ProjectAddOn *projectAddOn_) {
+        Q_Q(AudioContextInterface);
         projectAddOn = projectAddOn_;
+        auto model = q->windowHandle()->doc()->dataModel().model();
+        QObject::connect(model->tracks(), &QDspx::TrackListEntity::inserted, q, [=](int _, const QVector<QDspx::TrackEntity *> &trackEntities) {
+            for (auto trackEntity : trackEntities) {
+                handleTrackInserted(trackEntity);
+            }
+        });
+        QObject::connect(model->tracks(), &QDspx::TrackListEntity::aboutToRemove, q, [=](int _, const QVector<QDspx::TrackEntity *> &trackEntities) {
+            for (auto trackEntity : trackEntities)
+                handleTrackAboutToRemove(trackEntity);
+        });
+
+        for (int i = 0; i < model->tracks()->size(); i++) {
+            auto trackEntity = model->tracks()->at(i);
+            handleTrackInserted(trackEntity);
+        }
+
         // TODO connect doc signals
     }
     void AudioContextInterfacePrivate::handleTrackInserted(QDspx::TrackEntity *trackEntity) {
@@ -58,12 +72,12 @@ namespace Audio {
         return d->projectAddOn->masterTrackMixer();
     }
 
-    Core::IWindow *AudioContextInterface::windowHandle() const {
+    Core::IProjectWindow *AudioContextInterface::windowHandle() const {
         Q_D(const AudioContextInterface);
-        return d->projectAddOn->windowHandle();
+        return static_cast<Core::IProjectWindow *>(d->projectAddOn->windowHandle());
     }
 
-    AudioContextInterface *AudioContextInterface::get(Core::IWindow *win) {
+    AudioContextInterface *AudioContextInterface::get(Core::IProjectWindow *win) {
         return static_cast<AudioContextInterface *>(win->getFirstObject("Audio.AudioContextInterface"));
     }
 
@@ -91,15 +105,9 @@ namespace Audio {
 
     talcs::PositionableAudioSource *AudioContextInterface::getFormatSource(const QString &filename, const QVariant &userData, bool isInternal) {
         Q_D(AudioContextInterface);
-        for (auto entry : IAudio::instance()->formatManager()->entries()) {
-            auto io = entry->getFormatLoad(filename, userData, {}, d->projectAddOn->windowHandle()->window());
-            if (!io)
-                continue;
-            auto src = new talcs::AudioFormatInputSource(io, true);
-            // TODO
-
-        }
-        return nullptr;
+        auto io = IAudio::instance()->formatManager()->getFormatLoad(filename, userData);
+        if (!io)
+            return nullptr;
+        return d->projectAddOn->postGetFormat(io, filename, isInternal);
     }
-
 }
