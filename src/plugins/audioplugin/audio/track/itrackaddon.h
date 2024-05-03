@@ -3,11 +3,13 @@
 
 #include <CoreApi/iexecutive.h>
 
+#include <audioplugin/audioglobal.h>
+
 namespace Audio {
 
     class TrackInterface;
 
-    class ITrackAddOn : Core::IExecutiveAddOn {
+    class AUDIO_EXPORT ITrackAddOn : Core::IExecutiveAddOn {
         Q_OBJECT
         friend class Core::IExecutiveRegistry<TrackInterface>;
     public:

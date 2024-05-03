@@ -3,11 +3,13 @@
 
 #include <CoreApi/iexecutive.h>
 
+#include <audioplugin/audioglobal.h>
+
 namespace Audio {
 
     class AudioClipInterface;
 
-    class IAudioClipAddOn : public Core::IExecutiveAddOn{
+    class AUDIO_EXPORT IAudioClipAddOn : public Core::IExecutiveAddOn{
         Q_OBJECT
         friend class Core::IExecutiveRegistry<AudioClipInterface>;
     public:

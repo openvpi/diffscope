@@ -3,6 +3,8 @@
 
 #include <CoreApi/iexecutive.h>
 
+#include <audioplugin/audioglobal.h>
+
 namespace QDspx {
     class AudioClipEntity;
 }
@@ -20,7 +22,7 @@ namespace Audio {
 
     class AudioClipInterfacePrivate;
 
-    class AudioClipInterface : public Core::IExecutive {
+    class AUDIO_EXPORT AudioClipInterface : public Core::IExecutive {
         Q_OBJECT
         Q_DECLARE_PRIVATE(AudioClipInterface)
         friend class Core::IExecutiveRegistry<AudioClipInterface>;
