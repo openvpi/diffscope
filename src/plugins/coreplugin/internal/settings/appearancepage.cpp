@@ -114,6 +114,8 @@ namespace Core::Internal {
             currentFont = originalFont;
             updateFontText();
             useSystemFontCheckBox->setChecked(originalUseSystemFont);
+            fontText->setDisabled(originalUseSystemFont);
+            selectFontButton->setDisabled(originalUseSystemFont);
             themeComboBox->setCurrentText(originalTheme);
             {
                 auto idx = int((originalZoomRatio - 0.5) * 4);
@@ -159,6 +161,7 @@ namespace Core::Internal {
             if (checked) {
                 currentFont = systemFont();
                 updateFontText();
+                qApp->setProperty("userFont", currentFont);
             }
             fontText->setDisabled(checked);
             selectFontButton->setDisabled(checked);
@@ -221,7 +224,6 @@ namespace Core::Internal {
                 currentFont = font;
                 currentFont.setPixelSize(font.pointSize());
                 updateFontText();
-
                 qApp->setProperty("userFont", currentFont);
             }
         }
