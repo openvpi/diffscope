@@ -16,6 +16,7 @@
 #include <QGroupBox>
 #include <QListView>
 #include <QCheckBox>
+#include <QToolTip>
 
 #include <extensionsystem/pluginmanager.h>
 
@@ -51,6 +52,24 @@ namespace Core::Internal {
     static const int zoomRatioList[] = {
         50, 75, 100, 125, 150, 175, 200, 225, 250,
     };
+
+    static inline QFont systemFont() {
+        auto font = qAppExt->systemDefaultFont();
+        font.setPixelSize(12);
+        return font;
+    }
+
+    static inline void syncAppFontSize() {
+        auto font = qApp->property("userFontInitial").value<QFont>();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        font.setPointSize(font.pixelSize() * 0.75 * qIDec->zoomRatio());
+#else
+        font.setPixelSize(font.pixelSize() * qIDec->zoomRatio());
+#endif
+        // Make the default font update with system dpi
+        QGuiApplication::setFont(font);
+        QToolTip::setFont(font);
+    }
 
     class AppearancePageWidget : public QWidget {
     public:
@@ -135,12 +154,6 @@ namespace Core::Internal {
         QFont originalFont;
         bool originalUseSystemFont;
 
-        static QFont systemFont() {
-            auto font = qAppExt->systemDefaultFont();
-            font.setPixelSize(12);
-            return font;
-        }
-
     private:
         void _q_useSystemFontButtonToggled(bool checked) {
             if (checked) {
@@ -160,6 +173,7 @@ namespace Core::Internal {
         void _q_zoomComboBoxIndexChanged(int index) {
             Q_UNUSED(this)
             qIDec->setZoomRatio(double(zoomRatioList[index]) / 100);
+            syncAppFontSize();
         }
 
         void updateFontText() const {
@@ -252,6 +266,8 @@ namespace Core::Internal {
             qIDec->setZoomRatio(m_widget->originalZoomRatio);
             qApp->setProperty("userFont", m_widget->originalFont);
             qApp->setProperty("useSystemFont", m_widget->originalUseSystemFont);
+
+            syncAppFontSize();
 
             // Save recorded arguments
             auto settings = ExtensionSystem::PluginManager::settings();

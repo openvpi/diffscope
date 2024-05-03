@@ -1,6 +1,6 @@
 # DiffScope
 
-DiffSinger Editor developed by OpenVPI.
+Cross-platform SVS editor powered by DiffSinger.
 
 ## Supported Platforms
 

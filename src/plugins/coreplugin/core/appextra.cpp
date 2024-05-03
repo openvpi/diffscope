@@ -90,7 +90,7 @@ namespace Core {
             QApplication::translate(
                 "Application",
                 "<h3>About Application</h3>"
-                "<p>%1 is a cross-platform SVS editing application mainly powered by "
+                "<p>%1 is a cross-platform SVS editing application powered by "
                 "DiffSinger for virtual singer producers to make song compositions.</p>")
                 .arg(appName);
 

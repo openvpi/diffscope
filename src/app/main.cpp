@@ -1,7 +1,8 @@
-#include <QApplication>
-#include <QDebug>
-#include <QProcess>
-#include <QNetworkProxyFactory>
+#include <QtCore/QDebug>
+#include <QtCore/QProcess>
+#include <QtNetwork/QNetworkProxyFactory>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QToolTip>
 
 #include <extensionsystem/pluginmanager.h>
 
@@ -73,29 +74,48 @@ public:
             }
 
             value = settings->value(QStringLiteral("Font"));
-            if (!value.isNull()) {
-                QFont font;
-                if (font.fromString(value.toString())) {
-                    QGuiApplication::setFont(font);
+            {
+                // Default font
+                QFont font(QMAppExtension::systemDefaultFont());
+                font.setPixelSize(12);
+
+                // Get font
+                if (!value.isNull()) {
+                    font.fromString(value.toString());
                 }
+
+                // Normalize font
                 if (font.pixelSize() <= 0) {
                     font.setPixelSize(12);
                 }
                 qIDec->setFontRatio(font.pixelSize() / 12.0);
+
+                // The application font is determined at startup and remains unchanged, using the
+                // `userFont` property to record the changes made by the user during the current
+                // application life.
+                qApp->setProperty("userFont", font);
+                qApp->setProperty("userFontInitial", font);
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+                font.setPointSize(font.pixelSize() * 0.75 * qIDec->zoomRatio());
+#else
+                font.setPixelSize(font.pixelSize() * qIDec->zoomRatio());
+#endif
+                // Make the default font update with system dpi
+                QGuiApplication::setFont(font);
+                QToolTip::setFont(font);
             }
-            // The application font is determined at startup and remains unchanged, using the
-            // `userFont` property to record the changes made by the user during the current
-            // application life.
-            qApp->setProperty("userFont", QGuiApplication::font());
 
             value = settings->value(QStringLiteral("UseSystemFont"));
-            if (value.type() == QVariant::String) {
-                qApp->setProperty("useSystemFont",
-                                  value.toString().toLower() == QStringLiteral("true"));
-            } else {
+            {
+                // Default value
                 qApp->setProperty("useSystemFont", true);
+                // Get value
+                if (value.type() == QVariant::String) {
+                    qApp->setProperty("useSystemFont",
+                                      value.toString().toLower() == QStringLiteral("true"));
+                }
             }
-
             settings->endGroup();
         }
 
