@@ -145,6 +145,9 @@ int main(int argc, char *argv[]) {
         qputenv("QT_PLUGIN_PATH", {});
     }
 
+    // Frameless window requires it
+    QGuiApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+
     QApplication a(argc, argv);
     a.setApplicationName(QStringLiteral(APP_NAME));
     a.setApplicationVersion(QStringLiteral(APP_VERSION));
