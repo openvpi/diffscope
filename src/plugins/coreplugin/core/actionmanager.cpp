@@ -132,7 +132,7 @@ namespace Core {
 
         QMChronoMap<QString, ActionDomain::ShortcutsFamily> systemFamilies;
         QMChronoMap<QString, ActionDomain::ShortcutsFamily> userFamilies;
-        QPair<QString, ActionManager::Scope> currentFamily;
+        QPair<QString, bool> currentFamily;
     };
 
     static ActionManager *m_instance = nullptr;
@@ -245,7 +245,7 @@ namespace Core {
             }
         }
         d->currentFamily.first = object.value(QStringLiteral("family")).toString();
-        d->currentFamily.second = object.value(QStringLiteral("system")).toBool() ? System : User;
+        d->currentFamily.second = object.value(QStringLiteral("system")).toBool();
         return false;
     }
     bool ActionManager::saveShortcuts() const {
@@ -262,45 +262,80 @@ namespace Core {
         object.insert(QStringLiteral("shortcuts"),
                       serializeShortcuts(d->domain->shortcutsFamily()));
         object.insert(QStringLiteral("family"), d->currentFamily.first);
-        object.insert(QStringLiteral("system"), d->currentFamily.second == System);
+        object.insert(QStringLiteral("system"), d->currentFamily.second);
         file.write(QJsonDocument(object).toJson());
         return true;
     }
-    QPair<QString, ActionManager::Scope> ActionManager::currentShortcutsFamily() const {
+    QPair<QString, bool> ActionManager::currentShortcutsFamily() const {
         Q_D(const ActionManager);
         return d->currentFamily;
     }
-    void ActionManager::setCurrentShortcutsFamily(const QString &id, ActionManager::Scope scope) {
+    bool ActionManager::setCurrentShortcutsFamily(const QString &id, bool system) {
         Q_D(ActionManager);
-        d->currentFamily = {id, scope};
+        if (!(system ? d->systemFamilies : d->userFamilies).contains(id)) {
+            return false;
+        }
+        d->currentFamily = {id, system};
+        return true;
     }
-    ActionDomain::ShortcutsFamily ActionManager::shortcutsFamily(const QString &id,
-                                                                 ActionManager::Scope scope) const {
+    QStringList ActionManager::systemShortcutsFamilies() const {
         Q_D(const ActionManager);
-        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
-        return families.value(id);
+        return d->systemFamilies.keys_qlist();
     }
-    QStringList ActionManager::shortcutFamilies(ActionManager::Scope scope) const {
+    ActionDomain::ShortcutsFamily ActionManager::systemShortcutsFamily(const QString &id) const {
         Q_D(const ActionManager);
-        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
-        return families.keys_qlist();
+        return d->systemFamilies.value(id);
     }
-    void ActionManager::addShortcutsFamily(const QString &id,
-                                          const ActionDomain::ShortcutsFamily &family,
-                                          ActionManager::Scope scope) {
+    bool ActionManager::addSystemShortcutsFamily(const QString &id,
+                                                 const ActionDomain::ShortcutsFamily &family) {
         Q_D(ActionManager);
-        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
-        families.append(id, family);
+        return d->systemFamilies.append(id, family, false).second;
     }
-    void ActionManager::removeShortcutsFamily(const QString &id, ActionManager::Scope scope) {
+    bool ActionManager::removeSystemShortcutsFamily(const QString &id) {
         Q_D(ActionManager);
-        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
-        families.remove(id);
+        return d->systemFamilies.remove(id);
     }
-    void ActionManager::clearShortcutsFamilies(ActionManager::Scope scope) {
+    void ActionManager::clearSystemShortcutsFamily() {
         Q_D(ActionManager);
-        auto &families = scope == System ? d->systemFamilies : d->userFamilies;
-        families.clear();
+        d->systemFamilies.clear();
+    }
+    QStringList ActionManager::userShortcutFamilies() const {
+        Q_D(const ActionManager);
+        return d->userFamilies.keys_qlist();
+    }
+    ActionDomain::ShortcutsFamily ActionManager::userShortcutsFamily(const QString &id) const {
+        Q_D(const ActionManager);
+        return d->userFamilies.value(id);
+    }
+    bool ActionManager::addUserShortcutsFamily(const QString &id,
+                                               const ActionDomain::ShortcutsFamily &family) {
+        Q_D(ActionManager);
+        return d->userFamilies.append(id, family, false).second;
+    }
+    bool ActionManager::renameUserShortcutsFamily(const QString &id, const QString &newId) {
+        Q_D(ActionManager);
+        auto it = d->userFamilies.find(id);
+        if (it == d->userFamilies.end()) {
+            return false;
+        }
+
+        if (d->userFamilies.contains(newId)) {
+            return false;
+        }
+
+        auto it2 = std::next(it);
+        auto val = it.value();
+        d->userFamilies.erase(it);
+        d->userFamilies.insert(it2, newId, val);
+        return true;
+    }
+    bool ActionManager::removeUserShortcutsFamily(const QString &id) {
+        Q_D(ActionManager);
+        return d->userFamilies.remove(id);
+    }
+    void ActionManager::clearUserShortcutsFamilies() {
+        Q_D(ActionManager);
+        return d->userFamilies.clear();
     }
 
 }

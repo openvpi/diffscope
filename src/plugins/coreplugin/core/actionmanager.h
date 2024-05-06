@@ -21,10 +21,6 @@ namespace Core {
         explicit ActionManager(QObject *parent = nullptr);
         ~ActionManager();
 
-        enum Scope {
-            System,
-            User,
-        };
 
     public:
         ActionDomain *domain() const;
@@ -39,15 +35,22 @@ namespace Core {
         bool loadShortcuts();
         bool saveShortcuts() const;
 
-        QPair<QString, Scope> currentShortcutsFamily() const;
-        void setCurrentShortcutsFamily(const QString &id, Scope scope);
+        QPair<QString, bool> currentShortcutsFamily() const;
+        bool setCurrentShortcutsFamily(const QString &id, bool system);
 
-        ActionDomain::ShortcutsFamily shortcutsFamily(const QString &id, Scope scope = System) const;
-        QStringList shortcutFamilies(Scope scope = System) const;
-        void addShortcutsFamily(const QString &id, const ActionDomain::ShortcutsFamily &family,
-                               Scope scope = System);
-        void removeShortcutsFamily(const QString &id, Scope scope = System);
-        void clearShortcutsFamilies(Scope scope = System);
+        QStringList systemShortcutsFamilies() const;
+        ActionDomain::ShortcutsFamily systemShortcutsFamily(const QString &id) const;
+        bool addSystemShortcutsFamily(const QString &id,
+                                      const ActionDomain::ShortcutsFamily &family);
+        bool removeSystemShortcutsFamily(const QString &id);
+        void clearSystemShortcutsFamily();
+
+        QStringList userShortcutFamilies() const;
+        ActionDomain::ShortcutsFamily userShortcutsFamily(const QString &id) const;
+        bool addUserShortcutsFamily(const QString &id, const ActionDomain::ShortcutsFamily &family);
+        bool renameUserShortcutsFamily(const QString &id, const QString &newId);
+        bool removeUserShortcutsFamily(const QString &id);
+        void clearUserShortcutsFamilies();
 
     Q_SIGNALS:
         void layoutsReloaded();
