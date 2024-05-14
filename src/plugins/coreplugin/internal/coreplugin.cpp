@@ -102,6 +102,8 @@ namespace Core::Internal {
         // Init ICore instance
         icore = new ICore(this);
 
+        icore->actionManager()->addSystemShortcutsFamily("DiffScope", {});
+
         // Add basic actions
         auto domain = icore->actionManager()->domain();
         domain->addExtension(getMyActionExtension());
