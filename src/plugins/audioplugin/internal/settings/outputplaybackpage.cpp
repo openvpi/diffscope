@@ -177,6 +177,11 @@ namespace Audio {
             updatePan(value);
         });
 
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+
+        m_fileBufferSizeMsecSpinBox->setValue(obj["fileBufferingMsec"].toDouble());
+
         return m_widget;
     }
     bool OutputPlaybackPage::accept() {
