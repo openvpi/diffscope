@@ -4,6 +4,7 @@
 #include <QMessageBox>
 
 #include <QMWidgets/ctabbutton.h>
+#include <QMWidgets/ctoolbutton.h>
 #include <QMWidgets/qmequalboxlayout.h>
 #include <QMWidgets/qmdecoratorv2.h>
 
@@ -39,14 +40,17 @@ namespace Core::Internal {
         m_navFrame->setTopWidget(m_titleButton);
 
         {
-            m_configureButton = new CTabButton();
-            m_helpButton = new CTabButton();
+            m_configureButton = new CToolButton();
+            m_configureButton->setObjectName("configure-button");
+            m_helpButton = new CToolButton();
+            m_helpButton->setObjectName("help-button");
 
-            m_bottomButtonsLayout = new QBoxLayout(QBoxLayout::BottomToTop);
+            m_bottomButtonsLayout = new QHBoxLayout();
             m_bottomButtonsLayout->setContentsMargins({});
             m_bottomButtonsLayout->setSpacing(0);
-            m_bottomButtonsLayout->addWidget(m_helpButton);
             m_bottomButtonsLayout->addWidget(m_configureButton);
+            m_bottomButtonsLayout->addWidget(m_helpButton);
+            m_bottomButtonsLayout->addStretch();
 
             m_bottomButtonsFrame = new QFrame();
             m_bottomButtonsFrame->setObjectName("home-bottom-buttons-frame");
@@ -79,6 +83,9 @@ namespace Core::Internal {
         m_recentWidgetButton->setText(tr("Recent"));
         m_configureButton->setText(tr("Configure"));
         m_helpButton->setText(tr("Help"));
+        
+        m_configureButton->setToolTip(m_configureButton->text());
+        m_helpButton->setToolTip(m_helpButton->text());
     }
 
     void HomeWindow::addFileButton(QAbstractButton *button) {

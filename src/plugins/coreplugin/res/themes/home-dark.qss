@@ -21,13 +21,14 @@ CNavFrame#home-frame>QSplitter>QFrame#right-frame {
 
 /* Top Buttons */
 
-CTabButton#home-title-button {
+QAbstractButton#home-title-button {
     color: #CCCCCC;
     font-size: 20px;
     font-weight: bold;
     --icon: svg(":/svg/app/diffsinger.svg");
     --iconSize: 32px 32px;
     --spaceRatio: 0.2;
+    qproperty-spaceRatio: 0.2;
     padding: 20px;
     background-color: transparent;
     border: none;
@@ -47,12 +48,12 @@ CTabButton[type=home-nav-button] {
     text-align: left;
 }
 
-CTabButton[type=home-nav-button]:hover,
-CTabButton[type=home-nav-button]:pressed {
+QAbstractButton[type=home-nav-button]:hover,
+QAbstractButton[type=home-nav-button]:pressed {
     background-color: rgba(255, 255, 255, 15%);
 }
 
-CTabButton[type=home-nav-button]:checked {
+QAbstractButton[type=home-nav-button]:checked {
     background-color: rgba(255, 255, 255, 5%);
     border-left-color: #00B578;
 }
@@ -60,9 +61,8 @@ CTabButton[type=home-nav-button]:checked {
 
 /* Nav Bottom Buttons */
 
-QFrame#home-bottom-buttons-frame>CTabButton {
-    --iconSize: 28px 28px;
-    --spaceRatio: 0.2;
+QFrame#home-bottom-buttons-frame>QAbstractButton {
+    --iconSize: 20px 20px;
     background-color: transparent;
     color: #FFFFFF;
     text-align: left;
@@ -70,17 +70,18 @@ QFrame#home-bottom-buttons-frame>CTabButton {
     border: none;
 }
 
-QFrame#home-bottom-buttons-frame>CTabButton:hover,
-QFrame#home-bottom-buttons-frame>CTabButton:pressed {
+QFrame#home-bottom-buttons-frame>QAbstractButton:hover,
+QFrame#home-bottom-buttons-frame>QAbstractButton:pressed {
     background-color: rgba(255, 255, 255, 15%);
 }
 
-/* CTabButton#home-about-button {
-    --icon: svg(":/svg/icons/info_16_filled.svg", auto);
-    border-top: 1.25px solid rgba(255, 255, 255, 15%);
-    padding-top: 20px;
-    padding-bottom: 20px;
-} */
+QFrame#home-bottom-buttons-frame>QAbstractButton#configure-button {
+    --icon: svg("@/svg/home/configure.svg", white);
+}
+
+QFrame#home-bottom-buttons-frame>QAbstractButton#help-button {
+    --icon: svg("@/svg/home/help.svg", white);
+}
 
 
 /* Home Recent Widget */
@@ -97,6 +98,11 @@ Core--Internal--HomeRecentWidget::handle {
 Core--Internal--HomeRecentTopFrame {
     --layoutSpacing: 10px;
     padding: 15px;
+    --layoutInfo: qlayout(
+        *           : 5px 5px,
+        #name       : 5px qmargins(1px),
+        [key=val]   : 5px qmargins(1px),
+    );
 }
 
 Core--Internal--HomeRecentWidget>LinearScrollArea {
@@ -116,7 +122,7 @@ Core--Internal--HomeRecentTopFrame>CTabButton {
 
 /* Recent Top Buttons */
 
-Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button] {
+Core--Internal--HomeRecentTopFrame>QAbstractButton[type=top-button] {
     --iconSize: 20px 20px;
     --spaceRatio: 0.2;
     background-color: rgba(0, 181, 120, 30%);
@@ -126,8 +132,8 @@ Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button] {
     text-align: left;
 }
 
-Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button]:hover,
-Core--Internal--HomeRecentTopFrame>CTabButton[type=top-button]:pressed {
+Core--Internal--HomeRecentTopFrame>QAbstractButton[type=top-button]:hover,
+Core--Internal--HomeRecentTopFrame>QAbstractButton[type=top-button]:pressed {
     background-color: rgba(0, 181, 120, 50%);
 }
 
@@ -158,20 +164,20 @@ Core--Internal--HomeRecentBottomFrame>QLabel {
 Core--Internal--HomeRecentBottomFrame>QsApi--TitleListWidget {
     border: none;
     background-color: transparent;
-    --styleData: qmap(/* styleData */
-    background=qrect((transparent, rgba(255, 255, 255, 10%)), 0), /**/
-    underline=qpen(transparent, 1), /**/
-    titleShape=qfont(#E0E0E0, 15px), /**/
-    subShape=qfont(#909090, 15px), /**/
-    descShape=qfont(#909090, 15px), /**/
-    descHighlightShape=qfont(transparent, 15px), /**/
-    descBackgroundShape=qrectstyle(transparent, (0, 0, 2px, 0)), /**/
-    titleMargins=qmargins(1.25px, 10px), /**/
-    subMargins=qmargins(1.25px, 10px), /**/
-    descMargins=qmargins(0, 10px), /**/
-    iconMargins=qmargins(10px), /**/
-    padding=qmargins(3.75px, 10px), /**/
-    margins=qmargins(3px, 5px, 3px, 5px), /**/
-    defaultIconSize=40px 40px, /**/
+    --styleData: qmap(
+        background           : qrect((transparent, rgba(255, 255, 255, 10%)), 0),
+        underline            : qpen(transparent, 1),
+        titleShape           : qfont(#E0E0E0, 15px),
+        subShape             : qfont(#909090, 15px),
+        descShape            : qfont(#909090, 15px),
+        descHighlightShape   : qfont(transparent, 15px),
+        descBackgroundShape  : qrectstyle(transparent, (0, 0, 2px, 0)),
+        titleMargins         : qmargins(1.25px, 10px),
+        subMargins           : qmargins(1.25px, 10px),
+        descMargins          : qmargins(0, 10px),
+        iconMargins          : qmargins(10px),
+        padding              : qmargins(3.75px, 10px),
+        margins              : qmargins(3px, 5px, 3px, 5px),
+        defaultIconSize      : 40px 40px,
     );
 }
