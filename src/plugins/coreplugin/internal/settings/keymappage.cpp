@@ -42,13 +42,13 @@ namespace Core::Internal {
             auto presetRowLayout = new QHBoxLayout;
             m_presetComboBox = new QComboBox;
             presetRowLayout->addWidget(m_presetComboBox, 1);
-            auto presetSaveAsButton = new QPushButton(tr("Save As"));
+            auto presetSaveAsButton = new QPushButton(tr("Save &As"));
             presetRowLayout->addWidget(presetSaveAsButton);
-            auto presetDeleteButton = new QPushButton(tr("Delete"));
+            auto presetDeleteButton = new QPushButton(tr("&Delete"));
             presetRowLayout->addWidget(presetDeleteButton);
-            auto presetRenameButton = new QPushButton(tr("Rename"));
+            auto presetRenameButton = new QPushButton(tr("&Rename"));
             presetRowLayout->addWidget(presetRenameButton);
-            auto presetLabel = new QLabel(tr("Preset"));
+            auto presetLabel = new QLabel(tr("&Preset"));
             presetLabel->setBuddy(m_presetComboBox);
             presetLayout->addRow(presetLabel, presetRowLayout);
             mainLayout->addLayout(presetLayout);
@@ -56,14 +56,14 @@ namespace Core::Internal {
             auto actionsGroupBox = new QGroupBox(tr("Actions"));
             auto actionsLayout = new QVBoxLayout;
             auto actionsFilterLayout = new QHBoxLayout;
-            auto expandAllButton = new QPushButton(tr("Expand All"));
+            auto expandAllButton = new QPushButton(tr("&Expand All"));
             actionsFilterLayout->addWidget(expandAllButton);
-            auto collapseAllButton = new QPushButton(tr("Collapse All"));
+            auto collapseAllButton = new QPushButton(tr("&Collapse All"));
             actionsFilterLayout->addWidget(collapseAllButton);
             auto filterLineEdit = new QLineEdit;
             filterLineEdit->setPlaceholderText(tr("Filter"));
             actionsFilterLayout->addWidget(filterLineEdit, 1);
-            auto findShortcutButton = new QPushButton(tr("Find Shortcut"));
+            auto findShortcutButton = new QPushButton(tr("&Find Shortcut"));
             actionsFilterLayout->addWidget(findShortcutButton);
             actionsLayout->addLayout(actionsFilterLayout);
             auto actionsTreeWidget = new QTreeWidget;
@@ -126,7 +126,10 @@ namespace Core::Internal {
                     return;
                 auto actionMgr = ICore::instance()->actionManager();
                 auto shortcutsFamily = m_presetComboBox->currentData().toBool() ? actionMgr->systemShortcutsFamily(m_presetComboBox->currentText()) : actionMgr->userShortcutsFamily(m_presetComboBox->currentText());
-                auto duplicatedShortcutFamily = duplicateShortcutsFamily(shortcutsFamily, m_presetComboBox->currentData().toBool() ? m_systemShortcutFamilyModification[m_presetComboBox->currentText()] : m_userShortcutFamilyModification[m_presetComboBox->currentText()]);
+                auto duplicatedShortcutFamily = duplicateShortcutsFamily(
+                    shortcutsFamily,
+                    m_presetComboBox->currentData().toBool() ? decltype(m_userShortcutFamilyAddition)::mapped_type() : m_userShortcutFamilyAddition.value(m_presetComboBox->currentText()),
+                    m_presetComboBox->currentData().toBool() ? m_systemShortcutFamilyModification.value(m_presetComboBox->currentText()) : m_userShortcutFamilyModification.value(m_presetComboBox->currentText()));
                 m_userShortcutFamilyModification.remove(name);
                 m_userShortcutFamilyRemoval.remove(name);
                 m_userShortcutFamilyAddition.insert(name, duplicatedShortcutFamily);
@@ -148,6 +151,31 @@ namespace Core::Internal {
                 m_userShortcutFamilyAddition.remove(name);
                 m_userShortcutFamilyRemoval.insert(name);
                 m_presetComboBox->removeItem(m_presetComboBox->currentIndex());
+            });
+
+            connect(presetRenameButton, &QAbstractButton::clicked, this, [=] {
+                auto oldName = m_presetComboBox->currentText();
+                auto name = promptPresetName(tr("Rename \"%1\" to").arg(oldName));
+                if (name.isEmpty())
+                    return;
+                if (name == oldName)
+                    return;
+
+                m_userShortcutFamilyModification.remove(oldName);
+                m_userShortcutFamilyAddition.remove(oldName);
+                m_userShortcutFamilyRemoval.insert(oldName);
+
+                auto actionMgr = ICore::instance()->actionManager();
+                auto shortcutsFamily = m_presetComboBox->currentData().toBool() ? actionMgr->systemShortcutsFamily(m_presetComboBox->currentText()) : actionMgr->userShortcutsFamily(m_presetComboBox->currentText());
+                auto duplicatedShortcutFamily = duplicateShortcutsFamily(
+                    shortcutsFamily,
+                    m_presetComboBox->currentData().toBool() ? decltype(m_userShortcutFamilyAddition)::mapped_type() : m_userShortcutFamilyAddition.value(m_presetComboBox->currentText()),
+                    m_presetComboBox->currentData().toBool() ? m_systemShortcutFamilyModification.value(m_presetComboBox->currentText()) : m_userShortcutFamilyModification.value(m_presetComboBox->currentText()));
+                m_userShortcutFamilyModification.remove(name);
+                m_userShortcutFamilyRemoval.remove(name);
+                m_userShortcutFamilyAddition.insert(name, duplicatedShortcutFamily);
+
+                m_presetComboBox->setItemText(m_presetComboBox->currentIndex(), name);
             });
 
             connect(expandAllButton, &QAbstractButton::clicked, actionsTreeWidget, &QTreeWidget::expandAll);
@@ -207,7 +235,11 @@ namespace Core::Internal {
             m_userShortcutFamilyModification.clear();
             for (const auto &name : m_systemShortcutFamilyModification.keys()) {
                 bool changed;
-                auto presetCopy = duplicateShortcutsFamily(actionMgr->systemShortcutsFamily(name), m_systemShortcutFamilyModification.value(name), &changed);
+                auto presetCopy = duplicateShortcutsFamily(
+                    actionMgr->systemShortcutsFamily(name),
+                    {},
+                    m_systemShortcutFamilyModification.value(name),
+                    &changed);
                 if (!changed)
                     continue;
                 QString newName = name;
@@ -220,6 +252,7 @@ namespace Core::Internal {
                     m_presetComboBox->setCurrentIndex(m_presetComboBox->count() - 1);
             }
             m_systemShortcutFamilyModification.clear();
+            actionMgr->setCurrentShortcutsFamily(m_presetComboBox->currentText(), m_presetComboBox->currentData().toBool());
         }
 
     private:
@@ -420,7 +453,7 @@ namespace Core::Internal {
             return {};
         }
 
-        [[nodiscard]] static QHash<QString, QList<QKeySequence>> duplicateShortcutsFamily(const ActionDomain::ShortcutsFamily &family, const QHash<QString, QList<QKeySequence>> &modification, bool *changed = nullptr) {
+        [[nodiscard]] static QHash<QString, QList<QKeySequence>> duplicateShortcutsFamily(const ActionDomain::ShortcutsFamily &family, const QHash<QString, QList<QKeySequence>> &addition, const QHash<QString, QList<QKeySequence>> &modification, bool *changed = nullptr) {
             QHash<QString, QList<QKeySequence>> ret;
             if (changed)
                 *changed = false;
@@ -429,15 +462,17 @@ namespace Core::Internal {
                     ret.insert(id, family.value(id).value());
                 }
             }
-            for (const auto &id : modification.keys()) {
+            auto patchedModification = addition;
+            patchedModification.insert(modification);
+            for (const auto &id : patchedModification.keys()) {
                 if (changed && !*changed) {
                     auto currentList = ret.value(id);
-                    auto modifiedList = modification.value(id);
+                    auto modifiedList = patchedModification.value(id);
                     if (QSet<QKeySequence>(currentList.cbegin(), currentList.cend()) != QSet<QKeySequence>(modifiedList.cbegin(), modifiedList.cend())) {
                         *changed = true;
                     }
                 }
-                ret.insert(id, modification.value(id));
+                ret.insert(id, patchedModification.value(id));
             }
             return ret;
         }
