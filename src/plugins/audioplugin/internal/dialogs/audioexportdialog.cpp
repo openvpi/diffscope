@@ -97,7 +97,7 @@ namespace Audio {
         m_formatSampleRateComboBox->addItems({"8000",   "11025",  "12000",  "16000",  "22050",  "24000",
                                               "32000",  "44100",  "48000",  "64000",  "88200",  "96000",
                                               "128000", "176400", "192000", "256000", "352800", "384000"});
-        formatLayout->addRow(tr("&Sample Rate"), m_formatSampleRateComboBox);
+        formatLayout->addRow(tr("&Sample rate"), m_formatSampleRateComboBox);
         formatGroupBox->setLayout(formatLayout);
         leftLayout->addWidget(formatGroupBox);
 
@@ -106,8 +106,8 @@ namespace Audio {
         m_mixingOptionComboBox = new QComboBox;
         m_mixingOptionComboBox->addItems({
             tr("Mixed"),
-            tr("Seperated"),
-            tr("Seperated (through master track)"),
+            tr("Separated"),
+            tr("Separated (through master track)"),
         });
         mixingLayout->addRow(tr("&Mixing Option"), m_mixingOptionComboBox);
         m_enableMuteSoloCheckBox = new QCheckBox(tr("Enable m&ute/solo"));
@@ -133,7 +133,7 @@ namespace Audio {
         m_rangeSelectAllRadio = new QRadioButton(tr("A&ll"));
         m_rangeSelectAllRadio->setChecked(true);
         rangeOptionLayout->addWidget(m_rangeSelectAllRadio);
-        m_rangeLoopIntervalRadio = new QRadioButton(tr("Loop &interval"));
+        m_rangeLoopIntervalRadio = new QRadioButton(tr("Loop s&ection"));
         rangeOptionLayout->addWidget(m_rangeLoopIntervalRadio);
         rangeOptionLayout->addStretch();
         timeRangeLayout->addLayout(rangeOptionLayout);
@@ -153,7 +153,7 @@ namespace Audio {
         buttonLayout->addWidget(dryRunButton);
         auto dryRunContextHelpButton = new QPushButton;
         dryRunContextHelpButton->setIcon(style()->standardIcon(QStyle::SP_DialogHelpButton));
-        dryRunContextHelpButton->setToolTip(tr("\"Dry Run\" show the paths of files to export. No files will actually be exported."));
+        dryRunContextHelpButton->setToolTip(tr("\"Dry Run\" shows the paths of files to export. No files will actually be exported."));
         buttonLayout->addWidget(dryRunContextHelpButton);
         buttonLayout->addStretch();
         m_warningButton = new QPushButton;

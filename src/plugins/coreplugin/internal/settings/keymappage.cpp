@@ -34,6 +34,7 @@
 namespace Core::Internal {
 
     class KeymapPageWidget : public QWidget {
+        Q_OBJECT
     public:
         explicit KeymapPageWidget(QWidget *parent = nullptr) : QWidget(parent) {
             auto mainLayout = new QVBoxLayout;
@@ -516,3 +517,5 @@ namespace Core::Internal {
     }
 
 }
+
+#include "keymappage.moc"

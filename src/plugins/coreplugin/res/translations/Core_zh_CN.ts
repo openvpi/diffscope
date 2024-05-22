@@ -22,9 +22,13 @@
         <translation>&lt;h3&gt;构建信息&lt;/h3&gt;&lt;p&gt;版本：%1&lt;br&gt;分支：%2&lt;br&gt;提交：%3&lt;br&gt;构建日期：%4&lt;br&gt;工具链：%5 %6 %7&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../core/appextra.cpp" line="90"/>
         <source>&lt;h3&gt;About Application&lt;/h3&gt;&lt;p&gt;%1 is a cross-platform SVS editing application mainly powered by DiffSinger for virtual singer producers to make song compositions.&lt;/p&gt;</source>
-        <translation>&lt;h3&gt;关于&lt;/h3&gt;&lt;p&gt;%1 是跨平台的 SVS 编辑软件，主要由 DiffSinger 提供支持，用于制作基于虚拟歌手的音乐作品。&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;h3&gt;关于&lt;/h3&gt;&lt;p&gt;%1 是跨平台的 SVS 编辑软件，主要由 DiffSinger 提供支持，用于制作基于虚拟歌手的音乐作品。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../core/appextra.cpp" line="90"/>
+        <source>&lt;h3&gt;About Application&lt;/h3&gt;&lt;p&gt;%1 is a cross-platform SVS editing application powered by DiffSinger for virtual singer producers to make song compositions.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../core/appextra.cpp" line="98"/>
@@ -71,7 +75,7 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation>文件管理器</translation>
     </message>
     <message>
-        <location filename="../../../../app/main.cpp" line="45"/>
+        <location filename="../../../../app/main.cpp" line="46"/>
         <source>Failed to create data or temp directories!</source>
         <translation>无法创建数据与临时文件目录！</translation>
     </message>
@@ -102,87 +106,87 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>ChorusKit::ActionCategory</name>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2238"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2238"/>
         <source>Main Menu</source>
         <translation>主菜单</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2239"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2239"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2240"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2240"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2241"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2241"/>
         <source>View</source>
         <translation type="unfinished">视图</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2242"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2242"/>
         <source>Playback</source>
         <translation type="unfinished">播放</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2243"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2243"/>
         <source>Help</source>
         <translation type="unfinished">帮助</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2246"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2246"/>
         <source>File Open Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2247"/>
         <source>New</source>
         <translation type="unfinished">新建</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2248"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2250"/>
         <source>Save</source>
         <translation type="unfinished">保存</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2252"/>
         <source>Close</source>
         <translation type="unfinished">关闭</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2281"/>
         <source>Play Options</source>
         <translation type="unfinished">播放选项</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2294"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2294"/>
         <source>Open Recent</source>
         <translation type="unfinished">打开最近</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2244"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2244"/>
         <source>Visibility Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2251"/>
         <source>Save as</source>
         <translation>另存为</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2272"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2272"/>
         <source>Appearance</source>
         <translation type="unfinished">外观</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2245"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2245"/>
         <source>Dock Panels</source>
         <translation type="unfinished">停靠面板</translation>
     </message>
@@ -195,7 +199,7 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="obsolete">打开文件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2249"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2249"/>
         <source>File Save Group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -204,197 +208,197 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="obsolete">保存文件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2253"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2253"/>
         <source>Preferences Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2254"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2254"/>
         <source>Preferences</source>
         <translation type="unfinished">首选项</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2255"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2255"/>
         <source>Settings</source>
         <translation type="unfinished">设置</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2256"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2256"/>
         <source>Color Themes</source>
         <translation type="unfinished">颜色主题</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2257"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2257"/>
         <source>Locales and Languages</source>
         <translation type="unfinished">地区和语言</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2258"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2258"/>
         <source>Undo</source>
         <translation type="unfinished">撤销</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2259"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2259"/>
         <source>Redo</source>
         <translation type="unfinished">重做</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2260"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2260"/>
         <source>Cut Copy Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2261"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2261"/>
         <source>Cut</source>
         <translation type="unfinished">剪切</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2262"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2262"/>
         <source>Copy</source>
         <translation type="unfinished">复制</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2263"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2263"/>
         <source>Paste</source>
         <translation type="unfinished">粘贴</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2264"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2264"/>
         <source>Create/Delete Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2265"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2265"/>
         <source>Delete</source>
         <translation type="unfinished">删除</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2266"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2266"/>
         <source>Editor Select Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2267"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2267"/>
         <source>Select All</source>
         <translation type="unfinished">全选</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2268"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2268"/>
         <source>Deselect</source>
         <translation type="unfinished">取消选择</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2269"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2269"/>
         <source>Editor Search Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2270"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2270"/>
         <source>Find</source>
         <translation type="unfinished">查找</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2271"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2271"/>
         <source>Replace</source>
         <translation type="unfinished">替换</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2273"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2273"/>
         <source>Main Toolbar</source>
         <translation type="unfinished">主工具栏</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2274"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2274"/>
         <source>Dock Panel Bars</source>
         <translation type="unfinished">停靠栏</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2275"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2275"/>
         <source>Status Bar</source>
         <translation type="unfinished">状态栏</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2276"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2276"/>
         <source>Play Control Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2277"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2277"/>
         <source>Play</source>
         <translation type="unfinished">播放</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2278"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2278"/>
         <source>Stop</source>
         <translation type="unfinished">停止</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2279"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2279"/>
         <source>Move to Start</source>
         <translation type="unfinished">移动到开始</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2280"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2280"/>
         <source>Move to End</source>
         <translation type="unfinished">移动到结束</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2282"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2282"/>
         <source>Metronome</source>
         <translation type="unfinished">节拍器</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2283"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2283"/>
         <source>Loop Play</source>
         <translation type="unfinished">循环播放</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2284"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2284"/>
         <source>Welcome Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2285"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2285"/>
         <source>Show Home</source>
         <translation type="unfinished">显示主界面</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2286"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2286"/>
         <source>Find Action</source>
         <translation type="unfinished">查找命令</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2287"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2287"/>
         <source>About Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2288"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2288"/>
         <source>About Plugins</source>
         <translation type="unfinished">关于插件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2289"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2289"/>
         <source>About DiffScope</source>
         <translation type="unfinished">关于 DiffScope</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2290"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2290"/>
         <source>About Qt</source>
         <translation type="unfinished">关于 Qt</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2291"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2291"/>
         <source>Display</source>
         <translation type="unfinished">显示</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2292"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2292"/>
         <source>Timer Label</source>
         <translation type="unfinished">时间标签</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2293"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2293"/>
         <source>Quantize Selector</source>
         <translation type="unfinished">量化选择器</translation>
     </message>
@@ -402,42 +406,42 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>ChorusKit::ActionClass</name>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2228"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2228"/>
         <source>Create</source>
         <translation>创建</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2229"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2229"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2230"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2230"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2231"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2231"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2232"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2232"/>
         <source>View</source>
         <translation>视图</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2233"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2233"/>
         <source>Playback</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2234"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2234"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2235"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2235"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -445,32 +449,32 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>ChorusKit::ActionText</name>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2167"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2167"/>
         <source>&amp;File</source>
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2168"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2168"/>
         <source>&amp;Edit</source>
         <translation>编辑(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2169"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2169"/>
         <source>&amp;View</source>
         <translation>视图(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2170"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2170"/>
         <source>&amp;Playback</source>
         <translation>播放(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2171"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2171"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2173"/>
         <source>New</source>
         <translation>新建</translation>
     </message>
@@ -479,27 +483,27 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="vanished">打开</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2175"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2177"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2212"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2212"/>
         <source>Open Recent</source>
         <translation>打开最近</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2220"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2220"/>
         <source>Appearance</source>
         <translation>外观</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2172"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2172"/>
         <source>Dock Panels</source>
         <translation>停靠面板</translation>
     </message>
@@ -508,234 +512,234 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation type="vanished">另存为</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2174"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2174"/>
         <source>Open...</source>
         <translation>打开...</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2176"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2176"/>
         <source>Save as...</source>
         <translation>另存为...</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2178"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2178"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2179"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2179"/>
         <source>Color Themes</source>
         <translation>颜色主题</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2180"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2180"/>
         <source>Locales and Languages</source>
         <translation>地区和语言</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2181"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2181"/>
         <source>Undo</source>
         <translation>撤销</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2182"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2182"/>
         <source>Redo</source>
         <translation>重做</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2183"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2183"/>
         <source>Cut</source>
         <translation>剪切</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2184"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2184"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2185"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2185"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2186"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2186"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2187"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2187"/>
         <source>Select All</source>
         <translation>全选</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2188"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2188"/>
         <source>Deselect</source>
         <translation>取消选择</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2189"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2189"/>
         <source>Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2190"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2190"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2191"/>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2210"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2191"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2210"/>
         <source>Main Menu</source>
         <translation>主菜单</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2192"/>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2225"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2192"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2225"/>
         <source>Main Toolbar</source>
         <translation>主工具栏</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2193"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2193"/>
         <source>Dock Panel Bars</source>
         <translation>停靠栏</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2194"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2194"/>
         <source>Status Bar</source>
         <translation>状态栏</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2195"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2195"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2196"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2196"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2197"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2197"/>
         <source>Move to Start</source>
         <translation>移动到开始</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2198"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2198"/>
         <source>Move to End</source>
         <translation>移动到结束</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2199"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2199"/>
         <source>Metronome</source>
         <translation>节拍器</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2200"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2200"/>
         <source>Loop Play</source>
         <translation>循环播放</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2201"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2201"/>
         <source>Show Home</source>
         <translation>显示主界面</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2202"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2202"/>
         <source>Find Action</source>
         <translation>查找命令</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2203"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2203"/>
         <source>About Plugins</source>
         <translation>关于插件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2204"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2204"/>
         <source>About DiffScope</source>
         <translation>关于 DiffScope</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2205"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2205"/>
         <source>About Qt</source>
         <translation>关于 Qt</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2206"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2206"/>
         <source>Show Recent Files</source>
         <translation>显示最近文件</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2207"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2207"/>
         <source>Create/Delete Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2208"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2208"/>
         <source>Timer Label</source>
         <translation>时间标签</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2209"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2209"/>
         <source>Quantize Selector</source>
         <translation>量化选择器</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2211"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2211"/>
         <source>File Open Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2213"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2213"/>
         <source>File Save Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2214"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2214"/>
         <source>Preferences Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2215"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2215"/>
         <source>Preferences</source>
         <translation>首选项</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2216"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2216"/>
         <source>Cut Copy Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2217"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2217"/>
         <source>Editor Select Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2218"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2218"/>
         <source>Editor Search Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2219"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2219"/>
         <source>Visibility Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2221"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2221"/>
         <source>Play Control Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2222"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2222"/>
         <source>Play Options</source>
         <translation>播放选项</translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2223"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2223"/>
         <source>Welcome Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../../build/Release/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2224"/>
+        <location filename="../../../../../cmake-build-debug/src/plugins/coreplugin/res/ckaec_core_actions.cpp" line="2224"/>
         <source>About Group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -743,37 +747,70 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::DspxDocument</name>
     <message>
-        <location filename="../../internal/doc/dspxdocument.cpp" line="113"/>
         <source>File is opened</source>
-        <translation>文件已打开</translation>
+        <translation type="vanished">文件已打开</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxdocument.cpp" line="124"/>
         <source>Invalid file format!</source>
-        <translation>意外的文件格式！</translation>
+        <translation type="vanished">意外的文件格式！</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxdocument.cpp" line="134"/>
+        <location filename="../../doc/dspxdocument.cpp" line="168"/>
+        <location filename="../../doc/dspxdocument.cpp" line="184"/>
+        <source>%1: Failed to remove old directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../doc/dspxdocument.cpp" line="179"/>
+        <source>Directory not set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../doc/dspxdocument.cpp" line="189"/>
+        <source>%1: Failed to create directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../doc/dspxdocument.cpp" line="198"/>
+        <source>Failed to initialize transaction engine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../doc/dspxdocument.cpp" line="229"/>
+        <source>Invalid format!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../doc/dspxdocument.cpp" line="234"/>
+        <source>Unknown error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../doc/dspxdocument.cpp" line="240"/>
         <source>Missing version field!</source>
         <translation>缺少 version 字段！</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxdocument.cpp" line="143"/>
+        <location filename="../../doc/dspxdocument.cpp" line="248"/>
         <source>The specified file version(%1) is too high</source>
         <translation>指定的文件版本（%1）太高</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxdocument.cpp" line="156"/>
-        <source>Missing content field!</source>
-        <translation>缺少 content 字段！</translation>
+        <location filename="../../doc/dspxdocument.cpp" line="273"/>
+        <source>Failed to recover from journal.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxdocument.cpp" line="227"/>
+        <source>Missing content field!</source>
+        <translation type="vanished">缺少 content 字段！</translation>
+    </message>
+    <message>
+        <location filename="../../doc/dspxdocument.cpp" line="391"/>
         <source>Failed to open file!</source>
         <translation>打开文件失败！</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxdocument.cpp" line="257"/>
+        <location filename="../../doc/dspxdocument.cpp" line="459"/>
         <source>Failed to create file!</source>
         <translation>创建文件失败！</translation>
     </message>
@@ -781,22 +818,22 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::DspxSpec</name>
     <message>
-        <location filename="../../internal/doc/dspxspec.cpp" line="50"/>
+        <location filename="../../doc/dspxspec.cpp" line="50"/>
         <source>OpenVPI DiffSinger Editor</source>
         <translation>OpenVPI DiffSinger 编辑器</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxspec.cpp" line="51"/>
+        <location filename="../../doc/dspxspec.cpp" line="51"/>
         <source>Built-in</source>
         <translation>内置</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxspec.cpp" line="78"/>
+        <location filename="../../doc/dspxspec.cpp" line="78"/>
         <source>DiffScope Project Files</source>
         <translation>DiffScope 工程文件</translation>
     </message>
     <message>
-        <location filename="../../internal/doc/dspxspec.cpp" line="88"/>
+        <location filename="../../doc/dspxspec.cpp" line="88"/>
         <source>File Error</source>
         <translation>文件错误</translation>
     </message>
@@ -820,48 +857,48 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::AppearancePage</name>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="58"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="79"/>
         <source>Display</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="72"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="93"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="75"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="94"/>
         <source>Use system font</source>
         <translation>使用系统字体</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="84"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="101"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="85"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="102"/>
         <source>Zoom</source>
         <translation>缩放</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="86"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="103"/>
         <source>Font</source>
         <translation>字体</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="88"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="105"/>
         <source>The font change takes effect only after the restart.</source>
         <translation>字体修改后，需要重启才能生效。</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="177"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="222"/>
         <source>Select Font</source>
         <translation>选择字体</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/appearancepage.cpp" line="188"/>
-        <location filename="../../internal/settings/appearancepage.cpp" line="189"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="234"/>
+        <location filename="../../internal/settings/appearancepage.cpp" line="235"/>
         <source>Appearance</source>
         <translation>外观</translation>
     </message>
@@ -885,7 +922,7 @@ The application is about to exit because an unresolvable exception has occurred,
         <translation>初始化核心插件...</translation>
     </message>
     <message>
-        <location filename="../../internal/coreplugin.cpp" line="167"/>
+        <location filename="../../internal/coreplugin.cpp" line="168"/>
         <source>Initializing user interface...</source>
         <translation>初始化用户界面...</translation>
     </message>
@@ -987,14 +1024,141 @@ The application is about to exit because an unresolvable exception has occurred,
 <context>
     <name>Core::Internal::KeymapPage</name>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="29"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="484"/>
         <source>Keymap</source>
         <translation>键盘映射</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/keymappage.cpp" line="30"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="485"/>
         <source>Keyboard shortcuts.</source>
         <translation>键盘映射。</translation>
+    </message>
+</context>
+<context>
+    <name>Core::Internal::KeymapPageWidget</name>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="46"/>
+        <source>Save &amp;As</source>
+        <translation type="unfinished">另存为(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="48"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">删除(&amp;D)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="50"/>
+        <source>&amp;Rename</source>
+        <translation type="unfinished">重命名(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="52"/>
+        <source>&amp;Preset</source>
+        <translation type="unfinished">预设(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="57"/>
+        <source>Actions</source>
+        <translation type="unfinished">命令</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="60"/>
+        <source>&amp;Expand All</source>
+        <translation type="unfinished">全部展开(&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="62"/>
+        <source>&amp;Collapse All</source>
+        <translation type="unfinished">全部折叠(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="65"/>
+        <source>Filter</source>
+        <translation type="unfinished">筛选</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="67"/>
+        <source>&amp;Find Shortcut</source>
+        <translation type="unfinished">查找快捷键(&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="71"/>
+        <source>Name</source>
+        <translation type="unfinished">名称</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="71"/>
+        <source>ID</source>
+        <translation type="unfinished">ID</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="71"/>
+        <source>Shortcut</source>
+        <translation type="unfinished">快捷键</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="125"/>
+        <source>Save &quot;%1&quot; As</source>
+        <translation type="unfinished">将“%1”另存为</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="159"/>
+        <source>Rename &quot;%1&quot; to</source>
+        <translation type="unfinished">将“%1”重命名为</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="248"/>
+        <source>%1 (copy)</source>
+        <translation type="unfinished">%1（副本）</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="338"/>
+        <source>Add Shortcut</source>
+        <translation type="unfinished">添加快捷键</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="343"/>
+        <source>Remove &quot;%1&quot;</source>
+        <translation type="unfinished">移除”%1“</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="368"/>
+        <source>Add Shortcut for &quot;%1&quot;</source>
+        <translation type="unfinished">为”%1“添加快捷键</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="374"/>
+        <location filename="../../internal/settings/keymappage.cpp" line="424"/>
+        <source>OK</source>
+        <translation type="unfinished">确定</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="390"/>
+        <source>Shortcut Already Assigned</source>
+        <translation type="unfinished">快捷键已分配</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="390"/>
+        <source>Shortcut &quot;%1&quot; has already been assigned to action &quot;%2&quot;.
+
+If continue, &quot;%1&quot; will be removed from &quot;%2&quot;.</source>
+        <translation type="unfinished">快捷键“%1”已分配给命令“%2”。
+
+如果继续，将从“%2”中删除“%1”。</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="447"/>
+        <source>Name Already Exists</source>
+        <translation type="unfinished">名称已存在</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/keymappage.cpp" line="447"/>
+        <source>Preset name &quot;%1&quot; already exists.
+
+If continue, the old one will be overwritten.</source>
+        <translation type="unfinished">预设名称”%1“已存在。
+
+如果继续，旧的预设将被覆盖。</translation>
     </message>
 </context>
 <context>
