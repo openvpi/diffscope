@@ -116,6 +116,8 @@ namespace Core::Internal {
                     auto item = actionsTreeWidget->topLevelItem(i);
                     traverseShortcuts(item);
                 }
+                presetDeleteButton->setDisabled(m_presetComboBox->currentData().toBool());
+                presetRenameButton->setDisabled(m_presetComboBox->currentData().toBool());
             });
 
             connect(presetSaveAsButton, &QAbstractButton::clicked, this, [=] {
@@ -126,7 +128,26 @@ namespace Core::Internal {
                 auto shortcutsFamily = m_presetComboBox->currentData().toBool() ? actionMgr->systemShortcutsFamily(m_presetComboBox->currentText()) : actionMgr->userShortcutsFamily(m_presetComboBox->currentText());
                 auto duplicatedShortcutFamily = duplicateShortcutsFamily(shortcutsFamily, m_presetComboBox->currentData().toBool() ? m_systemShortcutFamilyModification[m_presetComboBox->currentText()] : m_userShortcutFamilyModification[m_presetComboBox->currentText()]);
                 m_userShortcutFamilyModification.remove(name);
+                m_userShortcutFamilyRemoval.remove(name);
                 m_userShortcutFamilyAddition.insert(name, duplicatedShortcutFamily);
+                for (int i = 0; i <= m_presetComboBox->count(); i++) {
+                    if (i == m_presetComboBox->count()) {
+                        m_presetComboBox->addItem(name, false);
+                        m_presetComboBox->setCurrentIndex(m_presetComboBox->count() - 1);
+                    }
+                    if (m_presetComboBox->itemText(i) == name && !m_presetComboBox->itemData(i).toBool()) {
+                        m_presetComboBox->setCurrentIndex(i);
+                        break;
+                    }
+                }
+            });
+
+            connect(presetDeleteButton, &QAbstractButton::clicked, this, [=] {
+                auto name = m_presetComboBox->currentText();
+                m_userShortcutFamilyModification.remove(name);
+                m_userShortcutFamilyAddition.remove(name);
+                m_userShortcutFamilyRemoval.insert(name);
+                m_presetComboBox->removeItem(m_presetComboBox->currentIndex());
             });
 
             connect(expandAllButton, &QAbstractButton::clicked, actionsTreeWidget, &QTreeWidget::expandAll);
@@ -166,7 +187,39 @@ namespace Core::Internal {
         }
 
         void applyModification() {
-            qDebug() << m_systemShortcutFamilyModification;
+            auto actionMgr = ICore::instance()->actionManager();
+            for (const auto &name : qAsConst(m_userShortcutFamilyRemoval)) {
+                actionMgr->removeUserShortcutsFamily(name);
+            }
+            m_userShortcutFamilyRemoval.clear();
+            for (const auto &name : m_userShortcutFamilyAddition.keys()) {
+                auto addition = m_userShortcutFamilyAddition.value(name);
+                actionMgr->addUserShortcutsFamily(name, ActionDomain::ShortcutsFamily(addition.cbegin(), addition.cend()));
+            }
+            m_userShortcutFamilyAddition.clear();
+            for (const auto &name : m_userShortcutFamilyModification.keys()) {
+                auto family = actionMgr->userShortcutsFamily(name);
+                auto modification = m_userShortcutFamilyModification.value(name);
+                family.insert(ActionDomain::ShortcutsFamily(modification.cbegin(), modification.cend()));
+                actionMgr->removeUserShortcutsFamily(name);
+                actionMgr->addUserShortcutsFamily(name, family);
+            }
+            m_userShortcutFamilyModification.clear();
+            for (const auto &name : m_systemShortcutFamilyModification.keys()) {
+                bool changed;
+                auto presetCopy = duplicateShortcutsFamily(actionMgr->systemShortcutsFamily(name), m_systemShortcutFamilyModification.value(name), &changed);
+                if (!changed)
+                    continue;
+                QString newName = name;
+                do {
+                    newName = tr("%1 (copy)").arg(newName);
+                } while (actionMgr->userShortcutFamilies().contains(newName));
+                actionMgr->addUserShortcutsFamily(newName, ActionDomain::ShortcutsFamily(presetCopy.cbegin(), presetCopy.cend()));
+                m_presetComboBox->addItem(newName, false);
+                if (m_presetComboBox->currentText() == name && m_presetComboBox->currentData().toBool())
+                    m_presetComboBox->setCurrentIndex(m_presetComboBox->count() - 1);
+            }
+            m_systemShortcutFamilyModification.clear();
         }
 
     private:
@@ -180,8 +233,9 @@ namespace Core::Internal {
         QHash<QString, QHash<QString, QList<QKeySequence>>> m_systemShortcutFamilyModification;
         QHash<QString, QHash<QString, QList<QKeySequence>>> m_userShortcutFamilyModification;
         QHash<QString, QHash<QString, QList<QKeySequence>>> m_userShortcutFamilyAddition;
+        QSet<QString> m_userShortcutFamilyRemoval;
 
-        void traverseCatalog(QTreeWidgetItem *item, const ActionCatalog &catalog) {
+        void traverseCatalog(QTreeWidgetItem *item, const ActionCatalog &catalog) const {
             auto domain = ICore::instance()->actionManager()->domain();
             item->setText(0, ActionObjectInfo::translatedCategory(catalog.name()));
             item->setIcon(0, domain->objectIcon(qIDec->theme(), catalog.id()));
@@ -223,7 +277,7 @@ namespace Core::Internal {
             item->setData(0, ShortcutRole, QVariant::fromValue(shortcuts));
         }
 
-        bool traverseFilter(QTreeWidgetItem *item, const QString &text) {
+        bool traverseFilter(QTreeWidgetItem *item, const QString &text) const {
             bool childMatched = false;
             for (int i = 0; i < item->childCount(); i++) {
                 auto childItem = item->child(i);
@@ -344,7 +398,7 @@ namespace Core::Internal {
                 if (name.isEmpty()) {
                     okButton->setDisabled(true);
                     okButton->setIcon({});
-                } else if (userShortcutsFamilies.contains(name)) {
+                } else if (userShortcutsFamilies.contains(name) || m_userShortcutFamilyAddition.contains(name)) {
                     okButton->setDisabled(false);
                     okButton->setIcon(style()->standardIcon(QStyle::SP_MessageBoxWarning));
                 } else {
@@ -355,7 +409,7 @@ namespace Core::Internal {
 
             connect(okButton, &QAbstractButton::clicked, &dlg, [=, &dlg] {
                 auto name = lineEdit->text();
-                if (userShortcutsFamilies.contains(name)) {
+                if (userShortcutsFamilies.contains(name) || m_userShortcutFamilyAddition.contains(name)) {
                     if (QMessageBox::warning(&dlg, tr("Name Already Exists"), tr("Preset name \"%1\" already exists.\n\nIf continue, the old one will be overwritten.").arg(name), QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)
                         return;
                 }
@@ -366,7 +420,7 @@ namespace Core::Internal {
             return {};
         }
 
-        static QHash<QString, QList<QKeySequence>> duplicateShortcutsFamily(const ActionDomain::ShortcutsFamily &family, const QHash<QString, QList<QKeySequence>> &modification, bool *changed = nullptr) {
+        [[nodiscard]] static QHash<QString, QList<QKeySequence>> duplicateShortcutsFamily(const ActionDomain::ShortcutsFamily &family, const QHash<QString, QList<QKeySequence>> &modification, bool *changed = nullptr) {
             QHash<QString, QList<QKeySequence>> ret;
             if (changed)
                 *changed = false;
