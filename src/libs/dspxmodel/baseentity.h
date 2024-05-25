@@ -10,7 +10,9 @@
 
 namespace QDspx {
 
-    class DspxInitializer;
+    namespace Private {
+        class Initializer;
+    }
 
     class DSPXMODEL_EXPORT BusControlEntity : public Substate::StructEntityBase {
         Q_OBJECT
@@ -40,7 +42,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         BusControlEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT TrackControlEntity : public BusControlEntity {
@@ -61,7 +63,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         TrackControlEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT IntPointEntity : public Substate::StructEntityBase {
@@ -87,7 +89,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         IntPointEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT DoublePointEntity : public Substate::StructEntityBase {
@@ -113,7 +115,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         DoublePointEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT AnchorPointEntity : public IntPointEntity {
@@ -141,7 +143,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         AnchorPointEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     DSPXMODEL_DECLARE_SHEET_CLASS(IntPointListEntity, IntPointEntity)

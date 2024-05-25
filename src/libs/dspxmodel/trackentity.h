@@ -43,7 +43,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         ClipTimeEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT ClipEntity : public Substate::StructEntityBase {
@@ -74,7 +74,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         ClipEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT AudioClipEntity : public ClipEntity {
@@ -95,7 +95,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         AudioClipEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT SingingClipEntity : public ClipEntity {
@@ -111,7 +111,7 @@ namespace QDspx {
 
     protected:
         SingingClipEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     DSPXMODEL_DECLARE_SHEET_CLASS(ClipListEntity, ClipEntity)
@@ -143,7 +143,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         TrackEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     DSPXMODEL_DECLARE_VECTOR_CLASS(TrackListEntity, TrackEntity)

@@ -19,7 +19,7 @@ namespace QDspx {
 
     protected:
         MasterEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT FileGlobalEntity : public Substate::StructEntityBase {
@@ -51,7 +51,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         FileGlobalEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT ModelEntity : public Substate::StructEntityBase {
@@ -68,7 +68,7 @@ namespace QDspx {
 
     public:
         ModelEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
 }

@@ -105,7 +105,7 @@ namespace QDspx {
     };
 
     ParamInfoEntity::ParamInfoEntity(QObject *parent)
-        : ParamInfoEntity(tagged_node<StructNode>("dspx_param_info", 1), true, parent) {
+        : ParamInfoEntity(tagged_node<StructNode>("dspx_param_info", 2), true, parent) {
     }
 
     ParamInfoEntity::~ParamInfoEntity() = default;

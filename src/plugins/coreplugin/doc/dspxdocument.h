@@ -20,7 +20,7 @@ namespace Core {
         explicit DspxDocument(QObject *parent = nullptr);
         ~DspxDocument();
 
-        class CORE_EXPORT DataModel {
+        class CORE_EXPORT Context {
         public:
             enum StateFlag {
                 TransactionFlag = 1,
@@ -36,7 +36,7 @@ namespace Core {
                 Redo = RedoFlag | UndoRedoFlag,
             };
 
-            inline DataModel() : d(nullptr) {
+            inline Context() : d(nullptr) {
             }
 
             inline bool isNull() const {
@@ -79,7 +79,7 @@ namespace Core {
             friend class DspxDocument;
         };
 
-        DataModel dataModel() const;
+        Context dataModel() const;
 
     public:
         QString dataDirectory() const;

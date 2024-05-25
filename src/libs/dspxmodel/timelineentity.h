@@ -36,7 +36,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         TimeSignatureEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT TempoEntity : public Substate::StructEntityBase {
@@ -62,7 +62,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         TempoEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT TimelineLabelEntity : public Substate::StructEntityBase {
@@ -88,7 +88,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         TimelineLabelEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     DSPXMODEL_DECLARE_SHEET_CLASS(TimeSignatureListEntity, TimeSignatureEntity)
@@ -108,7 +108,7 @@ namespace QDspx {
 
     protected:
         TimelineEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
 }

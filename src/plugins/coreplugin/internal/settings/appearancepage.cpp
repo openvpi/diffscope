@@ -72,11 +72,12 @@ namespace Core::Internal {
     }
 
     class AppearancePageWidget : public QWidget {
+        Q_DECLARE_TR_FUNCTIONS(AppearancePageWidget)
     public:
         explicit AppearancePageWidget(QWidget *parent = nullptr) : QWidget(parent) {
             recordCurrentArguments();
 
-            auto displayGroup = new QGroupBox(AppearancePage::tr("Display"));
+            auto displayGroup = new QGroupBox(tr("Display"));
             auto displayLayout = new QFormLayout();
 
             themeComboBox = new CComboBox();
@@ -90,19 +91,19 @@ namespace Core::Internal {
             fontText = new CLineEdit();
             fontText->setReadOnly(true);
 
-            selectFontButton = new QPushButton(AppearancePage::tr("Select"));
-            useSystemFontCheckBox = new QCheckBox(AppearancePage::tr("Use system font"));
+            selectFontButton = new QPushButton(tr("Select"));
+            useSystemFontCheckBox = new QCheckBox(tr("Use system font"));
 
             auto fontLayout = new QHBoxLayout();
             fontLayout->addWidget(fontText);
             fontLayout->addWidget(selectFontButton);
             fontLayout->addWidget(useSystemFontCheckBox);
 
-            displayLayout->addRow(AppearancePage::tr("Theme"), themeComboBox);
-            displayLayout->addRow(AppearancePage::tr("Zoom"), zoomComboBox);
-            displayLayout->addRow(AppearancePage::tr("Font"), fontLayout);
-            displayLayout->addRow(new QLabel(
-                AppearancePage::tr("The font change takes effect only after the restart.")));
+            displayLayout->addRow(tr("Theme"), themeComboBox);
+            displayLayout->addRow(tr("Zoom"), zoomComboBox);
+            displayLayout->addRow(tr("Font"), fontLayout);
+            displayLayout->addRow(
+                new QLabel(tr("The font change takes effect only after the restart.")));
 
             displayGroup->setLayout(displayLayout);
 
@@ -219,7 +220,7 @@ namespace Core::Internal {
             bool ok = false;
             auto initialFont = currentFont;
             initialFont.setPointSize(initialFont.pixelSize());
-            auto font = getFont(&ok, initialFont, this, AppearancePage::tr("Select Font"));
+            auto font = getFont(&ok, initialFont, this, tr("Select Font"));
             if (ok) {
                 currentFont = font;
                 currentFont.setPixelSize(font.pointSize());

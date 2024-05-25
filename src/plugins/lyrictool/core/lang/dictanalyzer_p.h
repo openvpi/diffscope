@@ -1,0 +1,5 @@
+#ifndef DICTANALYZER_P_H
+#define DICTANALYZER_P_H
+
+
+#endif // DICTANALYZER_P_H

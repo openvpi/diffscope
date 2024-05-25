@@ -17,7 +17,7 @@ namespace QDspx {
     };
 
     BusControlEntity::BusControlEntity(QObject *parent)
-        : BusControlEntity(tagged_node<StructNode>("dspx_bus_control", 2), true, parent) {
+        : BusControlEntity(tagged_node<StructNode>("dspx_bus_control", 3), true, parent) {
     }
 
     BusControlEntity::~BusControlEntity() = default;

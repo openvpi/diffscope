@@ -25,7 +25,7 @@
         inline explicit Container(Substate::Node *node, QObject *parent = nullptr)                 \
             : Substate::VectorEntityBase(node, parent) {                                           \
         }                                                                                          \
-        friend class DspxInitializer;                                                              \
+        friend class Private::Initializer;                                                              \
     };
 
 #define DSPXMODEL_DECLARE_SHEET_CLASS(Container, T)                                                \
@@ -40,7 +40,7 @@
         inline explicit Container(Substate::Node *node, QObject *parent = nullptr)                 \
             : Substate::SheetEntityBase(node, parent) {                                            \
         }                                                                                          \
-        friend class DspxInitializer;                                                              \
+        friend class Private::Initializer;                                                              \
     };
 
 #endif // DSPXMODELGLOBAL_H

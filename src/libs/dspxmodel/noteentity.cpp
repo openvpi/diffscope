@@ -225,7 +225,7 @@ namespace QDspx {
     };
 
     NoteEntity::NoteEntity(QObject *parent)
-        : NoteEntity(tagged_node<StructNode>("dspx_note", 7), true, parent) {
+        : NoteEntity(tagged_node<StructNode>("dspx_note", 9), true, parent) {
     }
 
     NoteEntity::~NoteEntity() = default;
@@ -331,6 +331,7 @@ namespace QDspx {
             setKeyNumber(DefaultNoteKeyNum);
             setCentShift(DefaultCentShift);
             setLyric(DefaultNoteLyric);
+            setOrgPronunciation(DefaultNoteOrgPronunciation);
             setPronunciation(DefaultNotePronunciation);
             setValueImpl(NS_PhonemeInfo, new PhonemeInfoEntity());
             setValueImpl(NS_VibratoInfo, new VibratoInfoEntity());

@@ -46,7 +46,8 @@ namespace QDspx {
     const int DefaultNoteLength = 480;
     const int DefaultNoteKeyNum = 60;
     const char DefaultNoteLyric[] = "la";
-    const char DefaultNotePronunciation[] = "la";
+    const char DefaultNotePronunciation[] = "";
+    const char DefaultNoteOrgPronunciation[] = "la";
 
     // Vibrato
     const double DefaultVibratoStart = 0;

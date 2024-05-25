@@ -1,0 +1,12 @@
+#ifndef LYRICTOOLGLOBAL_H
+#define LYRICTOOLGLOBAL_H
+
+#include <QtGlobal>
+
+#if defined(LYRICTOOL_LIBRARY)
+#  define LYRICTOOL_EXPORT Q_DECL_EXPORT
+#else
+#  define LYRICTOOL_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // LYRICTOOLGLOBAL_H

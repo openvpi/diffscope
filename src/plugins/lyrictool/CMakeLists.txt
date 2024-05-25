@@ -1,14 +1,14 @@
-project(iemgr VERSION 0.1.0.0)
+project(lyrictool VERSION 0.1.0.0)
 
-set(_plugin_name IEMgr)
-set(_plugin_display_name "Import/Export Manager")
+set(_plugin_name LyricTool)
+set(_plugin_display_name "Lyric Manager")
 
 # Add target
 ck_add_plugin(${PROJECT_NAME}
     NAME ${_plugin_name}
     DISPLAY_NAME ${_plugin_display_name}
     COMPAT_VERSION 0.0.0.0
-    VENDOR "Sine Striker"
+    VENDOR "Wolf"
     DESCRIPTION "${CURRENT_PLUGIN_DESC}"
 )
 
@@ -22,14 +22,13 @@ qm_configure_target(${PROJECT_NAME}
         Widgets
     LINKS
         coreplugin
-        opendspx::opendspx
     INCLUDE_PRIVATE
         core
         internal/**
 )
 
 # Add action
-ck_add_action_extension(_action_sources res/iemgr_actions.xml
+ck_add_action_extension(_action_sources res/lyrictool_actions.xml
     DEFINES
         PLUGIN_NAME=${_plugin_display_name}
         APP_NAME=${CK_APPLICATION_NAME}
@@ -54,7 +53,7 @@ qm_add_translation(${PROJECT_NAME}_translations
 
 # Add resources
 ck_add_attached_files(${PROJECT_NAME}
-    SRC res/icons DEST .
+    # SRC res/icons DEST .
     # SRC Res/themes DEST .
     SRC ${CMAKE_CURRENT_BINARY_DIR}/res/translations DEST .
 )
@@ -70,6 +69,5 @@ ck_sync_include(${PROJECT_NAME}
     DIRECTORY
         internal
     PREFIX "${PROJECT_NAME}/internal"
-    
     SKIP_INSTALL
 )

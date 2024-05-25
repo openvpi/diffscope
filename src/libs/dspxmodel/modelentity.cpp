@@ -12,6 +12,8 @@ namespace QDspx {
     // REGISTER_FACTORY.*\(.+(\".+\")\)
     // Entity::removeFactory($1);
 
+    namespace Private {
+
 #define REGISTER_FACTORY(Class, Key)                                                               \
     Entity::registerFactory(Key, [](Node *node, QObject *parent) -> Entity * {                     \
         return new Class(node, false, parent);                                                     \
@@ -21,130 +23,132 @@ namespace QDspx {
     Entity::registerFactory(                                                                       \
         Key, [](Node *node, QObject *parent) -> Entity * { return new Class(node, parent); });
 
-    struct DspxInitializer {
-        DspxInitializer() {
-            REGISTER_FACTORY(BusControlEntity, "dspx_bus_control")
-            REGISTER_FACTORY(TrackControlEntity, "dspx_track_control")
-            REGISTER_FACTORY(IntPointEntity, "dspx_int_point")
-            REGISTER_FACTORY(DoublePointEntity, "dspx_double_point")
-            REGISTER_FACTORY(AnchorPointEntity, "dspx_anchor_point")
-            REGISTER_FACTORY_CONTAINER(IntPointListEntity, "dspx_int_point_list")
-            REGISTER_FACTORY_CONTAINER(DoublePointListEntity, "dspx_double_point_list")
-            REGISTER_FACTORY_CONTAINER(AnchorPointListEntity, "dspx_anchor_point_list")
+        struct Initializer {
+            Initializer() {
+                REGISTER_FACTORY(BusControlEntity, "dspx_bus_control")
+                REGISTER_FACTORY(TrackControlEntity, "dspx_track_control")
+                REGISTER_FACTORY(IntPointEntity, "dspx_int_point")
+                REGISTER_FACTORY(DoublePointEntity, "dspx_double_point")
+                REGISTER_FACTORY(AnchorPointEntity, "dspx_anchor_point")
+                REGISTER_FACTORY_CONTAINER(IntPointListEntity, "dspx_int_point_list")
+                REGISTER_FACTORY_CONTAINER(DoublePointListEntity, "dspx_double_point_list")
+                REGISTER_FACTORY_CONTAINER(AnchorPointListEntity, "dspx_anchor_point_list")
 
-            REGISTER_FACTORY(PhonemeEntity, "dspx_phoneme")
-            REGISTER_FACTORY_CONTAINER(PhonemeListEntity, "dspx_phoneme_list")
-            REGISTER_FACTORY(PhonemeInfoEntity, "dspx_phoneme_info")
-            REGISTER_FACTORY(VibratoInfoEntity, "dspx_vibrato_info")
-            REGISTER_FACTORY(NoteEntity, "dspx_note")
-            REGISTER_FACTORY_CONTAINER(NoteListEntity, "dspx_note_list")
+                REGISTER_FACTORY(PhonemeEntity, "dspx_phoneme")
+                REGISTER_FACTORY_CONTAINER(PhonemeListEntity, "dspx_phoneme_list")
+                REGISTER_FACTORY(PhonemeInfoEntity, "dspx_phoneme_info")
+                REGISTER_FACTORY(VibratoInfoEntity, "dspx_vibrato_info")
+                REGISTER_FACTORY(NoteEntity, "dspx_note")
+                REGISTER_FACTORY_CONTAINER(NoteListEntity, "dspx_note_list")
 
-            REGISTER_FACTORY(ParamFreeEntity, "dspx_param_free")
-            REGISTER_FACTORY(ParamAnchorEntity, "dspx_param_anchor")
-            REGISTER_FACTORY_CONTAINER(ParamCurveListEntity, "dspx_param_curve_list")
-            REGISTER_FACTORY(ParamInfoEntity, "dspx_param_info")
-            REGISTER_FACTORY(ParamSetEntity, "dspx_param_set")
+                REGISTER_FACTORY(ParamFreeEntity, "dspx_param_free")
+                REGISTER_FACTORY(ParamAnchorEntity, "dspx_param_anchor")
+                REGISTER_FACTORY_CONTAINER(ParamCurveListEntity, "dspx_param_curve_list")
+                REGISTER_FACTORY(ParamInfoEntity, "dspx_param_info")
+                REGISTER_FACTORY(ParamSetEntity, "dspx_param_set")
 
-            REGISTER_FACTORY(TimeSignatureEntity, "dspx_time_signature")
-            REGISTER_FACTORY(TempoEntity, "dspx_tempo")
-            REGISTER_FACTORY(TimelineLabelEntity, "dspx_timeline_label")
-            REGISTER_FACTORY_CONTAINER(TimeSignatureListEntity, "dspx_time_signature_list")
-            REGISTER_FACTORY_CONTAINER(TempoListEntity, "dspx_tempo_list")
-            REGISTER_FACTORY_CONTAINER(TimelineLabelListEntity, "dspx_timeline_label_list")
+                REGISTER_FACTORY(TimeSignatureEntity, "dspx_time_signature")
+                REGISTER_FACTORY(TempoEntity, "dspx_tempo")
+                REGISTER_FACTORY(TimelineLabelEntity, "dspx_timeline_label")
+                REGISTER_FACTORY_CONTAINER(TimeSignatureListEntity, "dspx_time_signature_list")
+                REGISTER_FACTORY_CONTAINER(TempoListEntity, "dspx_tempo_list")
+                REGISTER_FACTORY_CONTAINER(TimelineLabelListEntity, "dspx_timeline_label_list")
 
-            REGISTER_FACTORY(ClipTimeEntity, "dspx_clip_time")
-            REGISTER_FACTORY(AudioClipEntity, "dspx_audio_clip")
-            REGISTER_FACTORY(SingingClipEntity, "dspx_singing_clip")
-            REGISTER_FACTORY_CONTAINER(ClipListEntity, "dspx_clip_list")
-            REGISTER_FACTORY(TrackEntity, "dspx_track")
-            REGISTER_FACTORY_CONTAINER(TrackListEntity, "dspx_track_list")
+                REGISTER_FACTORY(ClipTimeEntity, "dspx_clip_time")
+                REGISTER_FACTORY(AudioClipEntity, "dspx_audio_clip")
+                REGISTER_FACTORY(SingingClipEntity, "dspx_singing_clip")
+                REGISTER_FACTORY_CONTAINER(ClipListEntity, "dspx_clip_list")
+                REGISTER_FACTORY(TrackEntity, "dspx_track")
+                REGISTER_FACTORY_CONTAINER(TrackListEntity, "dspx_track_list")
 
-            REGISTER_FACTORY(MasterEntity, "dspx_master")
-            REGISTER_FACTORY(FileGlobalEntity, "dspx_file_meta")
-            REGISTER_FACTORY(ModelEntity, "dspx_model")
-        }
+                REGISTER_FACTORY(MasterEntity, "dspx_master")
+                REGISTER_FACTORY(FileGlobalEntity, "dspx_file_meta")
+                REGISTER_FACTORY(ModelEntity, "dspx_model")
+            }
 
-        ~DspxInitializer() {
-            Entity::removeFactory("dspx_bus_control");
-            Entity::removeFactory("dspx_track_control");
-            Entity::removeFactory("dspx_int_point");
-            Entity::removeFactory("dspx_double_point");
-            Entity::removeFactory("dspx_anchor_point");
-            Entity::removeFactory("dspx_int_point_list");
-            Entity::removeFactory("dspx_double_point_list");
-            Entity::removeFactory("dspx_anchor_point_list");
+            ~Initializer() {
+                Entity::removeFactory("dspx_bus_control");
+                Entity::removeFactory("dspx_track_control");
+                Entity::removeFactory("dspx_int_point");
+                Entity::removeFactory("dspx_double_point");
+                Entity::removeFactory("dspx_anchor_point");
+                Entity::removeFactory("dspx_int_point_list");
+                Entity::removeFactory("dspx_double_point_list");
+                Entity::removeFactory("dspx_anchor_point_list");
 
-            Entity::removeFactory("dspx_phoneme");
-            Entity::removeFactory("dspx_phoneme_list");
-            Entity::removeFactory("dspx_phoneme_info");
-            Entity::removeFactory("dspx_vibrato_info");
-            Entity::removeFactory("dspx_note");
-            Entity::removeFactory("dspx_note_list");
+                Entity::removeFactory("dspx_phoneme");
+                Entity::removeFactory("dspx_phoneme_list");
+                Entity::removeFactory("dspx_phoneme_info");
+                Entity::removeFactory("dspx_vibrato_info");
+                Entity::removeFactory("dspx_note");
+                Entity::removeFactory("dspx_note_list");
 
-            Entity::removeFactory("dspx_param_free");
-            Entity::removeFactory("dspx_param_anchor");
-            Entity::removeFactory("dspx_param_curve_list");
-            Entity::removeFactory("dspx_param_info");
-            Entity::removeFactory("dspx_param_set");
+                Entity::removeFactory("dspx_param_free");
+                Entity::removeFactory("dspx_param_anchor");
+                Entity::removeFactory("dspx_param_curve_list");
+                Entity::removeFactory("dspx_param_info");
+                Entity::removeFactory("dspx_param_set");
 
-            Entity::removeFactory("dspx_time_signature");
-            Entity::removeFactory("dspx_tempo");
-            Entity::removeFactory("dspx_timeline_label");
-            Entity::removeFactory("dspx_time_signature_list");
-            Entity::removeFactory("dspx_tempo_list");
-            Entity::removeFactory("dspx_timeline_label_list");
+                Entity::removeFactory("dspx_time_signature");
+                Entity::removeFactory("dspx_tempo");
+                Entity::removeFactory("dspx_timeline_label");
+                Entity::removeFactory("dspx_time_signature_list");
+                Entity::removeFactory("dspx_tempo_list");
+                Entity::removeFactory("dspx_timeline_label_list");
 
-            Entity::removeFactory("dspx_clip_time");
-            Entity::removeFactory("dspx_audio_clip");
-            Entity::removeFactory("dspx_singing_clip");
-            Entity::removeFactory("dspx_clip_list");
-            Entity::removeFactory("dspx_track");
-            Entity::removeFactory("dspx_track_list");
+                Entity::removeFactory("dspx_clip_time");
+                Entity::removeFactory("dspx_audio_clip");
+                Entity::removeFactory("dspx_singing_clip");
+                Entity::removeFactory("dspx_clip_list");
+                Entity::removeFactory("dspx_track");
+                Entity::removeFactory("dspx_track_list");
 
-            Entity::removeFactory("dspx_master");
-            Entity::removeFactory("dspx_file_meta");
-            Entity::removeFactory("dspx_model");
-        }
-    } initializer;
+                Entity::removeFactory("dspx_master");
+                Entity::removeFactory("dspx_file_meta");
+                Entity::removeFactory("dspx_model");
+            }
+        } initializer;
 
-    enum FileMetaSubscript {
-        FMS_Author,
-        FMS_ProjectName,
-        FMS_CentShift,
+    }
+
+    enum FileGlobalSubscript {
+        FGS_Author,
+        FGS_ProjectName,
+        FGS_CentShift,
     };
 
     FileGlobalEntity::FileGlobalEntity(QObject *parent)
-        : FileGlobalEntity(tagged_node<StructNode>("dspx_file_meta", 4), true, parent) {
+        : FileGlobalEntity(tagged_node<StructNode>("dspx_file_meta", 3), true, parent) {
     }
     FileGlobalEntity::~FileGlobalEntity() = default;
     QString FileGlobalEntity::author() const {
-        return valueImpl(FMS_Author).variant->toString();
+        return valueImpl(FGS_Author).variant->toString();
     }
     void FileGlobalEntity::setAuthor(const QString &author) {
-        setVariantImpl(FMS_Author, author);
+        setVariantImpl(FGS_Author, author);
     }
     QString FileGlobalEntity::projectName() const {
-        return valueImpl(FMS_ProjectName).variant->toString();
+        return valueImpl(FGS_ProjectName).variant->toString();
     }
     void FileGlobalEntity::setProjectName(const QString &projectName) {
-        setVariantImpl(FMS_ProjectName, projectName);
+        setVariantImpl(FGS_ProjectName, projectName);
     }
     int FileGlobalEntity::centShift() const {
-        return valueImpl(FMS_CentShift).variant->toInt();
+        return valueImpl(FGS_CentShift).variant->toInt();
     }
     void FileGlobalEntity::setCentShift(int centShift) {
-        setVariantImpl(FMS_CentShift, centShift);
+        setVariantImpl(FGS_CentShift, centShift);
     }
     void FileGlobalEntity::sendAssigned(int index, const Entity::Value &val,
                                         const Entity::Value &oldVal) {
         switch (index) {
-            case FMS_Author:
+            case FGS_Author:
                 Q_EMIT authorChanged(val.variant->toString());
                 return;
-            case FMS_ProjectName:
+            case FGS_ProjectName:
                 Q_EMIT projectNameChanged(val.variant->toString());
                 return;
-            case FMS_CentShift:
+            case FGS_CentShift:
                 Q_EMIT centShiftChanged(val.variant->toInt());
                 return;
             default:

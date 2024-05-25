@@ -35,7 +35,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         ParamCurveEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT ParamFreeEntity : public ParamCurveEntity {
@@ -50,7 +50,7 @@ namespace QDspx {
 
     protected:
         ParamFreeEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT ParamAnchorEntity : public ParamCurveEntity {
@@ -64,7 +64,7 @@ namespace QDspx {
 
     protected:
         ParamAnchorEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     DSPXMODEL_DECLARE_SHEET_CLASS(ParamCurveListEntity, ParamCurveEntity)
@@ -89,7 +89,7 @@ namespace QDspx {
 
     protected:
         ParamInfoEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT ParamSetEntity : public Substate::StructEntityBase {
@@ -109,7 +109,7 @@ namespace QDspx {
 
     protected:
         ParamSetEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
 }

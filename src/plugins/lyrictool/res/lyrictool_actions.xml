@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionExtension>
+    <version>2.0</version>
+
+    <parserConfig>
+        <defaultCategory>Plugins;${PLUGIN_NAME}</defaultCategory>
+    </parserConfig>
+
+    <objects>
+        <action id="EditLyric" class="Edit: Edit Lyric" />
+    </objects>
+
+    <layouts>
+        <group id="EditNoteGroup">
+            <action id="EditLyric" />
+        </group>
+    </layouts>
+
+    <buildRoutines>
+        <buildRoutine anchor="last" parent="Edit">
+            <separator />
+            <group id="EditNoteGroup" />
+        </buildRoutine>
+    </buildRoutines>
+</actionExtension>

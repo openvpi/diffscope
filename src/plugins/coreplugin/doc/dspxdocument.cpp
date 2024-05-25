@@ -311,10 +311,10 @@ namespace Core {
 
     DspxDocument::~DspxDocument() = default;
 
-    DspxDocument::DataModel::State DspxDocument::DataModel::state() const {
+    DspxDocument::Context::State DspxDocument::Context::state() const {
         return static_cast<State>(d->dataModel->state());
     }
-    QVariantHash DspxDocument::DataModel::stepMessage(int index) const {
+    QVariantHash DspxDocument::Context::stepMessage(int index) const {
         QVariantHash msg;
         const auto &message = d->dataModel->stepMessage(index);
         msg.reserve(int(message.size()));
@@ -323,22 +323,22 @@ namespace Core {
         }
         return msg;
     }
-    int DspxDocument::DataModel::minimumStep() const {
+    int DspxDocument::Context::minimumStep() const {
         return qMax(d->dataModel->minimumStep(), d->initialStep);
     }
-    int DspxDocument::DataModel::maximumStep() const {
+    int DspxDocument::Context::maximumStep() const {
         return d->dataModel->maximumStep();
     }
-    int DspxDocument::DataModel::currentStep() const {
+    int DspxDocument::Context::currentStep() const {
         return d->dataModel->currentStep();
     }
-    void DspxDocument::DataModel::beginTransaction() {
+    void DspxDocument::Context::beginTransaction() {
         d->dataModel->beginTransaction();
     }
-    void DspxDocument::DataModel::abortTransaction() {
+    void DspxDocument::Context::abortTransaction() {
         d->dataModel->abortTransaction();
     }
-    void DspxDocument::DataModel::commitTransaction(const QVariantHash &message) {
+    void DspxDocument::Context::commitTransaction(const QVariantHash &message) {
         Substate::Engine::StepMessage msg;
         msg.reserve(message.size());
         for (auto it = message.begin(); it != message.end(); ++it) {
@@ -347,19 +347,19 @@ namespace Core {
         }
         d->dataModel->commitTransaction(msg);
     }
-    void DspxDocument::DataModel::undo() {
+    void DspxDocument::Context::undo() {
         d->dataModel->undo();
     }
-    void DspxDocument::DataModel::redo() {
+    void DspxDocument::Context::redo() {
         d->dataModel->redo();
     }
-    QDspx::ModelEntity *DspxDocument::DataModel::model() const {
+    QDspx::ModelEntity *DspxDocument::Context::model() const {
         return d->objModel;
     }
 
-    DspxDocument::DataModel DspxDocument::dataModel() const {
+    DspxDocument::Context DspxDocument::dataModel() const {
         Q_D(const DspxDocument);
-        DataModel model;
+        Context model;
         model.d = d;
         return model;
     }

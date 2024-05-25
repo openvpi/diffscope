@@ -44,7 +44,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         PhonemeEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     DSPXMODEL_DECLARE_VECTOR_CLASS(PhonemeListEntity, PhonemeEntity)
@@ -67,7 +67,7 @@ namespace QDspx {
 
     protected:
         PhonemeInfoEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT VibratoInfoEntity : public Substate::StructEntityBase {
@@ -115,7 +115,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         VibratoInfoEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     class DSPXMODEL_EXPORT NoteEntity : public Substate::StructEntityBase {
@@ -171,7 +171,7 @@ namespace QDspx {
         void sendAssigned(int index, const Value &val, const Value &oldVal) override;
 
         NoteEntity(Substate::Node *node, bool init, QObject *parent = nullptr);
-        friend class DspxInitializer;
+        friend class Private::Initializer;
     };
 
     DSPXMODEL_DECLARE_SHEET_CLASS(NoteListEntity, NoteEntity)
