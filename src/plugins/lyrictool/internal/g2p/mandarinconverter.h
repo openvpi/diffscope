@@ -1,5 +1,5 @@
-#ifndef MANDARIN_H
-#define MANDARIN_H
+#ifndef MANDARINCONVERTER_H
+#define MANDARINCONVERTER_H
 
 #include <QObject>
 
@@ -28,4 +28,4 @@ namespace LyricTool::Internal {
 
 }
 
-#endif // MANDARIN_H
+#endif // MANDARINCONVERTER_H

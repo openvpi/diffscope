@@ -2,7 +2,6 @@
 #define ILANGUAGEANALYZER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QJsonObject>
 
 #include <QMCore/qmdisplaystring.h>
 
@@ -16,6 +15,7 @@ namespace LyricTool {
         Q_OBJECT
         Q_DECLARE_PRIVATE(ILanguageAnalyzer)
     public:
+        ILanguageAnalyzer(const QString &id, QObject *parent = nullptr);
         ~ILanguageAnalyzer();
 
     public:
@@ -39,6 +39,16 @@ namespace LyricTool {
 
         QString description() const;
         void setDescription(const QMDisplayString &description);
+
+    public:
+        QString category() const;
+        void setCategory(const QString &category);
+
+        bool enabled() const;
+        void setEnabled(const bool &enable);
+
+        bool discardResult() const;
+        void setDiscardResult(const bool &discard);
 
     protected:
         ILanguageAnalyzer(ILanguageAnalyzerPrivate &d, const QString &id,

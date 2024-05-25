@@ -4,7 +4,7 @@
 #include <lyrictool/ilanguageanalyzer.h>
 
 namespace LyricTool {
-    
+
     class ILanguageAnalyzerPrivate {
         Q_DECLARE_PUBLIC(ILanguageAnalyzer)
     public:
@@ -16,8 +16,15 @@ namespace LyricTool {
         ILanguageAnalyzer *q_ptr;
 
         QString id;
+        QString categroy;
         QMDisplayString displayName;
         QMDisplayString description;
+
+        bool enabled = true;
+        bool discardResult = false;
+
+        QString m_selectedG2p;
+        QVariantMap m_g2pConfig;
     };
 
 }
