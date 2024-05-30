@@ -145,11 +145,11 @@ namespace Audio {
 
         mainLayout->addLayout(mainOptionsLayout);
 
-        m_keepOpenCheckBox = new QCheckBox(tr("Keep this dialog open after successful export"));
+        m_keepOpenCheckBox = new QCheckBox(tr("&Keep this dialog open after successful export"));
         mainLayout->addWidget(m_keepOpenCheckBox);
 
         auto buttonLayout = new QHBoxLayout;
-        auto dryRunButton = new QPushButton(tr("Dry Run"));
+        auto dryRunButton = new QPushButton(tr("Dry &Run"));
         buttonLayout->addWidget(dryRunButton);
         auto dryRunContextHelpButton = new QPushButton;
         dryRunContextHelpButton->setIcon(style()->standardIcon(QStyle::SP_DialogHelpButton));
@@ -160,11 +160,11 @@ namespace Audio {
         m_warningButton->setIcon(style()->standardIcon(QStyle::SP_MessageBoxWarning));
         m_warningButton->setToolTip(tr("Warning"));
         buttonLayout->addWidget(m_warningButton);
-        auto exportButton = new QPushButton(tr("E&xport"));
+        auto exportButton = new QPushButton(tr("Export"));
         // exportButton->setPrimary(true);
         exportButton->setDefault(true);
         buttonLayout->addWidget(exportButton);
-        auto cancelButton = new QPushButton(tr("&Cancel"));
+        auto cancelButton = new QPushButton(tr("Cancel"));
         buttonLayout->addWidget(cancelButton);
         mainLayout->addLayout(buttonLayout);
 
