@@ -6,6 +6,7 @@
 namespace Audio {
 
     class BuiltInFormatEntry : public FormatEntry {
+        Q_OBJECT
     public:
         explicit BuiltInFormatEntry(QObject *parent = nullptr);
         ~BuiltInFormatEntry();
