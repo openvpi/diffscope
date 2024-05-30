@@ -54,6 +54,7 @@ namespace Audio {
         d->trackMixer->addSource(d->clipSeries);
         d->trackControlMixer = std::make_unique<talcs::PositionableMixerAudioSource>();
         d->trackControlMixer->addSource(d->trackMixer);
+        d->replicaMixer = std::make_unique<talcs::PositionableMixerAudioSource>();
 
         connect(entity->control(), &QDspx::TrackControlEntity::gainChanged, this, [=](double gainDecibel) {
             d->handleEntityGainChange(gainDecibel);
@@ -105,6 +106,14 @@ namespace Audio {
     talcs::AudioSourceClipSeries *TrackInterface::clipSeries() const {
         Q_D(const TrackInterface);
         return d->clipSeries;
+    }
+    talcs::PositionableMixerAudioSource *TrackInterface::replicaMixer() const {
+        Q_D(const TrackInterface);
+        return d->replicaMixer.get();
+    }
+    QMutex *TrackInterface::replicaMixerMutex() {
+        Q_D(TrackInterface);
+        return &d->replicaMixerMutex;
     }
     QList<AudioClipInterface *> TrackInterface::clips() const {
         Q_D(const TrackInterface);

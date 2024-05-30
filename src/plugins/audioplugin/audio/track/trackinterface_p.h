@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include <QMutex>
+
 #include <audioplugin/trackinterface.h>
 
 namespace QDspx {
@@ -22,6 +24,9 @@ namespace Audio {
         std::unique_ptr<talcs::PositionableMixerAudioSource> trackControlMixer;
         talcs::PositionableMixerAudioSource *trackMixer;
         talcs::AudioSourceClipSeries *clipSeries;
+
+        std::unique_ptr<talcs::PositionableMixerAudioSource> replicaMixer;
+        QMutex replicaMixerMutex;
 
         QHash<QDspx::AudioClipEntity *, AudioClipInterface *> clips;
 

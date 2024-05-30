@@ -5,6 +5,8 @@
 
 #include <audioplugin/audioglobal.h>
 
+class QMutex;
+
 namespace QDspx {
     class TrackEntity;
     class AudioClipEntity;
@@ -38,6 +40,9 @@ namespace Audio {
 
         talcs::PositionableMixerAudioSource *trackMixer() const;
         talcs::AudioSourceClipSeries *clipSeries() const;
+
+        talcs::PositionableMixerAudioSource *replicaMixer() const;
+        QMutex *replicaMixerMutex();
 
         QList<AudioClipInterface *> clips() const;
         AudioClipInterface *getClip(QDspx::AudioClipEntity *entity) const;

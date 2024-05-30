@@ -42,7 +42,6 @@ namespace Audio {
         m_preMixer->addSource(m_tpSrc, true);
 
         m_audioContextInterface = new AudioContextInterface(this);
-        m_audioContextInterface->d_func()->init(this);
     }
 
     ProjectAddOn::~ProjectAddOn() {
@@ -71,6 +70,8 @@ namespace Audio {
         handleEntityGainChange(model->master()->control()->gain());
         handleEntityPanChange(model->master()->control()->pan());
         handleEntityMuteChange(model->master()->control()->mute());
+
+        m_audioContextInterface->d_func()->init(this);
     }
 
     void ProjectAddOn::extensionsInitialized() {
