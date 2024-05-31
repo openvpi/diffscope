@@ -1,8 +1,8 @@
 #include "linebreakanalyzer.h"
 
 namespace LyricTool::Internal {
-    LinebreakAnalyzer::LinebreakAnalyzer(const QString &id, QObject *parent)
-        : SingleCharAnalyzer(id, parent) {
+    LinebreakAnalyzer::LinebreakAnalyzer(QObject *parent)
+        : SingleCharAnalyzer(QStringLiteral("Linebreak"), parent) {
         setDisplayName(tr("Linebreak"));
         setDescription(tr("Capture linebreak."));
     }

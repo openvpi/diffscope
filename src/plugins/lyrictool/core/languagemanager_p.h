@@ -1,20 +1,25 @@
 #ifndef LANGUAGEMANAGERPRIVATE_H
 #define LANGUAGEMANAGERPRIVATE_H
 
-#include "LanguageManager.h"
+#include <QMCore/qmchronomap.h>
+
+#include <lyrictool/languagemanager.h>
 
 namespace LyricTool {
 
-class LanguageManagerPrivate {
-    Q_DECLARE_PUBLIC(LanguageManager)
-public:
-    LanguageManagerPrivate();
-    virtual ~LanguageManagerPrivate();
+    class LanguageManagerPrivate {
+        Q_DECLARE_PUBLIC(LanguageManager)
+    public:
+        LanguageManagerPrivate();
+        virtual ~LanguageManagerPrivate();
 
-    void init();
+        void init();
 
-    LanguageManager *q_ptr;
-};
+        LanguageManager *q_ptr;
+
+        QMChronoMap<QString, ILanguageAnalyzer *> languages;
+        QMChronoMap<QString, IG2pConverter *> g2ps;
+    };
 
 }
 

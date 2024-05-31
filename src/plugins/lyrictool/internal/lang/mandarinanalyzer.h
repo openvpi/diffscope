@@ -10,7 +10,7 @@ namespace LyricTool::Internal {
     class MandarinAnalyzer : public SingleCharAnalyzer {
         Q_OBJECT
     public:
-        MandarinAnalyzer(const QString &id = "Mandarin", QObject *parent = nullptr);
+        MandarinAnalyzer(QObject *parent = nullptr);
 
         bool contains(QChar c) const override;
 

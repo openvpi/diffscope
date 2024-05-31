@@ -3,8 +3,9 @@
 #include <qrandom.h>
 
 namespace LyricTool::Internal {
-    MandarinAnalyzer::MandarinAnalyzer(const QString &id, QObject *parent)
-        : SingleCharAnalyzer(id, parent) {
+
+    MandarinAnalyzer::MandarinAnalyzer(QObject *parent)
+        : SingleCharAnalyzer(QStringLiteral("Mandarin"), parent) {
         setDisplayName(tr("Mandarin"));
         setDescription(tr("Capture Mandarin characters."));
     }

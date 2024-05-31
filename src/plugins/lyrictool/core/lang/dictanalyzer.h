@@ -30,7 +30,7 @@ namespace LyricTool {
         int depth = 0;
     };
 
-    class LYRICTOOL_EXPORT DictAnalyzer : public LyricTool::ILanguageAnalyzer {
+    class LYRICTOOL_EXPORT DictAnalyzer : public ILanguageAnalyzer {
         Q_OBJECT
     public:
         DictAnalyzer(const QString &id, QObject *parent = nullptr);

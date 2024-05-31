@@ -76,6 +76,11 @@ namespace IEMgr {
         return true;
     }
 
+    IWizard *WizardManager::wizard(const QString &id) const {
+        Q_D(const WizardManager);
+        return d->importWizards.value(id);
+    }
+
     QList<IWizard *> WizardManager::wizards() const {
         Q_D(const WizardManager);
         return d->importWizards.values_qlist();

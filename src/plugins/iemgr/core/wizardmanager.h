@@ -23,6 +23,7 @@ namespace IEMgr {
         bool addWizard(IWizard *factory);
         bool removeWizard(IWizard *factory);
         bool removeWizard(const QString &id);
+        IWizard *wizard(const QString &id) const;
         QList<IWizard *> wizards() const;
         void clearWizards();
 

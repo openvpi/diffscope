@@ -1,29 +1,43 @@
 #include "charsetanalyzer.h"
+#include "charsetanalyzer_p.h"
 
-#include <qrandom.h>
+#include <QtCore/QRandomGenerator>
 
 namespace LyricTool {
+
+    CharsetAnalyzerPrivate::CharsetAnalyzerPrivate() {
+    }
+
+    void CharsetAnalyzerPrivate::init() {
+    }
+
     CharsetAnalyzer::CharsetAnalyzer(const QString &id, QObject *parent)
-        : ILanguageAnalyzer(id, parent) {
+        : CharsetAnalyzer(*new CharsetAnalyzerPrivate(), id, parent) {
     }
 
     void CharsetAnalyzer::loadDict() {
     }
 
     bool CharsetAnalyzer::contains(QChar c) const {
-        return m_charset.contains(c);
+        Q_D(const CharsetAnalyzer);
+        return d->charset.contains(c);
     }
 
     QString CharsetAnalyzer::randString() const {
-        if (m_charset.isEmpty()) {
-            return "";
+        Q_D(const CharsetAnalyzer);
+        if (d->charset.isEmpty()) {
+            return {};
         }
 
-        const int randomIndex = QRandomGenerator::global()->bounded(m_charset.size());
-        auto it = m_charset.begin();
+        const int randomIndex = QRandomGenerator::global()->bounded(d->charset.size());
+        auto it = d->charset.begin();
         std::advance(it, randomIndex);
-
         return *it;
+    }
+
+    CharsetAnalyzer::CharsetAnalyzer(CharsetAnalyzerPrivate &d, const QString &id, QObject *parent)
+        : ILanguageAnalyzer(d, id, parent) {
+        d.init();
     }
 
 }

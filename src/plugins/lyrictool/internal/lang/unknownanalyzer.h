@@ -10,7 +10,7 @@ namespace LyricTool::Internal {
     class UnknownAnalyzer : public ILanguageAnalyzer {
         Q_OBJECT
     public:
-        UnknownAnalyzer(const QString &id = "Linebreak", QObject *parent = nullptr);
+        UnknownAnalyzer(QObject *parent = nullptr);
 
         bool contains(const QString &input) const override;
 
@@ -21,4 +21,4 @@ namespace LyricTool::Internal {
 
 }
 
-#endif //UNKNOWNANALYZER_H
+#endif // UNKNOWNANALYZER_H

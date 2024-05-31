@@ -10,7 +10,7 @@ namespace LyricTool::Internal {
     class LinebreakAnalyzer : public SingleCharAnalyzer {
         Q_OBJECT
     public:
-        LinebreakAnalyzer(const QString &id = "Linebreak", QObject *parent = nullptr);
+        LinebreakAnalyzer(QObject *parent = nullptr);
 
         bool contains(QChar c) const override;
 

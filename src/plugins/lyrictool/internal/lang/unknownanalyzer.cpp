@@ -1,8 +1,15 @@
 #include "unknownanalyzer.h"
 
-#include <qrandom.h>
+#include <QRandomGenerator>
 
 namespace LyricTool::Internal {
+
+    UnknownAnalyzer::UnknownAnalyzer(QObject *parent)
+        : ILanguageAnalyzer(QStringLiteral("Unknown"), parent) {
+        setDisplayName(tr("Unknown"));
+        setDescription(tr("Capture Unknown characters."));
+    }
+
     bool UnknownAnalyzer::contains(const QString &input) const {
         Q_UNUSED(input);
         return true;
