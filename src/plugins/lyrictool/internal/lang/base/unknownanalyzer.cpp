@@ -1,6 +1,6 @@
 #include "unknownanalyzer.h"
 
-#include <QRandomGenerator>
+#include <QtCore/QRandomGenerator>
 
 namespace LyricTool::Internal {
 

@@ -1,7 +1,9 @@
 #include "dictanalyzer.h"
+#include "dictanalyzer_p.h"
+
 #include "multicharanalyzer.h"
 
-#include <qrandom.h>
+#include <QtCore/QRandomGenerator>
 
 namespace LyricTool {
     Trie::Trie() {
@@ -32,6 +34,12 @@ namespace LyricTool {
         return node.isEnd;
     }
 
+    DictAnalyzerPrivate::DictAnalyzerPrivate() {
+    }
+
+    void DictAnalyzerPrivate::init() {
+    }
+
     DictAnalyzer::DictAnalyzer(const QString &id, QObject *parent) : ILanguageAnalyzer(id, parent) {
     }
 
@@ -39,15 +47,72 @@ namespace LyricTool {
     }
 
     bool DictAnalyzer::contains(QChar c) const {
-        return m_trie.search(c);
+        Q_D(const DictAnalyzer);
+        return d->trie.search(c);
     }
 
     bool DictAnalyzer::contains(const QString &input) const {
-        return m_trie.search(input);
+        Q_D(const DictAnalyzer);
+        return d->trie.search(input);
+    }
+
+    QList<LyricInfo> DictAnalyzer::split(const QString &input) const {
+        Q_D(const DictAnalyzer);
+
+        QList<LyricInfo> result;
+
+        int pos = 0;
+        while (pos < input.length()) {
+            const auto &currentChar = input[pos];
+            LyricInfo note;
+
+            if (d->trie.search(currentChar)) {
+                const int start = pos;
+                TrieNode currentNode = d->trie.root;
+
+                // Greedily match the longest possible word
+                for (int i = pos; i < input.length(); ++i) {
+                    if (currentNode.children.contains(input[i])) {
+                        currentNode = currentNode.children[input[i]];
+                        if (currentNode.isEnd) {
+                            pos++;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                if (pos > start) {
+                    note.lyric() = input.mid(start, pos - start);
+                    note.language() = id();
+                    note.category() = category();
+                } else {
+                    note.lyric() = currentChar;
+                    note.language() = QStringLiteral("Unknown");
+                    note.category() = QStringLiteral("Unknown");
+                    pos++;
+                }
+            } else {
+                const int start = pos;
+                while (pos < input.length() && !d->trie.search(input[pos])) {
+                    pos++;
+                }
+                note.lyric() = input.mid(start, pos - start);
+                note.language() = QStringLiteral("Unknown");
+                note.category() = QStringLiteral("Unknown");
+            }
+
+            if (!note.lyric().isEmpty()) {
+                result.append(note);
+            }
+        }
+
+        return result;
     }
 
     QString DictAnalyzer::randString() const {
-        TrieNode node = m_trie.root;
+        Q_D(const DictAnalyzer);
+        TrieNode node = d->trie.root;
         QString word;
         while (true) {
             if (node.isEnd && QRandomGenerator::global()->bounded(2) == 0) {

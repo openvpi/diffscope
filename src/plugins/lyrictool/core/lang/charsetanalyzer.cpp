@@ -12,7 +12,7 @@ namespace LyricTool {
     }
 
     CharsetAnalyzer::CharsetAnalyzer(const QString &id, QObject *parent)
-        : CharsetAnalyzer(*new CharsetAnalyzerPrivate(), id, parent) {
+        : SingleCharAnalyzer(id, parent) {
     }
 
     void CharsetAnalyzer::loadDict() {
@@ -33,11 +33,6 @@ namespace LyricTool {
         auto it = d->charset.begin();
         std::advance(it, randomIndex);
         return *it;
-    }
-
-    CharsetAnalyzer::CharsetAnalyzer(CharsetAnalyzerPrivate &d, const QString &id, QObject *parent)
-        : ILanguageAnalyzer(d, id, parent) {
-        d.init();
     }
 
 }

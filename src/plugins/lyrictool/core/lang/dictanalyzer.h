@@ -5,33 +5,11 @@
 
 namespace LyricTool {
 
-    class TrieNode {
-    public:
-        QMap<QChar, TrieNode> children;
-        bool isEnd;
-
-        TrieNode() : isEnd(false) {
-        }
-    };
-
-    class Trie {
-    public:
-        Trie();
-        ~Trie();
-
-        void insert(const QString &word) const;
-
-        bool search(const QString &word) const;
-
-        friend class DictAnalyzer;
-
-    protected:
-        TrieNode root;
-        int depth = 0;
-    };
+    class DictAnalyzerPrivate;
 
     class LYRICTOOL_EXPORT DictAnalyzer : public ILanguageAnalyzer {
         Q_OBJECT
+        Q_DECLARE_PRIVATE(DictAnalyzer)
     public:
         DictAnalyzer(const QString &id, QObject *parent = nullptr);
 
@@ -41,10 +19,12 @@ namespace LyricTool {
 
         bool contains(const QString &input) const override;
 
+        QList<LyricInfo> split(const QString &input) const override;
+
         QString randString() const override;
 
     protected:
-        Trie m_trie = Trie();
+        DictAnalyzer(DictAnalyzerPrivate &d, const QString &id, QObject *parent = nullptr);
     };
 
 }

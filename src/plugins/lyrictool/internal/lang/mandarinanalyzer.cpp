@@ -1,6 +1,6 @@
 #include "mandarinanalyzer.h"
 
-#include <qrandom.h>
+#include <QtCore/QRandomGenerator>
 
 namespace LyricTool::Internal {
 
@@ -10,7 +10,7 @@ namespace LyricTool::Internal {
         setDescription(tr("Capture Mandarin characters."));
     }
 
-    bool isHanzi(const QChar &c) {
+    static bool isHanzi(QChar c) {
         return c >= QChar(0x4e00) && c <= QChar(0x9fa5);
     }
 

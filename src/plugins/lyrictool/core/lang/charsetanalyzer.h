@@ -2,13 +2,13 @@
 #define CHARSETANALYZER_H
 
 #include <QSet>
-#include <lyrictool/ilanguageanalyzer.h>
+#include <lyrictool/singlecharanalyzer.h>
 
 namespace LyricTool {
 
     class CharsetAnalyzerPrivate;
 
-    class LYRICTOOL_EXPORT CharsetAnalyzer : public ILanguageAnalyzer {
+    class LYRICTOOL_EXPORT CharsetAnalyzer : public SingleCharAnalyzer {
         Q_OBJECT
         Q_DECLARE_PRIVATE(CharsetAnalyzer)
     public:
@@ -17,6 +17,7 @@ namespace LyricTool {
         virtual void loadDict();
 
         bool contains(QChar c) const override;
+
         QString randString() const override;
 
     protected:

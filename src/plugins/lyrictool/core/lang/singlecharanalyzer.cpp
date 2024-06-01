@@ -1,6 +1,13 @@
 #include "singlecharanalyzer.h"
+#include "singlecharanalyzer_p.h"
 
 namespace LyricTool {
+    SingleCharAnalyzerPrivate::SingleCharAnalyzerPrivate() {
+    }
+
+    void SingleCharAnalyzerPrivate::init() {
+    }
+
     SingleCharAnalyzer::SingleCharAnalyzer(const QString &id, QObject *parent)
         : ILanguageAnalyzer(id, parent) {
     }
@@ -30,8 +37,8 @@ namespace LyricTool {
                     pos++;
                 }
                 note.lyric() = input.mid(start, pos - start);
-                note.language() = "Unknown";
-                note.category() = "Unknown";
+                note.language() = QStringLiteral("Unknown");
+                note.category() = QStringLiteral("Unknown");
             }
             if (!note.lyric().isEmpty())
                 result.append(note);

@@ -5,8 +5,11 @@
 
 namespace LyricTool {
 
-    class LYRICTOOL_EXPORT MultiCharAnalyzer : public LyricTool::ILanguageAnalyzer {
+    class MultiCharAnalyzerPrivate;
+
+    class LYRICTOOL_EXPORT MultiCharAnalyzer : public ILanguageAnalyzer {
         Q_OBJECT
+        Q_DECLARE_PRIVATE(MultiCharAnalyzer)
     public:
         MultiCharAnalyzer(const QString &id, QObject *parent = nullptr);
 

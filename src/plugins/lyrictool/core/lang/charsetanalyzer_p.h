@@ -4,11 +4,11 @@
 #include <QtCore/QSet>
 
 #include <lyrictool/charsetanalyzer.h>
-#include <lyrictool/private/ilanguageanalyzer_p.h>
+#include <lyrictool/private/singlecharanalyzer_p.h>
 
 namespace LyricTool {
 
-    class CharsetAnalyzerPrivate : public ILanguageAnalyzerPrivate {
+    class CharsetAnalyzerPrivate : public SingleCharAnalyzerPrivate {
         Q_DECLARE_PUBLIC(CharsetAnalyzer)
     public:
         CharsetAnalyzerPrivate();
