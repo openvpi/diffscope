@@ -18,7 +18,11 @@ namespace LyricTool::Internal {
 
         void loadDict();
 
+        bool contains(const QString &input) const override;
+
         QList<LyricInfo> split(const QString &input) const override;
+
+        QString randString() const override;
 
     private:
         QSet<QString> pinyinSet;

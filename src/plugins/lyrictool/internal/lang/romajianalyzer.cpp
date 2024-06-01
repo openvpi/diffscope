@@ -41,6 +41,10 @@ namespace LyricTool::Internal {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '\'';
     }
 
+    bool RomajiAnalyzer::contains(const QString &input) const {
+        return romajiSet.contains(input);
+    }
+
     QList<LyricInfo> RomajiAnalyzer::split(const QString &input) const {
         QList<LyricInfo> result;
 
@@ -75,6 +79,22 @@ namespace LyricTool::Internal {
                 result.append(note);
         }
         return result;
+    }
+
+    template <typename T>
+    static T getRandomElementFromSet(const QSet<T> &set) {
+        const int size = set.size();
+
+        int randomIndex = QRandomGenerator::global()->bounded(size);
+
+        auto it = set.constBegin();
+        std::advance(it, randomIndex);
+
+        return *it;
+    }
+
+    QString RomajiAnalyzer::randString() const {
+        return getRandomElementFromSet(romajiSet);
     }
 
 }
