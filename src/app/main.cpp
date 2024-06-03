@@ -57,6 +57,7 @@ public:
 
         // Restore language and themes
         Core::InitRoutine::initializeAppearance(ExtensionSystem::PluginManager::settings());
+        Core::InitRoutine::setSplash(splash);
 
         // Set ILoader settings path
         Core::ILoader &loader = *Core::ILoader::instance();

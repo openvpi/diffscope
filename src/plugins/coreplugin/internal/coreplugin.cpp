@@ -46,8 +46,6 @@ namespace Core::Internal {
 
     static ICore *icore = nullptr;
 
-    static QSplashScreen *splash = nullptr;
-
     static int openFileFromCommand(QString workingDir, const QStringList &args, IWindow *iWin) {
         int cnt = 0;
 
@@ -77,7 +75,7 @@ namespace Core::Internal {
 
     static void waitSplash(QWidget *w) {
         // Get splash screen handle
-        splash->finish(w);
+        InitRoutine::splash()->finish(w);
     }
 
     CorePlugin::CorePlugin() {
@@ -115,8 +113,8 @@ namespace Core::Internal {
                 auto appearance = new AppearancePage();
                 environmentTop->addPage(appearance);
 
-//                auto actionLayouts = new ActionLayoutsPage();
-//                environmentTop->addPage(actionLayouts);
+                //                auto actionLayouts = new ActionLayoutsPage();
+                //                environmentTop->addPage(actionLayouts);
 
                 auto keymap = new KeymapPage();
                 environmentTop->addPage(keymap);
@@ -162,7 +160,7 @@ namespace Core::Internal {
     }
 
     bool CorePlugin::delayedInitialize() {
-        splash->showMessage(tr("Initializing user interface..."));
+        InitRoutine::splash()->showMessage(tr("Initializing user interface..."));
 
         if (auto entry = InitRoutine::startEntry()) {
             waitSplash(entry());
