@@ -8,8 +8,9 @@
 
 #include <extensionsystem/pluginspec.h>
 
+#include <idecoreFramework/initroutine.h>
+
 #include <coreplugin/icore.h>
-#include <coreplugin/initroutine.h>
 #include <coreplugin/ihomewindow.h>
 #include <coreplugin/iprojectwindow.h>
 

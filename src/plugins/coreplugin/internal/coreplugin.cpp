@@ -18,8 +18,9 @@
 #include <CoreApi/private/iloader_p.h>
 #include <CoreApi/actiondomain.h>
 
+#include <idecoreFramework/initroutine.h>
+
 #include "dspxspec.h"
-#include "initroutine_p.h"
 
 // Windows
 #include "ihomewindow.h"
@@ -30,8 +31,9 @@
 #include "projectaddon.h"
 
 // Settings
+#include <idecoreFramework/appearancepage.h>
+
 #include "enviromenttoppage.h"
-#include "appearancepage.h"
 #include "actionlayoutspage.h"
 #include "keymappage.h"
 #include "menutoolbarpage.h"
@@ -45,8 +47,6 @@ namespace Core::Internal {
     static ICore *icore = nullptr;
 
     static QSplashScreen *splash = nullptr;
-
-    InitRoutinePrivate *ir = nullptr;
 
     static int openFileFromCommand(QString workingDir, const QStringList &args, IWindow *iWin) {
         int cnt = 0;
@@ -87,18 +87,11 @@ namespace Core::Internal {
     }
 
     bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage) {
-        // Receive splash screen
-        std::swap(splash, reinterpret_cast<QSplashScreen *&>(ILoaderPrivate::quickData(0)));
-
-        static InitRoutinePrivate ir1;
-        ir = &ir1;
-        ir->splash = splash;
-
         // Add resources
         qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
         qIDec->addThemePath(pluginSpec()->location() + QStringLiteral("/themes"));
 
-        splash->showMessage(tr("Initializing core plugin..."));
+        InitRoutine::splash()->showMessage(tr("Initializing core plugin..."));
 
         // Init ICore instance
         icore = new ICore(this);
@@ -171,8 +164,8 @@ namespace Core::Internal {
     bool CorePlugin::delayedInitialize() {
         splash->showMessage(tr("Initializing user interface..."));
 
-        if (ir->entry) {
-            waitSplash(ir->entry());
+        if (auto entry = InitRoutine::startEntry()) {
+            waitSplash(entry());
             return false;
         }
 

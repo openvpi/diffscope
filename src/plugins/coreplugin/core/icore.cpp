@@ -21,10 +21,11 @@
 #include <CoreApi/iloader.h>
 #include <CoreApi/private/icorebase_p.h>
 
+#include <idecoreFramework/settingsdialog.h>
+#include <idecoreFramework/plugindialog.h>
+
 #include "dspxspec.h"
 #include "ihomewindow.h"
-#include "settingsdialog.h"
-#include "plugindialog.h"
 #include "appextra.h"
 
 namespace Core {
@@ -48,7 +49,7 @@ namespace Core {
     }
 
     int ICore::showSettingsDialog(const QString &id, QWidget *parent) {
-        static Internal::SettingsDialog *dlg = nullptr;
+        static SettingsDialog *dlg = nullptr;
 
         if (dlg) {
             if (!id.isEmpty())
@@ -58,7 +59,7 @@ namespace Core {
 
         int code;
         {
-            Internal::SettingsDialog dlg2(parent);
+            SettingsDialog dlg2(parent);
             dlg = &dlg2;
             if (!id.isEmpty())
                 dlg2.selectPage(id);
@@ -70,7 +71,7 @@ namespace Core {
     }
 
     void ICore::showPluginsDialog(QWidget *parent) {
-        Internal::PluginDialog dlg(parent);
+        PluginDialog dlg(parent);
         dlg.exec();
     }
 

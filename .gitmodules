@@ -33,3 +33,7 @@
 [submodule "jetbrains-docking-system"]
 	path = libs/jetbrains-docking-system
 	url = ../../stdware/jetbrains-docking-system.git
+
+[submodule "libs/idecore"]
+	path = libs/idecore
+	url = ../../diffscope/idecore.git

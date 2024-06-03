@@ -28,9 +28,9 @@ qm_configure_target(${PROJECT_NAME}
         Gui
         Widgets
     LINKS
+        idecore::Framework
         ExtensionSystem::ExtensionSystem
         ChorusKit::AppCore
-        svscraft::Widgets
         JetBrainsDockingSystem
         dspxmodel
         opendspx::opendspx

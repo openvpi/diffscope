@@ -9,9 +9,10 @@
 
 #include <CoreApi/iloader.h>
 
+#include <idecoreFramework/initroutine.h>
+
 #include <coreplugin/icore.h>
 #include <coreplugin/iprojectwindow.h>
-#include <coreplugin/initroutine.h>
 
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/outputsystem.h>
