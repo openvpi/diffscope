@@ -1,5 +1,9 @@
 #include "menutoolbarpage.h"
 
+#include <list>
+#include <utility>
+#include <memory>
+
 #include <QBoxLayout>
 #include <QToolBar>
 #include <QTreeWidget>
@@ -97,29 +101,17 @@ namespace Core {
                         popupMenu.addSeparator();
                         auto itemType = item->data(0, TypeRole).toInt();
                         if (itemType & ActionLayoutInfo::PlaceHolderFlag) {
-                            auto a1 = popupMenu.addAction(tr("Set as Se&parator"), [=] {
-                                item->setData(0, TypeRole, ActionLayoutInfo::Separator);
-                                setItemTypeColumn(item);
-                            });
+                            auto a1 = popupMenu.addAction(tr("Set as Se&parator"), [=] { setItemType(item, ActionLayoutInfo::Separator); });
                             a1->setCheckable(true);
                             a1->setChecked(itemType == ActionLayoutInfo::Separator);
-                            auto a2 = popupMenu.addAction(tr("Set as S&tretch"), [=] {
-                                item->setData(0, TypeRole, ActionLayoutInfo::Stretch);
-                                setItemTypeColumn(item);
-                            });
+                            auto a2 = popupMenu.addAction(tr("Set as S&tretch"), [=] { setItemType(item, ActionLayoutInfo::Stretch); });
                             a2->setCheckable(true);
                             a2->setChecked(itemType == ActionLayoutInfo::Stretch);
                         } else if (itemType == ActionLayoutInfo::Group || itemType == ActionLayoutInfo::Menu) {
-                            auto a1 = popupMenu.addAction(tr("Set as &Group"), [=] {
-                                item->setData(0, TypeRole, ActionLayoutInfo::Group);
-                                setItemTypeColumn(item);
-                            });
+                            auto a1 = popupMenu.addAction(tr("Set as &Group"), [=] { setItemType(item, ActionLayoutInfo::Group); });
                             a1->setCheckable(true);
                             a1->setChecked(itemType == ActionLayoutInfo::Group);
-                            auto a2 = popupMenu.addAction(tr("Set as &Menu"), [=] {
-                                item->setData(0, TypeRole, ActionLayoutInfo::Menu);
-                                setItemTypeColumn(item);
-                            });
+                            auto a2 = popupMenu.addAction(tr("Set as &Menu"), [=] { setItemType(item, ActionLayoutInfo::Menu); });
                             a2->setCheckable(true);
                             a2->setChecked(itemType == ActionLayoutInfo::Menu);
                         }
@@ -149,7 +141,6 @@ namespace Core {
                 auto item = new QTreeWidgetItem;
                 m_treeWidget->addTopLevelItem(item);
                 item->setData(0, TopLevelRole, true);
-                item->setFlags(item->flags() & ~Qt::ItemIsDragEnabled);
                 traverseLayout(item, layout);
             }
             m_treeWidget->expandAll();
@@ -157,24 +148,39 @@ namespace Core {
             m_treeWidget->collapseAll();
         }
 
-        ~MenuToolbarPageWidget() override = default;
+        ~MenuToolbarPageWidget() override {
+            std::for_each(m_cachedActionLayouts.cbegin(), m_cachedActionLayouts.cend(), std::default_delete<ActionLayout>());
+        }
+
+        void applyModification() {
+            auto rootLayout = makeLayoutFromItem(m_treeWidget->invisibleRootItem());
+            ICore::instance()->actionManager()->domain()->setLayouts(rootLayout.children());
+        }
 
     private:
         QTreeWidget *m_treeWidget;
         QDialog *m_addActionDialog;
         QTreeWidget *m_actionCatalogTreeWidget;
+        mutable QSet<ActionLayout *> m_cachedActionLayouts;
 
         enum DataRole {
             IDRole = Qt::UserRole,
             TypeRole,
+            CacheRole,
             TopLevelRole,
         };
 
         static void setItemTypeColumn(QTreeWidgetItem *item) {
             static auto seperatorText = QStringLiteral("------------");
-            if (item->data(0, TopLevelRole).toBool())
+            if (item->data(0, TopLevelRole).toBool()) {
+                item->setFlags(item->flags() & ~Qt::ItemIsDragEnabled);
                 return;
-            switch (item->data(0, TypeRole).toInt()) {
+            }
+            auto itemType = item->data(0, TypeRole).toInt();
+            if (itemType & ActionLayoutInfo::TerminalFlag) {
+                item->setFlags(item->flags() & ~Qt::ItemIsDropEnabled);
+            }
+            switch (itemType) {
                 case ActionLayoutInfo::Action:
                     item->setText(1, tr("Action"));
                     break;
@@ -195,16 +201,19 @@ namespace Core {
             }
         }
 
-        static void setItemByLayout(QTreeWidgetItem *item, const ActionLayout &layout) {
+        void setItemByLayout(QTreeWidgetItem *item, const ActionLayout &layout) const {
             auto domain = ICore::instance()->actionManager()->domain();
             item->setText(0, ActionObjectInfo::translatedText(domain->objectInfo(layout.id()).text()));
             item->setIcon(0, domain->objectIcon(qIDec->theme(), layout.id()));
             item->setData(0, IDRole, layout.id());
             item->setData(0, TypeRole, layout.type());
+            auto cachedLayout = new ActionLayout(layout);
+            m_cachedActionLayouts.insert(cachedLayout);
+            item->setData(0, CacheRole, reinterpret_cast<qintptr>(cachedLayout));
             setItemTypeColumn(item);
         }
 
-        static void traverseLayout(QTreeWidgetItem *item, const ActionLayout &layout) {
+        void traverseLayout(QTreeWidgetItem *item, const ActionLayout &layout) const {
             setItemByLayout(item, layout);
             for (const auto &childLayout : layout.children()) {
                 auto childItem = new QTreeWidgetItem;
@@ -245,6 +254,40 @@ namespace Core {
             }
         }
 
+        ActionLayout makeLayoutFromItem(QTreeWidgetItem *item) const {
+            auto layout = reinterpret_cast<ActionLayout *>(item->data(0, CacheRole).value<qintptr>());
+            if (layout)
+                return *layout;
+            layout = new ActionLayout;
+            layout->setId(item->data(0, IDRole).toString());
+            layout->setType(static_cast<ActionLayoutInfo::Type>(item->data(0, TypeRole).toInt()));
+            QList<ActionLayout> childLayouts;
+            for (int i = 0; i < item->childCount(); i++) {
+                childLayouts.append(makeLayoutFromItem(item->child(i)));
+            }
+            layout->setChildren(childLayouts);
+            m_cachedActionLayouts.insert(layout);
+            item->setData(0, CacheRole, reinterpret_cast<qintptr>(layout));
+            return *layout;
+        }
+
+        void markDirty(QTreeWidgetItem *item) const {
+            for (; item && !item->data(0, CacheRole).isNull(); item = item->parent()) {
+                auto cachedLayout = reinterpret_cast<ActionLayout *>(item->data(0, CacheRole).value<qintptr>());
+                item->setData(0, CacheRole, {});
+                m_cachedActionLayouts.remove(cachedLayout);
+                delete cachedLayout;
+            }
+        }
+
+        void setItemType(QTreeWidgetItem *item, ActionLayoutInfo::Type type) const {
+            if (item->data(0, TypeRole) != type) {
+                item->setData(0, TypeRole, type);
+                setItemTypeColumn(item);
+                markDirty(item);
+            }
+        }
+
         void handleAddAction() {
             m_actionCatalogTreeWidget->setCurrentItem(nullptr);
             m_actionCatalogTreeWidget->collapseAll();
@@ -257,9 +300,11 @@ namespace Core {
                 item->setExpanded(true);
                 item->addChild(actionItem);
                 m_treeWidget->setCurrentItem(actionItem);
+                markDirty(item);
             } else {
                 item->parent()->insertChild(item->parent()->indexOfChild(item) + 1, actionItem);
                 m_treeWidget->setCurrentItem(actionItem);
+                markDirty(item->parent());
             }
         }
 
@@ -271,15 +316,18 @@ namespace Core {
                 item->setExpanded(true);
                 item->addChild(separatorItem);
                 m_treeWidget->setCurrentItem(separatorItem);
+                markDirty(item);
             } else {
                 item->parent()->insertChild(item->parent()->indexOfChild(item) + 1, separatorItem);
                 m_treeWidget->setCurrentItem(separatorItem);
+                markDirty(item->parent());
             }
             setItemTypeColumn(separatorItem);
         }
 
         void handleRemove() {
             delete m_treeWidget->currentItem();
+            markDirty(m_treeWidget->currentItem()->parent());
         }
 
         void handleEditIcon() {
@@ -294,6 +342,7 @@ namespace Core {
             parentItem->insertChild(index - 1, item);
             setItemTypeColumn(item);
             m_treeWidget->setCurrentItem(item);
+            markDirty(parentItem);
         }
 
         void handleMoveDown() {
@@ -304,6 +353,7 @@ namespace Core {
             parentItem->insertChild(index + 1, item);
             setItemTypeColumn(item);
             m_treeWidget->setCurrentItem(item);
+            markDirty(parentItem);
         }
 
     };
@@ -328,7 +378,8 @@ namespace Core {
         return m_widget;
     }
     bool MenuToolbarPage::accept() {
-        return false;
+        m_widget->applyModification();
+        return true;
     }
     void MenuToolbarPage::finish() {
     }

@@ -7,6 +7,8 @@
 
 namespace Core {
 
+    class MenuToolbarPageWidget;
+
     class MenuToolbarPage : public ISettingPage {
         Q_OBJECT
     public:
@@ -22,7 +24,7 @@ namespace Core {
         void finish() override;
 
     private:
-        QPointer<QWidget> m_widget;
+        QPointer<MenuToolbarPageWidget> m_widget;
     };
 
 } // Core
