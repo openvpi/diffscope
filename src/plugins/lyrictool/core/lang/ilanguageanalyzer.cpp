@@ -27,6 +27,10 @@ namespace LyricTool {
         }
     }
 
+    QWidget *ILanguageAnalyzer::createSettingPage() {
+        return {};
+    }
+
     QString ILanguageAnalyzer::analyze(const QString &input) const {
         return contains(input) ? id() : QStringLiteral("Unknown");
     }

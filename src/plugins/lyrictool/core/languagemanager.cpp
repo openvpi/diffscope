@@ -115,7 +115,7 @@ namespace LyricTool {
 
     bool LanguageManager::removeG2p(const QString &id) {
         Q_D(LanguageManager);
-        auto it = d->g2ps.find(id);
+        const auto it = d->g2ps.find(id);
         if (it == d->g2ps.end()) {
             qWarning() << "LyricTool::LanguageManager::removeG2p(): converter does not exist:"
                        << id;
@@ -144,13 +144,14 @@ namespace LyricTool {
     QList<ILanguageAnalyzer *>
         LanguageManager::priorityLanguages(const QStringList &priorityList) const {
         Q_D(const LanguageManager);
-        QStringList order = d->defaultSort;
+        QStringList order = this->sortedLanguages();
 
         QList<ILanguageAnalyzer *> result;
         for (const auto &category : priorityList) {
             for (const auto &lang : order) {
                 const auto analyzer = language(lang);
-                if (analyzer->category() == category) {
+                if (analyzer != nullptr && analyzer->category() == category &&
+                    !result.contains(analyzer)) {
                     result.append(analyzer);
                 }
             }
@@ -158,7 +159,7 @@ namespace LyricTool {
 
         for (const auto &id : order) {
             const auto analyzer = language(id);
-            if (!result.contains(analyzer)) {
+            if (analyzer != nullptr && !result.contains(analyzer)) {
                 result.append(analyzer);
             }
         }
@@ -172,7 +173,8 @@ namespace LyricTool {
         QList<LyricInfo> result = {lyricInfo};
 
         for (const auto &analyzer : analyzers) {
-            result = analyzer->split(result);
+            if (analyzer != nullptr)
+                result = analyzer->split(result);
         }
         return result;
     }
@@ -181,7 +183,8 @@ namespace LyricTool {
         QList<LyricInfo> result = input;
         const auto analyzers = this->priorityLanguages();
         for (const auto &analyzer : analyzers) {
-            analyzer->correct(result);
+            if (analyzer != nullptr)
+                analyzer->correct(result);
         }
         return result;
     }
@@ -201,10 +204,13 @@ namespace LyricTool {
         const auto languages = languageIndexMap.keys();
         for (const auto &language : languages) {
             const auto rawLyrics = languageLyricMap[language];
-            const auto g2pFactory = this->g2p(this->language(language)->selectedG2p());
-            const auto g2pConfig = this->language(language)->g2pConfig();
+            auto g2pConverter = this->g2p(this->language(language)->selectedG2p());
+            if (g2pConverter == nullptr)
+                g2pConverter = this->g2p(QStringLiteral("Unknown"));
+            const auto analyzer = this->language(language);
+            const auto g2pConfig = analyzer != nullptr ? analyzer->g2pConfig() : QVariantMap();
 
-            const auto tempRes = g2pFactory->convert(rawLyrics, g2pConfig);
+            const auto tempRes = g2pConverter->convert(rawLyrics, g2pConfig);
             for (int i = 0; i < tempRes.size(); i++) {
                 const auto index = languageIndexMap[language][i];
                 result[index].setSyllable(tempRes[i].syllable());
@@ -220,7 +226,8 @@ namespace LyricTool {
         auto analyzers = this->priorityLanguages();
 
         for (const auto &analyzer : analyzers) {
-            result = analyzer->analyze(input);
+            if (analyzer != nullptr)
+                result = analyzer->analyze(input);
             if (result != QStringLiteral("Unknown"))
                 break;
         }
@@ -238,7 +245,8 @@ namespace LyricTool {
         }
 
         for (const auto &analyzer : analyzers) {
-            analyzer->correct(rawInfo);
+            if (analyzer != nullptr)
+                analyzer->correct(rawInfo);
         }
 
         QStringList result;

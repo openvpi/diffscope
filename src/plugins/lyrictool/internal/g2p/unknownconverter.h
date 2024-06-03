@@ -15,7 +15,7 @@ namespace LyricTool::Internal {
         explicit UnknownConverter(QObject *parent = nullptr);
         ~UnknownConverter() override;
 
-        QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const = 0;
+        QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const override;
 
     public:
         QWidget *createSettingPage(QWidget *parent);

@@ -20,6 +20,12 @@ namespace LyricTool {
 
     QList<LyricInfo> IG2pConverter::convert(const QStringList &input,
                                             const QVariantMap &args) const {
+        Q_UNUSED(input);
+        Q_UNUSED(args);
+        return {};
+    }
+
+    QWidget *IG2pConverter::createSettingPage(QWidget *parent) {
         return {};
     }
 

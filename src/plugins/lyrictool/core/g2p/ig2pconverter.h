@@ -32,7 +32,7 @@ namespace LyricTool {
         inline LyricInfo convert(const QString &input, const QVariantMap &args) const;
         virtual QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const;
 
-        virtual QWidget *createSettingPage(QWidget *parent) = 0;
+        virtual QWidget *createSettingPage(QWidget *parent);
 
     protected:
         IG2pConverter(IG2pConverterPrivate &d, const QString &id, QObject *parent = nullptr);

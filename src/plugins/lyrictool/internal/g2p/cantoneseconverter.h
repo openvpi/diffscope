@@ -15,7 +15,7 @@ namespace LyricTool::Internal {
         explicit CantoneseConverter(QObject *parent = nullptr);
         ~CantoneseConverter() override;
 
-        QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const = 0;
+        QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const override;
 
     public:
         QWidget *createSettingPage(QWidget *parent);

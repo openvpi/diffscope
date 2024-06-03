@@ -14,11 +14,35 @@
 #include <coreplugin/ihomewindow.h>
 #include <coreplugin/iprojectwindow.h>
 
+// Analyzers
+#include "mandarinanalyzer.h"
+#include "cantoneseanalyzer.h"
+#include "englishanalyzer.h"
+#include "pinyinanalyzer.h"
+#include "romajianalyzer.h"
+#include "kanaanalyzer.h"
+
+#include "linebreakanalyzer.h"
+#include "numberanalyzer.h"
+#include "punctuationanalyzer.h"
+#include "sluranalyzer.h"
+#include "spaceanalyzer.h"
+#include "unknownanalyzer.h"
+
+// G2ps
+#include "mandarinconverter.h"
+#include "cantoneseconverter.h"
+#include "englishconverter.h"
+#include "kanaconverter.h"
+#include "unknownconverter.h"
+
+#include "languagemanager.h"
+
 CK_STATIC_ACTION_EXTENSION_GETTER(lyrictool_actions, getMyActionExtension);
 
 namespace LyricTool::Internal {
 
-    // static WizardManager *imgr = nullptr;
+    static LanguageManager *langMgr = nullptr;
 
     LyricToolPlugin::LyricToolPlugin() {
     }
@@ -31,16 +55,16 @@ namespace LyricTool::Internal {
         qIDec->addTranslationPath(pluginSpec()->location() + QStringLiteral("/translations"));
         qIDec->addThemePath(pluginSpec()->location() + QStringLiteral("/themes"));
 
-        auto splash = Core::InitRoutine::splash();
+        const auto splash = Core::InitRoutine::splash();
         splash->showMessage(tr("Initializing lyric manager..."));
 
-        // Init WizardManager instance
-        // imgr = new WizardManager(this);
+        // Init LanguageManager instance
+        langMgr = new LanguageManager(this);
 
-        auto icore = Core::ICore::instance();
+        const auto icore = Core::ICore::instance();
 
         // Add basic actions
-        auto domain = icore->actionManager()->domain();
+        const auto domain = icore->actionManager()->domain();
         domain->addExtension(getMyActionExtension());
 
         // Add basic windows and add-ons
@@ -48,10 +72,25 @@ namespace LyricTool::Internal {
         // Core::IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
 
         // // Add wizards
-        // imgr->addWizard(new MidiWizard());
-        // imgr->addWizard(new UstWizard());
-        // imgr->addWizard(new OpenSvipWizard());
-        // imgr->addWizard(new SvipWizard());
+        langMgr->addLanguage(new MandarinAnalyzer());
+        langMgr->addLanguage(new CantoneseAnalyzer);
+        langMgr->addLanguage(new EnglishAnalyzer());
+        langMgr->addLanguage(new PinyinAnalyzer());
+        langMgr->addLanguage(new RomajiAnalyzer());
+        langMgr->addLanguage(new KanaAnalyzer());
+
+        langMgr->addLanguage(new NumberAnalyzer());
+        langMgr->addLanguage(new LinebreakAnalyzer());
+        langMgr->addLanguage(new PunctuationAnalyzer());
+        langMgr->addLanguage(new SlurAnalyzer());
+        langMgr->addLanguage(new SpaceAnalyzer());
+        langMgr->addLanguage(new UnknownAnalyzer());
+
+        langMgr->addG2p(new MandarinConverter());
+        langMgr->addG2p(new CantoneseConverter());
+        langMgr->addG2p(new EnglishConverter());
+        langMgr->addG2p(new KanaConverter());
+        langMgr->addG2p(new UnknownConverter());
 
         return true;
     }

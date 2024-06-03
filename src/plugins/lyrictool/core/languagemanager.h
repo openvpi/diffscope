@@ -18,7 +18,7 @@ namespace LyricTool {
         ~LanguageManager();
 
     public:
-        bool load(QString *errorMessage);
+        static bool load(QString *errorMessage);
 
         ILanguageAnalyzer *language(const QString &id) const;
         QList<ILanguageAnalyzer *> languages() const;

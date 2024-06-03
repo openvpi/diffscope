@@ -29,7 +29,7 @@ namespace LyricTool {
         QString analyze(const QString &input) const;
         void correct(const QList<LyricInfo> &input) const;
 
-        virtual QWidget *createSettingPage() = 0;
+        virtual QWidget *createSettingPage();
 
     public:
         QString id() const;

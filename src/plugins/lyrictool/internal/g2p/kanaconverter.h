@@ -15,7 +15,7 @@ namespace LyricTool::Internal {
         explicit KanaConverter(QObject *parent = nullptr);
         ~KanaConverter() override;
 
-        QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const = 0;
+        QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const override;
 
     public:
         QWidget *createSettingPage(QWidget *parent);
