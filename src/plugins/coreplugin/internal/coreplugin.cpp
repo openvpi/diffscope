@@ -34,6 +34,7 @@
 #include "appearancepage.h"
 #include "actionlayoutspage.h"
 #include "keymappage.h"
+#include "menutoolbarpage.h"
 
 extern const Core::ActionExtension *ckGetStaticActionExtension_core_actions();
 
@@ -121,11 +122,14 @@ namespace Core::Internal {
                 auto appearance = new AppearancePage();
                 environmentTop->addPage(appearance);
 
-                auto actionLayouts = new ActionLayoutsPage();
-                environmentTop->addPage(actionLayouts);
+//                auto actionLayouts = new ActionLayoutsPage();
+//                environmentTop->addPage(actionLayouts);
 
                 auto keymap = new KeymapPage();
                 environmentTop->addPage(keymap);
+
+                auto menuToolbar = new MenuToolbarPage();
+                environmentTop->addPage(menuToolbar);
             }
         }
 

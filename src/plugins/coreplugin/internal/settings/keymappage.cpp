@@ -68,7 +68,8 @@ namespace Core::Internal {
             actionsFilterLayout->addWidget(findShortcutButton);
             actionsLayout->addLayout(actionsFilterLayout);
             auto actionsTreeWidget = new QTreeWidget;
-            actionsTreeWidget->setHeaderLabels({tr("Name"), tr("ID"), tr("Shortcut")});
+            actionsTreeWidget->setHeaderLabels({tr("Name"), tr("Shortcut")});
+            actionsTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
             actionsLayout->addWidget(actionsTreeWidget);
             actionsGroupBox->setLayout(actionsLayout);
             mainLayout->addWidget(actionsGroupBox);
@@ -109,7 +110,6 @@ namespace Core::Internal {
             actionsTreeWidget->resizeColumnToContents(0);
             actionsTreeWidget->resizeColumnToContents(1);
             actionsTreeWidget->collapseAll();
-            actionsTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
             connect(m_presetComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
                 m_shortcutInfo.clear();
@@ -259,6 +259,7 @@ namespace Core::Internal {
     private:
         enum ItemDataRole {
             ShortcutRole = Qt::UserRole,
+            IDRole,
         };
 
         QComboBox *m_presetComboBox;
@@ -273,7 +274,8 @@ namespace Core::Internal {
             auto domain = ICore::instance()->actionManager()->domain();
             item->setText(0, ActionObjectInfo::translatedCategory(catalog.name()));
             item->setIcon(0, domain->objectIcon(qIDec->theme(), catalog.id()));
-            item->setText(1, catalog.id());
+            item->setData(0, IDRole, catalog.id());
+            item->setTextAlignment(1, Qt::AlignRight);
             for (const auto &childCatalog : catalog.children()) {
                 auto childItem = new QTreeWidgetItem;
                 traverseCatalog(childItem, childCatalog);
@@ -285,7 +287,7 @@ namespace Core::Internal {
             auto actionMgr = ICore::instance()->actionManager();
             auto shortcutsFamily = m_presetComboBox->currentData().toBool() ? actionMgr->systemShortcutsFamily(m_presetComboBox->currentText()) : actionMgr->userShortcutsFamily(m_presetComboBox->currentText());
             auto domain = ICore::instance()->actionManager()->domain();
-            auto id = item->text(1);
+            auto id = item->data(0, IDRole).toString();
             for (int i = 0; i < item->childCount(); i++) {
                 traverseShortcuts(item->child(i));
             }
@@ -297,7 +299,7 @@ namespace Core::Internal {
                 shortcuts = modification.value(id);
             } else if (!m_presetComboBox->currentData().toBool() && m_userShortcutFamilyAddition.contains(m_presetComboBox->currentText())) {
                 shortcuts = m_userShortcutFamilyAddition.value(m_presetComboBox->currentText()).value(id, domain->objectInfo(id).shortcuts());
-            } else if (shortcutsFamily.value(item->text(1))) {
+            } else if (shortcutsFamily.value(item->data(0, IDRole).toString())) {
                 shortcuts = shortcutsFamily.value(id).value();
             } else {
                 shortcuts = domain->objectInfo(id).shortcuts();
@@ -307,7 +309,7 @@ namespace Core::Internal {
                 m_shortcutInfo.insert(keySeq.toString(), item);
             }
 
-            item->setText(2, shortcutTexts.join(' '));
+            item->setText(1, shortcutTexts.join(' '));
             item->setData(0, ShortcutRole, QVariant::fromValue(shortcuts));
         }
 
@@ -322,7 +324,7 @@ namespace Core::Internal {
                 if (!text.isEmpty())
                     item->setExpanded(true);
                 return true;
-            } else if (item->text(0).contains(text, Qt::CaseInsensitive) || item->text(1).contains(text, Qt::CaseInsensitive)) {
+            } else if (item->text(0).contains(text, Qt::CaseInsensitive) || item->data(0, IDRole).toString().contains(text, Qt::CaseInsensitive)) {
                 item->setHidden(false);
                 return true;
             } else {
@@ -355,11 +357,11 @@ namespace Core::Internal {
                 shortcutTexts.append("[" + shortcut.toString(QKeySequence::NativeText) + "]");
             }
             if (m_presetComboBox->currentData().toBool()) {
-                m_systemShortcutFamilyModification[m_presetComboBox->currentText()].insert(item->text(1), shortcuts);
+                m_systemShortcutFamilyModification[m_presetComboBox->currentText()].insert(item->data(0, IDRole).toString(), shortcuts);
             } else {
-                m_userShortcutFamilyModification[m_presetComboBox->currentText()].insert(item->text(1), shortcuts);
+                m_userShortcutFamilyModification[m_presetComboBox->currentText()].insert(item->data(0, IDRole).toString(), shortcuts);
             }
-            item->setText(2, shortcutTexts.join(' '));
+            item->setText(1, shortcutTexts.join(' '));
         }
 
         void promptShortcut(QTreeWidgetItem *item) {
