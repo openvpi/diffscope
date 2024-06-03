@@ -97,4 +97,12 @@ namespace LyricTool {
         d->revised = revised;
     }
 
+    bool LyricInfo::error() const {
+        return d->error;
+    }
+
+    void LyricInfo::setError(bool error) {
+        d->error = error;
+    }
+
 }

@@ -22,21 +22,21 @@ namespace LyricTool {
 
         ILanguageAnalyzer *language(const QString &id) const;
         QList<ILanguageAnalyzer *> languages() const;
-        bool addLanguage(ILanguageAnalyzer *factory);
-        bool removeLanguage(const ILanguageAnalyzer *factory);
+        bool addLanguage(ILanguageAnalyzer *analyzer);
+        bool removeLanguage(const ILanguageAnalyzer *analyzer);
         bool removeLanguage(const QString &id);
         void clearLanguages();
 
         IG2pConverter *g2p(const QString &id) const;
         QList<IG2pConverter *> g2ps() const;
-        bool addG2p(ILanguageAnalyzer *factory);
-        bool removeG2p(const ILanguageAnalyzer *factory);
+        bool addG2p(IG2pConverter *converter);
+        bool removeG2p(const IG2pConverter *converter);
         bool removeG2p(const QString &id);
         void clearG2ps();
 
     public:
         QStringList sortedLanguages() const;
-        void setSortedLanguages(const QString &sortedLanguages);
+        void setSortedLanguages(const QStringList &sortedLanguages);
 
         QList<LyricInfo> split(const QString &input) const;
         QList<LyricInfo> correct(const QList<LyricInfo> &input) const;
@@ -46,6 +46,8 @@ namespace LyricTool {
         QStringList analysis(const QStringList &input) const;
 
     protected:
+        QList<ILanguageAnalyzer *> priorityLanguages(const QStringList &priorityList = {}) const;
+
         LanguageManager(LanguageManagerPrivate &d, QObject *parent = nullptr);
 
         QScopedPointer<LanguageManagerPrivate> d_ptr;

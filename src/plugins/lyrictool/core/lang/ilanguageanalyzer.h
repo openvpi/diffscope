@@ -33,6 +33,7 @@ namespace LyricTool {
 
     public:
         QString id() const;
+        QVariantMap g2pConfig();
 
         QString displayName() const;
         void setDisplayName(const QMDisplayString &displayName);
@@ -43,6 +44,9 @@ namespace LyricTool {
     public:
         QString category() const;
         void setCategory(const QString &category);
+
+        QString selectedG2p() const;
+        void setG2p(const QString &g2pId);
 
         bool enabled() const;
         void setEnabled(const bool &enable);

@@ -19,6 +19,9 @@ namespace LyricTool {
 
         QMChronoMap<QString, ILanguageAnalyzer *> languages;
         QMChronoMap<QString, IG2pConverter *> g2ps;
+
+        QStringList defaultSort = {"Mandarin", "Pinyin", "Cantonese",   "Kana",   "Romaji",    "English",
+                     "Space",    "Slur",   "Punctuation", "Number", "Linebreak", "Unknown"};
     };
 
 }

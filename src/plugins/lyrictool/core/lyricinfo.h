@@ -47,6 +47,9 @@ namespace LyricTool {
         bool revised() const;
         void setRevised(bool revised);
 
+        bool error() const;
+        void setError(bool error);
+
     protected:
         QSharedDataPointer<LyricInfoData> d;
     };

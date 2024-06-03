@@ -13,14 +13,14 @@ namespace LyricTool {
     }
 
     ILanguageAnalyzer::ILanguageAnalyzer(const QString &id, QObject *parent)
-    : ILanguageAnalyzer(*new ILanguageAnalyzerPrivate(), id, parent) {
+        : ILanguageAnalyzer(*new ILanguageAnalyzerPrivate(), id, parent) {
     }
 
     ILanguageAnalyzer::~ILanguageAnalyzer() = default;
 
     void ILanguageAnalyzer::correct(const QList<LyricInfo> &input) const {
         for (const auto &note : input) {
-            if (note.language() == "Unknown") {
+            if (note.language() == QStringLiteral("Unknown")) {
                 if (contains(note.lyric()))
                     note.language() = id();
             }
@@ -28,7 +28,7 @@ namespace LyricTool {
     }
 
     QString ILanguageAnalyzer::analyze(const QString &input) const {
-        return contains(input) ? id() : "Unknown";
+        return contains(input) ? id() : QStringLiteral("Unknown");
     }
 
     QList<LyricInfo> ILanguageAnalyzer::split(const QList<LyricInfo> &input) const {
@@ -39,7 +39,7 @@ namespace LyricTool {
 
         QList<LyricInfo> result;
         for (const auto &note : input) {
-            if (note.language() == "Unknown" ) {
+            if (note.language() == QStringLiteral("Unknown")) {
                 const auto splitRes = split(note.lyric());
                 for (const auto &res : splitRes) {
                     if (res.language() == id() && d->discardResult) {
@@ -56,11 +56,11 @@ namespace LyricTool {
 
     QList<LyricInfo> ILanguageAnalyzer::split(const QString &input) const {
         Q_UNUSED(input);
-        return QList<LyricInfo>();
+        return {};
     }
 
     QString ILanguageAnalyzer::randString() const {
-        return QString();
+        return {};
     }
 
     bool ILanguageAnalyzer::contains(const QString &input) const {
@@ -76,6 +76,11 @@ namespace LyricTool {
     QString ILanguageAnalyzer::id() const {
         Q_D(const ILanguageAnalyzer);
         return d->id;
+    }
+
+    QVariantMap ILanguageAnalyzer::g2pConfig() {
+        Q_D(const ILanguageAnalyzer);
+        return d->m_g2pConfig;
     }
 
     QString ILanguageAnalyzer::displayName() const {
@@ -106,6 +111,16 @@ namespace LyricTool {
     void ILanguageAnalyzer::setCategory(const QString &category) {
         Q_D(ILanguageAnalyzer);
         d->categroy = category;
+    }
+
+    QString ILanguageAnalyzer::selectedG2p() const {
+        Q_D(const ILanguageAnalyzer);
+        return d->m_selectedG2p;
+    }
+
+    void ILanguageAnalyzer::setG2p(const QString &g2pId) {
+        Q_D(ILanguageAnalyzer);
+        d->m_selectedG2p = g2pId;
     }
 
     bool ILanguageAnalyzer::enabled() const {
