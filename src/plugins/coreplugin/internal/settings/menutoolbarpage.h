@@ -27,6 +27,6 @@ namespace Core {
         QPointer<MenuToolbarPageWidget> m_widget;
     };
 
-} // Core
+}
 
 #endif // MENUTOOLBARPAGE_H
