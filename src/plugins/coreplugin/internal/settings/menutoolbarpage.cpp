@@ -437,15 +437,21 @@ namespace Core {
     QWidget *MenuToolbarPage::widget() {
         if (m_widget)
             return m_widget;
-        m_widget = new MenuToolbarPageWidget;
+        m_widget = new MenuToolbarPageWidget();
         return m_widget;
     }
     bool MenuToolbarPage::accept() {
+        if (!m_widget)
+            return true;
         m_widget->applyModification();
         return true;
     }
     void MenuToolbarPage::finish() {
+        if (m_widget) {
+            m_widget->deleteLater();
+            m_widget = nullptr;
+        }
     }
-} // Core
+}
 
 #include "menutoolbarpage.moc"
