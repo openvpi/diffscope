@@ -6,7 +6,6 @@
 
 #include <QBoxLayout>
 #include <QToolBar>
-#include <QTreeWidget>
 #include <QLineEdit>
 #include <QStyle>
 #include <QDebug>
@@ -14,6 +13,9 @@
 #include <QDialog>
 #include <QFormLayout>
 #include <QPushButton>
+#include <QDropEvent>
+
+#include <QMWidgets/ctreewidget.h>
 
 #include <QMWidgets/qmdecoratorv2.h>
 
@@ -30,8 +32,9 @@ namespace Core {
             auto toolbar = new QToolBar;
             mainLayout->addWidget(toolbar);
 
-            m_treeWidget = new QTreeWidget;
+            m_treeWidget = new CTreeWidget;
             m_treeWidget->setColumnCount(2);
+            m_treeWidget->setColumnWidth(0, 400);
             m_treeWidget->setHeaderLabels({tr("Name"), tr("Type")});
             m_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
             m_treeWidget->setDragEnabled(true);
@@ -61,7 +64,15 @@ namespace Core {
             addActionDialogLayout->addLayout(buttonLayout);
             m_addActionDialog->setLayout(addActionDialogLayout);
 
-            traverseCatalog(m_actionCatalogTreeWidget->invisibleRootItem(), ICore::instance()->actionManager()->domain()->catalog());
+            for (const auto &childCatalog : ICore::instance()->actionManager()->domain()->catalog().children()) {
+                auto item = new QTreeWidgetItem;
+                m_actionCatalogTreeWidget->addTopLevelItem(item);
+                setItemByCatalog(item, childCatalog);
+                if (!childCatalog.children().isEmpty())
+                    initializeLazyLoad(item);
+            }
+
+            connect(m_actionCatalogTreeWidget, &QTreeWidget::itemExpanded, this, &MenuToolbarPageWidget::commitCatalogLazyLoad);
 
             connect(okButton, &QAbstractButton::clicked, m_addActionDialog, &QDialog::accept);
             connect(cancelButton, &QAbstractButton::clicked, m_addActionDialog, &QDialog::reject);
@@ -107,10 +118,10 @@ namespace Core {
                             auto a2 = popupMenu.addAction(tr("Set as S&tretch"), [=] { setItemType(item, ActionLayoutInfo::Stretch); });
                             a2->setCheckable(true);
                             a2->setChecked(itemType == ActionLayoutInfo::Stretch);
-                        } else if (itemType == ActionLayoutInfo::Group || itemType == ActionLayoutInfo::Menu) {
-                            auto a1 = popupMenu.addAction(tr("Set as &Group"), [=] { setItemType(item, ActionLayoutInfo::Group); });
+                        } else if (itemType == ActionLayoutInfo::ExpandedMenu || itemType == ActionLayoutInfo::Menu) {
+                            auto a1 = popupMenu.addAction(tr("Set as &Group"), [=] { setItemType(item, ActionLayoutInfo::ExpandedMenu); });
                             a1->setCheckable(true);
-                            a1->setChecked(itemType == ActionLayoutInfo::Group);
+                            a1->setChecked(itemType == ActionLayoutInfo::ExpandedMenu);
                             auto a2 = popupMenu.addAction(tr("Set as &Menu"), [=] { setItemType(item, ActionLayoutInfo::Menu); });
                             a2->setCheckable(true);
                             a2->setChecked(itemType == ActionLayoutInfo::Menu);
@@ -141,15 +152,21 @@ namespace Core {
                 auto item = new QTreeWidgetItem;
                 m_treeWidget->addTopLevelItem(item);
                 item->setData(0, TopLevelRole, true);
-                traverseLayout(item, layout);
+                setItemByLayout(item, layout);
+                if (!(layout.type() & ActionLayoutInfo::TerminalFlag) && !layout.children().isEmpty())
+                    initializeLazyLoad(item);
             }
-            m_treeWidget->expandAll();
-            m_treeWidget->resizeColumnToContents(0);
-            m_treeWidget->collapseAll();
+
+            connect(m_treeWidget, &QTreeWidget::itemExpanded, this, &MenuToolbarPageWidget::commitLayoutLazyLoad);
+            connect(m_treeWidget, &CTreeWidget::itemDropped, this, [=](QTreeWidgetItem *item) {
+                commitLayoutLazyLoad(item);
+                markDirty(item);
+            });
         }
 
         ~MenuToolbarPageWidget() override {
             std::for_each(m_cachedActionLayouts.cbegin(), m_cachedActionLayouts.cend(), std::default_delete<ActionLayout>());
+            std::for_each(m_cachedActionCatalogs.cbegin(), m_cachedActionCatalogs.cend(), std::default_delete<ActionCatalog>());
         }
 
         void applyModification() {
@@ -158,16 +175,24 @@ namespace Core {
         }
 
     private:
-        QTreeWidget *m_treeWidget;
+        CTreeWidget *m_treeWidget;
         QDialog *m_addActionDialog;
         QTreeWidget *m_actionCatalogTreeWidget;
         mutable QSet<ActionLayout *> m_cachedActionLayouts;
+        mutable QSet<ActionCatalog *> m_cachedActionCatalogs;
 
         enum DataRole {
             IDRole = Qt::UserRole,
             TypeRole,
             CacheRole,
             TopLevelRole,
+            LazyLoadRole,
+        };
+
+        enum LazyLoadState {
+            NotLoaded,
+            Loaded,
+            Placeholder,
         };
 
         static void setItemTypeColumn(QTreeWidgetItem *item) {
@@ -184,6 +209,7 @@ namespace Core {
                 case ActionLayoutInfo::Action:
                     item->setText(1, tr("Action"));
                     break;
+                case ActionLayoutInfo::ExpandedMenu:
                 case ActionLayoutInfo::Group:
                     item->setText(1, tr("Group"));
                     break;
@@ -213,28 +239,64 @@ namespace Core {
             setItemTypeColumn(item);
         }
 
-        void traverseLayout(QTreeWidgetItem *item, const ActionLayout &layout) const {
-            setItemByLayout(item, layout);
-            for (const auto &childLayout : layout.children()) {
-                auto childItem = new QTreeWidgetItem;
-                item->addChild(childItem);
-                traverseLayout(childItem, childLayout);
-            }
+        static void initializeLazyLoad(QTreeWidgetItem *item) {
+            item->setData(0, LazyLoadRole, NotLoaded);
+            auto placeHolder = new QTreeWidgetItem;
+            placeHolder->setData(0, LazyLoadRole, Placeholder);
+            item->addChild(placeHolder);
         }
 
-        static void traverseCatalog(QTreeWidgetItem *item, const ActionCatalog &catalog) {
+        void commitLayoutLazyLoad(QTreeWidgetItem *item) const {
+            if (item->data(0, LazyLoadRole) == Loaded)
+                return;
+            Q_ASSERT(item->child(0)->data(0, LazyLoadRole) == Placeholder);
+            auto cachedLayout = reinterpret_cast<ActionLayout *>(item->data(0, CacheRole).value<qintptr>());
+            QList<QTreeWidgetItem *> childItems;
+            childItems.reserve(cachedLayout->children().size());
+            for (const auto &childLayout : cachedLayout->children()) {
+                auto childItem = new QTreeWidgetItem;
+                setItemByLayout(childItem, childLayout);
+                if (!(childLayout.type() & ActionLayoutInfo::TerminalFlag) && !childLayout.children().isEmpty())
+                    initializeLazyLoad(childItem);
+                childItems.append(childItem);
+            }
+            delete item->child(0);
+            item->insertChildren(0, childItems);
+            item->setData(0, LazyLoadRole, Loaded);
+        }
+
+        void setItemByCatalog(QTreeWidgetItem *item, const ActionCatalog &catalog) const {
             auto domain = ICore::instance()->actionManager()->domain();
             item->setText(0, ActionObjectInfo::translatedCategory(catalog.name()));
             item->setIcon(0, domain->objectIcon(qIDec->theme(), catalog.id()));
             item->setData(0, IDRole, catalog.id());
-            for (const auto &childCatalog : catalog.children()) {
-                auto childItem = new QTreeWidgetItem;
-                item->addChild(childItem);
-                traverseCatalog(childItem, childCatalog);
-            }
+            auto cachedCatalog = new ActionCatalog(catalog);
+            m_cachedActionCatalogs.insert(cachedCatalog);
+            item->setData(0, CacheRole, reinterpret_cast<qintptr>(cachedCatalog));
         }
 
-        static void traverseCatalogItemAndModifyToLayoutItem(QTreeWidgetItem *item) {
+        void commitCatalogLazyLoad(QTreeWidgetItem *item) const {
+            if (item->data(0, LazyLoadRole) != NotLoaded)
+                return;
+            Q_ASSERT(item->child(0)->data(0, LazyLoadRole) == Placeholder);
+            auto cachedCatalog = reinterpret_cast<ActionCatalog *>(item->data(0, CacheRole).value<qintptr>());
+            QList<QTreeWidgetItem *> childItems;
+            childItems.reserve(cachedCatalog->children().size());
+            for (const auto &childCatalog : cachedCatalog->children()) {
+                auto childItem = new QTreeWidgetItem;
+                setItemByCatalog(childItem, childCatalog);
+                if (!childCatalog.children().isEmpty())
+                    initializeLazyLoad(childItem);
+                childItems.append(childItem);
+            }
+            delete item->child(0);
+            m_cachedActionCatalogs.remove(cachedCatalog);
+            delete cachedCatalog;
+            item->insertChildren(0, childItems);
+            item->setData(0, LazyLoadRole, Loaded);
+        }
+
+        void traverseCatalogItemAndModifyToLayoutItem(QTreeWidgetItem *item) const {
             auto domain = ICore::instance()->actionManager()->domain();
             auto id = item->data(0, IDRole).toString();
             item->setText(0, ActionObjectInfo::translatedText(domain->objectInfo(id).text()));
@@ -249,6 +311,7 @@ namespace Core {
                 }
             }());
             setItemTypeColumn(item);
+            commitCatalogLazyLoad(item);
             for (int i = 0; i < item->childCount(); i++) {
                 traverseCatalogItemAndModifyToLayoutItem(item->child(i));
             }
@@ -296,7 +359,7 @@ namespace Core {
             auto actionItem = m_actionCatalogTreeWidget->currentItem()->clone();
             traverseCatalogItemAndModifyToLayoutItem(actionItem);
             auto item = m_treeWidget->currentItem();
-            if (item->childCount()) {
+            if (!(item->data(0, TypeRole).toInt() & ActionLayoutInfo::TerminalFlag)) {
                 item->setExpanded(true);
                 item->addChild(actionItem);
                 m_treeWidget->setCurrentItem(actionItem);
