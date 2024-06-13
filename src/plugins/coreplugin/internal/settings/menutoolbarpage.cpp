@@ -103,6 +103,11 @@ namespace Core {
                 auto searchLineEdit = new QLineEdit;
                 searchLineEdit->setPlaceholderText(tr("Find"));
                 toolbar->addWidget(searchLineEdit);
+                auto findNextAction = toolbar->addAction(style()->standardIcon(QStyle::SP_ArrowForward), tr("Find &Next"), this, [=] {
+                    findNext(searchLineEdit->text(), true);
+                });
+                findNextAction->setShortcut(Qt::Key_F3);
+                findNextAction->setDisabled(true);
 
                 connect(m_treeWidget, &QTreeWidget::customContextMenuRequested, this, [=](const QPoint &pos) {
                     auto item = m_treeWidget->currentItem();
@@ -146,6 +151,10 @@ namespace Core {
                         moveDownAction->setDisabled(item->parent()->indexOfChild(item) == item->parent()->childCount() - 1);
                     }
                 });
+                connect(searchLineEdit, &QLineEdit::textChanged, this, [=](const QString &text) {
+                    findNextAction->setDisabled(text.isEmpty());
+                    findNext(text, false);
+                });
             }
 
             for (const auto &layout : ICore::instance()->actionManager()->domain()->layouts()) {
@@ -187,6 +196,7 @@ namespace Core {
             CacheRole,
             TopLevelRole,
             LazyLoadRole,
+            SearchMatchedRole,
         };
 
         enum LazyLoadState {
@@ -417,6 +427,74 @@ namespace Core {
             setItemTypeColumn(item);
             m_treeWidget->setCurrentItem(item);
             markDirty(parentItem);
+        }
+
+        void findNext(const QString &text, bool skipThis) {
+            if (text.isEmpty())
+                return;
+            if (!m_treeWidget->topLevelItemCount())
+                return;
+            if (!m_treeWidget->currentItem())
+                m_treeWidget->setCurrentItem(m_treeWidget->topLevelItem(0));
+            auto item = traverseItemAndMatch(m_treeWidget->currentItem(), text, false, skipThis);
+            if (item)
+                m_treeWidget->setCurrentItem(item);
+        }
+
+        static bool traverseCachedLayoutIfMatch(const ActionLayout &layout, const QString &text, QList<int> &indices) {
+            auto domain = ICore::instance()->actionManager()->domain();
+            auto childLayouts = layout.children();
+            for (int i = 0; i < childLayouts.size(); i++) {
+                const auto &childLayout = childLayouts[i];
+                if (ActionObjectInfo::translatedText(domain->objectInfo(childLayout.id()).text()).contains(text, Qt::CaseInsensitive)) {
+                    indices.prepend(i);
+                    return true;
+                } else if (traverseCachedLayoutIfMatch(childLayout, text, indices)) {
+                    indices.prepend(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        QTreeWidgetItem *traverseItemAndMatch(QTreeWidgetItem *item, const QString &text, bool skipParent, bool skipThis) const {
+            if (!skipThis && item->text(0).contains(text, Qt::CaseInsensitive))
+                return item;
+            if (item->data(0, LazyLoadRole) == NotLoaded) {
+                auto layout = reinterpret_cast<ActionLayout *>(item->data(0, CacheRole).value<qintptr>());
+                QList<int> indices;
+                traverseCachedLayoutIfMatch(*layout, text, indices);
+                QTreeWidgetItem *target = item;
+                for (int index : indices) {
+                    commitLayoutLazyLoad(target);
+                    target = target->child(index);
+                }
+                if (target != item)
+                    return target;
+            }
+            for (int i = 0; i < item->childCount(); i++) {
+                if (auto target = traverseItemAndMatch(item->child(i), text, true, false))
+                    return target;
+            }
+            if (skipParent)
+                return nullptr;
+            for (auto anchorItem = item; anchorItem; anchorItem = anchorItem->parent()) {
+                auto parentItem = anchorItem->parent() ? anchorItem->parent() : m_treeWidget->invisibleRootItem();
+                auto anchorIndex = parentItem->indexOfChild(anchorItem);
+                for (int i = anchorIndex + 1; i < parentItem->childCount(); i++) {
+                    auto itemToTraverse = parentItem->child((i) % parentItem->childCount());
+                    if (auto target = traverseItemAndMatch(itemToTraverse, text, true, false))
+                        return target;
+                }
+                if (!anchorItem->parent()) {
+                    for (int i = 0; i < anchorIndex; i++) {
+                        auto itemToTraverse = parentItem->child((i) % parentItem->childCount());
+                        if (auto target = traverseItemAndMatch(itemToTraverse, text, true, false))
+                            return target;
+                    }
+                }
+            }
+            return nullptr;
         }
 
     };
