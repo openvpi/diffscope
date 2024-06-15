@@ -1,0 +1,21 @@
+{
+    "Name": "@PLUGIN_METADATA_NAME@",
+    "DisplayName": "@PLUGIN_METADATA_DISPLAY_NAME@",
+    "Version": "@PLUGIN_METADATA_VERSION@",
+    "CompatVersion": "@PLUGIN_METADATA_COMPAT_VERSION@",
+    "DisabledByDefault": true,
+    "HiddenByDefault": false,
+    "Vendor": "@PLUGIN_METADATA_VENDOR@",
+    "Copyright": "@PLUGIN_METADATA_COPYRIGHT@",
+    "License": [
+        "Apache 2.0"
+    ],
+    "Category": "Development",
+    "Description": "The plugin for debugging and testing @APPLICATION_INSTALL_NAME@.",
+    "Url": "https://example.com/",
+    "Required": false,
+    "Arguments" : [],
+    "Dependencies" : [
+        { "Name" : "Core", "Version" : "0.1.0" }
+    ]
+}
