@@ -11,6 +11,7 @@ class QSlider;
 
 namespace SVS {
     class ExpressionDoubleSpinBox;
+    class ExpressionSpinBox;
 };
 
 namespace Audio {
@@ -41,7 +42,7 @@ namespace Audio {
         SVS::ExpressionDoubleSpinBox *m_devicePanSpinBox;
         QComboBox *m_playHeadBehaviorComboBox;
         QCheckBox *m_closeDeviceOnPlaybackStopCheckBox;
-        SVS::ExpressionDoubleSpinBox *m_fileBufferSizeMsecSpinBox;
+        SVS::ExpressionSpinBox *m_fileBufferingSizeSpinBox;
 
         void updateDriverComboBox();
         void updateDeviceComboBox();

@@ -2,6 +2,7 @@ project(audioplugin VERSION 0.1.0.0)
 
 set(_plugin_name Audio)
 set(_plugin_display_name Audio)
+option(AUDIO_TEST "Build Audio Plugin Tests" OFF)
 
 # Add target
 ck_add_plugin(${PROJECT_NAME}
@@ -12,6 +13,10 @@ ck_add_plugin(${PROJECT_NAME}
     DESCRIPTION "${CURRENT_PLUGIN_DESC}"
     MACRO_PREFIX AUDIO
 )
+
+if(AUDIO_TEST)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE AUDIO_TEST)
+endif()
 
 # Configure target
 file(GLOB_RECURSE _src *.h *.cpp)

@@ -119,12 +119,6 @@ namespace Audio {
     QPair<QString, QString> VSTConnectionSystem::hostSpecs() const {
         return m_hostSpecs;
     }
-    void VSTConnectionSystem::setFileBufferingMsec(double msec) {
-        if (!m_dev)
-            setFileBufferingReadAheadSize(0);
-        else
-            setFileBufferingReadAheadSize(static_cast<qint64>(msec * m_dev->sampleRate() / 1000.0));
-    }
     QByteArray VSTConnectionSystem::getEditorData(bool *ok) {
         return QByteArray();
     }

@@ -19,6 +19,7 @@
 #include <TalcsDevice/AudioDevice.h>
 
 #include <SVSCraftWidgets/expressiondoublespinbox.h>
+#include <SVSCraftWidgets/expressionspinbox.h>
 
 #include <CoreApi/iloader.h>
 
@@ -126,10 +127,9 @@ namespace Audio {
 
         auto fileGroupBox = new QGroupBox(tr("File Caching"));
         auto fileLayout = new QFormLayout;
-        m_fileBufferSizeMsecSpinBox = new SVS::ExpressionDoubleSpinBox;
-        m_fileBufferSizeMsecSpinBox->setRange(0.0, std::numeric_limits<double>::max());
-        fileLayout->addRow(tr("&File reading buffer size (millisecond)"),
-                           m_fileBufferSizeMsecSpinBox);
+        m_fileBufferingSizeSpinBox = new SVS::ExpressionSpinBox;
+        m_fileBufferingSizeSpinBox->setRange(0, std::numeric_limits<int>::max());
+        fileLayout->addRow(tr("&File reading buffer size (samples)"), m_fileBufferingSizeSpinBox);
         fileGroupBox->setLayout(fileLayout);
         mainLayout->addWidget(fileGroupBox);
         mainLayout->addStretch();
@@ -180,7 +180,7 @@ namespace Audio {
         auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
 
-        m_fileBufferSizeMsecSpinBox->setValue(obj["fileBufferingMsec"].toDouble());
+        m_fileBufferingSizeSpinBox->setValue(obj["fileBufferingSize"].toInt());
 
         return m_widget;
     }
@@ -190,13 +190,13 @@ namespace Audio {
         AudioSystem::outputSystem()->setHotPlugNotificationMode(
             static_cast<OutputSystem::HotPlugNotificationMode>(
                 m_hotPlugModeComboBox->currentIndex()));
-        AudioSystem::outputSystem()->setFileBufferingMsec(m_fileBufferSizeMsecSpinBox->value());
-        AudioSystem::vstConnectionSystem()->setFileBufferingMsec(m_fileBufferSizeMsecSpinBox->value());
+        AudioSystem::outputSystem()->setFileBufferingReadAheadSize(m_fileBufferingSizeSpinBox->value());
+        AudioSystem::vstConnectionSystem()->setFileBufferingReadAheadSize(m_fileBufferingSizeSpinBox->value());
         auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["deviceGain"] = AudioSystem::outputSystem()->gain();
         obj["devicePan"] = AudioSystem::outputSystem()->pan();
-        obj["fileBufferingMsec"] = m_fileBufferSizeMsecSpinBox->value();
+        obj["fileBufferingSize"] = m_fileBufferingSizeSpinBox->value();
         settings["Audio"] = obj;
         // TODO
         return true;

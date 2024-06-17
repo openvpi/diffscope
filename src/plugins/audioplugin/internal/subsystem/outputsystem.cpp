@@ -35,7 +35,7 @@ namespace Audio {
         settings["Audio"] = obj;
         setGain(static_cast<float>(obj["deviceGain"].toDouble()));
         setPan(static_cast<float>(obj["devicePan"].toDouble()));
-        setFileBufferingMsec(obj["fileBufferingMsec"].toDouble());
+        setFileBufferingReadAheadSize(obj["fileBufferingSize"].toInt());
         do {
             if (savedDriverName.isEmpty() || savedDeviceName.isEmpty())
                 break;
@@ -226,9 +226,6 @@ namespace Audio {
         obj["hotPlugNotificationMode"] = mode;
         settings["Audio"] = obj;
         qDebug() << "Audio::OutputSystem: hot plug notification mode set to" << mode;
-    }
-    void OutputSystem::setFileBufferingMsec(double msec) {
-        setAdoptedBufferSize(static_cast<qint64>(msec * m_adoptedSampleRate / 1000));
     }
     void OutputSystem::handleDeviceHotPlug() {
         qDebug() << "Audio::OutputSystem: hot plug detected";
