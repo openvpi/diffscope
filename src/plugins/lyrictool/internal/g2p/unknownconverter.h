@@ -18,7 +18,7 @@ namespace LyricTool::Internal {
         QList<LyricInfo> convert(const QStringList &input, const QVariantMap &args) const override;
 
     public:
-        QWidget *createSettingPage(QWidget *parent);
+        QWidget *createSettingPage(QWidget *parent) override;
 
     private:
         // TODO
@@ -28,4 +28,4 @@ namespace LyricTool::Internal {
 
 }
 
-#endif //UNKNOWNCONVERTER_H
+#endif // UNKNOWNCONVERTER_H
