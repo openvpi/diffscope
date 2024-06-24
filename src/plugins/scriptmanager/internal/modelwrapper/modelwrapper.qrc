@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/scriptmanager/modelwrapper">
+        <file>VectorEntityWrapper.js</file>
+    </qresource>
+</RCC>
