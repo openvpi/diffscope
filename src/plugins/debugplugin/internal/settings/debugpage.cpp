@@ -78,6 +78,7 @@ namespace Debug::Internal {
 
             connect(objectsListWidget, &QListWidget::currentItemChanged, this, [=](QListWidgetItem *item) {
                 auto metaObject = item->data(Qt::UserRole).value<QObject *>()->metaObject();
+                slotsListWidget->clear();
                 for (int i = metaObject->methodOffset(); i < metaObject->methodCount(); i++) {
                     auto method = metaObject->method(i);
                     if (method.parameterCount())
