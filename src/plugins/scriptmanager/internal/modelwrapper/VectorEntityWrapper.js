@@ -1,7 +1,9 @@
 (() => {
     const methods = {
         push(...args) {
-            this.insert(this.size(), args);
+            const length = this.size();
+            this.insert(length, args);
+            return length + args.length;
         },
         pop() {
             if (this.size() == 0)
@@ -12,7 +14,9 @@
             return ret;
         },
         unshift(...args) {
+            const length = this.size();
             this.insert(0, args);
+            return length + args.length;
         },
         shift() {
             if (this.size() == 0)
@@ -111,7 +115,7 @@
             deleteProperty(target, prop) {
                 if (!isNaN(prop)) {
                     const index = Number(prop);
-                    if (index < target.size()) {
+                    if (index >= 0 && index < target.size()) {
                         target.remove(index, 1);
                     }
                     return true;
