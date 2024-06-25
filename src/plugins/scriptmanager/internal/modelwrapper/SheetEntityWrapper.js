@@ -4,7 +4,7 @@
             this.insert(item);
         },
         delete(item) {
-            return this.remove(item);
+            this.remove(item);
         },
         get(index) {
             return this.value(index);

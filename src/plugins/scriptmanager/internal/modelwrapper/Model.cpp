@@ -1,23 +1,32 @@
 #include "Model.h"
 
-#include <QJSEngine>
+#include <QQmlEngine>
 
 #include <dspxmodel/modelentity.h>
 
+#include <scriptmanager/internal/Master.h>
+#include <scriptmanager/internal/Timeline.h>
 #include <scriptmanager/internal/TrackList.h>
 
+using QDspx::ModelEntity;
+
 namespace ScriptManager::Internal {
-    Model::Model(QDspx::ModelEntity *entity) : m_entity(entity) {
+    Model::Model(ModelEntity *entity) : m_entity(entity) {
     }
     Model::~Model() = default;
-    QObject *Model::global() const {
-        return nullptr;
+
+    QJSValue Model::global() const {
+        auto engine = qjsEngine(this);
+        Q_ASSERT(engine);
+        auto o = engine->newQObject(m_entity->global());
+        QQmlEngine::setObjectOwnership(m_entity->global(), QQmlEngine::CppOwnership);
+        return o;
     }
     QObject *Model::master() const {
-        return nullptr;
+        return new Master(m_entity->master());
     }
     QObject *Model::timeline() const {
-        return nullptr;
+        return new Timeline(m_entity->timeline());
     }
     QJSValue Model::tracks() const {
         if (!m_wrappedTrackListEntity.isUndefined())

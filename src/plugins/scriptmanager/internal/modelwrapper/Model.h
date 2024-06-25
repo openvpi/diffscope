@@ -12,7 +12,7 @@ namespace ScriptManager::Internal {
 
     class Model : public QObject {
         Q_OBJECT
-        Q_PROPERTY(QObject* global READ global)
+        Q_PROPERTY(QJSValue global READ global)
         Q_PROPERTY(QObject* master READ master)
         Q_PROPERTY(QObject* timeline READ timeline)
         Q_PROPERTY(QJSValue tracks READ tracks)
@@ -20,7 +20,7 @@ namespace ScriptManager::Internal {
         explicit Model(QDspx::ModelEntity *entity);
         ~Model() override;
 
-        QObject *global() const;
+        QJSValue global() const;
         QObject *master() const;
         QObject *timeline() const;
         QJSValue tracks() const;

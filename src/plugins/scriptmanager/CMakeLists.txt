@@ -48,6 +48,7 @@ ck_add_attached_files(${PROJECT_NAME}
 
     # SRC Res/themes DEST .
     SRC ${CMAKE_CURRENT_BINARY_DIR}/res/translations DEST .
+    SRC ${CMAKE_CURRENT_SOURCE_DIR}/**.d.ts DEST ./typings
 )
 
 # Add install command

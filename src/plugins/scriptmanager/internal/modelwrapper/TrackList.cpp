@@ -4,19 +4,34 @@
 
 #include <dspxmodel/trackentity.h>
 
+using QDspx::TrackListEntity;
+using QDspx::TrackEntity;
+
 namespace ScriptManager::Internal {
 
-    using namespace QDspx;
-
-    TrackList::TrackList(QDspx::TrackListEntity *entity) : m_entity(entity) {
+    TrackList::TrackList(TrackListEntity *entity) : m_entity(entity) {
+        connect(entity, &TrackListEntity::inserted, this, [=](int index, const QVector<QDspx::TrackEntity *> &items) {
+            auto engine = qjsEngine(this);
+            Q_ASSERT(engine);
+            // TODO
+        });
+        connect(entity, &TrackListEntity::aboutToMove, this, &TrackList::aboutToMove);
+        connect(entity, &TrackListEntity::moved, this, &TrackList::moved);
+        connect(entity, &TrackListEntity::aboutToRemove, this, [=](int index, const QVector<QDspx::TrackEntity *> &items) {
+            auto engine = qjsEngine(this);
+            Q_ASSERT(engine);
+            // TODO
+        });
+        connect(entity, &TrackListEntity::removed, this, &TrackList::removed);
     }
     TrackList::~TrackList() = default;
+
     void TrackList::insert(int index, const QJSValue &items) {
         auto engine = qjsEngine(this);
         Q_ASSERT(engine);
         QVector<TrackEntity *> trackEntities;
         for (int i = 0, length = items.property("length").toInt(); i < length; i++) {
-            auto trackEntity = qobject_cast<TrackEntity *>(items.property(i).toQObject());
+            auto trackEntity = qobject_cast<TrackEntity *>(items.property(i).toQObject()); // TODO
             if (!trackEntity) {
                 engine->throwError(QJSValue::TypeError, "Invalid argument");
                 return;
@@ -42,7 +57,7 @@ namespace ScriptManager::Internal {
         }
     }
     QJSValue TrackList::at(int index) const {
-        return {};
+        return {}; // TODO
     }
     int TrackList::size() const {
         return m_entity->size();
