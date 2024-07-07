@@ -1,6 +1,8 @@
 #ifndef AUDIO_DEVICETESTER_H
 #define AUDIO_DEVICETESTER_H
 
+#include <limits>
+
 #include <QObject>
 
 #include <TalcsCore/AudioSource.h>
@@ -28,7 +30,7 @@ namespace Audio {
     private:
         OutputSystemInterface *m_outputSystemInterface;
         talcs::AudioBuffer m_sound;
-        QAtomicInteger<qint64> m_pos = 0;
+        QAtomicInteger<qint64> m_pos = -1;
     };
 
 }

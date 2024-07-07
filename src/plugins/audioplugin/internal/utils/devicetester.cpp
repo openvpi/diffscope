@@ -48,6 +48,7 @@ namespace Audio {
         for (;i <= j; i++) {
             m_sound.sampleAt(0, i) = float(0.5 * std::sin(2.0 * PI * 440.0 / sampleRate * double(i)));
         }
+        m_pos = -1;
         return talcs::AudioSource::open(bufferSize, sampleRate);
     }
     void DeviceTester::close() {
@@ -58,6 +59,8 @@ namespace Audio {
     }
     qint64 DeviceTester::processReading(const talcs::AudioSourceReadData &readData) {
         qint64 pos = m_pos;
+        if (pos < 0)
+            return readData.length;
         qint64 length = qMin(readData.length, m_sound.sampleCount() - pos);
         for (int ch = 0; ch < readData.buffer->channelCount(); ch++) {
             readData.buffer->setSampleRange(ch, readData.startPos, length, m_sound, 0, pos);
