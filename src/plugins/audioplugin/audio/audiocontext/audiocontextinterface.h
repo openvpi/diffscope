@@ -23,7 +23,9 @@ namespace QDspx {
 
 namespace Audio {
 
-    class ProjectAddOn;
+    namespace Internal {
+        class ProjectAddOn;
+    }
 
     class OutputSystemInterface;
 
@@ -36,7 +38,7 @@ namespace Audio {
     class AUDIO_EXPORT AudioContextInterface : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(AudioContextInterface)
-        friend class ProjectAddOn;
+        friend class Internal::ProjectAddOn;
 
     public:
         ~AudioContextInterface() override;

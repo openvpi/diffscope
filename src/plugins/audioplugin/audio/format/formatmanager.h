@@ -11,7 +11,9 @@ namespace talcs {
 
 namespace Audio {
 
-    class AudioPlugin;
+    namespace Internal {
+        class AudioPlugin;
+    }
 
     class FormatEntry;
 
@@ -20,7 +22,7 @@ namespace Audio {
     class AUDIO_EXPORT FormatManager : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(FormatManager)
-        friend class AudioPlugin;
+        friend class Internal::AudioPlugin;
     public:
         ~FormatManager() override;
 

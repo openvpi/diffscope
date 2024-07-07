@@ -3,7 +3,7 @@
 
 #include <extensionsystem/iplugin.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     class AudioPlugin : public ExtensionSystem::IPlugin {
         Q_OBJECT

@@ -27,7 +27,7 @@
 #include <audioplugin/internal/vstconnectionsystem.h>
 #include <audioplugin/internal/devicetester.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     class CustomizeThemeDialog : public QDialog {
         Q_OBJECT

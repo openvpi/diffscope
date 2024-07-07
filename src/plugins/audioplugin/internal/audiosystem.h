@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-namespace Audio {
+namespace Audio::Internal {
 
     class OutputSystem;
     class VSTConnectionSystem;

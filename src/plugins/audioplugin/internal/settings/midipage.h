@@ -8,7 +8,9 @@
 class QComboBox;
 class QCheckBox;
 
-namespace Audio {
+namespace Audio::Internal {
+
+    class MIDIPageWidget;
 
     class MIDIPage : public Core::ISettingPage {
         Q_OBJECT
@@ -24,7 +26,7 @@ namespace Audio {
         void finish() override;
 
     private:
-        QPointer<QWidget> m_widget;
+        QPointer<MIDIPageWidget> m_widget;
         QComboBox *m_midiDeviceComboBox;
 
     };

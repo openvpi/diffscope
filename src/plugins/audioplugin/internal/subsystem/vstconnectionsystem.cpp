@@ -13,7 +13,7 @@
 
 #include <CoreApi/iloader.h>
 
-namespace Audio {
+namespace Audio::Internal {
     VSTConnectionSystem::VSTConnectionSystem(QObject *parent) : AbstractOutputSystem(parent) {
     }
     VSTConnectionSystem::~VSTConnectionSystem() {

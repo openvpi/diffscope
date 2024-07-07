@@ -15,14 +15,16 @@ namespace talcs {
 
 namespace Audio {
 
-    class AudioPlugin;
+    namespace Internal {
+        class AudioPlugin;
+    }
 
     class OutputSystemInterfacePrivate;
 
     class AUDIO_EXPORT OutputSystemInterface : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(OutputSystemInterface)
-        friend class AudioPlugin;
+        friend class Internal::AudioPlugin;
     public:
         ~OutputSystemInterface() override;
 

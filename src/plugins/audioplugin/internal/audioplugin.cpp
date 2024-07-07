@@ -29,7 +29,7 @@
 #include <audioplugin/formatmanager.h>
 #include <audioplugin/internal/builtinformatentry.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     AudioPlugin::AudioPlugin() {
     }

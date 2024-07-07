@@ -11,7 +11,7 @@ namespace talcs {
     class RemoteEditor;
 }
 
-namespace Audio {
+namespace Audio::Internal {
 
     class ProjectAddOn;
 

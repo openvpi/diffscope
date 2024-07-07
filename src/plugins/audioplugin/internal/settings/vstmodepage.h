@@ -13,7 +13,7 @@ class QComboBox;
 class QTreeWidget;
 class QCheckBox;
 
-namespace Audio {
+namespace Audio::Internal {
 
     class CustomizeThemeDialog;
 

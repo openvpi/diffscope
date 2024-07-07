@@ -15,7 +15,7 @@
 #include <audioplugin/internal/outputsystem.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     class BufferingAudioObjectSource : public QObject, public talcs::BufferingAudioSource {
     public:

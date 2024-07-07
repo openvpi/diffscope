@@ -7,8 +7,9 @@
 
 namespace Audio {
 
-    class AudioPlugin;
-
+    namespace Internal {
+        class AudioPlugin;
+    }
     class OutputSystemInterface;
 
     class FormatManager;
@@ -18,7 +19,7 @@ namespace Audio {
     class AUDIO_EXPORT IAudio : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(IAudio)
-        friend class AudioPlugin;
+        friend class Internal::AudioPlugin;
     public:
         ~IAudio() override;
         static IAudio *instance();

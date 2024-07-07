@@ -5,7 +5,10 @@
 
 namespace Audio {
 
-    class AbstractOutputSystem;
+    namespace Internal {
+        class AbstractOutputSystem;
+    }
+
     class IOutputSystemAddOn;
 
     class OutputSystemInterfacePrivate {
@@ -13,10 +16,10 @@ namespace Audio {
     public:
         OutputSystemInterface *q_ptr;
 
-        AbstractOutputSystem *abstractOutputSystem;
+        Internal::AbstractOutputSystem *abstractOutputSystem;
         bool isVST;
 
-        void init(AbstractOutputSystem *abstractOutputSystem, bool isVST);
+        void init(Internal::AbstractOutputSystem *abstractOutputSystem, bool isVST);
     };
 
 }

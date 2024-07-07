@@ -10,6 +10,8 @@
 
 namespace Audio {
 
+    using namespace Internal;
+
     void AudioContextInterfacePrivate::init(ProjectAddOn *projectAddOn_) {
         Q_Q(AudioContextInterface);
         projectAddOn = projectAddOn_;

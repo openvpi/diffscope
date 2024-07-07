@@ -14,7 +14,7 @@ namespace SVS {
     class ExpressionSpinBox;
 };
 
-namespace Audio {
+namespace Audio::Internal {
 
     class OutputPlaybackPage : public Core::ISettingPage {
         Q_OBJECT

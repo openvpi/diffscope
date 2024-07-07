@@ -25,12 +25,12 @@ namespace Audio {
     public:
         AudioContextInterface *q_ptr;
 
-        ProjectAddOn *projectAddOn;
+        Internal::ProjectAddOn *projectAddOn;
         Core::IExecutiveRegistry<TrackInterface> trackRegistry;
         Core::IExecutiveRegistry<AudioClipInterface> audioClipRegistry;
         QHash<QDspx::TrackEntity *, TrackInterface *> tracks;
 
-        void init(ProjectAddOn *projectAddOn);
+        void init(Internal::ProjectAddOn *projectAddOn);
 
         void handleTrackInserted(QDspx::TrackEntity *trackEntity);
         void handleTrackAboutToRemove(QDspx::TrackEntity *trackEntity);

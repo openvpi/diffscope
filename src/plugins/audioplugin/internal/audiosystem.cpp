@@ -1,9 +1,9 @@
 #include "audiosystem.h"
 
-#include "outputsystem.h"
-#include "vstconnectionsystem.h"
+#include <audioplugin/internal/outputsystem.h>
+#include <audioplugin/internal/vstconnectionsystem.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     static AudioSystem *m_instance = nullptr;
 

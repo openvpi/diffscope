@@ -10,7 +10,7 @@ namespace talcs {
     class AudioDriverManager;
 }
 
-namespace Audio {
+namespace Audio::Internal {
 
     class OutputSystem : public AbstractOutputSystem {
         Q_OBJECT

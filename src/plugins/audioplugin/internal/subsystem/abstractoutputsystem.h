@@ -11,7 +11,7 @@ namespace talcs {
     class AudioDevice;
 }
 
-namespace Audio {
+namespace Audio::Internal {
 
     class AbstractOutputSystem : public QObject {
         Q_OBJECT

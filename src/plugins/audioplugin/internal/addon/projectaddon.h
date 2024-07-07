@@ -19,10 +19,12 @@ namespace talcs {
 }
 
 namespace Audio {
-
     class AudioContextInterface;
 
     class IAudioContextAddOn;
+}
+
+namespace Audio::Internal {
 
     class ProjectAddOn : public Core::IWindowAddOn {
         Q_OBJECT

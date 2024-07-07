@@ -6,7 +6,7 @@
 #include <TalcsDevice/AudioSourcePlayback.h>
 #include <TalcsDevice/AudioDevice.h>
 
-namespace Audio {
+namespace Audio::Internal {
     AbstractOutputSystem::AbstractOutputSystem(QObject *parent) : QObject(parent) {
         m_deviceControlMixer = new talcs::MixerAudioSource;
         m_preMixer = new talcs::MixerAudioSource;

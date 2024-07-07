@@ -6,6 +6,8 @@
 
 namespace Audio {
 
+    using namespace Internal;
+
     void OutputSystemInterfacePrivate::init(AbstractOutputSystem *abstractOutputSystem_, bool isVST_) {
         Q_Q(OutputSystemInterface);
         abstractOutputSystem = abstractOutputSystem_;

@@ -1,6 +1,6 @@
 #include "audiopage.h"
 
-namespace Audio {
+namespace Audio::Internal {
 
     AudioPage::AudioPage(QObject *parent)
         : Core::ISettingPage(QStringLiteral("audio.Audio"), parent) {

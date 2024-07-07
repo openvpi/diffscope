@@ -28,7 +28,7 @@
 #include <audioplugin/internal/devicetester.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     static inline double sliderValueToGain(int sliderValue) {
         return std::pow(sliderValue / 52056.0, 6);

@@ -9,9 +9,9 @@
 #include <icore.h>
 #include <CoreApi/iloader.h>
 
-#include "sdlaudiodevicedisplaynamehelper.h"
+#include <audioplugin/internal/sdlaudiodevicedisplaynamehelper.h>
 
-namespace Audio {
+namespace Audio::Internal {
     OutputSystem::OutputSystem(QObject *parent) : AbstractOutputSystem(parent) {
         m_drvMgr = talcs::AudioDriverManager::createBuiltInDriverManager(this);
 

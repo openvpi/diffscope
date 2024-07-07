@@ -3,7 +3,7 @@
 
 #include <CoreApi/isettingpage.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     class AudioPage : public Core::ISettingPage {
         Q_OBJECT
