@@ -28,6 +28,8 @@
 #include <audioplugin/internal/projectaddon.h>
 #include <audioplugin/formatmanager.h>
 #include <audioplugin/internal/builtinformatentry.h>
+#include <audioplugin/internal/midipage.h>
+#include <audioplugin/internal/midisystem.h>
 
 namespace Audio::Internal {
 
@@ -51,6 +53,7 @@ namespace Audio::Internal {
         auto audioPage = new AudioPage;
         audioPage->addPage(new OutputPlaybackPage);
         audioPage->addPage(new VSTModePage);
+        audioPage->addPage(new MIDIPage);
         sc->addPage(audioPage);
 
         Core::IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
@@ -83,6 +86,12 @@ namespace Audio::Internal {
             msgBox.setIcon(QMessageBox::Warning);
             msgBox.setText(tr("Cannot initialize Plugin Mode connection system"));
             msgBox.setInformativeText(tr("%1 will not be able to establish a connection with %1 Bridge. Please check the Plugin Mode configuration in Settings.").arg(QApplication::applicationName()));
+            msgBox.exec();
+        }
+        if (!AudioSystem::midiSystem()->initialize()) {
+            QMessageBox msgBox(splash);
+            msgBox.setIcon(QMessageBox::Warning);
+            msgBox.setText(tr("Cannot initialize MIDI system"));
             msgBox.exec();
         }
 

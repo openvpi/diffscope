@@ -2,6 +2,7 @@
 
 #include <audioplugin/internal/outputsystem.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
+#include <audioplugin/internal/midisystem.h>
 
 namespace Audio::Internal {
 
@@ -11,6 +12,7 @@ namespace Audio::Internal {
         m_instance = this;
         m_outputSystem = new OutputSystem(this);
         m_vstConnectionSystem = new VSTConnectionSystem(this);
+        m_midiSystem = new MidiSystem(this);
     }
     AudioSystem::~AudioSystem() {
         m_instance = nullptr;
@@ -23,5 +25,8 @@ namespace Audio::Internal {
     }
     VSTConnectionSystem *AudioSystem::vstConnectionSystem() {
         return m_instance->m_vstConnectionSystem;
+    }
+    MidiSystem *AudioSystem::midiSystem() {
+        return m_instance->m_midiSystem;
     }
 }
