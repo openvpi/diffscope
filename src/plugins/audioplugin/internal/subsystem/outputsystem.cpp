@@ -253,6 +253,7 @@ namespace Audio::Internal {
             emit sampleRateChanged(m_adoptedSampleRate);
         }
         m_deviceControlMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
+        m_dev->start(m_playback.get());
         if (saveToSettings) {
             qDebug() << "Audio::OutputSystem: device info saved to settings" << m_drv->name() << m_dev->name() << m_adoptedBufferSize << m_adoptedSampleRate;
             auto obj = settings["Audio"].toObject();
