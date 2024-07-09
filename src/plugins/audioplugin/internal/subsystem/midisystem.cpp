@@ -32,21 +32,9 @@ namespace Audio::Internal {
         }
     };
 
-    class MidiBlockerFilter : public talcs::MidiMessageListener {
-    public:
-        MidiSystem *midiSystem;
-    protected:
-        bool processMessage(const talcs::MidiMessage &message) override {
-            emit midiSystem->makeReadyRequired();
-            return false;
-        }
-    };
-
-    void MidiSystem::handleMakeReadyRequired() {
-        IAudio::instance()->outputSystemInterface(false)->makeReady();
-    }
-
     static double msecToRate(int msec, double sampleRate) {
+        if (msec == 0)
+            return 0.005;
         return std::pow(0.005, 1000.0 / (msec * sampleRate));
     }
 
@@ -59,11 +47,6 @@ namespace Audio::Internal {
 
         m_midiControlFilter = std::make_unique<MidiControlFilter>();
         m_integrator->addFilter(m_midiControlFilter.get());
-        m_midiBlockerFilter = std::make_unique<MidiBlockerFilter>();
-        m_midiBlockerFilter->midiSystem = this;
-        m_integrator->addFilter(m_midiBlockerFilter.get());
-
-        connect(this, &MidiSystem::makeReadyRequired, this, &MidiSystem::handleMakeReadyRequired, Qt::QueuedConnection);
     }
     MidiSystem::~MidiSystem() {
         m_device.reset(); // due to delete order issue
@@ -79,7 +62,10 @@ namespace Audio::Internal {
         m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(obj["midiSynthesizerReleaseMsec"].toInt(50), audioDevice && audioDevice->isOpen() ? audioDevice->sampleRate() : 48000));
         m_synthesizerMixer->setGain(talcs::Decibels::decibelsToGain(static_cast<float>(obj["midiSynthesizerAmplitude"].toDouble())));
 
-        auto deviceIndex = obj["midiDeviceIndex"].toInt();
+        auto deviceIndex = obj["midiDeviceIndex"].toInt(-1);
+        qDebug() << "Audio::MidiSystem: saved device index" << deviceIndex;
+        if (deviceIndex == -1)
+            deviceIndex = 0;
         auto deviceCount = talcs::MidiInputDevice::devices().size();
         for(; deviceIndex < deviceCount; deviceIndex++) {
             auto dev = std::make_unique<talcs::MidiInputDevice>(deviceIndex);
@@ -92,20 +78,21 @@ namespace Audio::Internal {
             qWarning() << "Audio::MidiSystem: fatal: no available device";
             return false;
         }
-        qDebug() << "Audio::MidiSystem: MIDI device" << m_device->name();
+        qDebug() << "Audio::MidiSystem: MIDI device initialized" << m_device->name();
         postSetDevice();
         return true;
     }
     talcs::MidiInputDevice *MidiSystem::device() {
-        return nullptr;
+        return m_device.get();
     }
     bool MidiSystem::setDevice(int deviceIndex) {
         auto dev = std::make_unique<talcs::MidiInputDevice>(deviceIndex);
         if (!dev->open()) {
             return false;
         }
+        qDebug() << "Audio::MidiSystem: MIDI device changed" << dev->name();
         m_device = std::move(dev);
-        const auto &settings = *Core::ILoader::instance()->settings();
+        auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["midiDeviceIndex"] = deviceIndex;
         settings["Audio"] = obj;
@@ -122,7 +109,7 @@ namespace Audio::Internal {
         return m_synthesizer;
     }
     void MidiSystem::setGenerator(int g) {
-        const auto &settings = *Core::ILoader::instance()->settings();
+        auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["midiSynthesizerGenerator"] = g;
         settings["Audio"] = obj;
@@ -134,7 +121,7 @@ namespace Audio::Internal {
         return obj["midiSynthesizerGenerator"].toInt();
     }
     void MidiSystem::setAmplitudeDecibel(double dB) {
-        const auto &settings = *Core::ILoader::instance()->settings();
+        auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["midiSynthesizerAmplitude"] = dB;
         settings["Audio"] = obj;
@@ -146,7 +133,7 @@ namespace Audio::Internal {
         return obj["midiSynthesizerAmplitude"].toDouble();
     }
     void MidiSystem::setAttackMsec(int msec) {
-        const auto &settings = *Core::ILoader::instance()->settings();
+        auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["midiSynthesizerAttackMsec"] = msec;
         settings["Audio"] = obj;
@@ -156,10 +143,10 @@ namespace Audio::Internal {
     int MidiSystem::attackMsec() const {
         const auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
-        return obj["midiSynthesizerAttackMsec"].toInt();
+        return obj["midiSynthesizerAttackMsec"].toInt(10);
     }
     void MidiSystem::setReleaseMsec(int msec) {
-        const auto &settings = *Core::ILoader::instance()->settings();
+        auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         obj["midiSynthesizerReleaseMsec"] = msec;
         settings["Audio"] = obj;
@@ -169,7 +156,7 @@ namespace Audio::Internal {
     int MidiSystem::releaseMsec() const {
         const auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
-        return obj["midiSynthesizerReleaseMsec"].toInt();
+        return obj["midiSynthesizerReleaseMsec"].toInt(50);
     }
     void MidiSystem::updateControl() {
     }

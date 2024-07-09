@@ -17,7 +17,6 @@ namespace talcs {
 namespace Audio::Internal {
 
     class MidiControlFilter;
-    class MidiBlockerFilter;
 
     class MidiSystem : public QObject {
         Q_OBJECT
@@ -40,12 +39,7 @@ namespace Audio::Internal {
         void setReleaseMsec(int msec);
         int releaseMsec() const;
 
-        void handleAudioMakeReady();
-
         void updateControl();
-
-    signals:
-        void makeReadyRequired();
 
     private:
         std::unique_ptr<talcs::MidiInputDevice> m_device;
@@ -54,13 +48,10 @@ namespace Audio::Internal {
         std::unique_ptr<talcs::MixerAudioSource> m_synthesizerMixer;
 
         std::unique_ptr<MidiControlFilter> m_midiControlFilter;
-        std::unique_ptr<MidiBlockerFilter> m_midiBlockerFilter;
 
         void postSetDevice();
 
         void updateRateOnSampleRateChange(double sampleRate);
-
-        Q_INVOKABLE void handleMakeReadyRequired();
     };
 
 }
