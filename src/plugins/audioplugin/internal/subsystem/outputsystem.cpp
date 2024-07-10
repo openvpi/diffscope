@@ -173,6 +173,8 @@ namespace Audio::Internal {
         obj["adoptedBufferSize"] = m_adoptedBufferSize;
         settings["Audio"] = obj;
         m_deviceControlMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
+        if (m_dev)
+            m_dev->start(m_playback.get());
     }
     double OutputSystem::adoptedSampleRate() const {
         return m_adoptedSampleRate;
@@ -189,6 +191,8 @@ namespace Audio::Internal {
         obj["adoptedSampleRate"] = m_adoptedSampleRate;
         settings["Audio"] = obj;
         m_deviceControlMixer->open(m_adoptedBufferSize, m_adoptedSampleRate);
+        if (m_dev)
+            m_dev->start(m_playback.get());
     }
     bool OutputSystem::makeReady() {
         if (!m_dev) {

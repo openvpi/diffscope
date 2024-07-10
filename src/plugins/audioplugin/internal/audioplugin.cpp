@@ -89,10 +89,7 @@ namespace Audio::Internal {
             msgBox.exec();
         }
         if (!AudioSystem::midiSystem()->initialize()) {
-            QMessageBox msgBox(splash);
-            msgBox.setIcon(QMessageBox::Warning);
-            msgBox.setText(tr("Cannot initialize MIDI system"));
-            msgBox.exec();
+
         }
 
         new DeviceTester(iAudio->outputSystemInterface(true), iAudio->outputSystemInterface(true));

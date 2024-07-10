@@ -38,6 +38,8 @@ namespace Audio::Internal {
         int attackMsec() const;
         void setReleaseMsec(int msec);
         int releaseMsec() const;
+        void setFrequencyOfA(double frequency);
+        double frequencyOfA() const;
 
         void updateControl();
 

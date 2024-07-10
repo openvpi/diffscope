@@ -60,14 +60,24 @@ namespace Audio::Internal {
         auto audioDevice = IAudio::instance()->outputSystemInterface(false)->audioDevice();
         m_synthesizer->noteSynthesizer()->setAttackRate(msecToRate(obj["midiSynthesizerAttackMsec"].toInt(10), audioDevice && audioDevice->isOpen() ? audioDevice->sampleRate() : 48000));
         m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(obj["midiSynthesizerReleaseMsec"].toInt(50), audioDevice && audioDevice->isOpen() ? audioDevice->sampleRate() : 48000));
-        m_synthesizerMixer->setGain(talcs::Decibels::decibelsToGain(static_cast<float>(obj["midiSynthesizerAmplitude"].toDouble())));
+        m_synthesizerMixer->setGain(talcs::Decibels::decibelsToGain(obj["midiSynthesizerAmplitude"].toDouble(-3)));
+        if (qFuzzyIsNull(obj["midiSynthesizerFrequencyOfA"].toDouble())) {
+            // TODO
+        } else {
+            m_synthesizer->setFrequencyOfA(obj["midiSynthesizerFrequencyOfA"].toDouble());
+        }
 
-        auto deviceIndex = obj["midiDeviceIndex"].toInt(-1);
-        qDebug() << "Audio::MidiSystem: saved device index" << deviceIndex;
-        if (deviceIndex == -1)
-            deviceIndex = 0;
+        auto savedDeviceIndex = obj["midiDeviceIndex"].toInt(-1);
+        qDebug() << "Audio::MidiSystem: saved device index" << savedDeviceIndex;
         auto deviceCount = talcs::MidiInputDevice::devices().size();
-        for(; deviceIndex < deviceCount; deviceIndex++) {
+        for(int i = -1; i < deviceCount; i++) {
+            if (i == savedDeviceIndex)
+                continue;
+            int deviceIndex = i;
+            if (deviceIndex == -1)
+                deviceIndex = savedDeviceIndex;
+            if (deviceIndex == -1)
+                deviceIndex = 0;
             auto dev = std::make_unique<talcs::MidiInputDevice>(deviceIndex);
             if (dev->open()) {
                 m_device = std::move(dev);
@@ -78,7 +88,7 @@ namespace Audio::Internal {
             qWarning() << "Audio::MidiSystem: fatal: no available device";
             return false;
         }
-        qDebug() << "Audio::MidiSystem: MIDI device initialized" << m_device->name();
+        qDebug() << "Audio::MidiSystem: MIDI device initialized" << m_device->deviceIndex() << m_device->name();
         postSetDevice();
         return true;
     }
@@ -130,7 +140,7 @@ namespace Audio::Internal {
     double MidiSystem::amplitudeDecibel() const {
         const auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
-        return obj["midiSynthesizerAmplitude"].toDouble();
+        return obj["midiSynthesizerAmplitude"].toDouble(-3);
     }
     void MidiSystem::setAttackMsec(int msec) {
         auto &settings = *Core::ILoader::instance()->settings();
@@ -157,6 +167,23 @@ namespace Audio::Internal {
         const auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         return obj["midiSynthesizerReleaseMsec"].toInt(50);
+    }
+    void MidiSystem::setFrequencyOfA(double frequency) {
+        auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        obj["midiSynthesizerFrequencyOfA"] = frequency;
+        settings["Audio"] = obj;
+        if (qFuzzyIsNull(frequency)) {
+            // TODO
+        } else {
+            m_synthesizer->setFrequencyOfA(frequency);
+        }
+
+    }
+    double MidiSystem::frequencyOfA() const {
+        const auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        return obj["midiSynthesizerFrequencyOfA"].toDouble();
     }
     void MidiSystem::updateControl() {
     }

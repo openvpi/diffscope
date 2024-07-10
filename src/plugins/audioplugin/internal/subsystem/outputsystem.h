@@ -23,7 +23,6 @@ namespace Audio::Internal {
         talcs::AudioDriverManager *driverManager() const;
         talcs::AudioDriver *driver() const;
         talcs::AudioDevice *device() const override;
-        talcs::MixerAudioSource *preMixer() const;
 
         bool setDriver(const QString &driverName);
         bool setDevice(const QString &deviceName);
