@@ -9,6 +9,8 @@ namespace talcs {
     class RemoteSocket;
     class RemoteAudioDevice;
     class RemoteEditor;
+    class RemoteMidiMessageIntegrator;
+    class MidiNoteSynthesizer;
 }
 
 namespace Audio::Internal {
@@ -36,6 +38,12 @@ namespace Audio::Internal {
         talcs::RemoteAudioDevice *remoteAudioDevice() const;
         talcs::RemoteEditor *remoteEditor() const;
 
+        talcs::RemoteMidiMessageIntegrator *integrator() const;
+        talcs::MidiNoteSynthesizer *synthesizer() const;
+
+        void syncSynthesizerPreference();
+
+
         bool makeReady() override;
 
         void setVSTAddOn(ProjectAddOn *addOn);
@@ -51,6 +59,10 @@ namespace Audio::Internal {
         QPointer<talcs::RemoteAudioDevice> m_dev;
         QPointer<talcs::RemoteEditor> m_editor;
         bool m_isApplicationInitializing = false;
+
+        std::unique_ptr<talcs::RemoteMidiMessageIntegrator> m_integrator;
+        talcs::MidiNoteSynthesizer *m_synthesizer;
+        std::unique_ptr<talcs::MixerAudioSource> m_synthesizerMixer;
 
         ProjectAddOn *m_vstAddOn = nullptr;
 

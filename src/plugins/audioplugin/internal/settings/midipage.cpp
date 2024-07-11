@@ -27,6 +27,7 @@
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/midisystem.h>
 #include <audioplugin/internal/outputsystem.h>
+#include <audioplugin/internal/vstconnectionsystem.h>
 
 namespace Audio::Internal {
 
@@ -327,6 +328,7 @@ namespace Audio::Internal {
             ms->setAttackMsec(m_cachedAttackMsec);
             ms->setReleaseMsec(m_cachedReleaseMsec);
             ms->setFrequencyOfA(m_cachedFrequencyOfA);
+            AudioSystem::vstConnectionSystem()->syncSynthesizerPreference();
         }
 
         talcs::MixerAudioSource m_testMixer;

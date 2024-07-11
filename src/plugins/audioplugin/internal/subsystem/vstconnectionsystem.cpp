@@ -4,19 +4,40 @@
 #include <QJsonDocument>
 
 #include <TalcsCore/MixerAudioSource.h>
+#include <TalcsCore/NoteSynthesizer.h>
+#include <TalcsCore/Decibels.h>
 #include <TalcsDevice/AudioSourcePlayback.h>
 #include <TalcsRemote/RemoteSocket.h>
 #include <TalcsRemote/RemoteAudioDevice.h>
 #include <TalcsRemote/RemoteEditor.h>
+#include <TalcsRemote/RemoteMidiMessageIntegrator.h>
+#include <TalcsMidi/MidiNoteSynthesizer.h>
 
 #include <QMWidgets/qmappextension.h>
 
 #include <CoreApi/iloader.h>
 
 namespace Audio::Internal {
+
+    static double msecToRate(int msec, double sampleRate) {
+        if (msec == 0)
+            return 0.005;
+        return std::pow(0.005, 1000.0 / (msec * sampleRate));
+    }
+
     VSTConnectionSystem::VSTConnectionSystem(QObject *parent) : AbstractOutputSystem(parent) {
+        m_integrator = std::make_unique<talcs::RemoteMidiMessageIntegrator>();
+        m_synthesizer = new talcs::MidiNoteSynthesizer;
+        m_integrator->setStream(m_synthesizer, true);
+        m_synthesizerMixer = std::make_unique<talcs::MixerAudioSource>();
+        m_synthesizerMixer->addSource(m_integrator.get());
+
+        m_preMixer->addSource(m_integrator.get());
     }
     VSTConnectionSystem::~VSTConnectionSystem() {
+        if (m_dev)
+            m_dev->removeProcessInfoCallback(m_integrator.get());
+        m_preMixer->removeAllSources();
     }
     bool VSTConnectionSystem::createVSTConfig() {
         auto vstConfigPath = qAppExt->appDataDir() + "/vstconfig.json";
@@ -56,6 +77,8 @@ namespace Audio::Internal {
             return false;
         }
         m_dev = new talcs::RemoteAudioDevice(socket.get(), "Host Audio", socket.get());
+        m_dev->addProcessInfoCallback(m_integrator.get());
+        syncSynthesizerPreference();
         connect(m_dev, &talcs::RemoteAudioDevice::remoteOpened, this ,&VSTConnectionSystem::handleRemoteDeviceRemoteOpened);
         m_editor = new talcs::RemoteEditor(
             socket.get(),
@@ -91,6 +114,25 @@ namespace Audio::Internal {
     talcs::RemoteEditor *VSTConnectionSystem::remoteEditor() const {
         return m_editor;
     }
+    talcs::RemoteMidiMessageIntegrator *VSTConnectionSystem::integrator() const {
+        return m_integrator.get();
+    }
+    talcs::MidiNoteSynthesizer *VSTConnectionSystem::synthesizer() const {
+        return m_synthesizer;
+    }
+    void VSTConnectionSystem::syncSynthesizerPreference() {
+        const auto &settings = *Core::ILoader::instance()->settings();
+        auto obj = settings["Audio"].toObject();
+        m_synthesizer->noteSynthesizer()->setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(obj["midiSynthesizerGenerator"].toInt()));
+        m_synthesizer->noteSynthesizer()->setAttackRate(msecToRate(obj["midiSynthesizerAttackMsec"].toInt(10), m_dev && m_dev->isOpen() ? m_dev->sampleRate() : 48000));
+        m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(obj["midiSynthesizerReleaseMsec"].toInt(50), m_dev && m_dev->isOpen() ? m_dev->sampleRate() : 48000));
+        m_synthesizerMixer->setGain(talcs::Decibels::decibelsToGain(obj["midiSynthesizerAmplitude"].toDouble(-3)));
+        if (qFuzzyIsNull(obj["midiSynthesizerFrequencyOfA"].toDouble())) {
+            // TODO
+        } else {
+            m_synthesizer->setFrequencyOfA(obj["midiSynthesizerFrequencyOfA"].toDouble());
+        }
+    }
     bool VSTConnectionSystem::makeReady() {
         if (!m_dev) {
             qWarning() << "Audio::VSTConnectionSystem: fatal: cannot make ready because device is null";
@@ -100,7 +142,7 @@ namespace Audio::Internal {
             qWarning() << "Audio::OutputSystem: fatal: cannot make ready because device is not opened by remote host";
             return false;
         }
-        if (!m_preMixer->isOpen() && !m_preMixer->open(m_dev->bufferSize(), m_dev->sampleRate())) {
+        if (!m_deviceControlMixer->isOpen() && !m_deviceControlMixer->open(m_dev->bufferSize(), m_dev->sampleRate())) {
             qWarning() << "Audio::OutputSystem: fatal: cannot make ready because cannot open pre-mixer";
             return false;
         }
@@ -120,10 +162,10 @@ namespace Audio::Internal {
         return m_hostSpecs;
     }
     QByteArray VSTConnectionSystem::getEditorData(bool *ok) {
-        return QByteArray();
+        return QByteArray(); // TODO
     }
     bool VSTConnectionSystem::setEditorData(const QByteArray &data) {
-        return false;
+        return false; // TODO
     }
     void VSTConnectionSystem::handleRemoteDeviceRemoteOpened(qint64 bufferSize, double sampleRate, int maxChannelCount) {
         auto oldBufferSize = m_dev->bufferSize();
@@ -133,12 +175,15 @@ namespace Audio::Internal {
             emit bufferSizeChanged(bufferSize);
         }
         if (!qFuzzyCompare(sampleRate, oldSampleRate)) {
-            auto &settings = *Core::ILoader::instance()->settings();
+            const auto &settings = *Core::ILoader::instance()->settings();
             auto obj = settings["Audio"].toObject();
             setFileBufferingReadAheadSize(static_cast<qint64>(obj["fileBufferingReadAheadSize"].toInt() * sampleRate / 1000.0));
+            m_synthesizer->noteSynthesizer()->setAttackRate(msecToRate(obj["midiSynthesizerAttackMsec"].toInt(10), sampleRate));
+            m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(obj["midiSynthesizerReleaseMsec"].toInt(50), sampleRate));
             emit sampleRateChanged(sampleRate);
         }
-        m_preMixer->open(bufferSize, sampleRate);
+        m_deviceControlMixer->open(bufferSize, sampleRate);
+        m_dev->start(m_playback.get());
         emit deviceChanged();
     }
     void VSTConnectionSystem::setHostSpecs(const QString &hostExecutable, const QString &pluginFormat) {
