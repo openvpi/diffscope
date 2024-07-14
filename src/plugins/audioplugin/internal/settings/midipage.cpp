@@ -192,7 +192,6 @@ namespace Audio::Internal {
                 m_testSynthesizer.setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(index));
             });
             connect(amplitudeSlider, &QSlider::valueChanged, this, [=](int value) {
-                QSignalBlocker o(amplitudeSpinBox);
                 amplitudeSpinBox->setValue(sliderValueToDecibel(value));
             });
             connect(amplitudeSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double decibel) {
@@ -203,6 +202,7 @@ namespace Audio::Internal {
             });
             connect(attackSlider, &QSlider::valueChanged, attackSpinBox, &QSpinBox::setValue);
             connect(attackSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int value) {
+                QSignalBlocker o(attackSlider);
                 m_cachedAttackMsec = value;
                 attackSlider->setValue(value);
                 m_testSynthesizer.setAttackRate(msecToRate(value, m_testSynthesizer.sampleRate()));
@@ -277,6 +277,7 @@ namespace Audio::Internal {
             }, Qt::QueuedConnection);
             connect(flushButton, &QAbstractButton::clicked, this, [=] {
                 AudioSystem::midiSystem()->synthesizer()->noteSynthesizer()->flush();
+                AudioSystem::vstConnectionSystem()->synthesizer()->noteSynthesizer()->flush();
             });
         }
 
