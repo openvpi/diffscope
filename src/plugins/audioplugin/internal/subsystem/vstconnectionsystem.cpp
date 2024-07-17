@@ -139,15 +139,15 @@ namespace Audio::Internal {
             return false;
         }
         if (!m_dev->isOpen()) {
-            qWarning() << "Audio::OutputSystem: fatal: cannot make ready because device is not opened by remote host";
+            qWarning() << "Audio::VSTConnectionSystem: fatal: cannot make ready because device is not opened by remote host";
             return false;
         }
         if (!m_deviceControlMixer->isOpen() && !m_deviceControlMixer->open(m_dev->bufferSize(), m_dev->sampleRate())) {
-            qWarning() << "Audio::OutputSystem: fatal: cannot make ready because cannot open pre-mixer";
+            qWarning() << "Audio::VSTConnectionSystem: fatal: cannot make ready because cannot open pre-mixer";
             return false;
         }
         if (!m_dev->isStarted() && !m_dev->start(m_playback.get())) {
-            qWarning() << "Audio::OutputSystem: fatal: cannot make ready because cannot start audio device";
+            qWarning() << "Audio::VSTConnectionSystem: fatal: cannot make ready because cannot start audio device";
             return false;
         }
         return true;
