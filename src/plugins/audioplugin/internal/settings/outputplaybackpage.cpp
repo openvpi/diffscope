@@ -20,6 +20,8 @@
 
 #include <SVSCraftWidgets/expressiondoublespinbox.h>
 #include <SVSCraftWidgets/expressionspinbox.h>
+#include <SVSCraftWidgets/seekbar.h>
+#include <SVSCraftCore/decibellinearizer.h>
 
 #include <CoreApi/iloader.h>
 
@@ -30,17 +32,17 @@
 
 namespace Audio::Internal {
 
-    static inline double sliderValueToGain(int sliderValue) {
-        return std::pow(sliderValue / 52056.0, 6);
+    static inline double sliderValueToGain(double sliderValue) {
+        return talcs::Decibels::decibelsToGain(SVS::DecibelLinearizer::linearValueToDecibel(sliderValue));
     }
-    static inline int gainToSliderValue(double gain) {
-        return static_cast<int>(std::pow(gain, 1.0 / 6.0) * 52056.0);
+    static inline double gainToSliderValue(float gain) {
+        return SVS::DecibelLinearizer::decibelToLinearValue(talcs::Decibels::gainToDecibels(gain));
     }
     static inline double sliderValueToPan(int sliderValue) {
-        return (sliderValue - 32768) / 32768.0;
+        return sliderValue / 100.0;
     }
     static inline int panToSliderValue(double pan) {
-        return static_cast<int>(pan * 32768.0) + 32768;
+        return static_cast<int>(round(pan * 100.0));
     }
 
     OutputPlaybackPage::OutputPlaybackPage(QObject *parent)
@@ -86,10 +88,12 @@ namespace Audio::Internal {
 
         auto deviceGainLayoutLabel = new QLabel(tr("Device &Gain (dB)"));
         auto deviceGainLayout = new QHBoxLayout;
-        m_deviceGainSlider = new QSlider(Qt::Horizontal);
-        m_deviceGainSlider->setRange(0, 65535);
+        m_deviceGainSlider = new SVS::SeekBar;
+        m_deviceGainSlider->setRange(SVS::DecibelLinearizer::decibelToLinearValue(-96), SVS::DecibelLinearizer::decibelToLinearValue(6));
+        m_deviceGainSlider->setDisplayValueConverter([](double v) { return SVS::DecibelLinearizer::linearValueToDecibel(v); });
         deviceGainLayout->addWidget(m_deviceGainSlider);
         m_deviceGainSpinBox = new SVS::ExpressionDoubleSpinBox;
+        m_deviceGainSpinBox->setDecimals(1);
         m_deviceGainSpinBox->setRange(-96, 6);
         m_deviceGainSpinBox->setSpecialValueText("-INF");
         deviceGainLayout->addWidget(m_deviceGainSpinBox);
@@ -98,11 +102,12 @@ namespace Audio::Internal {
         
         auto devicePanLayoutLabel = new QLabel(tr("Device &Pan"));
         auto devicePanLayout = new QHBoxLayout;
-        m_devicePanSlider = new QSlider(Qt::Horizontal);
-        m_devicePanSlider->setRange(0, 65536);
+        m_devicePanSlider = new SVS::SeekBar;
+        m_devicePanSlider->setRange(-100, 100);
+        m_devicePanSlider->setInterval(1);
         devicePanLayout->addWidget(m_devicePanSlider);
-        m_devicePanSpinBox = new SVS::ExpressionDoubleSpinBox;
-        m_devicePanSpinBox->setRange(-1, 1);
+        m_devicePanSpinBox = new SVS::ExpressionSpinBox;
+        m_devicePanSpinBox->setRange(-100, 100);
         devicePanLayout->addWidget(m_devicePanSpinBox);
         devicePanLayoutLabel->setBuddy(m_devicePanSpinBox);
         audioOutputLayout->addRow(devicePanLayoutLabel, devicePanLayout);
@@ -161,7 +166,7 @@ namespace Audio::Internal {
             AudioSystem::outputSystem()->hotPlugNotificationMode());
 
         m_deviceGainSlider->setValue(gainToSliderValue(outputSys->gain()));
-        connect(m_deviceGainSlider, &QSlider::valueChanged, this, [=](int value) {
+        connect(m_deviceGainSlider, &SVS::SeekBar::valueChanged, this, [=](double value) {
             updateGain(sliderValueToGain(value));
         });
         m_deviceGainSpinBox->setValue(talcs::Decibels::gainToDecibels(outputSys->gain()));
@@ -169,12 +174,12 @@ namespace Audio::Internal {
             updateGain(talcs::Decibels::decibelsToGain(static_cast<float>(value)));
         });
         m_devicePanSlider->setValue(panToSliderValue(outputSys->pan()));
-        connect(m_devicePanSlider, &QSlider::valueChanged, this, [=](int value) {
+        connect(m_devicePanSlider, &SVS::SeekBar::valueChanged, this, [=](int value) {
             updatePan(sliderValueToPan(value));
         });
-        m_devicePanSpinBox->setValue(outputSys->pan());
-        connect(m_devicePanSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double value) {
-            updatePan(value);
+        m_devicePanSpinBox->setValue(panToSliderValue(outputSys->pan()));
+        connect(m_devicePanSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int value) {
+            updatePan(sliderValueToPan(value));
         });
 
         auto &settings = *Core::ILoader::instance()->settings();
@@ -341,7 +346,7 @@ namespace Audio::Internal {
         QSignalBlocker sliderBlocker(m_deviceGainSlider);
         QSignalBlocker spinBoxBlocker(m_deviceGainSpinBox);
 
-        m_deviceGainSlider->setValue(gainToSliderValue(gain));
+        m_deviceGainSlider->setValue(gainToSliderValue(static_cast<float>(gain)));
         m_deviceGainSpinBox->setValue(talcs::Decibels::gainToDecibels(static_cast<float>(gain)));
         AudioSystem::outputSystem()->setGain(static_cast<float>(gain));
     }
@@ -350,7 +355,7 @@ namespace Audio::Internal {
         QSignalBlocker spinBoxBlocker(m_devicePanSpinBox);
         
         m_devicePanSlider->setValue(panToSliderValue(pan));
-        m_devicePanSpinBox->setValue(pan);
+        m_devicePanSpinBox->setValue(panToSliderValue(pan));
         AudioSystem::outputSystem()->setPan(static_cast<float>(pan));
     }
 

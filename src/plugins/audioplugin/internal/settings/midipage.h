@@ -27,7 +27,7 @@ namespace Audio::Internal {
 
     private:
         QPointer<MIDIPageWidget> m_widget;
-        QComboBox *m_midiDeviceComboBox;
+        QComboBox *m_midiDeviceComboBox = nullptr;
 
     };
 

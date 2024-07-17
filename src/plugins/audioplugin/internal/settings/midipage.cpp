@@ -16,6 +16,8 @@
 
 #include <SVSCraftWidgets/expressionspinbox.h>
 #include <SVSCraftWidgets/expressiondoublespinbox.h>
+#include <SVSCraftWidgets/seekbar.h>
+#include <SVSCraftCore/decibellinearizer.h>
 
 #include <TalcsCore/NoteSynthesizer.h>
 #include <TalcsCore/MixerAudioSource.h>
@@ -30,14 +32,6 @@
 #include <audioplugin/internal/vstconnectionsystem.h>
 
 namespace Audio::Internal {
-
-    inline int decibelToSliderValue(double decibel) {
-        return static_cast<int>(std::pow(65536.0, (decibel + 96.0) / 96.0) - 1.0);
-    }
-
-    inline double sliderValueToDecibel(int value) {
-        return 96.0 / std::log(65536) * std::log(value + 1.0) - 96.0;
-    }
 
     static talcs::NoteSynthesizerDetectorMessage scores[] = {
         {0, 47, .5, true},
@@ -87,7 +81,7 @@ namespace Audio::Internal {
             auto inputGroupBox = new QGroupBox(tr("MIDI Input"));
             auto inputLayout = new QFormLayout;
             auto deviceComboBox = new QComboBox;
-            inputLayout->addRow("Device", deviceComboBox);
+            inputLayout->addRow("&Device", deviceComboBox);
             inputGroupBox->setLayout(inputLayout);
             mainLayout->addWidget(inputGroupBox);
 
@@ -95,42 +89,45 @@ namespace Audio::Internal {
             auto synthesizerLayout = new QFormLayout;
             auto generatorComboBox = new QComboBox;
             generatorComboBox->addItems({tr("Sine wave"), tr("Square wave"), tr("Triangle Wave"), tr("Sawtooth wave")});
-            synthesizerLayout->addRow("Generator", generatorComboBox);
+            synthesizerLayout->addRow("&Generator", generatorComboBox);
 
             auto amplitudeLayout = new QHBoxLayout;
-            auto amplitudeSlider = new QSlider;
-            amplitudeSlider->setOrientation(Qt::Horizontal);
-            amplitudeSlider->setRange(0, 65535);
+            auto amplitudeSlider = new SVS::SeekBar;
+            amplitudeSlider->setDefaultValue(SVS::DecibelLinearizer::decibelToLinearValue(-3));
+            amplitudeSlider->setRange(SVS::DecibelLinearizer::decibelToLinearValue(-96), SVS::DecibelLinearizer::decibelToLinearValue(0));
             amplitudeLayout->addWidget(amplitudeSlider);
             auto amplitudeSpinBox = new SVS::ExpressionDoubleSpinBox;
+            amplitudeSpinBox->setDecimals(1);
             amplitudeSpinBox->setRange(-96, 0);
             amplitudeSpinBox->setSpecialValueText("-INF");
             amplitudeLayout->addWidget(amplitudeSpinBox);
-            auto amplitudeLabel = new QLabel(tr("Amplitude (dB)"));
+            auto amplitudeLabel = new QLabel(tr("&Amplitude (dB)"));
             amplitudeLabel->setBuddy(amplitudeSpinBox);
             synthesizerLayout->addRow(amplitudeLabel, amplitudeLayout);
 
             auto attackLayout = new QHBoxLayout;
-            auto attackSlider = new QSlider;
-            attackSlider->setOrientation(Qt::Horizontal);
-            attackSlider->setRange(0, 1000);
+            auto attackSlider = new SVS::SeekBar;
+            attackSlider->setInterval(1);
+            attackSlider->setDefaultValue(10);
+            attackSlider->setRange(0, 100);
             attackLayout->addWidget(attackSlider);
             auto attackSpinBox = new SVS::ExpressionSpinBox;
-            attackSpinBox->setRange(0, 1000);
+            attackSpinBox->setRange(0, 100);
             attackLayout->addWidget(attackSpinBox);
-            auto attackLabel = new QLabel(tr("Attack (ms)"));
+            auto attackLabel = new QLabel(tr("A&ttack (ms)"));
             attackLabel->setBuddy(attackSpinBox);
             synthesizerLayout->addRow(attackLabel, attackLayout);
 
             auto releaseLayout = new QHBoxLayout;
-            auto releaseSlider = new QSlider;
-            releaseSlider->setOrientation(Qt::Horizontal);
-            releaseSlider->setRange(0, 1000);
+            auto releaseSlider = new SVS::SeekBar;
+            releaseSlider->setInterval(1);
+            releaseSlider->setDefaultValue(50);
+            releaseSlider->setRange(0, 100);
             releaseLayout->addWidget(releaseSlider);
             auto releaseSpinBox = new SVS::ExpressionSpinBox;
-            releaseSpinBox->setRange(0, 1000);
+            releaseSpinBox->setRange(0, 100);
             releaseLayout->addWidget(releaseSpinBox);
-            auto releaseLabel = new QLabel(tr("Release (ms)"));
+            auto releaseLabel = new QLabel(tr("&Release (ms)"));
             releaseLabel->setBuddy(releaseSpinBox);
             synthesizerLayout->addRow(releaseLabel, releaseLayout);
 
@@ -138,17 +135,17 @@ namespace Audio::Internal {
             auto frequencyOfASpinBox = new SVS::ExpressionDoubleSpinBox;
             frequencyOfASpinBox->setRange(440.0 * std::pow(2, -1.0/24.0), 440.0 * std::pow(2, 1.0/24.0));
             frequencyOfALayout->addWidget(frequencyOfASpinBox);
-            auto adjustByProjectCheckBox = new QCheckBox(tr("Adjust by the cent shift of the active project window"));
+            auto adjustByProjectCheckBox = new QCheckBox(tr("Ad&just by the cent shift of the active project window"));
             frequencyOfALayout->addWidget(adjustByProjectCheckBox);
-            auto frequencyOfALabel = new QLabel(tr("Frequency of A"));
+            auto frequencyOfALabel = new QLabel(tr("&Frequency of A"));
             frequencyOfALabel->setBuddy(frequencyOfASpinBox);
             synthesizerLayout->addRow(frequencyOfALabel, frequencyOfALayout);
 
             auto synthesizerButtonLayout = new QHBoxLayout;
-            auto synthesizerTestButton = new QPushButton(tr("Preview"));
+            auto synthesizerTestButton = new QPushButton(tr("&Preview"));
             synthesizerTestButton->setCheckable(true);
             synthesizerButtonLayout->addWidget(synthesizerTestButton);
-            auto flushButton = new QPushButton(tr("Interrupt All Notes"));
+            auto flushButton = new QPushButton(tr("&Interrupt All Notes"));
             flushButton->setToolTip(tr("Interrupt all notes that are currently played by the synthesizer"));
             synthesizerButtonLayout->addWidget(flushButton);
             synthesizerButtonLayout->addStretch();
@@ -191,23 +188,23 @@ namespace Audio::Internal {
                 m_cachedGenerator = index;
                 m_testSynthesizer.setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(index));
             });
-            connect(amplitudeSlider, &QSlider::valueChanged, this, [=](int value) {
-                amplitudeSpinBox->setValue(sliderValueToDecibel(value));
+            connect(amplitudeSlider, &SVS::SeekBar::valueChanged, this, [=](double value) {
+                amplitudeSpinBox->setValue(SVS::DecibelLinearizer::linearValueToDecibel(value));
             });
             connect(amplitudeSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double decibel) {
                 QSignalBlocker o(amplitudeSlider);
                 m_cachedAmplitude = decibel;
-                amplitudeSlider->setValue(decibelToSliderValue(decibel));
+                amplitudeSlider->setValue(SVS::DecibelLinearizer::decibelToLinearValue(decibel));
                 m_testMixer.setGain(talcs::Decibels::decibelsToGain(decibel));
             });
-            connect(attackSlider, &QSlider::valueChanged, attackSpinBox, &QSpinBox::setValue);
+            connect(attackSlider, &SVS::SeekBar::valueChanged, attackSpinBox, &QSpinBox::setValue);
             connect(attackSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int value) {
                 QSignalBlocker o(attackSlider);
                 m_cachedAttackMsec = value;
                 attackSlider->setValue(value);
                 m_testSynthesizer.setAttackRate(msecToRate(value, m_testSynthesizer.sampleRate()));
             });
-            connect(releaseSlider, &QSlider::valueChanged, releaseSpinBox, &QSpinBox::setValue);
+            connect(releaseSlider, &SVS::SeekBar::valueChanged, releaseSpinBox, &QSpinBox::setValue);
             connect(releaseSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int value) {
                 m_cachedReleaseMsec = value;
                 releaseSlider->setValue(value);
@@ -238,7 +235,7 @@ namespace Audio::Internal {
 
             generatorComboBox->setCurrentIndex(m_cachedGenerator = ms->generator());
             amplitudeSpinBox->setValue(m_cachedAmplitude = ms->amplitudeDecibel());
-            amplitudeSlider->setValue(decibelToSliderValue(amplitudeSpinBox->value()));
+            amplitudeSlider->setValue(SVS::DecibelLinearizer::decibelToLinearValue(amplitudeSpinBox->value()));
             attackSpinBox->setValue(m_cachedAttackMsec = ms->attackMsec());
             releaseSpinBox->setValue(m_cachedReleaseMsec = ms->releaseMsec());
             m_cachedFrequencyOfA = ms->frequencyOfA();
@@ -313,10 +310,10 @@ namespace Audio::Internal {
                 m_currentScoreIndex = -1;
                 return talcs::NoteSynthesizerDetectorMessage::Null;
             }
-            if (message.position > m_currentPosition) {
+            if (static_cast<double>(message.position) > m_currentPosition) {
                 return talcs::NoteSynthesizerDetectorMessage::Null;
             }
-            message.position = static_cast<qint64>(std::round((message.position  - (m_currentPosition - m_currentInterval)) * m_testMixer.sampleRate() / (97.0 / 60.0 * 4.0)));
+            message.position = static_cast<qint64>(std::round((static_cast<double>(message.position)  - (m_currentPosition - m_currentInterval)) * m_testMixer.sampleRate() / (97.0 / 60.0 * 4.0)));
             message.frequency = talcs::MidiMessage::getMidiNoteInHertz(static_cast<int>(message.frequency), qFuzzyIsNull(m_cachedFrequencyOfA) ? 440.0 : m_cachedFrequencyOfA);
             m_currentScoreIndex++;
             return message;

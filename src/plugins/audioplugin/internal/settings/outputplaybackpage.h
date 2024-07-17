@@ -7,11 +7,11 @@
 
 class QComboBox;
 class QCheckBox;
-class QSlider;
 
 namespace SVS {
     class ExpressionDoubleSpinBox;
     class ExpressionSpinBox;
+    class SeekBar;
 };
 
 namespace Audio::Internal {
@@ -31,18 +31,18 @@ namespace Audio::Internal {
 
     private:
         QPointer<QWidget> m_widget;
-        QComboBox *m_driverComboBox;
-        QComboBox *m_deviceComboBox;
-        QComboBox *m_bufferSizeComboBox;
-        QComboBox *m_sampleRateComboBox;
-        QComboBox *m_hotPlugModeComboBox;
-        QSlider *m_deviceGainSlider;
-        SVS::ExpressionDoubleSpinBox *m_deviceGainSpinBox;
-        QSlider *m_devicePanSlider;
-        SVS::ExpressionDoubleSpinBox *m_devicePanSpinBox;
-        QComboBox *m_playHeadBehaviorComboBox;
-        QCheckBox *m_closeDeviceOnPlaybackStopCheckBox;
-        SVS::ExpressionSpinBox *m_fileBufferingSizeSpinBox;
+        QComboBox *m_driverComboBox = nullptr;
+        QComboBox *m_deviceComboBox = nullptr;
+        QComboBox *m_bufferSizeComboBox = nullptr;
+        QComboBox *m_sampleRateComboBox = nullptr;
+        QComboBox *m_hotPlugModeComboBox = nullptr;
+        SVS::SeekBar *m_deviceGainSlider = nullptr;
+        SVS::ExpressionDoubleSpinBox *m_deviceGainSpinBox = nullptr;
+        SVS::SeekBar *m_devicePanSlider = nullptr;
+        SVS::ExpressionSpinBox *m_devicePanSpinBox = nullptr;
+        QComboBox *m_playHeadBehaviorComboBox = nullptr;
+        QCheckBox *m_closeDeviceOnPlaybackStopCheckBox = nullptr;
+        SVS::ExpressionSpinBox *m_fileBufferingSizeSpinBox = nullptr;
 
         void updateDriverComboBox();
         void updateDeviceComboBox();
