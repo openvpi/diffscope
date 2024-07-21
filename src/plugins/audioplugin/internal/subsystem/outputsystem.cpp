@@ -9,8 +9,6 @@
 #include <icore.h>
 #include <CoreApi/iloader.h>
 
-#include <audioplugin/internal/sdlaudiodevicedisplaynamehelper.h>
-
 namespace Audio::Internal {
     OutputSystem::OutputSystem(QObject *parent) : AbstractOutputSystem(parent), m_outputContext(new talcs::OutputContext) {
         setContext(m_outputContext.get());
@@ -26,6 +24,7 @@ namespace Audio::Internal {
         m_outputContext->setAdoptedSampleRate(obj["adoptedSampleRate"].toDouble());
         m_outputContext->controlMixer()->setGain(static_cast<float>(obj["deviceGain"].toDouble(1.0)));
         m_outputContext->controlMixer()->setPan(static_cast<float>(obj["devicePan"].toDouble()));
+        m_outputContext->setHotPlugNotificationMode(static_cast<talcs::OutputContext::HotPlugNotificationMode>(obj["hotPlugNotificationMode"].toInt()));
         setFileBufferingReadAheadSize(obj["fileBufferingReadAheadSize"].toInt());
 
         if (m_outputContext->initialize(obj["driverName"].toString(), obj["deviceName"].toString())) {

@@ -123,9 +123,9 @@ namespace Audio::Internal {
 
             auto fileGroupBox = new QGroupBox(tr("File Caching"));
             auto fileLayout = new QFormLayout;
-            m_fileBufferingSizeSpinBox = new SVS::ExpressionSpinBox;
-            m_fileBufferingSizeSpinBox->setRange(0, std::numeric_limits<int>::max());
-            fileLayout->addRow(tr("&File reading buffer size (samples)"), m_fileBufferingSizeSpinBox);
+            m_fileBufferingReadAheadSizeSpinBox = new SVS::ExpressionSpinBox;
+            m_fileBufferingReadAheadSizeSpinBox->setRange(0, std::numeric_limits<int>::max());
+            fileLayout->addRow(tr("&File reading buffer size (samples)"), m_fileBufferingReadAheadSizeSpinBox);
             fileGroupBox->setLayout(fileLayout);
             mainLayout->addWidget(fileGroupBox);
             mainLayout->addStretch();
@@ -176,20 +176,20 @@ namespace Audio::Internal {
             auto &settings = *Core::ILoader::instance()->settings();
             auto obj = settings["Audio"].toObject();
 
-            m_fileBufferingSizeSpinBox->setValue(obj["fileBufferingSize"].toInt());
+            m_fileBufferingReadAheadSizeSpinBox->setValue(obj["fileBufferingReadAheadSize"].toInt());
         }
 
         void accept() const {
             AudioSystem::outputSystem()->setHotPlugNotificationMode(
                 static_cast<talcs::OutputContext::HotPlugNotificationMode>(
                     m_hotPlugModeComboBox->currentIndex()));
-            AudioSystem::outputSystem()->setFileBufferingReadAheadSize(m_fileBufferingSizeSpinBox->value());
-            AudioSystem::vstConnectionSystem()->setFileBufferingReadAheadSize(m_fileBufferingSizeSpinBox->value());
+            AudioSystem::outputSystem()->setFileBufferingReadAheadSize(m_fileBufferingReadAheadSizeSpinBox->value());
+            AudioSystem::vstConnectionSystem()->setFileBufferingReadAheadSize(m_fileBufferingReadAheadSizeSpinBox->value());
             auto &settings = *Core::ILoader::instance()->settings();
             auto obj = settings["Audio"].toObject();
             obj["deviceGain"] = AudioSystem::outputSystem()->outputContext()->controlMixer()->gain();
             obj["devicePan"] = AudioSystem::outputSystem()->outputContext()->controlMixer()->pan();
-            obj["fileBufferingSize"] = m_fileBufferingSizeSpinBox->value();
+            obj["fileBufferingReadAheadSize"] = m_fileBufferingReadAheadSizeSpinBox->value();
             settings["Audio"] = obj;
             // TODO
         }
@@ -205,7 +205,7 @@ namespace Audio::Internal {
         SVS::ExpressionSpinBox *m_devicePanSpinBox = nullptr;
         QComboBox *m_playHeadBehaviorComboBox = nullptr;
         QCheckBox *m_closeDeviceOnPlaybackStopCheckBox = nullptr;
-        SVS::ExpressionSpinBox *m_fileBufferingSizeSpinBox = nullptr;
+        SVS::ExpressionSpinBox *m_fileBufferingReadAheadSizeSpinBox = nullptr;
 
         void updateDriverComboBox();
         void updateDeviceComboBox();

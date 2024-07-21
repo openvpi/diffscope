@@ -3,7 +3,7 @@
 
 #include <QPointer>
 
-#include "abstractoutputsystem.h"
+#include <audioplugin/internal/abstractoutputsystem.h>
 
 namespace talcs {
     class MixerAudioSource;
