@@ -34,7 +34,7 @@ namespace Audio {
         talcs::AudioDevice *audioDevice() const;
         talcs::MixerAudioSource *preMixer() const;
 
-        bool makeReady();
+        bool isReady();
 
     Q_SIGNALS:
         void bufferSizeChanged(qint64 bufferSize);

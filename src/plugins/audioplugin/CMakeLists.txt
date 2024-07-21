@@ -24,7 +24,11 @@ qm_configure_target(${PROJECT_NAME}
     SOURCES ${_src}
     QT_LINKS Core Gui Widgets
     QT_INCLUDE_PRIVATE Core Gui Widgets
-    LINKS ChorusKit::AppCore svscraft::Widgets coreplugin talcs::Core talcs::Device talcs::Format talcs::Midi talcs::Remote
+    LINKS
+        ChorusKit::AppCore
+        svscraft::Widgets
+        coreplugin
+        talcs::Core talcs::Device talcs::Format talcs::Midi talcs::Remote talcs::Dspx
     INCLUDE_PRIVATE . internal
 )
 

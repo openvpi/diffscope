@@ -21,6 +21,7 @@
 #include <SVSCraftWidgets/expressionspinbox.h>
 
 #include <TalcsDevice/AudioDevice.h>
+#include <TalcsRemote/RemoteOutputContext.h>
 #include <TalcsRemote/RemoteSocket.h>
 
 #include <audioplugin/internal/audiosystem.h>
@@ -302,15 +303,15 @@ namespace Audio::Internal {
         auto bufferSizeStatusChangeHandler = [=](qint64 bufferSize) {
             bufferSizeStatusItem->setText(1, bufferSize ? QString::number(bufferSize) : tr("N/A"));
         };
-        connect(vstSys, &AbstractOutputSystem::bufferSizeChanged, m_widget, bufferSizeStatusChangeHandler);
-        bufferSizeStatusChangeHandler(vstSys->device() ? vstSys->device()->bufferSize() : 0);
+        connect(vstSys->context(), &talcs::AbstractOutputContext::bufferSizeChanged, m_widget, bufferSizeStatusChangeHandler);
+        bufferSizeStatusChangeHandler(vstSys->context()->device() ? vstSys->context()->device()->bufferSize() : 0);
 
         auto sampleRateStatusItem = new QTreeWidgetItem({tr("Sample Rate")});
         auto sampleRateStatusChangeHandler = [=](double sampleRate) {
             sampleRateStatusItem->setText(1, !qFuzzyIsNull(sampleRate) ? QString::number(sampleRate) : tr("N/A"));
         };
-        connect(vstSys, &AbstractOutputSystem::sampleRateChanged, m_widget, sampleRateStatusChangeHandler);
-        sampleRateStatusChangeHandler(vstSys->device() ? vstSys->device()->sampleRate() : 0);
+        connect(vstSys->context(), &talcs::AbstractOutputContext::sampleRateChanged, m_widget, sampleRateStatusChangeHandler);
+        sampleRateStatusChangeHandler(vstSys->context()->device() ? vstSys->context()->device()->sampleRate() : 0);
 
         auto connectionStatusItem = new QTreeWidgetItem({tr("Connected")});
         auto connectionStatusChangeHandler = [=](talcs::RemoteSocket::Status status) {
@@ -324,10 +325,10 @@ namespace Audio::Internal {
                 sampleRateStatusItem->setText(1, tr("N/A"));
             }
         };
-        connect(vstSys->socket(), &talcs::RemoteSocket::socketStatusChanged, m_widget, [=](int status) {
+        connect(vstSys->remoteOutputContext()->socket(), &talcs::RemoteSocket::socketStatusChanged, m_widget, [=](int status) {
             connectionStatusChangeHandler(talcs::RemoteSocket::Status(status));
         });
-        connectionStatusChangeHandler(vstSys->socket()->status());
+        connectionStatusChangeHandler(vstSys->remoteOutputContext()->socket()->status());
 
         m_statusTreeWidget->setColumnCount(2);
         m_statusTreeWidget->setHeaderLabels({tr("Property"), tr("Value")});
@@ -335,7 +336,7 @@ namespace Audio::Internal {
         m_statusTreeWidget->resizeColumnToContents(0);
 
         connect(testAudioButton, &QPushButton::clicked, this, [=] {
-            if (!vstSys->makeReady()) {
+            if (!vstSys->isReady()) {
                 QMessageBox msgBox(m_widget);
                 msgBox.setIcon(QMessageBox::Critical);
                 msgBox.setText(tr("Cannot start audio playback"));

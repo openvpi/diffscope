@@ -3,12 +3,9 @@
 
 #include <memory>
 
-#include "abstractoutputsystem.h"
+#include <TalcsDevice/OutputContext.h>
 
-namespace talcs {
-    class AudioDriver;
-    class AudioDriverManager;
-}
+#include <audioplugin/internal/abstractoutputsystem.h>
 
 namespace Audio::Internal {
 
@@ -20,47 +17,20 @@ namespace Audio::Internal {
 
         bool initialize() override;
 
-        talcs::AudioDriverManager *driverManager() const;
-        talcs::AudioDriver *driver() const;
-        talcs::AudioDevice *device() const override;
+        inline talcs::OutputContext *outputContext() const {
+            return m_outputContext.get();
+        }
 
         bool setDriver(const QString &driverName);
         bool setDevice(const QString &deviceName);
-        bool enumerateDevices(bool saveToSettings);
-
-        qint64 adoptedBufferSize() const;
-        void setAdoptedBufferSize(qint64 bufferSize);
-        double adoptedSampleRate() const;
-        void setAdoptedSampleRate(double sampleRate);
-
-        bool makeReady() override;
-
-        static QString driverDisplayName(const QString &driverName);
-
-        enum HotPlugNotificationMode {
-            Omni,
-            Current,
-            None,
-        };
-        Q_ENUM(HotPlugNotificationMode)
-        HotPlugNotificationMode hotPlugNotificationMode() const;
-        void setHotPlugNotificationMode(HotPlugNotificationMode mode);
-
-    Q_SIGNALS:
-        void deviceHotPlugged();
+        bool setAdoptedBufferSize(qint64 bufferSize);
+        bool setAdoptedSampleRate(double sampleRate);
+        void setHotPlugNotificationMode(talcs::OutputContext::HotPlugNotificationMode mode);
 
     private:
-        talcs::AudioDriverManager *m_drvMgr;
-        talcs::AudioDriver *m_drv = nullptr;
-        std::unique_ptr<talcs::AudioDevice> m_dev;
+        void postSetDevice() const;
 
-        qint64 m_adoptedBufferSize = 0;
-        double m_adoptedSampleRate = 0.0;
-
-        HotPlugNotificationMode m_hotPlugNotificationMode = Omni;
-
-        void handleDeviceHotPlug();
-        void postSetDevice(bool saveToSettings);
+        std::unique_ptr<talcs::OutputContext> m_outputContext;
     };
 
 }

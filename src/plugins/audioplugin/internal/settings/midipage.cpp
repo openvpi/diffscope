@@ -22,6 +22,7 @@
 #include <TalcsCore/NoteSynthesizer.h>
 #include <TalcsCore/MixerAudioSource.h>
 #include <TalcsCore/Decibels.h>
+#include <TalcsDevice/AbstractOutputContext.h>
 #include <TalcsMidi/MidiInputDevice.h>
 #include <TalcsMidi/MidiMessage.h>
 #include <TalcsMidi/MidiNoteSynthesizer.h>
@@ -210,7 +211,7 @@ namespace Audio::Internal {
                 releaseSlider->setValue(value);
                 m_testSynthesizer.setReleaseRate(msecToRate(value, m_testSynthesizer.sampleRate()));
             });
-            connect(AudioSystem::outputSystem(), &AbstractOutputSystem::sampleRateChanged, this, [=](double sampleRate) {
+            connect(AudioSystem::outputSystem()->context(), &talcs::AbstractOutputContext::sampleRateChanged, this, [=](double sampleRate) {
                 m_testSynthesizer.setAttackRate(msecToRate(attackSpinBox->value(), sampleRate));
                 m_testSynthesizer.setReleaseRate(msecToRate(releaseSpinBox->value(), sampleRate));
             });
@@ -249,7 +250,7 @@ namespace Audio::Internal {
 
             m_testSynthesizer.setDetector(this);
             m_testMixer.addSource(&m_testSynthesizer);
-            AudioSystem::outputSystem()->preMixer()->addSource(&m_testMixer);
+            AudioSystem::outputSystem()->context()->preMixer()->addSource(&m_testMixer);
             m_testSynthesizer.setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(ms->generator()));
             m_testMixer.setGain(talcs::Decibels::decibelsToGain(ms->amplitudeDecibel()));
             m_testSynthesizer.setAttackRate(msecToRate(ms->attackMsec(), m_testSynthesizer.sampleRate()));
@@ -258,7 +259,7 @@ namespace Audio::Internal {
             connect(synthesizerTestButton, &QAbstractButton::clicked, this, [=](bool checked) {
                 QMutexLocker locker(&m_mutex);
                 if (checked) {
-                    if (!AudioSystem::outputSystem()->makeReady()) {
+                    if (!AudioSystem::outputSystem()->isReady()) {
                         synthesizerTestButton->setChecked(false);
                         return;
                     }
@@ -280,7 +281,7 @@ namespace Audio::Internal {
 
         ~MIDIPageWidget() override {
             m_testMixer.removeAllSources();
-            AudioSystem::outputSystem()->preMixer()->removeSource(&m_testMixer);
+            AudioSystem::outputSystem()->context()->preMixer()->removeSource(&m_testMixer);
         }
 
         void detectInterval(qint64 intervalLength) override {

@@ -6,9 +6,7 @@
 #include <QObject>
 
 namespace talcs {
-    class MixerAudioSource;
-    class AudioSourcePlayback;
-    class AudioDevice;
+    class AbstractOutputContext;
 }
 
 namespace Audio::Internal {
@@ -19,32 +17,24 @@ namespace Audio::Internal {
         explicit AbstractOutputSystem(QObject *parent = nullptr);
         ~AbstractOutputSystem() override;
 
-        virtual bool initialize();
-        virtual talcs::AudioDevice *device() const = 0;
-        talcs::MixerAudioSource *preMixer() const;
+        virtual bool initialize() = 0;
 
-        virtual bool makeReady() = 0;
-
-        void setGain(float gain);
-        float gain() const;
-
-        void setPan(float pan);
-        float pan() const;
+        talcs::AbstractOutputContext *context() const;
 
         void setFileBufferingReadAheadSize(qint64 size);
         qint64 fileBufferingReadAheadSize() const;
 
+        bool isReady() const;
+
     Q_SIGNALS:
-        void bufferSizeChanged(qint64 bufferSize);
-        void sampleRateChanged(double sampleRate);
-        void deviceChanged();
         void fileBufferingReadAheadSizeChanged(qint64 readAheadSize);
 
     protected:
-        talcs::MixerAudioSource *m_deviceControlMixer;
-        talcs::MixerAudioSource *m_preMixer;
-        std::unique_ptr<talcs::AudioSourcePlayback> m_playback;
-        qint64 m_fileBufferingReadAheadSize;
+        void setContext(talcs::AbstractOutputContext *context);
+
+    private:
+        qint64 m_fileBufferingReadAheadSize = 0;
+        talcs::AbstractOutputContext *m_context = nullptr;
     };
 
 }

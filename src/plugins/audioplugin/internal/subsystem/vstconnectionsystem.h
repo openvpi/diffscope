@@ -6,8 +6,8 @@
 #include "abstractoutputsystem.h"
 
 namespace talcs {
-    class RemoteSocket;
-    class RemoteAudioDevice;
+    class MixerAudioSource;
+    class RemoteOutputContext;
     class RemoteEditor;
     class RemoteMidiMessageIntegrator;
     class MidiNoteSynthesizer;
@@ -29,22 +29,19 @@ namespace Audio::Internal {
 
         bool initialize() override;
 
+        inline talcs::RemoteOutputContext *remoteOutputContext() const {
+            return m_remoteOutputContext.get();
+        }
+
         void setApplicationInitializing(bool);
         bool isApplicationInitializing() const;
 
-        talcs::RemoteSocket *socket() const;
-        talcs::AudioDevice *device() const override;
-
-        talcs::RemoteAudioDevice *remoteAudioDevice() const;
         talcs::RemoteEditor *remoteEditor() const;
 
         talcs::RemoteMidiMessageIntegrator *integrator() const;
         talcs::MidiNoteSynthesizer *synthesizer() const;
 
         void syncSynthesizerPreference();
-
-
-        bool makeReady() override;
 
         void setVSTAddOn(ProjectAddOn *addOn);
         ProjectAddOn *vstAddOn() const;
@@ -55,14 +52,14 @@ namespace Audio::Internal {
         void hostSpecsChanged(const QString &hostExecutable, const QString &pluginFormat);
 
     private:
-        talcs::RemoteSocket *m_socket = nullptr;
-        QPointer<talcs::RemoteAudioDevice> m_dev;
-        QPointer<talcs::RemoteEditor> m_editor;
-        bool m_isApplicationInitializing = false;
-
+        std::unique_ptr<talcs::MidiNoteSynthesizer> m_synthesizer;
         std::unique_ptr<talcs::RemoteMidiMessageIntegrator> m_integrator;
-        talcs::MidiNoteSynthesizer *m_synthesizer;
         std::unique_ptr<talcs::MixerAudioSource> m_synthesizerMixer;
+
+        std::unique_ptr<talcs::RemoteOutputContext> m_remoteOutputContext;
+
+        std::unique_ptr<talcs::RemoteEditor> m_editor;
+        bool m_isApplicationInitializing = false;
 
         ProjectAddOn *m_vstAddOn = nullptr;
 
@@ -70,8 +67,7 @@ namespace Audio::Internal {
 
         QByteArray getEditorData(bool *ok);
         bool setEditorData(const QByteArray &data);
-        void handleRemoteDeviceRemoteOpened(qint64 bufferSize, double sampleRate, int maxChannelCount);
-
+        void handleSampleRateChange(double sampleRate);
         void setHostSpecs(const QString &hostExecutable, const QString &pluginFormat);
     };
 
