@@ -63,6 +63,7 @@ jobs:
             -DCK_WIN_APPLOCAL_DEPS:BOOL=TRUE `
             -DTALCS_DEVICE_ENABLE_ASIO:BOOL=ON `
             -DTALCS_ASIOSDK_DIR=${{ env.ASIOSDK_DIR }} `
+            -DTALCS_DSPX:BOOL=ON `
             -DCMAKE_INSTALL_PREFIX=installed
           cmake --build build --target all
           cmake --build build --target install
@@ -78,8 +79,7 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT_DIR }}/scripts/buildsystems/vcpkg.cmake" `
             -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_ROOT_DIR }}/bridge_installed" `
             -DVCPKG_MANIFEST_MODE:BOOL=OFF `
-            -DVCPKG_TARGET_TRIPLET=${{ env.VCPKG_TRIPLET_STATIC }} `
-            -DTALCS_DSPX:BOOL=ON
+            -DVCPKG_TARGET_TRIPLET=${{ env.VCPKG_TRIPLET_STATIC }}
           cmake --build build --target all
           
       - name: Store DiffScope Bridge artefacts directory
