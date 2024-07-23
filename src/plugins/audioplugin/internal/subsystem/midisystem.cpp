@@ -57,7 +57,7 @@ namespace Audio::Internal {
         const auto &settings = *Core::ILoader::instance()->settings();
         auto obj = settings["Audio"].toObject();
         m_synthesizer->noteSynthesizer()->setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(obj["midiSynthesizerGenerator"].toInt()));
-        auto audioDevice = IAudio::instance()->outputSystemInterface(false)->audioDevice();
+        auto audioDevice = IAudio::instance()->outputSystemInterface(false)->device();
         m_synthesizer->noteSynthesizer()->setAttackRate(msecToRate(obj["midiSynthesizerAttackMsec"].toInt(10), audioDevice && audioDevice->isOpen() ? audioDevice->sampleRate() : 48000));
         m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(obj["midiSynthesizerReleaseMsec"].toInt(50), audioDevice && audioDevice->isOpen() ? audioDevice->sampleRate() : 48000));
         m_synthesizerMixer->setGain(talcs::Decibels::decibelsToGain(obj["midiSynthesizerAmplitude"].toDouble(-3)));
@@ -147,7 +147,7 @@ namespace Audio::Internal {
         auto obj = settings["Audio"].toObject();
         obj["midiSynthesizerAttackMsec"] = msec;
         settings["Audio"] = obj;
-        auto audioDevice = IAudio::instance()->outputSystemInterface(false)->audioDevice();
+        auto audioDevice = IAudio::instance()->outputSystemInterface(false)->device();
         m_synthesizer->noteSynthesizer()->setAttackRate(msecToRate(msec, audioDevice && audioDevice->isOpen() ? audioDevice->sampleRate() : 48000));
     }
     int MidiSystem::attackMsec() const {
@@ -160,7 +160,7 @@ namespace Audio::Internal {
         auto obj = settings["Audio"].toObject();
         obj["midiSynthesizerReleaseMsec"] = msec;
         settings["Audio"] = obj;
-        auto audioDevice = IAudio::instance()->outputSystemInterface(false)->audioDevice();
+        auto audioDevice = IAudio::instance()->outputSystemInterface(false)->device();
         m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(msec, audioDevice && audioDevice->isOpen() ? audioDevice->sampleRate() : 48000));
     }
     int MidiSystem::releaseMsec() const {

@@ -1,12 +1,18 @@
 #include "audiocontextinterface.h"
 #include "audiocontextinterface_p.h"
 
+#include <TalcsFormat/FormatManager.h>
+#include <TalcsDevice/AudioDevice.h>
+#include <TalcsDspx/DspxProjectContext.h>
+#include <TalcsDspx/DspxTrackContext.h>
+
 #include <coreplugin/iprojectwindow.h>
 
 #include <audioplugin/iaudio.h>
 #include <audioplugin/internal/projectaddon.h>
-#include <audioplugin/formatmanager.h>
-#include <audioplugin/formatentry.h>
+#include <audioplugin/outputsysteminterface.h>
+
+#define DEVICE_LOCKER talcs::AudioDeviceLocker locker(IAudio::instance()->outputSystemInterface(projectAddOn->isVST())->device())
 
 namespace Audio {
 
@@ -15,36 +21,51 @@ namespace Audio {
     void AudioContextInterfacePrivate::init(ProjectAddOn *projectAddOn_) {
         Q_Q(AudioContextInterface);
         projectAddOn = projectAddOn_;
+        projectContext = projectAddOn->projectContext();
         auto model = q->windowHandle()->doc()->dataModel().model();
-        QObject::connect(model->tracks(), &QDspx::TrackListEntity::inserted, q, [=](int _, const QVector<QDspx::TrackEntity *> &trackEntities) {
+        QObject::connect(model->tracks(), &QDspx::TrackListEntity::inserted, q, [=](int index, const QVector<QDspx::TrackEntity *> &trackEntities) {
+            DEVICE_LOCKER;
             for (auto trackEntity : trackEntities) {
-                handleTrackInserted(trackEntity);
+                handleTrackInserted(index++, trackEntity);
             }
         });
-        QObject::connect(model->tracks(), &QDspx::TrackListEntity::aboutToRemove, q, [=](int _, const QVector<QDspx::TrackEntity *> &trackEntities) {
-            for (auto trackEntity : trackEntities)
-                handleTrackAboutToRemove(trackEntity);
+        QObject::connect(model->tracks(), &QDspx::TrackListEntity::moved, q, [=](int index, int count, int dest) {
+            DEVICE_LOCKER;
+            handleTrackMoved(index, count, dest);
         });
+        QObject::connect(model->tracks(), &QDspx::TrackListEntity::aboutToRemove, q, [=](int index, const QVector<QDspx::TrackEntity *> &trackEntities) {
+            DEVICE_LOCKER;
+            for (int i = trackEntities.size() - 1; i >= 0; i--) {
+                handleTrackAboutToRemove(index + i, trackEntities.value(i));
+            }
+        });
+
+        // TODO connect doc signals
 
         for (int i = 0; i < model->tracks()->size(); i++) {
             auto trackEntity = model->tracks()->at(i);
-            handleTrackInserted(trackEntity);
+            handleTrackInserted(i, trackEntity);
         }
 
-        // TODO connect doc signals
+
     }
-    void AudioContextInterfacePrivate::handleTrackInserted(QDspx::TrackEntity *trackEntity) {
+    void AudioContextInterfacePrivate::handleTrackInserted(int index, QDspx::TrackEntity *trackEntity) {
         Q_Q(AudioContextInterface);
-        auto track = trackRegistry.create(trackEntity, q, q);
-        tracks.insert(trackEntity, track);
+        auto trackContext = projectContext->addTrack(index);
+        auto trackInterface = trackRegistry.create(trackEntity, q, trackContext);
+        tracks.insert(trackEntity, trackInterface);
     }
-    void AudioContextInterfacePrivate::handleTrackAboutToRemove(QDspx::TrackEntity *trackEntity) {
-        auto track = tracks.value(trackEntity);
-        if (track) {
-            track->quit();
-            delete track;
+    void AudioContextInterfacePrivate::handleTrackAboutToRemove(int index, QDspx::TrackEntity *trackEntity) {
+        auto trackInterface = tracks.value(trackEntity);
+        if (trackInterface) {
+            trackInterface->quit();
+            delete trackInterface;
             tracks.remove(trackEntity);
+            projectContext->removeTrack(index);
         }
+    }
+    void AudioContextInterfacePrivate::handleTrackMoved(int index, int count, int dest) const {
+        projectContext->moveTrack(index, count, dest);
     }
 
     AudioContextInterface::AudioContextInterface(QObject *parent) : QObject(parent), d_ptr(new AudioContextInterfacePrivate) {
@@ -56,22 +77,22 @@ namespace Audio {
 
     talcs::MixerAudioSource *AudioContextInterface::preMixer() const {
         Q_D(const AudioContextInterface);
-        return d->projectAddOn->preMixer();
+        return d->projectContext->preMixer();
     }
 
-    talcs::TransportAudioSource *AudioContextInterface::transportAudioSource() const {
+    talcs::TransportAudioSource *AudioContextInterface::transport() const {
         Q_D(const AudioContextInterface);
-        return d->projectAddOn->transportAudioSource();
+        return d->projectContext->transport();
     }
 
     talcs::PositionableMixerAudioSource *AudioContextInterface::postMixer() const {
         Q_D(const AudioContextInterface);
-        return d->projectAddOn->postMixer();
+        return d->projectContext->postMixer();
     }
 
     talcs::PositionableMixerAudioSource *AudioContextInterface::masterTrackMixer() const {
         Q_D(const AudioContextInterface);
-        return d->projectAddOn->masterTrackMixer();
+        return d->projectContext->masterTrackMixer();
     }
 
     Core::IProjectWindow *AudioContextInterface::windowHandle() const {
@@ -83,7 +104,7 @@ namespace Audio {
         return static_cast<AudioContextInterface *>(win->getFirstObject("Audio.AudioContextInterface"));
     }
 
-    OutputSystemInterface *AudioContextInterface::outputSystem() const {
+    OutputSystemInterface *AudioContextInterface::outputSystemInterface() const {
         Q_D(const AudioContextInterface);
         return IAudio::instance()->outputSystemInterface(d->projectAddOn->isVST());
     }
@@ -100,16 +121,12 @@ namespace Audio {
         Q_D(const AudioContextInterface);
         return d->tracks.values();
     }
-    TrackInterface *AudioContextInterface::getTrack(QDspx::TrackEntity *entity) const {
+    TrackInterface *AudioContextInterface::getTrackInterfaceFromEntity(QDspx::TrackEntity *entity) const {
         Q_D(const AudioContextInterface);
         return d->tracks.value(entity);
     }
-
-    talcs::PositionableAudioSource *AudioContextInterface::getFormatSource(const QString &filename, const QVariant &userData, bool isInternal) {
-        Q_D(AudioContextInterface);
-        auto io = IAudio::instance()->formatManager()->getFormatLoad(filename, userData);
-        if (!io)
-            return nullptr;
-        return d->projectAddOn->postGetFormat(io, filename, isInternal);
+    AudioClipInterface *AudioContextInterface::getAudioClipInterfaceFromEntity(QDspx::AudioClipEntity *entity) const {
+        Q_D(const AudioContextInterface);
+        return d->clips.value(entity);
     }
 }

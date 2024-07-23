@@ -8,7 +8,7 @@
 #include <audioplugin/trackinterface.h>
 
 namespace QDspx {
-    class ClipEntity;
+    class AudioClipEntity;
 }
 
 namespace Audio {
@@ -19,24 +19,18 @@ namespace Audio {
         TrackInterface *q_ptr;
 
         QDspx::TrackEntity *entity;
-        AudioContextInterface *context;
+        talcs::DspxTrackContext *trackContext;
 
-        std::unique_ptr<talcs::PositionableMixerAudioSource> trackControlMixer;
-        talcs::PositionableMixerAudioSource *trackMixer;
-        talcs::AudioSourceClipSeries *clipSeries;
-
-        std::unique_ptr<talcs::PositionableMixerAudioSource> replicaMixer;
-        QMutex replicaMixerMutex;
-
+        AudioContextInterface *audioContextInterface;
         QHash<QDspx::AudioClipEntity *, AudioClipInterface *> clips;
 
-        void handleEntityGainChange(double gainDecibel) const;
-        void handleEntityPanChange(double pan) const;
-        void handleEntityMuteChange(bool isMuted) const;
-        void handleEntitySoloChange(bool isSolo) const;
+        void handleEntityGainChanged(double gainDecibel) const;
+        void handleEntityPanChanged(double pan) const;
+        void handleEntityMuteChanged(bool isMuted) const;
+        void handleEntitySoloChanged(bool isSolo) const;
 
-        void handleClipInserted(QDspx::ClipEntity *clipEntity);
-        void handleClipAboutToRemove(QDspx::ClipEntity *clipEntity);
+        void handleAudioClipInserted(int id, QDspx::AudioClipEntity *audioClipEntity);
+        void handleAudioClipAboutToRemove(int id, QDspx::AudioClipEntity *audioClipEntity);
     };
 
 }

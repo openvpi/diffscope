@@ -12,15 +12,18 @@ namespace Audio {
         AudioClipInterface *q_ptr;
 
         QDspx::AudioClipEntity *entity;
-        TrackInterface *track;
+        talcs::DspxAudioClipContext *audioClipContext;
 
-        std::unique_ptr<talcs::PositionableMixerAudioSource> clipControlMixer;
-        talcs::PositionableMixerAudioSource *clipMixer;
-        talcs::PositionableAudioSource *clipAudioSource;
+        TrackInterface *trackInterface;
 
-        void handleEntityGainChange(double gainDecibel) const;
-        void handleEntityPanChange(double pan) const;
-        void handleEntityMuteChange(bool isMute) const;
+        void handleEntityGainChanged(double gainDecibel) const;
+        void handleEntityPanChanged(double pan) const;
+        void handleEntityMuteChanged(bool isMute) const;
+
+        void handleStartChanged(int start) const;
+        void handleClipStartChanged(int clipStart) const;
+        void handleClipLenChanged(int clipLen) const;
+        void handlePathChanged(const QString &path) const;
     };
 }
 

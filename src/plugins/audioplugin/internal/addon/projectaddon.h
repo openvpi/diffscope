@@ -1,8 +1,6 @@
 #ifndef AUDIO_PROJECTADDON_H
 #define AUDIO_PROJECTADDON_H
 
-#include <memory>
-
 #include <TalcsCore/MetronomeAudioSource.h>
 #include <TalcsCore/BufferingAudioSource.h>
 
@@ -11,11 +9,11 @@
 #include <CoreApi/iwindow.h>
 
 namespace talcs {
-    class MixerAudioSource;
-    class TransportAudioSource;
-    class PositionableMixerAudioSource;
-    class PositionableAudioSource;
-    class AbstractAudioFormatIO;
+    class DspxProjectContext;
+}
+
+namespace QDspx {
+    class AudioClipEntity;
 }
 
 namespace Audio {
@@ -37,34 +35,25 @@ namespace Audio::Internal {
         bool delayedInitialize() override;
 
         bool isVST() const;
-        talcs::MixerAudioSource *preMixer() const;
-        talcs::TransportAudioSource *transportAudioSource() const;
-        talcs::PositionableMixerAudioSource *postMixer() const;
-        talcs::PositionableMixerAudioSource *masterTrackMixer() const;
 
-        talcs::PositionableAudioSource *postGetFormat(talcs::AbstractAudioFormatIO *io, const QString &filename, bool isInternal);
+        talcs::DspxProjectContext *projectContext() const;
+        AudioContextInterface *audioContextInterface() const;
+
+        void updateFileCounter(const QString &filename, int count);
+
+        void setAudioClipToOpenFile(QDspx::AudioClipEntity *entity, const QString &selectedFilter);
+        bool checkAudioClipIsToOpenFile(QDspx::AudioClipEntity *entity, QString &selectedFilter);
+
+        void addFailedAudioClipToAlert(QDspx::AudioClipEntity *entity);
+        QList<QDspx::AudioClipEntity *> takeFailedAudioClipsToAlert();
 
     private:
-        std::unique_ptr<talcs::MixerAudioSource> m_preMixer;
-        talcs::TransportAudioSource *m_tpSrc;
-        talcs::PositionableMixerAudioSource *m_postMixer;
-        talcs::PositionableMixerAudioSource *m_masterTrackControlMixer;
-        talcs::PositionableMixerAudioSource *m_masterTrackMixer;
-
         AudioContextInterface *m_audioContextInterface;
+        talcs::DspxProjectContext *m_projectContext;
 
-        struct FileInfo {
-            QString filename;
-            talcs::BufferingAudioSource *bufSrc;
-            talcs::AbstractAudioFormatIO *io;
-            bool isInternal;
-        };
+        QHash<QDspx::AudioClipEntity *, QString> *m_audioClipsToOpenFile;
 
-        QMChronoMap<talcs::BufferingAudioSource *, FileInfo> files;
-
-        void handleEntityGainChange(double gainDecibel) const;
-        void handleEntityPanChange(double pan) const;
-        void handleEntityMuteChange(bool isMute) const;
+        QList<QDspx::AudioClipEntity *> m_failedAudioClipsToAlert;
     };
 
 }

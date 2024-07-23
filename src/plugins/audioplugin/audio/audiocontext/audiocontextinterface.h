@@ -9,7 +9,6 @@ namespace talcs {
     class MixerAudioSource;
     class TransportAudioSource;
     class PositionableMixerAudioSource;
-    class PositionableAudioSource;
 }
 
 namespace Core {
@@ -19,6 +18,7 @@ namespace Core {
 
 namespace QDspx {
     class TrackEntity;
+    class AudioClipEntity;
 }
 
 namespace Audio {
@@ -27,10 +27,11 @@ namespace Audio {
         class ProjectAddOn;
     }
 
+    class TrackInterfacePrivate;
+    class AudioClipInterfacePrivate;
+
     class OutputSystemInterface;
-
     class TrackInterface;
-
     class AudioClipInterface;
 
     class AudioContextInterfacePrivate;
@@ -39,27 +40,28 @@ namespace Audio {
         Q_OBJECT
         Q_DECLARE_PRIVATE(AudioContextInterface)
         friend class Internal::ProjectAddOn;
-
+        friend class TrackInterfacePrivate;
+        friend class AudioClipInterfacePrivate;
     public:
         ~AudioContextInterface() override;
 
         talcs::MixerAudioSource *preMixer() const;
-        talcs::TransportAudioSource *transportAudioSource() const;
+        talcs::TransportAudioSource *transport() const;
         talcs::PositionableMixerAudioSource *postMixer() const;
         talcs::PositionableMixerAudioSource *masterTrackMixer() const;
 
         Core::IProjectWindow *windowHandle() const;
         static AudioContextInterface *get(Core::IProjectWindow *win);
 
-        OutputSystemInterface *outputSystem() const;
+        OutputSystemInterface *outputSystemInterface() const;
 
         Core::IExecutiveRegistry<TrackInterface> *trackRegistry() const;
         Core::IExecutiveRegistry<AudioClipInterface> *audioClipRegistry() const;
 
         QList<TrackInterface *> tracks() const;
-        TrackInterface *getTrack(QDspx::TrackEntity *entity) const;
 
-        talcs::PositionableAudioSource *getFormatSource(const QString &filename, const QVariant &userData, bool isInternal = true);
+        TrackInterface *getTrackInterfaceFromEntity(QDspx::TrackEntity *entity) const;
+        AudioClipInterface *getAudioClipInterfaceFromEntity(QDspx::AudioClipEntity *entity) const;
 
     private:
         explicit AudioContextInterface(QObject *parent = nullptr);

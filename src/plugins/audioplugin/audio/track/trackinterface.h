@@ -15,40 +15,38 @@ namespace QDspx {
 namespace talcs {
     class PositionableMixerAudioSource;
     class AudioSourceClipSeries;
+    class DspxTrackContext;
 }
 
 namespace Audio {
 
-    class ITrackAddOn;
-
     class AudioContextInterface;
-
     class AudioClipInterface;
 
+    class ITrackAddOn;
     class TrackInterfacePrivate;
 
     class AUDIO_EXPORT TrackInterface : public Core::IExecutive {
         Q_OBJECT
         Q_DECLARE_PRIVATE(TrackInterface)
         friend class Core::IExecutiveRegistry<TrackInterface>;
+        friend class AudioContextInterface;
         using AddOnType = ITrackAddOn;
     public:
         ~TrackInterface() override;
 
         QDspx::TrackEntity *entity() const;
-        AudioContextInterface *context() const;
+
+        AudioContextInterface *audioContextInterface() const;
 
         talcs::PositionableMixerAudioSource *trackMixer() const;
         talcs::AudioSourceClipSeries *clipSeries() const;
 
-        talcs::PositionableMixerAudioSource *replicaMixer() const;
-        QMutex *replicaMixerMutex();
-
         QList<AudioClipInterface *> clips() const;
-        AudioClipInterface *getClip(QDspx::AudioClipEntity *entity) const;
+        AudioClipInterface *getAudioClipInterfaceFromEntity(QDspx::AudioClipEntity *entity) const;
 
     protected:
-        explicit TrackInterface(QDspx::TrackEntity *entity, AudioContextInterface *context, QObject *parent = nullptr);
+        explicit TrackInterface(QDspx::TrackEntity *entity, AudioContextInterface *audioContextInterface, talcs::DspxTrackContext *trackContext);
         explicit TrackInterface(TrackInterfacePrivate &d, QObject *parent);
 
     private:

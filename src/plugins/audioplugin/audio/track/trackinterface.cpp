@@ -4,122 +4,116 @@
 #include <TalcsCore/AudioSourceClipSeries.h>
 #include <TalcsCore/PositionableMixerAudioSource.h>
 #include <TalcsCore/Decibels.h>
+#include <TalcsDevice/AudioDevice.h>
+#include <TalcsDspx/DspxTrackContext.h>
 
 #include <trackentity.h>
 
 #include <audioplugin/audiocontextinterface.h>
 #include <audioplugin/audioclipinterface.h>
+#include <audioplugin/outputsysteminterface.h>
+#include <audioplugin/private/audiocontextinterface_p.h>
+
+#define DEVICE_LOCKER talcs::AudioDeviceLocker locker(d->audioContextInterface->outputSystemInterface()->device())
 
 namespace Audio {
 
-    void TrackInterfacePrivate::handleEntityGainChange(double gainDecibel) const {
-        trackControlMixer->setGain(talcs::Decibels::decibelsToGain(static_cast<float>(gainDecibel)));
+    void TrackInterfacePrivate::handleEntityGainChanged(double gainDecibel) const {
+        trackContext->controlMixer()->setGain(talcs::Decibels::decibelsToGain(gainDecibel));
     }
-    void TrackInterfacePrivate::handleEntityPanChange(double pan) const {
-        trackControlMixer->setPan(static_cast<float>(pan));
+    void TrackInterfacePrivate::handleEntityPanChanged(double pan) const {
+        trackContext->controlMixer()->setPan(static_cast<float>(pan));
     }
-    void TrackInterfacePrivate::handleEntityMuteChange(bool isMuted) const {
-        trackControlMixer->setSilentFlags(isMuted ? -1 : 0);
+    void TrackInterfacePrivate::handleEntityMuteChanged(bool isMuted) const {
+        trackContext->controlMixer()->setSilentFlags(isMuted ? -1 : 0);
     }
-    void TrackInterfacePrivate::handleEntitySoloChange(bool isSolo) const {
-        context->masterTrackMixer()->setSourceSolo(trackControlMixer.get(), isSolo);
+    void TrackInterfacePrivate::handleEntitySoloChanged(bool isSolo) const {
+        audioContextInterface->masterTrackMixer()->setSourceSolo(trackContext->controlMixer(), isSolo);
     }
-    void TrackInterfacePrivate::handleClipInserted(QDspx::ClipEntity *clipEntity) {
+    void TrackInterfacePrivate::handleAudioClipInserted(int id, QDspx::AudioClipEntity *audioClipEntity) {
         Q_Q(TrackInterface);
-        if (clipEntity->type() == QDspx::ClipEntity::Audio) {
-            auto audioClipEntity = static_cast<QDspx::AudioClipEntity *>(clipEntity);
-            auto clip = context->audioClipRegistry()->create(audioClipEntity, q, q);
-            clips.insert(audioClipEntity, clip);
-        }
+        auto audioClipContext = trackContext->addAudioClip(id);
+        auto audioClipInterface = audioContextInterface->audioClipRegistry()->create(audioClipEntity, q, audioClipContext);
+        clips.insert(audioClipEntity, audioClipInterface);
+        audioContextInterface->d_func()->clips.insert(audioClipEntity, audioClipInterface);
     }
-    void TrackInterfacePrivate::handleClipAboutToRemove(QDspx::ClipEntity *clipEntity) {
+    void TrackInterfacePrivate::handleAudioClipAboutToRemove(int id, QDspx::AudioClipEntity *audioClipEntity) {
         Q_Q(TrackInterface);
-        if (clipEntity->type() == QDspx::ClipEntity::Audio) {
-            auto audioClipEntity = static_cast<QDspx::AudioClipEntity *>(clipEntity);
-            auto clip = clips.value(audioClipEntity);
-            if (clip) {
-                clip->quit();
-                delete clip;
-                clips.remove(audioClipEntity);
-            }
+        auto audioClipInterface = clips.value(audioClipEntity);
+        if (audioClipInterface) {
+            audioClipInterface->quit();
+            delete audioClipInterface;
+            clips.remove(audioClipEntity);
+            audioContextInterface->d_func()->clips.remove(audioClipEntity);
+            trackContext->removeAudioClip(id);
         }
     }
 
-    TrackInterface::TrackInterface(QDspx::TrackEntity *entity, AudioContextInterface *context, QObject *parent) : TrackInterface(*new TrackInterfacePrivate, parent) {
+    TrackInterface::TrackInterface(QDspx::TrackEntity *entity, AudioContextInterface *audioContextInterface, talcs::DspxTrackContext *trackContext)
+        : TrackInterface(*new TrackInterfacePrivate, audioContextInterface) {
         Q_D(TrackInterface);
         d->entity = entity;
-        d->context = context;
-        d->clipSeries = new talcs::AudioSourceClipSeries;
-        d->trackMixer = new talcs::PositionableMixerAudioSource;
-        d->trackMixer->addSource(d->clipSeries);
-        d->trackControlMixer = std::make_unique<talcs::PositionableMixerAudioSource>();
-        d->trackControlMixer->addSource(d->trackMixer);
-        d->replicaMixer = std::make_unique<talcs::PositionableMixerAudioSource>();
+        d->audioContextInterface = audioContextInterface;
 
         connect(entity->control(), &QDspx::TrackControlEntity::gainChanged, this, [=](double gainDecibel) {
-            d->handleEntityGainChange(gainDecibel);
+            d->handleEntityGainChanged(gainDecibel);
         });
         connect(entity->control(), &QDspx::TrackControlEntity::panChanged, this, [=](double pan) {
-            d->handleEntityPanChange(pan);
+            d->handleEntityPanChanged(pan);
         });
         connect(entity->control(), &QDspx::TrackControlEntity::muteChanged, this, [=](bool isMuted) {
-            d->handleEntityMuteChange(isMuted);
+            d->handleEntityMuteChanged(isMuted);
         });
         connect(entity->control(), &QDspx::TrackControlEntity::soloChanged, this, [=](bool isSolo) {
-            d->handleEntitySoloChange(isSolo);
+            d->handleEntitySoloChanged(isSolo);
         });
         connect(entity->clips(), &QDspx::ClipListEntity::inserted, this, [=](int id, QDspx::ClipEntity *clipEntity) {
-            d->handleClipInserted(clipEntity);
+            DEVICE_LOCKER;
+            if (clipEntity->type() == QDspx::ClipEntity::Audio)
+                d->handleAudioClipInserted(id, static_cast<QDspx::AudioClipEntity *>(clipEntity));
         });
         connect(entity->clips(), &QDspx::ClipListEntity::aboutToRemove, this, [=](int id, QDspx::ClipEntity *clipEntity) {
-            d->handleClipAboutToRemove(clipEntity);
+            DEVICE_LOCKER;
+            if (clipEntity->type() == QDspx::ClipEntity::Audio)
+                d->handleAudioClipAboutToRemove(id, static_cast<QDspx::AudioClipEntity *>(clipEntity));
         });
-        d->handleEntityGainChange(entity->control()->gain());
-        d->handleEntityPanChange(entity->control()->pan());
-        d->handleEntityMuteChange(entity->control()->mute());
-        d->handleEntitySoloChange(entity->control()->solo());
-        for (int id : entity->clips()->ids()) {
-            d->handleClipInserted(entity->clips()->value(id));
-        }
 
-        context->masterTrackMixer()->addSource(d->trackControlMixer.get());
+        d->handleEntityGainChanged(entity->control()->gain());
+        d->handleEntityPanChanged(entity->control()->pan());
+        d->handleEntityMuteChanged(entity->control()->mute());
+        d->handleEntitySoloChanged(entity->control()->solo());
+        for (int id : entity->clips()->ids()) {
+            auto clipEntity = entity->clips()->value(id);
+            if (clipEntity->type() == QDspx::ClipEntity::Audio)
+                d->handleAudioClipAboutToRemove(id, static_cast<QDspx::AudioClipEntity *>(clipEntity));
+        }
     }
     TrackInterface::TrackInterface(TrackInterfacePrivate &d, QObject *parent) : Core::IExecutive(parent), d_ptr(&d) {
         d.q_ptr = this;
     }
-    TrackInterface::~TrackInterface() {
-        Q_D(TrackInterface);
-        d->context->masterTrackMixer()->removeSource(d->trackControlMixer.get());
-    }
+    TrackInterface::~TrackInterface() = default;
+
     QDspx::TrackEntity *TrackInterface::entity() const {
         Q_D(const TrackInterface);
         return d->entity;
     }
-    AudioContextInterface *TrackInterface::context() const {
+    AudioContextInterface *TrackInterface::audioContextInterface() const {
         Q_D(const TrackInterface);
-        return d->context;
+        return d->audioContextInterface;
     }
     talcs::PositionableMixerAudioSource *TrackInterface::trackMixer() const {
         Q_D(const TrackInterface);
-        return d->trackMixer;
+        return d->trackContext->trackMixer();
     }
     talcs::AudioSourceClipSeries *TrackInterface::clipSeries() const {
         Q_D(const TrackInterface);
-        return d->clipSeries;
-    }
-    talcs::PositionableMixerAudioSource *TrackInterface::replicaMixer() const {
-        Q_D(const TrackInterface);
-        return d->replicaMixer.get();
-    }
-    QMutex *TrackInterface::replicaMixerMutex() {
-        Q_D(TrackInterface);
-        return &d->replicaMixerMutex;
+        return d->trackContext->clipSeries();
     }
     QList<AudioClipInterface *> TrackInterface::clips() const {
         Q_D(const TrackInterface);
         return d->clips.values();
     }
-    AudioClipInterface *TrackInterface::getClip(QDspx::AudioClipEntity *entity) const {
+    AudioClipInterface *TrackInterface::getAudioClipInterfaceFromEntity(QDspx::AudioClipEntity *entity) const {
         Q_D(const TrackInterface);
         return d->clips.value(entity);
     }

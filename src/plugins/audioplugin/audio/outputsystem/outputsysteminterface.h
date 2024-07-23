@@ -29,9 +29,9 @@ namespace Audio {
         ~OutputSystemInterface() override;
 
         bool isVST() const;
-        talcs::AudioDriverManager *audioDriverManager() const;
-        talcs::AudioDriver *audioDriver() const;
-        talcs::AudioDevice *audioDevice() const;
+        talcs::AudioDriverManager *driverManager() const;
+        talcs::AudioDriver *driver() const;
+        talcs::AudioDevice *device() const;
         talcs::MixerAudioSource *preMixer() const;
 
         bool isReady();

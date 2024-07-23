@@ -12,6 +12,7 @@ namespace QDspx {
 namespace talcs {
     class PositionableMixerAudioSource;
     class PositionableAudioSource;
+    class DspxAudioClipContext;
 }
 
 namespace Audio {
@@ -32,13 +33,13 @@ namespace Audio {
         ~AudioClipInterface() override;
 
         QDspx::AudioClipEntity *entity() const;
-        TrackInterface *track() const;
+        TrackInterface *trackInterface() const;
 
         talcs::PositionableMixerAudioSource *clipMixer() const;
-        talcs::PositionableAudioSource *clipAudioSource() const;
+        talcs::PositionableAudioSource *contentSource() const;
 
     protected:
-        explicit AudioClipInterface(QDspx::AudioClipEntity *entity, TrackInterface *track, QObject *parent = nullptr);
+        explicit AudioClipInterface(QDspx::AudioClipEntity *entity, TrackInterface *trackInterface, talcs::DspxAudioClipContext *audioClipContext);
         explicit AudioClipInterface(AudioClipInterfacePrivate &d, QObject *parent);
 
     private:

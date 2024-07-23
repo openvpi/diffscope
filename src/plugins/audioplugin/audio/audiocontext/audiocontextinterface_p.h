@@ -13,7 +13,7 @@
 #include <audioplugin/audioclipinterface.h>
 
 namespace talcs {
-    class AbstractAudioFormatIO;
+    class DspxProjectContext;
 }
 
 namespace Audio {
@@ -28,12 +28,17 @@ namespace Audio {
         Internal::ProjectAddOn *projectAddOn;
         Core::IExecutiveRegistry<TrackInterface> trackRegistry;
         Core::IExecutiveRegistry<AudioClipInterface> audioClipRegistry;
+
+        talcs::DspxProjectContext *projectContext;
+
         QHash<QDspx::TrackEntity *, TrackInterface *> tracks;
+        QHash<QDspx::AudioClipEntity *, AudioClipInterface *> clips;
 
         void init(Internal::ProjectAddOn *projectAddOn);
 
-        void handleTrackInserted(QDspx::TrackEntity *trackEntity);
-        void handleTrackAboutToRemove(QDspx::TrackEntity *trackEntity);
+        void handleTrackInserted(int index, QDspx::TrackEntity *trackEntity);
+        void handleTrackAboutToRemove(int index, QDspx::TrackEntity *trackEntity);
+        void handleTrackMoved(int index, int count, int dest) const;
 
     };
 }

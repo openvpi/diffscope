@@ -29,19 +29,19 @@ namespace Audio {
         Q_D(const OutputSystemInterface);
         return d->isVST;
     }
-    talcs::AudioDriverManager *OutputSystemInterface::audioDriverManager() const {
+    talcs::AudioDriverManager *OutputSystemInterface::driverManager() const {
         Q_D(const OutputSystemInterface);
         if (!d->isVST)
             return static_cast<OutputSystem *>(d->abstractOutputSystem)->outputContext()->driverManager();
         return nullptr;
     }
-    talcs::AudioDriver *OutputSystemInterface::audioDriver() const {
+    talcs::AudioDriver *OutputSystemInterface::driver() const {
         Q_D(const OutputSystemInterface);
         if (!d->isVST)
             return static_cast<OutputSystem *>(d->abstractOutputSystem)->outputContext()->driver();
         return nullptr;
     }
-    talcs::AudioDevice *OutputSystemInterface::audioDevice() const {
+    talcs::AudioDevice *OutputSystemInterface::device() const {
         Q_D(const OutputSystemInterface);
         return d->abstractOutputSystem->context()->device();
     }
