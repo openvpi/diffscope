@@ -24,10 +24,10 @@ namespace Audio {
         AudioContextInterface *audioContextInterface;
         QHash<QDspx::AudioClipEntity *, AudioClipInterface *> clips;
 
-        void handleEntityGainChanged(double gainDecibel) const;
-        void handleEntityPanChanged(double pan) const;
-        void handleEntityMuteChanged(bool isMuted) const;
-        void handleEntitySoloChanged(bool isSolo) const;
+        void handleGainChanged(double gainDecibel) const;
+        void handlePanChanged(double pan) const;
+        void handleMuteChanged(bool isMuted) const;
+        void handleSoloChanged(bool isSolo) const;
 
         void handleAudioClipInserted(int id, QDspx::AudioClipEntity *audioClipEntity);
         void handleAudioClipAboutToRemove(int id, QDspx::AudioClipEntity *audioClipEntity);

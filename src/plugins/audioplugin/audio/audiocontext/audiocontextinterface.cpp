@@ -1,6 +1,8 @@
 #include "audiocontextinterface.h"
 #include "audiocontextinterface_p.h"
 
+#include <TalcsCore/PositionableMixerAudioSource.h>
+#include <TalcsCore/Decibels.h>
 #include <TalcsFormat/FormatManager.h>
 #include <TalcsDevice/AudioDevice.h>
 #include <TalcsDspx/DspxProjectContext.h>
@@ -22,7 +24,17 @@ namespace Audio {
         Q_Q(AudioContextInterface);
         projectAddOn = projectAddOn_;
         projectContext = projectAddOn->projectContext();
+
         auto model = q->windowHandle()->doc()->dataModel().model();
+        QObject::connect(model->master()->control(), &QDspx::BusControlEntity::gainChanged, q, [=] (double gainDecibel) {
+            handleGainChanged(gainDecibel);
+        });
+        QObject::connect(model->master()->control(), &QDspx::BusControlEntity::panChanged, q, [=] (double pan) {
+            handlePanChanged(pan);
+        });
+        QObject::connect(model->master()->control(), &QDspx::BusControlEntity::muteChanged, q, [=] (bool isMuted) {
+            handleMuteChanged(isMuted);
+        });
         QObject::connect(model->tracks(), &QDspx::TrackListEntity::inserted, q, [=](int index, const QVector<QDspx::TrackEntity *> &trackEntities) {
             DEVICE_LOCKER;
             for (auto trackEntity : trackEntities) {
@@ -40,14 +52,24 @@ namespace Audio {
             }
         });
 
-        // TODO connect doc signals
-
+        handleGainChanged(model->master()->control()->gain());
+        handlePanChanged(model->master()->control()->pan());
+        handleMuteChanged(model->master()->control()->mute());
         for (int i = 0; i < model->tracks()->size(); i++) {
             auto trackEntity = model->tracks()->at(i);
             handleTrackInserted(i, trackEntity);
         }
 
 
+    }
+    void AudioContextInterfacePrivate::handleGainChanged(double gainDecibel) const {
+        projectContext->masterControlMixer()->setGain(talcs::Decibels::decibelsToGain(gainDecibel));
+    }
+    void AudioContextInterfacePrivate::handlePanChanged(double pan) const {
+        projectContext->masterControlMixer()->setPan(static_cast<float>(pan));
+    }
+    void AudioContextInterfacePrivate::handleMuteChanged(bool isMuted) const {
+        projectContext->masterControlMixer()->setSilentFlags(isMuted ? -1 : 0);
     }
     void AudioContextInterfacePrivate::handleTrackInserted(int index, QDspx::TrackEntity *trackEntity) {
         Q_Q(AudioContextInterface);

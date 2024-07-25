@@ -36,6 +36,10 @@ namespace Audio {
 
         void init(Internal::ProjectAddOn *projectAddOn);
 
+        void handleGainChanged(double gainDecibel) const;
+        void handlePanChanged(double pan) const;
+        void handleMuteChanged(bool isMuted) const;
+
         void handleTrackInserted(int index, QDspx::TrackEntity *trackEntity);
         void handleTrackAboutToRemove(int index, QDspx::TrackEntity *trackEntity);
         void handleTrackMoved(int index, int count, int dest) const;

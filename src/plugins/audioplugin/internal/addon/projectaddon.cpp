@@ -17,9 +17,14 @@ namespace Audio::Internal {
     ProjectAddOn::ProjectAddOn(QObject *parent) : Core::IWindowAddOn(parent) {
         m_audioContextInterface = new AudioContextInterface(this);
         m_projectContext = new talcs::DspxProjectContext(m_audioContextInterface);
+        m_projectContext->setFormatManager(IAudio::instance()->formatManager());
+        m_projectContext->setTimeConverter({}); // TODO
+        m_projectContext->setBufferingReadAheadSize(AudioSystem::outputSystem()->fileBufferingReadAheadSize());
+        connect(AudioSystem::outputSystem(), &AbstractOutputSystem::fileBufferingReadAheadSizeChanged, m_projectContext, &talcs::DspxProjectContext::setBufferingReadAheadSize);
     }
 
     ProjectAddOn::~ProjectAddOn() {
+        m_audioContextInterface->outputSystemInterface()->preMixer()->removeSource(m_projectContext->preMixer());
     }
 
     void ProjectAddOn::initialize() {
@@ -27,6 +32,7 @@ namespace Audio::Internal {
         iAudio->outputSystemInterface(isVST())->preMixer()->addSource(m_projectContext->preMixer());
         windowHandle()->addObject("Audio.AudioContextInterface", m_audioContextInterface);
         m_audioContextInterface->d_func()->init(this);
+        m_audioContextInterface->outputSystemInterface()->preMixer()->addSource(m_projectContext->preMixer());
     }
 
     void ProjectAddOn::extensionsInitialized() {

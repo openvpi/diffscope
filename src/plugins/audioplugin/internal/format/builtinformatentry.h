@@ -1,11 +1,11 @@
 #ifndef AUDIO_BUILTINFORMATENTRY_H
 #define AUDIO_BUILTINFORMATENTRY_H
 
-#include <audioplugin/formatentry.h>
+#include <TalcsFormat/FormatEntry.h>
 
 namespace Audio {
 
-    class BuiltInFormatEntry : public FormatEntry {
+    class BuiltInFormatEntry : public talcs::FormatEntry {
         Q_OBJECT
     public:
         explicit BuiltInFormatEntry(QObject *parent = nullptr);

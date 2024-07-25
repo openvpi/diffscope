@@ -5,14 +5,16 @@
 
 #include <QObject>
 
+namespace talcs {
+    class FormatManager;
+}
+
 namespace Audio {
 
     namespace Internal {
         class AudioPlugin;
     }
     class OutputSystemInterface;
-
-    class FormatManager;
 
     class IAudioPrivate;
 
@@ -26,7 +28,7 @@ namespace Audio {
 
         OutputSystemInterface *outputSystemInterface(bool isVST) const;
 
-        FormatManager *formatManager() const;
+        talcs::FormatManager *formatManager() const;
 
     private:
         explicit IAudio(QObject *parent = nullptr);

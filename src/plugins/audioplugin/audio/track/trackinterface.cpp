@@ -18,16 +18,16 @@
 
 namespace Audio {
 
-    void TrackInterfacePrivate::handleEntityGainChanged(double gainDecibel) const {
+    void TrackInterfacePrivate::handleGainChanged(double gainDecibel) const {
         trackContext->controlMixer()->setGain(talcs::Decibels::decibelsToGain(gainDecibel));
     }
-    void TrackInterfacePrivate::handleEntityPanChanged(double pan) const {
+    void TrackInterfacePrivate::handlePanChanged(double pan) const {
         trackContext->controlMixer()->setPan(static_cast<float>(pan));
     }
-    void TrackInterfacePrivate::handleEntityMuteChanged(bool isMuted) const {
+    void TrackInterfacePrivate::handleMuteChanged(bool isMuted) const {
         trackContext->controlMixer()->setSilentFlags(isMuted ? -1 : 0);
     }
-    void TrackInterfacePrivate::handleEntitySoloChanged(bool isSolo) const {
+    void TrackInterfacePrivate::handleSoloChanged(bool isSolo) const {
         audioContextInterface->masterTrackMixer()->setSourceSolo(trackContext->controlMixer(), isSolo);
     }
     void TrackInterfacePrivate::handleAudioClipInserted(int id, QDspx::AudioClipEntity *audioClipEntity) {
@@ -56,16 +56,16 @@ namespace Audio {
         d->audioContextInterface = audioContextInterface;
 
         connect(entity->control(), &QDspx::TrackControlEntity::gainChanged, this, [=](double gainDecibel) {
-            d->handleEntityGainChanged(gainDecibel);
+            d->handleGainChanged(gainDecibel);
         });
         connect(entity->control(), &QDspx::TrackControlEntity::panChanged, this, [=](double pan) {
-            d->handleEntityPanChanged(pan);
+            d->handlePanChanged(pan);
         });
         connect(entity->control(), &QDspx::TrackControlEntity::muteChanged, this, [=](bool isMuted) {
-            d->handleEntityMuteChanged(isMuted);
+            d->handleMuteChanged(isMuted);
         });
         connect(entity->control(), &QDspx::TrackControlEntity::soloChanged, this, [=](bool isSolo) {
-            d->handleEntitySoloChanged(isSolo);
+            d->handleSoloChanged(isSolo);
         });
         connect(entity->clips(), &QDspx::ClipListEntity::inserted, this, [=](int id, QDspx::ClipEntity *clipEntity) {
             DEVICE_LOCKER;
@@ -78,10 +78,10 @@ namespace Audio {
                 d->handleAudioClipAboutToRemove(id, static_cast<QDspx::AudioClipEntity *>(clipEntity));
         });
 
-        d->handleEntityGainChanged(entity->control()->gain());
-        d->handleEntityPanChanged(entity->control()->pan());
-        d->handleEntityMuteChanged(entity->control()->mute());
-        d->handleEntitySoloChanged(entity->control()->solo());
+        d->handleGainChanged(entity->control()->gain());
+        d->handlePanChanged(entity->control()->pan());
+        d->handleMuteChanged(entity->control()->mute());
+        d->handleSoloChanged(entity->control()->solo());
         for (int id : entity->clips()->ids()) {
             auto clipEntity = entity->clips()->value(id);
             if (clipEntity->type() == QDspx::ClipEntity::Audio)

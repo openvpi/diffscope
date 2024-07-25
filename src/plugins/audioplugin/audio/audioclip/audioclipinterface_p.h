@@ -16,9 +16,9 @@ namespace Audio {
 
         TrackInterface *trackInterface;
 
-        void handleEntityGainChanged(double gainDecibel) const;
-        void handleEntityPanChanged(double pan) const;
-        void handleEntityMuteChanged(bool isMute) const;
+        void handleGainChanged(double gainDecibel) const;
+        void handlePanChanged(double pan) const;
+        void handleMuteChanged(bool isMute) const;
 
         void handleStartChanged(int start) const;
         void handleClipStartChanged(int clipStart) const;

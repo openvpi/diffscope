@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QApplication>
 
+#include <TalcsFormat/FormatManager.h>
+
 #include <extensionsystem/pluginspec.h>
 
 #include <QMWidgets/qmdecoratorv2.h>
@@ -26,7 +28,6 @@
 #include <audioplugin/private/outputsysteminterface_p.h>
 #include <audioplugin/internal/devicetester.h>
 #include <audioplugin/internal/projectaddon.h>
-#include <audioplugin/formatmanager.h>
 #include <audioplugin/internal/builtinformatentry.h>
 #include <audioplugin/internal/midipage.h>
 #include <audioplugin/internal/midisystem.h>
@@ -65,7 +66,7 @@ namespace Audio::Internal {
         iAudio->d_func()->outputSystemInterface->d_func()->init(AudioSystem::outputSystem(), false);
         iAudio->d_func()->vstOutputSystemInterface = new OutputSystemInterface(AudioSystem::vstConnectionSystem());
         iAudio->d_func()->vstOutputSystemInterface->d_func()->init(AudioSystem::vstConnectionSystem(), true);
-        iAudio->d_func()->formatManager = new FormatManager(this);
+        iAudio->d_func()->formatManager = new talcs::FormatManager(this);
 
         iAudio->formatManager()->addEntry(new BuiltInFormatEntry);
 

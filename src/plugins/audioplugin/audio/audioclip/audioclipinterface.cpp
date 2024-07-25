@@ -20,13 +20,13 @@
 
 namespace Audio {
 
-    void AudioClipInterfacePrivate::handleEntityGainChanged(double gainDecibel) const {
+    void AudioClipInterfacePrivate::handleGainChanged(double gainDecibel) const {
         audioClipContext->controlMixer()->setGain(talcs::Decibels::decibelsToGain(gainDecibel));
     }
-    void AudioClipInterfacePrivate::handleEntityPanChanged(double pan) const {
+    void AudioClipInterfacePrivate::handlePanChanged(double pan) const {
         audioClipContext->controlMixer()->setPan(static_cast<float>(pan));
     }
-    void AudioClipInterfacePrivate::handleEntityMuteChanged(bool isMute) const {
+    void AudioClipInterfacePrivate::handleMuteChanged(bool isMute) const {
         audioClipContext->controlMixer()->setSilentFlags(isMute ? -1 : 0);
     }
     void AudioClipInterfacePrivate::handleStartChanged(int start) const {
@@ -60,13 +60,13 @@ namespace Audio {
         d->trackInterface = trackInterface;
 
         connect(entity->control(), &QDspx::BusControlEntity::gainChanged, this, [=](double gainDecibel) {
-            d->handleEntityGainChanged(gainDecibel);
+            d->handleGainChanged(gainDecibel);
         });
         connect(entity->control(), &QDspx::BusControlEntity::panChanged, this, [=](double pan) {
-            d->handleEntityPanChanged(pan);
+            d->handlePanChanged(pan);
         });
         connect(entity->control(), &QDspx::BusControlEntity::muteChanged, this, [=](bool isMuted) {
-            d->handleEntityMuteChanged(isMuted);
+            d->handleMuteChanged(isMuted);
         });
 
         connect(entity->time(), &QDspx::ClipTimeEntity::startChanged, this, [=](int start) {
@@ -86,9 +86,9 @@ namespace Audio {
             d->handlePathChanged(path);
         });
 
-        d->handleEntityGainChanged(entity->control()->gain());
-        d->handleEntityPanChanged(entity->control()->pan());
-        d->handleEntityMuteChanged(entity->control()->mute());
+        d->handleGainChanged(entity->control()->gain());
+        d->handlePanChanged(entity->control()->pan());
+        d->handleMuteChanged(entity->control()->mute());
         d->handleStartChanged(entity->time()->start());
         d->handleClipStartChanged(entity->time()->clipStart());
         d->handleClipLenChanged(entity->time()->clipLength());

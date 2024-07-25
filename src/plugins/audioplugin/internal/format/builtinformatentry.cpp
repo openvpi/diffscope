@@ -28,7 +28,7 @@ namespace Audio {
         ~AudioFormatIOObject() override = default;
     };
 
-    BuiltInFormatEntry::BuiltInFormatEntry(QObject *parent) : FormatEntry(parent) {
+    BuiltInFormatEntry::BuiltInFormatEntry(QObject *parent) : talcs::FormatEntry(parent) {
         std::set<QString> extensionHintSet;
         for (const auto &fmtInfo : talcs::AudioFormatIO::availableFormats()) {
             QStringList fmtExtensions;
