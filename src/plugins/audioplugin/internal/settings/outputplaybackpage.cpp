@@ -26,12 +26,11 @@
 #include <SVSCraftWidgets/seekbar.h>
 #include <SVSCraftCore/decibellinearizer.h>
 
-#include <CoreApi/iloader.h>
-
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/outputsystem.h>
 #include <audioplugin/internal/devicetester.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
+#include <audioplugin/internal/audiosettings.h>
 
 namespace Audio::Internal {
 
@@ -49,6 +48,7 @@ namespace Audio::Internal {
     }
 
     class OutputPlaybackPageWidget : public QWidget {
+        Q_OBJECT
     public:
         explicit OutputPlaybackPageWidget(QWidget *parent = nullptr) : QWidget(parent) {
             auto mainLayout = new QVBoxLayout;
@@ -173,10 +173,7 @@ namespace Audio::Internal {
                 updatePan(sliderValueToPan(value));
             });
 
-            auto &settings = *Core::ILoader::instance()->settings();
-            auto obj = settings["Audio"].toObject();
-
-            m_fileBufferingReadAheadSizeSpinBox->setValue(obj["fileBufferingReadAheadSize"].toInt());
+            m_fileBufferingReadAheadSizeSpinBox->setValue(AudioSettings::fileBufferingReadAheadSize());
         }
 
         void accept() const {
@@ -185,12 +182,9 @@ namespace Audio::Internal {
                     m_hotPlugModeComboBox->currentIndex()));
             AudioSystem::outputSystem()->setFileBufferingReadAheadSize(m_fileBufferingReadAheadSizeSpinBox->value());
             AudioSystem::vstConnectionSystem()->setFileBufferingReadAheadSize(m_fileBufferingReadAheadSizeSpinBox->value());
-            auto &settings = *Core::ILoader::instance()->settings();
-            auto obj = settings["Audio"].toObject();
-            obj["deviceGain"] = AudioSystem::outputSystem()->outputContext()->controlMixer()->gain();
-            obj["devicePan"] = AudioSystem::outputSystem()->outputContext()->controlMixer()->pan();
-            obj["fileBufferingReadAheadSize"] = m_fileBufferingReadAheadSizeSpinBox->value();
-            settings["Audio"] = obj;
+            AudioSettings::setDeviceGain(AudioSystem::outputSystem()->outputContext()->controlMixer()->gain());
+            AudioSettings::setDevicePan(AudioSystem::outputSystem()->outputContext()->controlMixer()->pan());
+            AudioSettings::setFileBufferingReadAheadSize(m_fileBufferingReadAheadSizeSpinBox->value());
             // TODO
         }
 
@@ -391,3 +385,5 @@ namespace Audio::Internal {
     }
 
 }
+
+#include "outputplaybackpage.moc"

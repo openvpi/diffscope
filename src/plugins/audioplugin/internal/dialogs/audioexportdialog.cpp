@@ -17,7 +17,7 @@
 #include <QListWidget>
 #include <QLabel>
 
-namespace Audio {
+namespace Audio::Internal {
     AudioExportDialog::AudioExportDialog(QWidget *parent) : QDialog(parent) {
         setWindowTitle(tr("Export Audio"));
         auto mainLayout = new QVBoxLayout;

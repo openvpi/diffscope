@@ -36,6 +36,10 @@ namespace Audio::Internal {
         double amplitudeDecibel() const;
         void setAttackMsec(int msec);
         int attackMsec() const;
+        void setDecayMsec(int msec);
+        int decayMsec() const;
+        void setDecayRatio(double ratio);
+        double decayRatio() const;
         void setReleaseMsec(int msec);
         int releaseMsec() const;
         void setFrequencyOfA(double frequency);

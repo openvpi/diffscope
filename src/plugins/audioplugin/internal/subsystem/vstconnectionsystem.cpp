@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QJsonDocument>
+#include <QJsonObject>
 
 #include <TalcsCore/MixerAudioSource.h>
 #include <TalcsCore/NoteSynthesizer.h>
@@ -16,15 +17,10 @@
 
 #include <QMWidgets/qmappextension.h>
 
-#include <CoreApi/iloader.h>
+#include <audioplugin/internal/audiohelpers.h>
+#include <audioplugin/internal/audiosettings.h>
 
 namespace Audio::Internal {
-
-    static double msecToRate(int msec, double sampleRate) {
-        if (msec == 0)
-            return 0.005;
-        return std::pow(0.005, 1000.0 / (msec * sampleRate));
-    }
 
     VSTConnectionSystem::VSTConnectionSystem(QObject *parent) : AbstractOutputSystem(parent) {
         m_remoteOutputContext = std::make_unique<talcs::RemoteOutputContext>();
@@ -48,19 +44,12 @@ namespace Audio::Internal {
             qWarning() << "Audio::VSTConnectionSystem: fatal: cannot open VST config file";
             return false;
         }
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        if (!obj.contains("vstEditorPort"))
-            obj.insert("vstEditorPort", 28081);
-        if (!obj.contains("vstPluginPort"))
-            obj.insert("vstPluginPort", 28082);
-        settings["Audio"] = obj;
         QJsonDocument doc({
             {"editor",      QApplication::applicationFilePath()},
-            {"editorPort",  obj.value("vstEditorPort")},
-            {"pluginPort",  obj.value("vstPluginPort")},
+            {"editorPort",  AudioSettings::vstEditorPort()},
+            {"pluginPort",  AudioSettings::vstPluginPort()},
             {"threadCount", QThread::idealThreadCount()},
-            {"theme",       obj.value("vstPluginEditorUsesCustomTheme").toBool() ? obj.value("vstTheme") : QJsonValue::Null},
+            {"theme",       AudioSettings::vstPluginEditorUsesCustomTheme() ? AudioSettings::vstTheme() : QJsonValue::Null},
         });
         vstConfigFile.write(doc.toJson());
         return true;
@@ -68,12 +57,10 @@ namespace Audio::Internal {
     bool VSTConnectionSystem::initialize() {
         if (!createVSTConfig())
             return false;
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        auto editorPort = obj["vstEditorPort"].toInt();
-        auto pluginPort = obj["vstPluginPort"].toInt();
+        auto editorPort = AudioSettings::vstEditorPort();
+        auto pluginPort = AudioSettings::vstPluginPort();
 
-        setFileBufferingReadAheadSize(obj["fileBufferingReadAheadSize"].toInt());
+        setFileBufferingReadAheadSize(AudioSettings::fileBufferingReadAheadSize());
         if (!m_remoteOutputContext->initialize(editorPort, pluginPort)) {
             qWarning() << "Audio::VSTConnectionSystem: fatal: socket fails to start server";
             return false;
@@ -108,18 +95,20 @@ namespace Audio::Internal {
     talcs::MidiNoteSynthesizer *VSTConnectionSystem::synthesizer() const {
         return m_synthesizer.get();
     }
+
     void VSTConnectionSystem::syncSynthesizerPreference() {
-        const auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
         auto dev = m_remoteOutputContext->device();
-        m_synthesizer->noteSynthesizer()->setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(obj["midiSynthesizerGenerator"].toInt()));
-        m_synthesizer->noteSynthesizer()->setAttackRate(msecToRate(obj["midiSynthesizerAttackMsec"].toInt(10), dev && dev->isOpen() ? dev->sampleRate() : 48000));
-        m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(obj["midiSynthesizerReleaseMsec"].toInt(50), dev && dev->isOpen() ? dev->sampleRate() : 48000));
-        m_synthesizerMixer->setGain(talcs::Decibels::decibelsToGain(obj["midiSynthesizerAmplitude"].toDouble(-3)));
-        if (qFuzzyIsNull(obj["midiSynthesizerFrequencyOfA"].toDouble())) {
+        auto sampleRate = dev && dev->isOpen() ? dev->sampleRate() : 48000;
+        m_synthesizer->noteSynthesizer()->setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(AudioSettings::midiSynthesizerGenerator()));
+        m_synthesizer->noteSynthesizer()->setAttackTime(AudioHelpers::msecToSample(AudioSettings::midiSynthesizerAttackMsec(), sampleRate));
+        m_synthesizer->noteSynthesizer()->setDecayTime(AudioHelpers::msecToSample(AudioSettings::midiSynthesizerDecayMsec(), sampleRate));
+        m_synthesizer->noteSynthesizer()->setDecayRatio(AudioSettings::midiSynthesizerDecayRatio());
+        m_synthesizer->noteSynthesizer()->setReleaseTime(AudioHelpers::msecToSample(AudioSettings::midiSynthesizerReleaseMsec(), sampleRate));
+        m_synthesizerMixer->setGain(talcs::Decibels::decibelsToGain(AudioSettings::midiSynthesizerAmplitude()));
+        if (qFuzzyIsNull(AudioSettings::midiSynthesizerFrequencyOfA())) {
             // TODO
         } else {
-            m_synthesizer->setFrequencyOfA(obj["midiSynthesizerFrequencyOfA"].toDouble());
+            m_synthesizer->setFrequencyOfA(AudioSettings::midiSynthesizerFrequencyOfA());
         }
     }
     void VSTConnectionSystem::setVSTAddOn(ProjectAddOn *addOn) {
@@ -138,10 +127,9 @@ namespace Audio::Internal {
         return false; // TODO
     }
     void VSTConnectionSystem::handleSampleRateChange(double sampleRate) {
-        const auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        m_synthesizer->noteSynthesizer()->setAttackRate(msecToRate(obj["midiSynthesizerAttackMsec"].toInt(10), sampleRate));
-        m_synthesizer->noteSynthesizer()->setReleaseRate(msecToRate(obj["midiSynthesizerReleaseMsec"].toInt(50), sampleRate));
+        m_synthesizer->noteSynthesizer()->setAttackTime(AudioHelpers::msecToSample(AudioSettings::midiSynthesizerAttackMsec(), sampleRate));
+        m_synthesizer->noteSynthesizer()->setDecayTime(AudioHelpers::msecToSample(AudioSettings::midiSynthesizerDecayMsec(), sampleRate));
+        m_synthesizer->noteSynthesizer()->setReleaseTime(AudioHelpers::msecToSample(AudioSettings::midiSynthesizerReleaseMsec(), sampleRate));
     }
     void VSTConnectionSystem::setHostSpecs(const QString &hostExecutable, const QString &pluginFormat) {
         m_hostSpecs = {hostExecutable, pluginFormat};

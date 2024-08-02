@@ -13,7 +13,7 @@ class QListWidget;
 class QCheckBox;
 class QRadioButton;
 
-namespace Audio {
+namespace Audio::Internal {
 
     class AudioExportDialog : public QDialog {
         Q_OBJECT

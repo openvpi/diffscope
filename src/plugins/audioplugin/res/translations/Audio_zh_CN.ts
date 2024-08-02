@@ -2,7 +2,104 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>Audio::AudioExportDialog</name>
+    <name>Audio::AudioExporter</name>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="205"/>
+        <source>WAV - Mixed</source>
+        <translation>WAV—混合</translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="206"/>
+        <source>WAV - Separated</source>
+        <translation>WAV—分离</translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="207"/>
+        <source>FLAC - Mixed</source>
+        <translation>FLAC—混合</translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="208"/>
+        <source>FLAC - Separated</source>
+        <translation>FLAC—分离</translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="209"/>
+        <source>Ogg/Vorbis - Mixed</source>
+        <translation>Ogg/Vorbis—混合</translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="210"/>
+        <source>Ogg/Vorbis - Separated</source>
+        <translation>Ogg/Vorbis—分离</translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="257"/>
+        <source>No file will be exported. Please check if any source is selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="260"/>
+        <source>The files to be exported contain files with duplicate names. Please check if the file name template is unique for each source.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="263"/>
+        <source>The files to be exported contain files with the same name as existing files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="266"/>
+        <source>Unrecognized file name template. Please check the syntax of the file name template.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../audio/audioexporter.cpp" line="269"/>
+        <source>Currently selected file type is a lossy format. Please use WAV or FLAC format to avoid loss of sound quality.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Audio::BuiltInFormatEntry</name>
+    <message>
+        <source>Option</source>
+        <translation type="vanished">选项</translation>
+    </message>
+    <message>
+        <source>Channel</source>
+        <translation type="vanished">声道</translation>
+    </message>
+    <message>
+        <source>Sample rate</source>
+        <translation type="vanished">采样率</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation type="vanished">系统</translation>
+    </message>
+    <message>
+        <source>Little-endian</source>
+        <translation type="vanished">小端序</translation>
+    </message>
+    <message>
+        <source>Big-endian</source>
+        <translation type="vanished">大端序</translation>
+    </message>
+    <message>
+        <source>Byte order</source>
+        <translation type="vanished">字节顺序</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">确定</translation>
+    </message>
+    <message>
+        <source>Configure Raw Data</source>
+        <translation type="vanished">配置原始数据</translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::AudioExportDialog</name>
     <message>
         <location filename="../../internal/dialogs/audioexportdialog.cpp" line="22"/>
         <source>Export Audio</source>
@@ -99,9 +196,29 @@
         <translation>循环区间(&amp;E)</translation>
     </message>
     <message>
+        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="148"/>
+        <source>&amp;Keep this dialog open after successful export</source>
+        <translation>导出成功后保持此对话框打开(&amp;K)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="152"/>
+        <source>Dry &amp;Run</source>
+        <translation>试运行(&amp;R)</translation>
+    </message>
+    <message>
         <location filename="../../internal/dialogs/audioexportdialog.cpp" line="156"/>
         <source>&quot;Dry Run&quot; shows the paths of files to export. No files will actually be exported.</source>
         <translation>“试运行”显示将要导出的文件的路径。没有文件会被实际导出。</translation>
+    </message>
+    <message>
+        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="163"/>
+        <source>Export</source>
+        <translation>导出</translation>
+    </message>
+    <message>
+        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="167"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
     <message>
         <source>&amp;Sample Rate</source>
@@ -170,14 +287,12 @@
         <translation type="vanished">循环区间(&amp;I)</translation>
     </message>
     <message>
-        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="148"/>
         <source>Keep this dialog open after successful export</source>
-        <translation>导出成功后保持此对话框打开</translation>
+        <translation type="vanished">导出成功后保持此对话框打开</translation>
     </message>
     <message>
-        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="152"/>
         <source>Dry Run</source>
-        <translation>试运行</translation>
+        <translation type="vanished">试运行</translation>
     </message>
     <message>
         <source>&quot;Dry Run&quot; show the paths of files to export. No files will actually be exported.</source>
@@ -189,18 +304,16 @@
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="163"/>
         <source>E&amp;xport</source>
-        <translation>导出(&amp;X)</translation>
+        <translation type="vanished">导出(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../../internal/dialogs/audioexportdialog.cpp" line="167"/>
         <source>&amp;Cancel</source>
-        <translation>取消(&amp;C)</translation>
+        <translation type="vanished">取消(&amp;C)</translation>
     </message>
 </context>
 <context>
-    <name>Audio::AudioPage</name>
+    <name>Audio::Internal::AudioPage</name>
     <message>
         <location filename="../../internal/settings/audiopage.cpp" line="7"/>
         <source>Audio</source>
@@ -213,29 +326,29 @@
     </message>
 </context>
 <context>
-    <name>Audio::AudioPlugin</name>
+    <name>Audio::Internal::AudioPlugin</name>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="44"/>
+        <location filename="../../internal/audioplugin.cpp" line="48"/>
         <source>Initializing audio plugin...</source>
         <translation>初始化音频插件…</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="77"/>
+        <location filename="../../internal/audioplugin.cpp" line="82"/>
         <source>Cannot initialize audio output system</source>
         <translation>无法初始化音频输出系统</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="78"/>
+        <location filename="../../internal/audioplugin.cpp" line="83"/>
         <source>%1 will not play any sound because no available audio output device found. Please check the status of the audio driver and device.</source>
         <translation>由于无可用音频输出设备，%1 将不会播放声音。请检查音频驱动与设备的状态。</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="84"/>
+        <location filename="../../internal/audioplugin.cpp" line="89"/>
         <source>Cannot initialize Plugin Mode connection system</source>
         <translation>无法初始化插件模式连接系统</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="85"/>
+        <location filename="../../internal/audioplugin.cpp" line="90"/>
         <source>%1 will not be able to establish a connection with %1 Bridge. Please check the Plugin Mode configuration in Settings.</source>
         <translation>%1 将无法与 %1 Bridge 建立连接。请在设置中检查插件模式的配置。</translation>
     </message>
@@ -249,7 +362,7 @@
     </message>
 </context>
 <context>
-    <name>Audio::BuiltInFormatEntry</name>
+    <name>Audio::Internal::BuiltInFormatEntry</name>
     <message>
         <location filename="../../internal/format/builtinformatentry.cpp" line="75"/>
         <source>Option</source>
@@ -297,75 +410,199 @@
     </message>
 </context>
 <context>
-    <name>Audio::CustomizeThemeDialog</name>
+    <name>Audio::Internal::CustomizeThemeDialog</name>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="75"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="76"/>
         <source>This view demonstrates what %1 Bridge&apos;s editor looks like. May differ from actual.</source>
         <translation>此视图展示了 %1 Bridge 编辑器的外观。可能与实际有所不同。</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="85"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="86"/>
         <source>Button background</source>
         <translation>按钮背景</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="86"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="87"/>
         <source>Button border</source>
         <translation>按钮边框</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="87"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="88"/>
         <source>Button text</source>
         <translation>按钮文本</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="88"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="89"/>
         <source>Editor background</source>
         <translation>编辑器背景</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="89"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="90"/>
         <source>Bottom bar background</source>
         <translation>底栏背景</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="90"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="91"/>
         <source>Message text</source>
         <translation>消息文本</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="91"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="92"/>
         <source>Error text</source>
         <translation>错误文本</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="93"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="94"/>
         <source>Use this field to select the target of Pick Color.&lt;ul&gt;&lt;li&gt;&lt;b&gt;Button background&lt;/b&gt;: the background color of &quot;Show %1 Editor&quot; button&lt;/li&gt;&lt;li&gt;&lt;b&gt;Button border&lt;/b&gt;: the border color of &quot;Show %1 Editor&quot; button&lt;/li&gt;&lt;li&gt;&lt;b&gt;Button text&lt;/b&gt;: the color of &quot;Show %1 Editor&quot; text on the button&lt;/li&gt;&lt;li&gt;&lt;b&gt;Editor background&lt;/b&gt;: the background color of the editor&apos;s main view&lt;/li&gt;&lt;li&gt;&lt;b&gt;Bottom bar background&lt;/b&gt;: the background color of the editor&apos;s bottom bar where show the status, version and error message&lt;/li&gt;&lt;li&gt;&lt;b&gt;Message text&lt;/b&gt;: the color of the status and version text&lt;/li&gt;&lt;li&gt;&lt;b&gt;Error text&lt;/b&gt;: the color of the error message text&lt;/li&gt;&lt;/ul&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="107"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="108"/>
         <source>&amp;Component</source>
         <translation>组件(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="108"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="109"/>
         <source>&amp;Pick Color</source>
         <translation>选择颜色(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="110"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="111"/>
         <source>After pressing this button, you can set a custom color for the selected target in the pop-up dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="119"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="120"/>
         <source>Customize Theme</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>Audio::OutputPlaybackPage</name>
+    <name>Audio::Internal::MIDIPage</name>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="354"/>
+        <source>MIDI</source>
+        <translation>MIDI</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="355"/>
+        <source>Configure MIDI preferences.</source>
+        <translation>配置 MIDI 首选项。</translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::MIDIPageWidget</name>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="82"/>
+        <source>MIDI Input</source>
+        <translation type="unfinished">MIDI 输入</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="85"/>
+        <source>&amp;Device</source>
+        <translation type="unfinished">设备(&amp;D)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="89"/>
+        <source>Synthesizer</source>
+        <translation type="unfinished">合成器</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <source>Sine wave</source>
+        <translation type="unfinished">正弦波</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <source>Square wave</source>
+        <translation type="unfinished">方波</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <source>Triangle Wave</source>
+        <translation type="unfinished">三角波</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <source>Sawtooth wave</source>
+        <translation type="unfinished">锯齿波</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="93"/>
+        <source>&amp;Generator</source>
+        <translation type="unfinished">生成器(&amp;G)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="105"/>
+        <source>&amp;Amplitude (dB)</source>
+        <translation type="unfinished">振幅（分贝）(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="118"/>
+        <source>A&amp;ttack (ms)</source>
+        <translation type="unfinished">触发时间（毫秒）(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="131"/>
+        <source>&amp;Release (ms)</source>
+        <translation type="unfinished">释放时间（毫秒）(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="139"/>
+        <source>Ad&amp;just by the cent shift of the active project window</source>
+        <translation type="unfinished">根据活动工程窗口的音分偏移调整(&amp;J)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="141"/>
+        <source>&amp;Frequency of A</source>
+        <translation type="unfinished">A 的频率(&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="146"/>
+        <source>&amp;Preview</source>
+        <translation type="unfinished">预览(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="149"/>
+        <source>&amp;Interrupt All Notes</source>
+        <translation type="unfinished">中断所有音符(&amp;I)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="150"/>
+        <source>Interrupt all notes that are currently played by the synthesizer</source>
+        <translation type="unfinished">中断正在被合成器播放的所有音符</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="159"/>
+        <source>Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="167"/>
+        <source>(Not working)</source>
+        <translation type="unfinished">（不工作）</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="179"/>
+        <source>Cannot open MIDI device %1</source>
+        <translation type="unfinished">无法打开 MIDI 设备 %1</translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::OutputPlaybackPage</name>
+    <message>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="221"/>
+        <source>Output and Playback</source>
+        <translation>输出与回放</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="223"/>
+        <source>Specify the audio output device and playback behaviors.</source>
+        <translation>指定音频输出设备与回放行为。</translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::OutputPlaybackPageWidget</name>
     <message>
         <source>Output &amp; Playback</source>
         <translation type="vanished">输出与回放</translation>
@@ -383,12 +620,12 @@
         <translation type="vanished">音频驱动(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="69"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="64"/>
         <source>&amp;Test</source>
         <translation>测试(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="71"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="66"/>
         <source>Control &amp;Panel</source>
         <translation>控制面板(&amp;P)</translation>
     </message>
@@ -405,102 +642,104 @@
         <translation type="vanished">采样率(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="47"/>
         <source>Output and Playback</source>
-        <translation>输出与回放</translation>
+        <translation type="vanished">输出与回放</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="49"/>
         <source>Specify the audio output device and playback behaviors.</source>
-        <translation>指定音频输出设备与回放行为。</translation>
+        <translation type="vanished">指定音频输出设备与回放行为。</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="62"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="57"/>
         <source>Audio Driver and Device</source>
         <translation>音频驱动与设备</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="65"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="60"/>
         <source>Audio d&amp;river</source>
         <translation>音频驱动(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="73"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="68"/>
         <source>Audio &amp;device</source>
         <translation>音频设备(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="77"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="72"/>
         <source>&amp;Buffer size</source>
         <translation>缓冲区长度(&amp;B)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="79"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="74"/>
         <source>&amp;Sample rate</source>
         <translation>采样率(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="81"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="76"/>
         <source>Notify when any device added or removed</source>
         <translation>增加或移除任意设备时通知</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="82"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="77"/>
         <source>Notify when current device removed</source>
         <translation>移除当前设备时通知</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="83"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="78"/>
         <source>Do not notify</source>
         <translation>不通知</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="84"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="79"/>
         <source>&amp;Hot plug notification</source>
         <translation>热插拔通知(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="86"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="81"/>
         <source>Device &amp;Gain (dB)</source>
         <translation>设备增益（分贝）(&amp;G)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="98"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="95"/>
         <source>Device &amp;Pan</source>
         <translation>设备声像(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="119"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="117"/>
         <source>After playback is stopped, &amp;move the play head to</source>
         <translation>回放停止后移动播放头至(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="122"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="120"/>
         <source>&amp;Close audio device when playback is stopped</source>
         <translation>回放停止时关闭音频设备(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="131"/>
-        <source>&amp;File reading buffer size (millisecond)</source>
-        <translation>读取文件的缓冲长度（毫秒）(&amp;F)</translation>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="129"/>
+        <source>&amp;File reading buffer size (samples)</source>
+        <translation>读取文件的缓冲长度（采样）(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="144"/>
+        <source>&amp;File reading buffer size (millisecond)</source>
+        <translation type="vanished">读取文件的缓冲长度（毫秒）(&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="141"/>
         <source>Cannot start audio playback</source>
         <translation>无法启动音频回放</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="146"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="143"/>
         <source>Please check the status of the audio driver and device.</source>
         <translation>请检查音频驱动与设备的状态。</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="250"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="287"/>
         <source>Cannot initialize %1 driver</source>
         <translation>无法初始化 %1 驱动</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="301"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="338"/>
         <source>Audio device %1 is not available</source>
         <translation>音频设备 %1 不可用</translation>
     </message>
@@ -509,17 +748,17 @@
         <translation type="vanished">热插拔通知(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="112"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="110"/>
         <source>Playback</source>
         <translation>回放</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="116"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="114"/>
         <source>Start position</source>
         <translation>开始位置</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="117"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="115"/>
         <source>End position</source>
         <translation>结束位置</translation>
     </message>
@@ -532,7 +771,7 @@
         <translation type="vanished">回放停止时关闭音频设备(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="127"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="125"/>
         <source>File Caching</source>
         <translation>文件缓存</translation>
     </message>
@@ -545,9 +784,9 @@
         <translation type="vanished">无法启动音频回放！</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="218"/>
         <location filename="../../internal/settings/outputplaybackpage.cpp" line="255"/>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="276"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="292"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="313"/>
         <source>(Not working)</source>
         <translation>（不工作）</translation>
     </message>
@@ -561,126 +800,126 @@
     </message>
 </context>
 <context>
-    <name>Audio::VSTModePage</name>
+    <name>Audio::Internal::VSTModePage</name>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="188"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="189"/>
         <source>Plugin Mode</source>
         <translation>插件模式</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="190"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="191"/>
         <source>Plug %1 to External Host Application.</source>
         <translation>将 %1 连接到外部宿主应用程序。</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="206"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="207"/>
         <source>Connectivity</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="209"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="210"/>
         <source>%1 communicates with %1 Bridge over a local TCP connection. (except for audio transmission)</source>
         <translation>%1 通过本地 TCP 连接与 %1 Bridge 通信。（除音频传输外）</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="215"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="216"/>
         <source>%1 listening &amp;port</source>
         <translation>%1 监听端口(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="220"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="221"/>
         <source>%1 &amp;Bridge listening port</source>
         <translation>%1 &amp;Bridge 监听端口</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="233"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="234"/>
         <source>When plugin editor is &amp;closed, make project window</source>
         <translation>当插件编辑器被关闭时，使工程窗口(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="235"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="236"/>
         <source>&amp;Keep project windows always on top</source>
         <translation>置顶工程窗口(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="239"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="240"/>
         <source>Plugin editor &amp;uses custom theme</source>
         <translation>为插件编辑器使用自定义主题(&amp;U)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="241"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="242"/>
         <source>Customize &amp;Theme</source>
         <translation>自定义主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="256"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="257"/>
         <source>Test Audio</source>
         <translation>测试音频</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="292"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="293"/>
         <source>Host</source>
         <translation>宿主</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="293"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="294"/>
         <source>Plugin Format</source>
         <translation>插件格式</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="295"/>
         <location filename="../../internal/settings/vstmodepage.cpp" line="296"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="303"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="310"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="321"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="297"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="304"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="311"/>
         <location filename="../../internal/settings/vstmodepage.cpp" line="322"/>
         <location filename="../../internal/settings/vstmodepage.cpp" line="323"/>
         <location filename="../../internal/settings/vstmodepage.cpp" line="324"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="325"/>
         <source>N/A</source>
         <translation>不可用</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="301"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="302"/>
         <source>Buffer Size</source>
         <translation>缓冲区长度</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="308"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="309"/>
         <source>Sample Rate</source>
         <translation>采样率</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="315"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="316"/>
         <source>Connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="318"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="319"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="320"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="321"/>
         <source>No</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="333"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="334"/>
         <source>Property</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="333"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="334"/>
         <source>Value</source>
         <translation>值</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="341"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="342"/>
         <source>Cannot start audio playback</source>
         <translation>无法启动音频回放</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="342"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="343"/>
         <source>Please check the status of %1 Bridge and the host application.</source>
         <translation>请检查 %1 Bridge 和宿主应用程序的状态。</translation>
     </message>
@@ -693,22 +932,22 @@
         <translation type="vanished">%1 &amp;Bridge 监听端口</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="223"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="224"/>
         <source>Only after both %1 and %1 Bridge are restarted will these options take effect.</source>
         <translation>只有在 %1 和 %1 Bridge 都重新启动之后这些选项才会生效。</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="229"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="230"/>
         <source>Editor</source>
         <translation>编辑器</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="232"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="233"/>
         <source>Hide</source>
         <translation>隐藏</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="232"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="233"/>
         <source>Minimize</source>
         <translation>最小化</translation>
     </message>
@@ -717,7 +956,7 @@
         <translation type="vanished">当插件编辑器被关闭时，使工程窗口(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="251"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="252"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>

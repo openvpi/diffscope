@@ -31,6 +31,7 @@
 #include <audioplugin/internal/builtinformatentry.h>
 #include <audioplugin/internal/midipage.h>
 #include <audioplugin/internal/midisystem.h>
+#include <audioplugin/internal/audioexportdialog.h>
 
 namespace Audio::Internal {
 
@@ -95,6 +96,9 @@ namespace Audio::Internal {
 
         new DeviceTester(iAudio->outputSystemInterface(true), iAudio->outputSystemInterface(true));
         new DeviceTester(iAudio->outputSystemInterface(false), iAudio->outputSystemInterface(false));
+
+        AudioExportDialog dlg;
+        dlg.exec();
 
         return true;
     }

@@ -31,47 +31,42 @@
 #include <audioplugin/internal/midisystem.h>
 #include <audioplugin/internal/outputsystem.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
+#include <audioplugin/internal/audiohelpers.h>
 
 namespace Audio::Internal {
 
     static talcs::NoteSynthesizerDetectorMessage scores[] = {
-        {0, 47, .5, true},
-        {0, 75, 1, true},
-        {2, 75, false},
-        {2, 66, .5, true},
-        {4, 66, false},
-        {4, 73, .7, true},
-        {6, 73, false},
-        {6, 71, 1, true},
-        {8, 71, false},
-        {8, 66, .5, true},
-        {10, 66, false},
-        {10, 73, .7, true},
-        {12, 47, false},
-        {12, 73, false},
+        {0, 47, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {0, 75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {2, 75, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {2, 66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {4, 66, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {4, 73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {6, 73, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {6, 71, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {8, 71, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {8, 66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {10, 66, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {10, 73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {12, 47, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {12, 73, talcs::NoteSynthesizerDetectorMessage::NoteOff},
 
-        {12, 49, .5, true},
-        {12, 75, 1, true},
-        {14, 75, false},
-        {14, 66, .5, true},
-        {15, 66, false},
-        {15, 76, 1, true},
-        {16, 76, false},
-        {16, 75, .7, true},
-        {18, 49, false},
-        {18, 75, false},
-        {18, 42, .5, true},
-        {18, 73, 1, true},
-        {24, 42, false},
-        {24, 73, false},
+        {12, 49, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {12, 75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {14, 75, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {14, 66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {15, 66, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {15, 76, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {16, 76, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {16, 75, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {18, 49, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {18, 75, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {18, 42, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {18, 73, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
+        {24, 42, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {24, 73, talcs::NoteSynthesizerDetectorMessage::NoteOff},
         talcs::NoteSynthesizerDetectorMessage::Null,
     };
-
-    static double msecToRate(int msec, double sampleRate) {
-        if (msec == 0)
-            return 0.005;
-        return std::pow(0.005, 1000.0 / (msec * sampleRate));
-    }
 
     class MIDIPageWidget : public QWidget, public talcs::NoteSynthesizerDetector {
         Q_OBJECT
@@ -82,7 +77,7 @@ namespace Audio::Internal {
             auto inputGroupBox = new QGroupBox(tr("MIDI Input"));
             auto inputLayout = new QFormLayout;
             auto deviceComboBox = new QComboBox;
-            inputLayout->addRow("&Device", deviceComboBox);
+            inputLayout->addRow(tr("&Device"), deviceComboBox);
             inputGroupBox->setLayout(inputLayout);
             mainLayout->addWidget(inputGroupBox);
 
@@ -90,7 +85,7 @@ namespace Audio::Internal {
             auto synthesizerLayout = new QFormLayout;
             auto generatorComboBox = new QComboBox;
             generatorComboBox->addItems({tr("Sine wave"), tr("Square wave"), tr("Triangle Wave"), tr("Sawtooth wave")});
-            synthesizerLayout->addRow("&Generator", generatorComboBox);
+            synthesizerLayout->addRow(tr("&Generator"), generatorComboBox);
 
             auto amplitudeLayout = new QHBoxLayout;
             auto amplitudeSlider = new SVS::SeekBar;
@@ -118,6 +113,31 @@ namespace Audio::Internal {
             auto attackLabel = new QLabel(tr("A&ttack (ms)"));
             attackLabel->setBuddy(attackSpinBox);
             synthesizerLayout->addRow(attackLabel, attackLayout);
+            
+            auto decayLayout = new QHBoxLayout;
+            auto decaySlider = new SVS::SeekBar;
+            decaySlider->setInterval(1);
+            decaySlider->setDefaultValue(10);
+            decaySlider->setRange(0, 1000);
+            decayLayout->addWidget(decaySlider);
+            auto decaySpinBox = new SVS::ExpressionSpinBox;
+            decaySpinBox->setRange(0, 1000);
+            decayLayout->addWidget(decaySpinBox);
+            auto decayLabel = new QLabel(tr("D&ecay (ms)"));
+            decayLabel->setBuddy(decaySpinBox);
+            synthesizerLayout->addRow(decayLabel, decayLayout);
+            
+            auto decayRatioLayout = new QHBoxLayout;
+            auto decayRatioSlider = new SVS::SeekBar;
+            decayRatioSlider->setDefaultValue(1);
+            decayRatioSlider->setRange(0, 1);
+            decayRatioLayout->addWidget(decayRatioSlider);
+            auto decayRatioSpinBox = new SVS::ExpressionDoubleSpinBox;
+            decayRatioSpinBox->setRange(0, 1);
+            decayRatioLayout->addWidget(decayRatioSpinBox);
+            auto decayRatioLabel = new QLabel(tr("Decay rati&o"));
+            decayRatioLabel->setBuddy(decayRatioSpinBox);
+            synthesizerLayout->addRow(decayRatioLabel, decayRatioLayout);
 
             auto releaseLayout = new QHBoxLayout;
             auto releaseSlider = new SVS::SeekBar;
@@ -203,17 +223,31 @@ namespace Audio::Internal {
                 QSignalBlocker o(attackSlider);
                 m_cachedAttackMsec = value;
                 attackSlider->setValue(value);
-                m_testSynthesizer.setAttackRate(msecToRate(value, m_testSynthesizer.sampleRate()));
+                m_testSynthesizer.setAttackTime(AudioHelpers::msecToSample(value, m_testSynthesizer.sampleRate()));
+            });
+            connect(decaySlider, &SVS::SeekBar::valueChanged, decaySpinBox, &QSpinBox::setValue);
+            connect(decaySpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int value) {
+                QSignalBlocker o(decaySlider);
+                m_cachedDecayMsec = value;
+                decaySlider->setValue(value);
+                m_testSynthesizer.setDecayTime(AudioHelpers::msecToSample(value, m_testSynthesizer.sampleRate()));
+            });
+            connect(decayRatioSlider, &SVS::SeekBar::valueChanged, decayRatioSpinBox, &QDoubleSpinBox::setValue);
+            connect(decayRatioSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double value) {
+                QSignalBlocker o(decayRatioSlider);
+                m_cachedDecayRatio = value;
+                decayRatioSlider->setValue(value);
+                m_testSynthesizer.setDecayRatio(value);
             });
             connect(releaseSlider, &SVS::SeekBar::valueChanged, releaseSpinBox, &QSpinBox::setValue);
             connect(releaseSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int value) {
                 m_cachedReleaseMsec = value;
                 releaseSlider->setValue(value);
-                m_testSynthesizer.setReleaseRate(msecToRate(value, m_testSynthesizer.sampleRate()));
+                m_testSynthesizer.setReleaseTime(AudioHelpers::msecToSample(value, m_testSynthesizer.sampleRate()));
             });
             connect(AudioSystem::outputSystem()->context(), &talcs::AbstractOutputContext::sampleRateChanged, this, [=](double sampleRate) {
-                m_testSynthesizer.setAttackRate(msecToRate(attackSpinBox->value(), sampleRate));
-                m_testSynthesizer.setReleaseRate(msecToRate(releaseSpinBox->value(), sampleRate));
+                m_testSynthesizer.setAttackTime(AudioHelpers::msecToSample(attackSpinBox->value(), sampleRate));
+                m_testSynthesizer.setReleaseTime(AudioHelpers::msecToSample(releaseSpinBox->value(), sampleRate));
             });
             connect(frequencyOfASpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double value) {
                 m_mutex.lock();
@@ -238,6 +272,8 @@ namespace Audio::Internal {
             amplitudeSpinBox->setValue(m_cachedAmplitude = ms->amplitudeDecibel());
             amplitudeSlider->setValue(SVS::DecibelLinearizer::decibelToLinearValue(amplitudeSpinBox->value()));
             attackSpinBox->setValue(m_cachedAttackMsec = ms->attackMsec());
+            decaySpinBox->setValue(m_cachedDecayMsec = ms->decayMsec());
+            decayRatioSpinBox->setValue(m_cachedDecayRatio = ms->decayRatio());
             releaseSpinBox->setValue(m_cachedReleaseMsec = ms->releaseMsec());
             m_cachedFrequencyOfA = ms->frequencyOfA();
             if (qFuzzyIsNull(m_cachedFrequencyOfA)) {
@@ -253,8 +289,10 @@ namespace Audio::Internal {
             AudioSystem::outputSystem()->context()->preMixer()->addSource(&m_testMixer);
             m_testSynthesizer.setGenerator(static_cast<talcs::NoteSynthesizer::Generator>(ms->generator()));
             m_testMixer.setGain(talcs::Decibels::decibelsToGain(ms->amplitudeDecibel()));
-            m_testSynthesizer.setAttackRate(msecToRate(ms->attackMsec(), m_testSynthesizer.sampleRate()));
-            m_testSynthesizer.setReleaseRate(msecToRate(ms->releaseMsec(), m_testSynthesizer.sampleRate()));
+            m_testSynthesizer.setAttackTime(AudioHelpers::msecToSample(ms->attackMsec(), m_testSynthesizer.sampleRate()));
+            m_testSynthesizer.setDecayTime(AudioHelpers::msecToSample(ms->decayMsec(), m_testSynthesizer.sampleRate()));
+            m_testSynthesizer.setDecayRatio(ms->decayRatio());
+            m_testSynthesizer.setReleaseTime(AudioHelpers::msecToSample(ms->releaseMsec(), m_testSynthesizer.sampleRate()));
 
             connect(synthesizerTestButton, &QAbstractButton::clicked, this, [=](bool checked) {
                 QMutexLocker locker(&m_mutex);
@@ -325,6 +363,8 @@ namespace Audio::Internal {
             ms->setGenerator(m_cachedGenerator);
             ms->setAmplitudeDecibel(m_cachedAmplitude);
             ms->setAttackMsec(m_cachedAttackMsec);
+            ms->setDecayMsec(m_cachedDecayMsec);
+            ms->setDecayRatio(m_cachedDecayRatio);
             ms->setReleaseMsec(m_cachedReleaseMsec);
             ms->setFrequencyOfA(m_cachedFrequencyOfA);
             AudioSystem::vstConnectionSystem()->syncSynthesizerPreference();
@@ -342,6 +382,8 @@ namespace Audio::Internal {
         int m_cachedGenerator;
         double m_cachedAmplitude;
         int m_cachedAttackMsec;
+        int m_cachedDecayMsec;
+        double m_cachedDecayRatio;
         int m_cachedReleaseMsec;
         double m_cachedFrequencyOfA;
 

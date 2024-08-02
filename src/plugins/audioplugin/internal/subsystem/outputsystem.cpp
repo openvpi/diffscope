@@ -6,8 +6,7 @@
 #include <TalcsDevice/AudioDriverManager.h>
 #include <TalcsDevice/AudioSourcePlayback.h>
 
-#include <icore.h>
-#include <CoreApi/iloader.h>
+#include <audioplugin/internal/audiosettings.h>
 
 namespace Audio::Internal {
     OutputSystem::OutputSystem(QObject *parent) : AbstractOutputSystem(parent), m_outputContext(new talcs::OutputContext) {
@@ -17,17 +16,14 @@ namespace Audio::Internal {
     OutputSystem::~OutputSystem() = default;
 
     bool OutputSystem::initialize() {
-        const auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
+        m_outputContext->setAdoptedBufferSize(AudioSettings::adoptedBufferSize());
+        m_outputContext->setAdoptedSampleRate(AudioSettings::adoptedSampleRate());
+        m_outputContext->controlMixer()->setGain(static_cast<float>(AudioSettings::deviceGain()));
+        m_outputContext->controlMixer()->setPan(static_cast<float>(AudioSettings::devicePan()));
+        m_outputContext->setHotPlugNotificationMode(static_cast<talcs::OutputContext::HotPlugNotificationMode>(AudioSettings::hotPlugNotificationMode()));
+        setFileBufferingReadAheadSize(AudioSettings::fileBufferingReadAheadSize());
 
-        m_outputContext->setAdoptedBufferSize(obj["adoptedBufferSize"].toInt());
-        m_outputContext->setAdoptedSampleRate(obj["adoptedSampleRate"].toDouble());
-        m_outputContext->controlMixer()->setGain(static_cast<float>(obj["deviceGain"].toDouble(1.0)));
-        m_outputContext->controlMixer()->setPan(static_cast<float>(obj["devicePan"].toDouble()));
-        m_outputContext->setHotPlugNotificationMode(static_cast<talcs::OutputContext::HotPlugNotificationMode>(obj["hotPlugNotificationMode"].toInt()));
-        setFileBufferingReadAheadSize(obj["fileBufferingReadAheadSize"].toInt());
-
-        if (m_outputContext->initialize(obj["driverName"].toString(), obj["deviceName"].toString())) {
+        if (m_outputContext->initialize(AudioSettings::driverName(), AudioSettings::deviceName())) {
             qDebug() << "Audio::OutputSystem: device initialized"
                      << m_outputContext->device()->name()
                      << m_outputContext->driver()->name()
@@ -72,10 +68,7 @@ namespace Audio::Internal {
     }
 
     bool OutputSystem::setAdoptedBufferSize(qint64 bufferSize) {
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        obj["adoptedBufferSize"] = bufferSize;
-        settings["Audio"] = obj;
+        AudioSettings::setAdoptedBufferSize(bufferSize);
         if (m_outputContext->setAdoptedBufferSize(bufferSize)) {
             qDebug() << "Audio::OutputSystem: buffer size changed"
                      << m_outputContext->device()->name()
@@ -94,10 +87,7 @@ namespace Audio::Internal {
     }
     
     bool OutputSystem::setAdoptedSampleRate(double sampleRate) {
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        obj["adoptedSampleRate"] = sampleRate;
-        settings["Audio"] = obj;
+        AudioSettings::setAdoptedSampleRate(sampleRate);
         if (m_outputContext->setAdoptedSampleRate(sampleRate)) {
             qDebug() << "Audio::OutputSystem: sample rate changed"
                      << m_outputContext->device()->name()
@@ -116,21 +106,15 @@ namespace Audio::Internal {
     }
 
     void OutputSystem::setHotPlugNotificationMode(talcs::OutputContext::HotPlugNotificationMode mode) {
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        obj["hotPlugNotificationMode"] = mode;
-        settings["Audio"] = obj;
+        AudioSettings::setHotPlugNotificationMode(mode);
         m_outputContext->setHotPlugNotificationMode(mode);
         qDebug() << "Audio::OutputSystem: hot plug notification mode set to" << mode;
     }
 
     void OutputSystem::postSetDevice() const {
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        obj["driverName"] = m_outputContext->driver()->name();
-        obj["deviceName"] = m_outputContext->device()->name();
-        obj["adoptedSampleRate"] = m_outputContext->adoptedSampleRate();
-        obj["adoptedBufferSize"] = m_outputContext->adoptedBufferSize();
-        settings["Audio"] = obj;
+        AudioSettings::setDriverName(m_outputContext->driver()->name());
+        AudioSettings::setDeviceName(m_outputContext->device()->name());
+        AudioSettings::setAdoptedSampleRate(m_outputContext->adoptedSampleRate());
+        AudioSettings::setAdoptedBufferSize(m_outputContext->adoptedBufferSize());
     }
 }

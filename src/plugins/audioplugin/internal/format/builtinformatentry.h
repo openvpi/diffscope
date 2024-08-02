@@ -3,7 +3,7 @@
 
 #include <TalcsFormat/FormatEntry.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     class BuiltInFormatEntry : public talcs::FormatEntry {
         Q_OBJECT

@@ -18,7 +18,7 @@
 
 #include <TalcsFormat/AudioFormatIO.h>
 
-namespace Audio {
+namespace Audio::Internal {
 
     class AudioFormatIOObject : public QObject, public talcs::AudioFormatIO {
     public:

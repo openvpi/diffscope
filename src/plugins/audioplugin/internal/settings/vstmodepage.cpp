@@ -15,8 +15,7 @@
 #include <QGraphicsView>
 #include <QColorDialog>
 #include <QMessageBox>
-
-#include <CoreApi/iloader.h>
+#include <QJsonObject>
 
 #include <SVSCraftWidgets/expressionspinbox.h>
 
@@ -27,6 +26,7 @@
 #include <audioplugin/internal/audiosystem.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
 #include <audioplugin/internal/devicetester.h>
+#include <audioplugin/internal/audiosettings.h>
 
 namespace Audio::Internal {
 
@@ -266,13 +266,11 @@ namespace Audio::Internal {
         connect(customizeThemeButton, &QPushButton::clicked, m_customizeThemeDialog,
                 &CustomizeThemeDialog::exec);
 
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        m_editorPortSpinBox->setValue(obj["vstEditorPort"].toInt(28081));
-        m_pluginPortSpinBox->setValue(obj["vstPluginPort"].toInt(28082));
+        m_editorPortSpinBox->setValue(AudioSettings::vstEditorPort());
+        m_pluginPortSpinBox->setValue(AudioSettings::vstPluginPort());
         // TODO
-        m_pluginEditorUsesCustomThemeCheckBox->setChecked(obj["vstPluginEditorUsesCustomTheme"].toBool());
-        auto vstTheme = obj["vstTheme"].toObject();
+        m_pluginEditorUsesCustomThemeCheckBox->setChecked(AudioSettings::vstPluginEditorUsesCustomTheme());
+        auto vstTheme = AudioSettings::vstTheme().toObject();
         if (vstTheme.contains("foreground"))
             m_customizeThemeDialog->setComponentColor(CustomizeThemeDialog::Foreground, QColor(static_cast<QRgb>(vstTheme["foreground"].toInt())));
         if (vstTheme.contains("foregroundBorder"))
@@ -352,11 +350,9 @@ namespace Audio::Internal {
     bool VSTModePage::accept() {
         if (!m_widget)
             return true;
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        obj["vstEditorPort"] = m_editorPortSpinBox->value();
-        obj["vstPluginPort"] = m_pluginPortSpinBox->value();
-        obj["vstTheme"] = QJsonObject({
+        AudioSettings::setVstEditorPort(m_editorPortSpinBox->value());
+        AudioSettings::setVstPluginPort(m_pluginPortSpinBox->value());
+        AudioSettings::setVstTheme(QJsonObject{
             {"foreground",
              static_cast<int>(
                  m_customizeThemeDialog->componentColor(CustomizeThemeDialog::Foreground).rgba())},
@@ -385,8 +381,7 @@ namespace Audio::Internal {
                  m_customizeThemeDialog->componentColor(CustomizeThemeDialog::BackgroundError)
                      .rgba())                                                                    },
         });
-        obj["vstPluginEditorUsesCustomTheme"] = m_pluginEditorUsesCustomThemeCheckBox->isChecked();
-        settings["Audio"] = obj;
+        AudioSettings::setVstPluginEditorUsesCustomTheme(m_pluginEditorUsesCustomThemeCheckBox->isChecked());
         VSTConnectionSystem::createVSTConfig();
         // TODO
         return true;
