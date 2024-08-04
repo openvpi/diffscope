@@ -110,10 +110,11 @@ namespace Audio::Internal {
             auto playbackLayout = new QFormLayout;
             m_playHeadBehaviorComboBox = new QComboBox;
             m_playHeadBehaviorComboBox->addItems({
-                tr("Start position"),
-                tr("End position"),
+                tr("Return to the start position after stopped"),
+                tr("Keep at current position after stopped, and play from current position next time"),
+                tr("Keep at current position after stopped, but play from the start position next time")
             });
-            playbackLayout->addRow(tr("After playback is stopped, &move the play head to"),
+            playbackLayout->addRow(tr("Playhead behavior"),
                                    m_playHeadBehaviorComboBox);
             m_closeDeviceOnPlaybackStopCheckBox =
                 new QCheckBox(tr("&Close audio device when playback is stopped"));
