@@ -32,6 +32,7 @@
 #include <audioplugin/internal/midipage.h>
 #include <audioplugin/internal/midisystem.h>
 #include <audioplugin/internal/audioexportdialog.h>
+#include <audioplugin/internal/pseudosingerpage.h>
 
 namespace Audio::Internal {
 
@@ -57,6 +58,7 @@ namespace Audio::Internal {
         audioPage->addPage(new VSTModePage);
         audioPage->addPage(new MIDIPage);
         sc->addPage(audioPage);
+        sc->addPage(new PseudoSingerPage); // TODO
 
         Core::IProjectWindowRegistry::instance()->attach<ProjectAddOn>();
 
@@ -97,8 +99,8 @@ namespace Audio::Internal {
         new DeviceTester(iAudio->outputSystemInterface(true), iAudio->outputSystemInterface(true));
         new DeviceTester(iAudio->outputSystemInterface(false), iAudio->outputSystemInterface(false));
 
-        AudioExportDialog dlg;
-        dlg.exec();
+//        AudioExportDialog dlg;
+//        dlg.exec();
 
         return true;
     }
