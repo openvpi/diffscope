@@ -174,6 +174,8 @@ namespace Audio::Internal {
                 updatePan(sliderValueToPan(value));
             });
 
+            m_playHeadBehaviorComboBox->setCurrentIndex(AudioSettings::playheadBehavior());
+
             m_fileBufferingReadAheadSizeSpinBox->setValue(AudioSettings::fileBufferingReadAheadSize());
         }
 
@@ -186,6 +188,7 @@ namespace Audio::Internal {
             AudioSettings::setDeviceGain(AudioSystem::outputSystem()->outputContext()->controlMixer()->gain());
             AudioSettings::setDevicePan(AudioSystem::outputSystem()->outputContext()->controlMixer()->pan());
             AudioSettings::setFileBufferingReadAheadSize(m_fileBufferingReadAheadSizeSpinBox->value());
+            AudioSettings::setPlayheadBehavior(m_playHeadBehaviorComboBox->currentIndex());
             // TODO
         }
 

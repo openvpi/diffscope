@@ -6,36 +6,6 @@
   [[nodiscard]] static valueType readName();                                                       \
   static void writeName(const valueType &);
 
-#define AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_1(readName, writeName, valueType)               \
-  AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_2(readName, writeName, valueType, valueType{})
-
-#define AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_2(readName, writeName, valueType, defaultValue) \
-  valueType AudioSettings::readName() {                                                            \
-    const auto &settings = *Core::ILoader::instance()->settings();                                 \
-    auto obj = settings["Audio"].toObject();                                                       \
-    auto variant = obj[#readName].toVariant();                                                     \
-    return variant.isNull() ? valueType(defaultValue) : variant.value<valueType>();                \
-  }                                                                                                \
-  void AudioSettings::writeName(const valueType &v) {                                              \
-    auto &settings = *Core::ILoader::instance()->settings();                                       \
-    auto obj = settings["Audio"].toObject();                                                       \
-    obj[#readName] = v;                                                                            \
-    settings["Audio"] = obj;                                                                       \
-  }
-#define AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_QJSONVALUE(readName, writeName)                 \
-  QJsonValue AudioSettings::readName() {                                                           \
-    const auto &settings = *Core::ILoader::instance()->settings();                                 \
-    auto obj = settings["Audio"].toObject();                                                       \
-    return obj[#readName];                                                                         \
-  }                                                                                                \
-  void AudioSettings::writeName(const QJsonValue &v) {                                             \
-    auto &settings = *Core::ILoader::instance()->settings();                                       \
-    auto obj = settings["Audio"].toObject();                                                       \
-    obj[#readName] = v;                                                                            \
-    settings["Audio"] = obj;                                                                       \
-  }
-
-
 #include <QJsonValue>
 
 namespace Audio::Internal {
@@ -72,6 +42,8 @@ namespace Audio::Internal {
         AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(midiSynthesizerGenerator, setMidiSynthesizerGenerator, int)
 
         AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(midiSynthesizerReleaseMsec, setMidiSynthesizerReleaseMsec, int)
+
+        AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(playheadBehavior, setPlayheadBehavior, int)
 
         AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(vstEditorPort, setVstEditorPort, int)
 

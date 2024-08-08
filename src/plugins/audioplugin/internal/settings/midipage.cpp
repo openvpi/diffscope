@@ -36,35 +36,35 @@
 namespace Audio::Internal {
 
     static talcs::NoteSynthesizerDetectorMessage scores[] = {
-        {0, 47, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {0, 75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {2, 75, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {2, 66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {4, 66, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {4, 73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {6, 73, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {6, 71, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {8, 71, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {8, 66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {10, 66, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {10, 73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {12, 47, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {12, 73, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {0, {47, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {0, {75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {2, {75, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {2, {66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {4, {66, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {4, {73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {6, {73, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {6, {71, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {8, {71, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {8, {66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {10, {66, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {10, {73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {12, {47, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {12, {73, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
 
-        {12, 49, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {12, 75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {14, 75, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {14, 66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {15, 66, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {15, 76, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {16, 76, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {16, 75, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {18, 49, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {18, 75, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {18, 42, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {18, 73, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn},
-        {24, 42, talcs::NoteSynthesizerDetectorMessage::NoteOff},
-        {24, 73, talcs::NoteSynthesizerDetectorMessage::NoteOff},
+        {12, {49, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {12, {75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {14, {75, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {14, {66, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {15, {66, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {15, {76, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {16, {76, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {16, {75, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {18, {49, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {18, {75, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {18, {42, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {18, {73, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {24, {42, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {24, {73, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
         talcs::NoteSynthesizerDetectorMessage::Null,
     };
 
@@ -353,7 +353,7 @@ namespace Audio::Internal {
                 return talcs::NoteSynthesizerDetectorMessage::Null;
             }
             message.position = static_cast<qint64>(std::round((static_cast<double>(message.position)  - (m_currentPosition - m_currentInterval)) * m_testMixer.sampleRate() / (97.0 / 60.0 * 4.0)));
-            message.frequency = talcs::MidiMessage::getMidiNoteInHertz(static_cast<int>(message.frequency), qFuzzyIsNull(m_cachedFrequencyOfA) ? 440.0 : m_cachedFrequencyOfA);
+            message.note.frequency = talcs::MidiMessage::getMidiNoteInHertz(static_cast<int>(message.note.frequency), qFuzzyIsNull(m_cachedFrequencyOfA) ? 440.0 : m_cachedFrequencyOfA);
             m_currentScoreIndex++;
             return message;
         }
