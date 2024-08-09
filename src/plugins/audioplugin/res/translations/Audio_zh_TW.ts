@@ -253,27 +253,27 @@
 <context>
     <name>Audio::Internal::AudioPlugin</name>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="48"/>
+        <location filename="../../internal/audioplugin.cpp" line="49"/>
         <source>Initializing audio plugin...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="82"/>
+        <location filename="../../internal/audioplugin.cpp" line="84"/>
         <source>Cannot initialize audio output system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="83"/>
+        <location filename="../../internal/audioplugin.cpp" line="85"/>
         <source>%1 will not play any sound because no available audio output device found. Please check the status of the audio driver and device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="89"/>
+        <location filename="../../internal/audioplugin.cpp" line="91"/>
         <source>Cannot initialize Plugin Mode connection system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="90"/>
+        <location filename="../../internal/audioplugin.cpp" line="92"/>
         <source>%1 will not be able to establish a connection with %1 Bridge. Please check the Plugin Mode configuration in Settings.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -397,12 +397,12 @@
 <context>
     <name>Audio::Internal::MIDIPage</name>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="354"/>
+        <location filename="../../internal/settings/midipage.cpp" line="397"/>
         <source>MIDI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="355"/>
+        <location filename="../../internal/settings/midipage.cpp" line="398"/>
         <source>Configure MIDI preferences.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -410,97 +410,107 @@
 <context>
     <name>Audio::Internal::MIDIPageWidget</name>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="82"/>
+        <location filename="../../internal/settings/midipage.cpp" line="77"/>
         <source>MIDI Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="85"/>
+        <location filename="../../internal/settings/midipage.cpp" line="80"/>
         <source>&amp;Device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="89"/>
+        <location filename="../../internal/settings/midipage.cpp" line="84"/>
         <source>Synthesizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <location filename="../../internal/settings/midipage.cpp" line="87"/>
         <source>Sine wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <location filename="../../internal/settings/midipage.cpp" line="87"/>
         <source>Square wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <location filename="../../internal/settings/midipage.cpp" line="87"/>
         <source>Triangle Wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="92"/>
+        <location filename="../../internal/settings/midipage.cpp" line="87"/>
         <source>Sawtooth wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="93"/>
+        <location filename="../../internal/settings/midipage.cpp" line="88"/>
         <source>&amp;Generator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="105"/>
+        <location filename="../../internal/settings/midipage.cpp" line="100"/>
         <source>&amp;Amplitude (dB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="118"/>
+        <location filename="../../internal/settings/midipage.cpp" line="113"/>
         <source>A&amp;ttack (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="131"/>
+        <location filename="../../internal/settings/midipage.cpp" line="126"/>
+        <source>D&amp;ecay (ms)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="138"/>
+        <source>Decay rati&amp;o</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/midipage.cpp" line="151"/>
         <source>&amp;Release (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="139"/>
+        <location filename="../../internal/settings/midipage.cpp" line="159"/>
         <source>Ad&amp;just by the cent shift of the active project window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="141"/>
+        <location filename="../../internal/settings/midipage.cpp" line="161"/>
         <source>&amp;Frequency of A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="146"/>
+        <location filename="../../internal/settings/midipage.cpp" line="166"/>
         <source>&amp;Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="149"/>
+        <location filename="../../internal/settings/midipage.cpp" line="169"/>
         <source>&amp;Interrupt All Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="150"/>
+        <location filename="../../internal/settings/midipage.cpp" line="170"/>
         <source>Interrupt all notes that are currently played by the synthesizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="159"/>
+        <location filename="../../internal/settings/midipage.cpp" line="179"/>
         <source>Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="167"/>
+        <location filename="../../internal/settings/midipage.cpp" line="187"/>
         <source>(Not working)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="179"/>
+        <location filename="../../internal/settings/midipage.cpp" line="199"/>
         <source>Cannot open MIDI device %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -508,12 +518,12 @@
 <context>
     <name>Audio::Internal::OutputPlaybackPage</name>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="221"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="218"/>
         <source>Output and Playback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="223"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="220"/>
         <source>Specify the audio output device and playback behaviors.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -521,88 +531,93 @@
 <context>
     <name>Audio::Internal::OutputPlaybackPageWidget</name>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="57"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="56"/>
         <source>Audio Driver and Device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="60"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="59"/>
         <source>Audio d&amp;river</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="64"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="63"/>
         <source>&amp;Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="66"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="65"/>
         <source>Control &amp;Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="68"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="67"/>
         <source>Audio &amp;device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="72"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="71"/>
         <source>&amp;Buffer size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="74"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="73"/>
         <source>&amp;Sample rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="76"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="75"/>
         <source>Notify when any device added or removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="77"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="76"/>
         <source>Notify when current device removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="78"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="77"/>
         <source>Do not notify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="79"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="78"/>
         <source>&amp;Hot plug notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="81"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="80"/>
         <source>Device &amp;Gain (dB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="95"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="94"/>
         <source>Device &amp;Pan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="110"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="109"/>
         <source>Playback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="113"/>
+        <source>Return to the start position after stopped</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../internal/settings/outputplaybackpage.cpp" line="114"/>
-        <source>Start position</source>
+        <source>Keep at current position after stopped, and play from current position next time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../internal/settings/outputplaybackpage.cpp" line="115"/>
-        <source>End position</source>
+        <source>Keep at current position after stopped, but play from the start position next time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../internal/settings/outputplaybackpage.cpp" line="117"/>
-        <source>After playback is stopped, &amp;move the play head to</source>
+        <source>Playhead behavior</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -631,20 +646,116 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="255"/>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="292"/>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="313"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="252"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="289"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="310"/>
         <source>(Not working)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="287"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="284"/>
         <source>Cannot initialize %1 driver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="338"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="335"/>
         <source>Audio device %1 is not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::PseudoSingerPage</name>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="134"/>
+        <source>Pseudo Singer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="135"/>
+        <source>The pseudo singer is built into %1 for outputting synthesized audio. It allows you to preview a project without specifying a virtual singer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::PseudoSingerPageWidget</name>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="25"/>
+        <source>Synthesizer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="33"/>
+        <source>&amp;Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="36"/>
+        <source>&amp;Synth No.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <source>Sine wave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <source>Square wave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <source>Triangle Wave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <source>Sawtooth wave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="46"/>
+        <source>&amp;Generator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="58"/>
+        <source>&amp;Amplitude (dB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="71"/>
+        <source>A&amp;ttack (ms)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="84"/>
+        <source>D&amp;ecay (ms)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="96"/>
+        <source>Decay rati&amp;o</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="109"/>
+        <source>&amp;Release (ms)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="118"/>
+        <source>Parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="120"/>
+        <source>Read pitc&amp;h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="122"/>
+        <source>Read energ&amp;y</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -731,69 +842,69 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="293"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="291"/>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="294"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="292"/>
         <source>Plugin Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="296"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="297"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="304"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="311"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="294"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="295"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="302"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="309"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="320"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="321"/>
         <location filename="../../internal/settings/vstmodepage.cpp" line="322"/>
         <location filename="../../internal/settings/vstmodepage.cpp" line="323"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="324"/>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="325"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="302"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="300"/>
         <source>Buffer Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="309"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="307"/>
         <source>Sample Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="316"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="314"/>
         <source>Connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="319"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="317"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="321"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="319"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="334"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="332"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="334"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="332"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="342"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="340"/>
         <source>Cannot start audio playback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/vstmodepage.cpp" line="343"/>
+        <location filename="../../internal/settings/vstmodepage.cpp" line="341"/>
         <source>Please check the status of %1 Bridge and the host application.</source>
         <translation type="unfinished"></translation>
     </message>
