@@ -251,7 +251,8 @@ namespace Audio::Internal {
             });
             connect(frequencyOfASpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double value) {
                 m_mutex.lock();
-                m_cachedFrequencyOfA = value;
+                if (!adjustByProjectCheckBox->isChecked())
+                    m_cachedFrequencyOfA = value;
                 m_mutex.unlock();
                 m_testSynthesizer.flush();
             });
@@ -277,9 +278,9 @@ namespace Audio::Internal {
             releaseSpinBox->setValue(m_cachedReleaseMsec = ms->releaseMsec());
             m_cachedFrequencyOfA = ms->frequencyOfA();
             if (qFuzzyIsNull(m_cachedFrequencyOfA)) {
-                frequencyOfASpinBox->setValue(440.0);
                 adjustByProjectCheckBox->setChecked(true);
                 frequencyOfASpinBox->setDisabled(true);
+                frequencyOfASpinBox->setValue(440.0);
             } else {
                 frequencyOfASpinBox->setValue(m_cachedFrequencyOfA);
             }
