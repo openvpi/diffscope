@@ -14,12 +14,17 @@
 #include <SVSCraftWidgets/expressionspinbox.h>
 #include <SVSCraftWidgets/expressiondoublespinbox.h>
 
+#include <audioplugin/internal/settingpagesynthhelper.h>
+#include <audioplugin/internal/audiosettings.h>
+#include <audioplugin/internal/audiosystem.h>
+#include <audioplugin/internal/outputsystem.h>
+
 namespace Audio::Internal {
 
     class PseudoSingerPageWidget : public QWidget {
         Q_OBJECT
     public:
-        explicit PseudoSingerPageWidget(QWidget *parent = nullptr) : QWidget(parent) {
+        explicit PseudoSingerPageWidget(QWidget *parent = nullptr) : QWidget(parent), d(new SettingPageSynthHelper) {
             auto mainLayout = new QVBoxLayout;
 
             auto synthesizerGroupBox = new QGroupBox(tr("Synthesizer"));
@@ -62,7 +67,7 @@ namespace Audio::Internal {
             auto attackLayout = new QHBoxLayout;
             auto attackSlider = new SVS::SeekBar;
             attackSlider->setInterval(1);
-            attackSlider->setDefaultValue(10);
+            attackSlider->setDefaultValue(50);
             attackSlider->setRange(0, 100);
             attackLayout->addWidget(attackSlider);
             auto attackSpinBox = new SVS::ExpressionSpinBox;
@@ -75,7 +80,7 @@ namespace Audio::Internal {
             auto decayLayout = new QHBoxLayout;
             auto decaySlider = new SVS::SeekBar;
             decaySlider->setInterval(1);
-            decaySlider->setDefaultValue(10);
+            decaySlider->setDefaultValue(1000);
             decaySlider->setRange(0, 1000);
             decayLayout->addWidget(decaySlider);
             auto decaySpinBox = new SVS::ExpressionSpinBox;
@@ -87,7 +92,7 @@ namespace Audio::Internal {
 
             auto decayRatioLayout = new QHBoxLayout;
             auto decayRatioSlider = new SVS::SeekBar;
-            decayRatioSlider->setDefaultValue(1);
+            decayRatioSlider->setDefaultValue(0.5);
             decayRatioSlider->setRange(0, 1);
             decayRatioLayout->addWidget(decayRatioSlider);
             auto decayRatioSpinBox = new SVS::ExpressionDoubleSpinBox;
@@ -127,7 +132,106 @@ namespace Audio::Internal {
             mainLayout->addStretch();
 
             setLayout(mainLayout);
+
+            for (int i = 0; i < 4; i++) {
+                m_cachedSynthConfig[i].generator = AudioSettings::pseudoSingerSynthGenerator(i);
+                m_cachedSynthConfig[i].amplitude = AudioSettings::pseudoSingerSynthAmplitude(i);
+                m_cachedSynthConfig[i].attackMsec = AudioSettings::pseudoSingerSynthAttackMsec(i);
+                m_cachedSynthConfig[i].decayMsec = AudioSettings::pseudoSingerSynthDecayMsec(i);
+                m_cachedSynthConfig[i].decayRatio = AudioSettings::pseudoSingerSynthDecayRatio(i);
+                m_cachedSynthConfig[i].releaseMsec = AudioSettings::pseudoSingerSynthReleaseMsec(i);
+            }
+
+            d->m_cachedGenerator = m_cachedSynthConfig[0].generator;
+            d->m_cachedAmplitude = m_cachedSynthConfig[0].amplitude;
+            d->m_cachedAttackMsec = m_cachedSynthConfig[0].attackMsec;
+            d->m_cachedDecayMsec = m_cachedSynthConfig[0].decayMsec;
+            d->m_cachedDecayRatio = m_cachedSynthConfig[0].decayRatio;
+            d->m_cachedReleaseMsec = m_cachedSynthConfig[0].releaseMsec;
+
+            static double amplitudeDefaultValue[] = {
+                SVS::DecibelLinearizer::decibelToLinearValue(-4.0),
+                SVS::DecibelLinearizer::decibelToLinearValue(-7.0),
+                SVS::DecibelLinearizer::decibelToLinearValue(-4.0),
+                SVS::DecibelLinearizer::decibelToLinearValue(-6.0)};
+            amplitudeSlider->setDefaultValue(amplitudeDefaultValue[d->m_cachedGenerator]);
+
+            d->initialize(generatorComboBox, amplitudeSlider, amplitudeSpinBox, attackSlider,
+                          attackSpinBox, decaySlider, decaySpinBox, decayRatioSlider,
+                          decayRatioSpinBox, releaseSlider, releaseSpinBox);
+
+            connect(synthesizerTestButton, &QAbstractButton::clicked, this, [=](bool checked) {
+                if (checked) {
+                    if (!AudioSystem::outputSystem()->isReady()) {
+                        synthesizerTestButton->setChecked(false);
+                        return;
+                    }
+                }
+                d->toggleTestState(checked);
+            });
+            connect(d, &SettingPageSynthHelper::testFinished, this, [=] {
+                synthesizerTestButton->setChecked(false);
+            }, Qt::QueuedConnection);
+
+            connect(synthesizerSelectComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
+                m_cachedSynthConfig[m_oldSynthIndex].generator = d->m_cachedGenerator;
+                m_cachedSynthConfig[m_oldSynthIndex].amplitude = d->m_cachedAmplitude;
+                m_cachedSynthConfig[m_oldSynthIndex].attackMsec = d->m_cachedAttackMsec;
+                m_cachedSynthConfig[m_oldSynthIndex].decayMsec = d->m_cachedDecayMsec;
+                m_cachedSynthConfig[m_oldSynthIndex].decayRatio = d->m_cachedDecayRatio;
+                m_cachedSynthConfig[m_oldSynthIndex].releaseMsec = d->m_cachedReleaseMsec;
+
+                generatorComboBox->setCurrentIndex(m_cachedSynthConfig[index].generator);
+                amplitudeSpinBox->setValue(m_cachedSynthConfig[index].amplitude);
+                attackSpinBox->setValue(m_cachedSynthConfig[index].attackMsec);
+                decaySpinBox->setValue(m_cachedSynthConfig[index].decayMsec);
+                decayRatioSpinBox->setValue(m_cachedSynthConfig[index].decayRatio);
+                releaseSpinBox->setValue(m_cachedSynthConfig[index].releaseMsec);
+
+                amplitudeSlider->setDefaultValue(amplitudeDefaultValue[m_cachedSynthConfig[index].generator]);
+
+                m_oldSynthIndex = index;
+            });
+
+            readPitchCheckBox->setChecked(m_cachedReadPitch = AudioSettings::pseudoSingerReadPitch());
+            readEnergyCheckBox->setChecked(m_cachedReadEnergy = AudioSettings::pseudoSingerReadEnergy());
+
+            connect(readPitchCheckBox, &QAbstractButton::clicked, this, [=](bool checked) {
+                m_cachedReadPitch = checked;
+            });
+            connect(readEnergyCheckBox, &QAbstractButton::clicked, this, [=](bool checked) {
+                m_cachedReadEnergy = checked;
+            });
+
         }
+
+        void accept() {
+            for (int i = 0; i < 4; i++) {
+                AudioSettings::setPseudoSingerSynthGenerator(i, m_cachedSynthConfig[i].generator);
+                AudioSettings::setPseudoSingerSynthAmplitude(i, m_cachedSynthConfig[i].amplitude);
+                AudioSettings::setPseudoSingerSynthAttackMsec(i, m_cachedSynthConfig[i].attackMsec);
+                AudioSettings::setPseudoSingerSynthDecayMsec(i, m_cachedSynthConfig[i].decayMsec);
+                AudioSettings::setPseudoSingerSynthDecayRatio(i, m_cachedSynthConfig[i].decayRatio);
+                AudioSettings::setPseudoSingerSynthReleaseMsec(i, m_cachedSynthConfig[i].releaseMsec);
+            }
+            AudioSettings::setPseudoSingerReadPitch(m_cachedReadPitch);
+            AudioSettings::setPseudoSingerReadEnergy(m_cachedReadEnergy);
+        }
+
+        struct {
+            int generator;
+            double amplitude;
+            int attackMsec;
+            int decayMsec;
+            double decayRatio;
+            int releaseMsec;
+        } m_cachedSynthConfig[4];
+
+        bool m_cachedReadPitch;
+        bool m_cachedReadEnergy;
+
+        SettingPageSynthHelper *d;
+        int m_oldSynthIndex = 0;
     };
 
     PseudoSingerPage::PseudoSingerPage(QObject *parent) : Core::ISettingPage("audio.PseudoSinger", parent) {
