@@ -300,11 +300,16 @@ namespace Audio::Internal {
     void OutputPlaybackPageWidget::updateDeviceComboBox() {
         auto outputSys = AudioSystem::outputSystem();
 
+        if (!outputSys->outputContext()->driver()->defaultDevice().isEmpty()) {
+            m_deviceComboBox->addItem(tr("Default device"), QString(""));
+            if (outputSys->outputContext()->device() && outputSys->outputContext()->device()->name().isEmpty())
+                m_deviceComboBox->setCurrentIndex(0);
+        }
         auto deviceList = outputSys->outputContext()->driver()->devices();
         for (int i = 0; i < deviceList.size(); i++) {
             m_deviceComboBox->addItem(deviceList[i], deviceList[i]);
             if (outputSys->outputContext()->device() && deviceList[i] == outputSys->outputContext()->device()->name())
-                m_deviceComboBox->setCurrentIndex(i);
+                m_deviceComboBox->setCurrentIndex(i + 1);
         }
         if (!outputSys->outputContext()->device()) {
             m_deviceComboBox->addItem(tr("(Not working)"));
@@ -318,9 +323,9 @@ namespace Audio::Internal {
         connect(
             m_deviceComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
             [=](int index) {
-                auto newDevName = m_deviceComboBox->itemData(index).toString();
-                if (newDevName.isNull())
+                if (m_deviceComboBox->itemData(index).isNull())
                     return;
+                auto newDevName = m_deviceComboBox->itemData(index).toString();
                 if (!outputSys->setDevice(newDevName)) {
                     for (int i = 0; i < m_deviceComboBox->count(); i++) {
                         if ((!outputSys->outputContext()->device() && m_deviceComboBox->itemData(i).isNull()) ||
@@ -332,7 +337,7 @@ namespace Audio::Internal {
                         }
                     }
                     QMessageBox::warning(this, {},
-                                         tr("Audio device %1 is not available").arg(newDevName));
+                                         tr("Audio device %1 is not available").arg(newDevName.isEmpty() ? tr("Default device") : newDevName));
                 } else {
                     if (m_deviceComboBox->itemData(m_deviceComboBox->count() - 1).isNull()) {
                         m_deviceComboBox->removeItem(m_deviceComboBox->count() - 1);
