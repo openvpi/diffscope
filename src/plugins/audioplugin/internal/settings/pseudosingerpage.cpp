@@ -158,7 +158,7 @@ namespace Audio::Internal {
 
             d->initialize(generatorComboBox, amplitudeSlider, amplitudeSpinBox, attackSlider,
                           attackSpinBox, decaySlider, decaySpinBox, decayRatioSlider,
-                          decayRatioSpinBox, releaseSlider, releaseSpinBox);
+                          decayRatioSpinBox, releaseSlider, releaseSpinBox, synthesizerTestButton);
 
             connect(synthesizerTestButton, &QAbstractButton::clicked, this, [=](bool checked) {
                 if (checked) {
@@ -249,6 +249,7 @@ namespace Audio::Internal {
         return m_widget = new PseudoSingerPageWidget;
     }
     bool PseudoSingerPage::accept() {
+        m_widget->accept();
         return true;
     }
     void PseudoSingerPage::finish() {

@@ -35,7 +35,7 @@ namespace Audio::Internal {
         presetLayout->addRow(presetLabel, presetOptionLayout);
         mainLayout->addLayout(presetLayout);
 
-        auto mainOptionsLayout = new QHBoxLayout;
+        auto mainOptionsLayout = new QVBoxLayout;
 
         auto leftLayout = new QVBoxLayout;
         auto rightLayout = new QVBoxLayout;

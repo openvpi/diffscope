@@ -1,6 +1,7 @@
 #include "settingpagesynthhelper.h"
 
 #include <QComboBox>
+#include <QRandomGenerator>
 
 #include <TalcsCore/Decibels.h>
 #include <TalcsMidi/MidiMessage.h>
@@ -15,6 +16,23 @@
 #include <audioplugin/internal/outputsystem.h>
 
 namespace Audio::Internal {
+
+    static struct {
+        bool hit = false;
+        bool enabled = false;
+
+        void handlePreviewStarted() {
+            if (hit) {
+                enabled = !enabled;
+            } else {
+                hit = true;
+            }
+        }
+
+        void handlePreviewStopped() {
+            hit = false;
+        }
+    } easterEggHelper;
 
     static talcs::NoteSynthesizerDetectorMessage scores[] = {
         {0, {47, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
@@ -49,7 +67,36 @@ namespace Audio::Internal {
         talcs::NoteSynthesizerDetectorMessage::Null,
     };
 
-    SettingPageSynthHelper::SettingPageSynthHelper(QObject *parent) : QObject(parent) {
+    static talcs::NoteSynthesizerDetectorMessage alternativeScores[] = {
+        {0, {59, .3, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {0, {66, .3, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {0, {75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {4, {75, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {4, {73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {6, {73, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {6, {71, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {10, {71, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {10, {73, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {12, {73, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {12, {59, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {12, {66, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+
+        {12, {52, .3, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {12, {59, .3, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {12, {75, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {15, {75, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {15, {76, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {16, {76, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {16, {75, .7, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {18, {75, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {18, {73, 1, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
+        {24, {73, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {24, {52, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        {24, {59, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
+        talcs::NoteSynthesizerDetectorMessage::Null,
+    };
+
+    SettingPageSynthHelper::SettingPageSynthHelper(QObject *parent) : QObject(parent), m_adoptedScores(scores) {
 
     }
     SettingPageSynthHelper::~SettingPageSynthHelper() {
@@ -62,7 +109,7 @@ namespace Audio::Internal {
         SVS::ExpressionSpinBox *attackSpinBox, SVS::SeekBar *decaySlider,
         SVS::ExpressionSpinBox *decaySpinBox, SVS::SeekBar *decayRatioSlider,
         SVS::ExpressionDoubleSpinBox *decayRatioSpinBox, SVS::SeekBar *releaseSlider,
-        SVS::ExpressionSpinBox *releaseSpinBox) {
+        SVS::ExpressionSpinBox *releaseSpinBox, QWidget *previewButton) {
 
         connect(generatorComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
             m_cachedGenerator = index;
@@ -126,6 +173,14 @@ namespace Audio::Internal {
         m_testSynthesizer.setDecayTime(AudioHelpers::msecToSample(m_cachedDecayMsec, m_testSynthesizer.sampleRate()));
         m_testSynthesizer.setDecayRatio(m_cachedDecayRatio);
         m_testSynthesizer.setReleaseTime(AudioHelpers::msecToSample(m_cachedReleaseMsec, m_testSynthesizer.sampleRate()));
+
+        connect(this, &SettingPageSynthHelper::testFinished, previewButton, [=] {
+            if (easterEggHelper.enabled) {
+                previewButton->setToolTip(tr("Why did you play ...?!"));
+            } else {
+                previewButton->setToolTip({});
+            }
+        });
     }
     void SettingPageSynthHelper::detectInterval(qint64 intervalLength) {
         QMutexLocker locker(&m_mutex);
@@ -135,6 +190,7 @@ namespace Audio::Internal {
         }
         if (m_currentScoreIndex == -1 && !isTestFinished) {
             isTestFinished = true;
+            easterEggHelper.handlePreviewStopped();
             emit testFinished();
             return;
         }
@@ -149,7 +205,7 @@ namespace Audio::Internal {
         } else if (m_currentScoreIndex < 0) {
             return talcs::NoteSynthesizerDetectorMessage::Null;
         }
-        auto message = scores[m_currentScoreIndex];
+        auto message = m_adoptedScores[m_currentScoreIndex];
         if (message.position == -1) {
             m_currentScoreIndex = -1;
             return talcs::NoteSynthesizerDetectorMessage::Null;
@@ -165,6 +221,12 @@ namespace Audio::Internal {
     void SettingPageSynthHelper::toggleTestState(bool enabled) {
         QMutexLocker locker(&m_mutex);
         if (enabled) {
+            if (easterEggHelper.enabled) {
+                m_adoptedScores = QRandomGenerator::global()->bounded(0, 2) ? scores : alternativeScores;
+            } else {
+                m_adoptedScores = scores;
+            }
+            easterEggHelper.handlePreviewStarted();
             isTestFinished = false;
             m_currentPosition = 0;
             m_currentScoreIndex = 0;

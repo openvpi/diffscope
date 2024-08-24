@@ -182,7 +182,7 @@ namespace Audio::Internal {
             d->m_cachedReleaseMsec = ms->releaseMsec();
             d->m_cachedFrequencyOfA = ms->frequencyOfA();
 
-            d->initialize(generatorComboBox, amplitudeSlider, amplitudeSpinBox, attackSlider, attackSpinBox, decaySlider, decaySpinBox, decayRatioSlider, decayRatioSpinBox, releaseSlider, releaseSpinBox);
+            d->initialize(generatorComboBox, amplitudeSlider, amplitudeSpinBox, attackSlider, attackSpinBox, decaySlider, decaySpinBox, decayRatioSlider, decayRatioSpinBox, releaseSlider, releaseSpinBox, synthesizerTestButton);
 
             connect(frequencyOfASpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](double value) {
                 d->m_mutex.lock();

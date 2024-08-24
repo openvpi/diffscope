@@ -33,6 +33,7 @@
 #include <audioplugin/internal/midisystem.h>
 #include <audioplugin/internal/audioexportdialog.h>
 #include <audioplugin/internal/pseudosingerpage.h>
+#include <audioplugin/internal/audioexportpage.h>
 
 namespace Audio::Internal {
 
@@ -57,6 +58,7 @@ namespace Audio::Internal {
         audioPage->addPage(new OutputPlaybackPage);
         audioPage->addPage(new VSTModePage);
         audioPage->addPage(new MIDIPage);
+        audioPage->addPage(new AudioExportPage);
         sc->addPage(audioPage);
         sc->addPage(new PseudoSingerPage); // TODO
 

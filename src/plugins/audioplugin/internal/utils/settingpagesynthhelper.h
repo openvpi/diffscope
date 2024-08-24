@@ -26,7 +26,7 @@ namespace Audio::Internal {
                         SVS::ExpressionSpinBox *attackSpinBox, SVS::SeekBar *decaySlider,
                         SVS::ExpressionSpinBox *decaySpinBox, SVS::SeekBar *decayRatioSlider,
                         SVS::ExpressionDoubleSpinBox *decayRatioSpinBox,
-                        SVS::SeekBar *releaseSlider, SVS::ExpressionSpinBox *releaseSpinBox);
+                        SVS::SeekBar *releaseSlider, SVS::ExpressionSpinBox *releaseSpinBox, QWidget *previewButton);
 
         void detectInterval(qint64 intervalLength) override;
         talcs::NoteSynthesizerDetectorMessage nextMessage() override;
@@ -41,6 +41,8 @@ namespace Audio::Internal {
         double m_currentInterval = 0;
         int m_currentScoreIndex = -1;
         QAtomicInteger<bool> isTestFinished = true;
+
+        const talcs::NoteSynthesizerDetectorMessage *m_adoptedScores;
 
         int m_cachedGenerator;
         double m_cachedAmplitude;
