@@ -249,7 +249,8 @@ namespace Audio::Internal {
         return m_widget = new PseudoSingerPageWidget;
     }
     bool PseudoSingerPage::accept() {
-        m_widget->accept();
+        if (m_widget)
+            m_widget->accept();
         return true;
     }
     void PseudoSingerPage::finish() {

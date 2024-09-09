@@ -2,6 +2,7 @@
 
 #include <QComboBox>
 #include <QRandomGenerator>
+#include <QCoreApplication>
 
 #include <TalcsCore/Decibels.h>
 #include <TalcsMidi/MidiMessage.h>
@@ -16,23 +17,6 @@
 #include <audioplugin/internal/outputsystem.h>
 
 namespace Audio::Internal {
-
-    static struct {
-        bool hit = false;
-        bool enabled = false;
-
-        void handlePreviewStarted() {
-            if (hit) {
-                enabled = !enabled;
-            } else {
-                hit = true;
-            }
-        }
-
-        void handlePreviewStopped() {
-            hit = false;
-        }
-    } easterEggHelper;
 
     static talcs::NoteSynthesizerDetectorMessage scores[] = {
         {0, {47, .5, talcs::NoteSynthesizerDetectorMessage::NoteOn}},
@@ -95,6 +79,42 @@ namespace Audio::Internal {
         {24, {59, talcs::NoteSynthesizerDetectorMessage::NoteOff}},
         talcs::NoteSynthesizerDetectorMessage::Null,
     };
+
+    /**
+     * Just for fun :)
+     */
+    static struct {
+        bool hit = false;
+        bool enabled = false;
+
+        void handlePreviewStarted() {
+            if (hit) {
+                enabled = !enabled;
+            } else {
+                hit = true;
+            }
+        }
+
+        void handlePreviewStopped() {
+            hit = false;
+        }
+
+        const talcs::NoteSynthesizerDetectorMessage *selectScores() const {
+            if (enabled) {
+                return QRandomGenerator::global()->bounded(0, 2) ? scores : alternativeScores;
+            } else {
+                return scores;
+            }
+        }
+
+        const QString selectTooltip() const {
+            if (enabled) {
+                return QRandomGenerator::global()->bounded(0, 2) ? QCoreApplication::translate("Audio::Internal::SettingPageSynthHelper", "Why did you play ...?!") : QCoreApplication::translate("Audio::Internal::SettingPageSynthHelper", "I'll put an end to it.");
+            } else {
+                return {};
+            }
+        }
+    } easterEggHelper;
 
     SettingPageSynthHelper::SettingPageSynthHelper(QObject *parent) : QObject(parent), m_adoptedScores(scores) {
 
@@ -175,11 +195,7 @@ namespace Audio::Internal {
         m_testSynthesizer.setReleaseTime(AudioHelpers::msecToSample(m_cachedReleaseMsec, m_testSynthesizer.sampleRate()));
 
         connect(this, &SettingPageSynthHelper::testFinished, previewButton, [=] {
-            if (easterEggHelper.enabled) {
-                previewButton->setToolTip(tr("Why did you play ...?!"));
-            } else {
-                previewButton->setToolTip({});
-            }
+            previewButton->setToolTip(easterEggHelper.selectTooltip());
         });
     }
     void SettingPageSynthHelper::detectInterval(qint64 intervalLength) {
@@ -221,11 +237,7 @@ namespace Audio::Internal {
     void SettingPageSynthHelper::toggleTestState(bool enabled) {
         QMutexLocker locker(&m_mutex);
         if (enabled) {
-            if (easterEggHelper.enabled) {
-                m_adoptedScores = QRandomGenerator::global()->bounded(0, 2) ? scores : alternativeScores;
-            } else {
-                m_adoptedScores = scores;
-            }
+            m_adoptedScores = easterEggHelper.selectScores();
             easterEggHelper.handlePreviewStarted();
             isTestFinished = false;
             m_currentPosition = 0;

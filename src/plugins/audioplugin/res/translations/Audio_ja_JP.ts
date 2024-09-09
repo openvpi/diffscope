@@ -309,6 +309,42 @@
     </message>
 </context>
 <context>
+    <name>Audio::Internal::AudioExportPage</name>
+    <message>
+        <location filename="../../internal/settings/audioexportpage.cpp" line="39"/>
+        <source>Audio Export</source>
+        <translation>オーディオエクスポート</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/audioexportpage.cpp" line="40"/>
+        <source>Configure audio export preferences.</source>
+        <translation>オーディオエクスポート設定を構成します。</translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::AudioExportPageWidget</name>
+    <message>
+        <location filename="../../internal/settings/audioexportpage.cpp" line="17"/>
+        <source>Enable &amp;clipping check</source>
+        <translation>クリッピング検査を有効にする(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/audioexportpage.cpp" line="22"/>
+        <source>Auto</source>
+        <translation>自動</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/audioexportpage.cpp" line="24"/>
+        <source>Audio exporting will be multi-threaded when the mixing option is &quot;separated&quot;</source>
+        <translation>ミキシングオプションが「分離」の場合、オーディオエクスポートはマルチスレッドになります</translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/audioexportpage.cpp" line="27"/>
+        <source>Number of &amp;threads for exporting</source>
+        <translation>エクスポートのスレッド数(&amp;T)</translation>
+    </message>
+</context>
+<context>
     <name>Audio::Internal::AudioPage</name>
     <message>
         <location filename="../../internal/settings/audiopage.cpp" line="7"/>
@@ -324,27 +360,27 @@
 <context>
     <name>Audio::Internal::AudioPlugin</name>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="49"/>
+        <location filename="../../internal/audioplugin.cpp" line="50"/>
         <source>Initializing audio plugin...</source>
         <translation>オーディオプラグインを初期化しています…</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="84"/>
+        <location filename="../../internal/audioplugin.cpp" line="86"/>
         <source>Cannot initialize audio output system</source>
         <translation>オーディオ出力システムを初期化できません</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="85"/>
+        <location filename="../../internal/audioplugin.cpp" line="87"/>
         <source>%1 will not play any sound because no available audio output device found. Please check the status of the audio driver and device.</source>
         <translation>使用可能なオーディオ出力デバイスがないため、%1 は音声を再生しません。オーディオドライバーとデバイスの状態を確認してください。</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="91"/>
+        <location filename="../../internal/audioplugin.cpp" line="93"/>
         <source>Cannot initialize Plugin Mode connection system</source>
         <translation>プラグインモードコネクションシステムを初期化できません</translation>
     </message>
     <message>
-        <location filename="../../internal/audioplugin.cpp" line="92"/>
+        <location filename="../../internal/audioplugin.cpp" line="94"/>
         <source>%1 will not be able to establish a connection with %1 Bridge. Please check the Plugin Mode configuration in Settings.</source>
         <translation>%1 は %1 Bridge との接続を確立できません。設定でプラグインモードの構成を確認してください。</translation>
     </message>
@@ -476,12 +512,12 @@
 <context>
     <name>Audio::Internal::MIDIPage</name>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="397"/>
+        <location filename="../../internal/settings/midipage.cpp" line="253"/>
         <source>MIDI</source>
         <translation>MIDI</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="398"/>
+        <location filename="../../internal/settings/midipage.cpp" line="254"/>
         <source>Configure MIDI preferences.</source>
         <translation>MIDI 設定を構成します。</translation>
     </message>
@@ -489,107 +525,107 @@
 <context>
     <name>Audio::Internal::MIDIPageWidget</name>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="77"/>
+        <location filename="../../internal/settings/midipage.cpp" line="45"/>
         <source>MIDI Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="80"/>
+        <location filename="../../internal/settings/midipage.cpp" line="48"/>
         <source>&amp;Device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="84"/>
+        <location filename="../../internal/settings/midipage.cpp" line="52"/>
         <source>Synthesizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="87"/>
+        <location filename="../../internal/settings/midipage.cpp" line="55"/>
         <source>Sine wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="87"/>
+        <location filename="../../internal/settings/midipage.cpp" line="55"/>
         <source>Square wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="87"/>
+        <location filename="../../internal/settings/midipage.cpp" line="55"/>
         <source>Triangle Wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="87"/>
+        <location filename="../../internal/settings/midipage.cpp" line="55"/>
         <source>Sawtooth wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="88"/>
+        <location filename="../../internal/settings/midipage.cpp" line="56"/>
         <source>&amp;Generator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="100"/>
+        <location filename="../../internal/settings/midipage.cpp" line="68"/>
         <source>&amp;Amplitude (dB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="113"/>
+        <location filename="../../internal/settings/midipage.cpp" line="81"/>
         <source>A&amp;ttack (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="126"/>
+        <location filename="../../internal/settings/midipage.cpp" line="94"/>
         <source>D&amp;ecay (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="138"/>
+        <location filename="../../internal/settings/midipage.cpp" line="106"/>
         <source>Decay rati&amp;o</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="151"/>
+        <location filename="../../internal/settings/midipage.cpp" line="119"/>
         <source>&amp;Release (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="159"/>
+        <location filename="../../internal/settings/midipage.cpp" line="127"/>
         <source>Ad&amp;just by the cent shift of the active project window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="161"/>
+        <location filename="../../internal/settings/midipage.cpp" line="129"/>
         <source>&amp;Frequency of A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="166"/>
+        <location filename="../../internal/settings/midipage.cpp" line="134"/>
         <source>&amp;Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="169"/>
+        <location filename="../../internal/settings/midipage.cpp" line="137"/>
         <source>&amp;Interrupt All Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="170"/>
+        <location filename="../../internal/settings/midipage.cpp" line="138"/>
         <source>Interrupt all notes that are currently played by the synthesizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="179"/>
+        <location filename="../../internal/settings/midipage.cpp" line="147"/>
         <source>Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="187"/>
+        <location filename="../../internal/settings/midipage.cpp" line="155"/>
         <source>(Not working)</source>
         <translation type="unfinished">（動作しない）</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/midipage.cpp" line="199"/>
+        <location filename="../../internal/settings/midipage.cpp" line="167"/>
         <source>Cannot open MIDI device %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -597,12 +633,12 @@
 <context>
     <name>Audio::Internal::OutputPlaybackPage</name>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="218"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="214"/>
         <source>Output and Playback</source>
         <translation>出力と再生</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="220"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="216"/>
         <source>Specify the audio output device and playback behaviors.</source>
         <translation>オーディオ出力デバイスと再生動作を指定します。</translation>
     </message>
@@ -735,12 +771,11 @@
         <translation type="vanished">再生停止後、再生ヘッドを(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="120"/>
         <source>&amp;Close audio device when playback is stopped</source>
-        <translation>再生停止時にオーディオデバイスを閉じる(&amp;C)</translation>
+        <translation type="vanished">再生停止時にオーディオデバイスを閉じる(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="129"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="126"/>
         <source>&amp;File reading buffer size (samples)</source>
         <translation>ファイル読み込みバッファサイズ（サンプル）(&amp;F)</translation>
     </message>
@@ -749,22 +784,28 @@
         <translation type="vanished">ファイル読み込みバッファサイズ（ミリ秒）(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="141"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="138"/>
         <source>Cannot start audio playback</source>
         <translation>オーディオ再生開始できません</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="143"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="140"/>
         <source>Please check the status of the audio driver and device.</source>
         <translation>オーディオドライバーとデバイスの状態を確認してください。</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="284"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="280"/>
         <source>Cannot initialize %1 driver</source>
         <translation>%1 ドライバーを初期化できません</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="335"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="300"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="336"/>
+        <source>Default device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="336"/>
         <source>Audio device %1 is not available</source>
         <translation>オーディオ デバイス %1 は使用できません</translation>
     </message>
@@ -794,7 +835,7 @@
         <translation type="vanished">再生停止時にオーディオデバイスを閉じる(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="125"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="122"/>
         <source>File Caching</source>
         <translation>ファイルのキャッシュ</translation>
     </message>
@@ -807,9 +848,9 @@
         <translation type="vanished">オーディオ再生開始できません！</translation>
     </message>
     <message>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="252"/>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="289"/>
-        <location filename="../../internal/settings/outputplaybackpage.cpp" line="310"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="248"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="285"/>
+        <location filename="../../internal/settings/outputplaybackpage.cpp" line="311"/>
         <source>(Not working)</source>
         <translation>（動作しない）</translation>
     </message>
@@ -825,12 +866,12 @@
 <context>
     <name>Audio::Internal::PseudoSingerPage</name>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="134"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="238"/>
         <source>Pseudo Singer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="135"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="239"/>
         <source>The pseudo singer is built into %1 for outputting synthesized audio. It allows you to preview a project without specifying a virtual singer.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -838,84 +879,97 @@
 <context>
     <name>Audio::Internal::PseudoSingerPageWidget</name>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="25"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="30"/>
         <source>Synthesizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="33"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="38"/>
         <source>&amp;Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="36"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="41"/>
         <source>&amp;Synth No.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="50"/>
         <source>Sine wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="50"/>
         <source>Square wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="50"/>
         <source>Triangle Wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="45"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="50"/>
         <source>Sawtooth wave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="46"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="51"/>
         <source>&amp;Generator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="58"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="63"/>
         <source>&amp;Amplitude (dB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="71"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="76"/>
         <source>A&amp;ttack (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="84"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="89"/>
         <source>D&amp;ecay (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="96"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="101"/>
         <source>Decay rati&amp;o</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="109"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="114"/>
         <source>&amp;Release (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="118"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="123"/>
         <source>Parameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="120"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="125"/>
         <source>Read pitc&amp;h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../internal/settings/pseudosingerpage.cpp" line="122"/>
+        <location filename="../../internal/settings/pseudosingerpage.cpp" line="127"/>
         <source>Read energ&amp;y</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Audio::Internal::SettingPageSynthHelper</name>
+    <message>
+        <location filename="../../internal/utils/settingpagesynthhelper.cpp" line="112"/>
+        <source>Why did you play ...?!</source>
+        <translation>なんで○○○やったの⁈</translation>
+    </message>
+    <message>
+        <location filename="../../internal/utils/settingpagesynthhelper.cpp" line="112"/>
+        <source>I&apos;ll put an end to it.</source>
+        <translation>私が終わらせてあげる。</translation>
     </message>
 </context>
 <context>

@@ -116,9 +116,6 @@ namespace Audio::Internal {
             });
             playbackLayout->addRow(tr("Playhead behavior"),
                                    m_playHeadBehaviorComboBox);
-            m_closeDeviceOnPlaybackStopCheckBox =
-                new QCheckBox(tr("&Close audio device when playback is stopped"));
-            playbackLayout->addRow(m_closeDeviceOnPlaybackStopCheckBox);
             playbackGroupBox->setLayout(playbackLayout);
             mainLayout->addWidget(playbackGroupBox);
 
@@ -202,7 +199,6 @@ namespace Audio::Internal {
         SVS::SeekBar *m_devicePanSlider = nullptr;
         SVS::ExpressionSpinBox *m_devicePanSpinBox = nullptr;
         QComboBox *m_playHeadBehaviorComboBox = nullptr;
-        QCheckBox *m_closeDeviceOnPlaybackStopCheckBox = nullptr;
         SVS::ExpressionSpinBox *m_fileBufferingReadAheadSizeSpinBox = nullptr;
 
         void updateDriverComboBox();
