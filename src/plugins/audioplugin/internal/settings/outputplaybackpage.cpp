@@ -296,19 +296,28 @@ namespace Audio::Internal {
     void OutputPlaybackPageWidget::updateDeviceComboBox() {
         auto outputSys = AudioSystem::outputSystem();
 
+        bool currentIndexDetermined = false;
+
         if (!outputSys->outputContext()->driver()->defaultDevice().isEmpty()) {
             m_deviceComboBox->addItem(tr("Default device"), QString(""));
-            if (outputSys->outputContext()->device() && outputSys->outputContext()->device()->name().isEmpty())
+            if (outputSys->outputContext()->device() && outputSys->outputContext()->device()->name().isEmpty()) {
+                currentIndexDetermined = true;
                 m_deviceComboBox->setCurrentIndex(0);
+            }
         }
         auto deviceList = outputSys->outputContext()->driver()->devices();
         for (int i = 0; i < deviceList.size(); i++) {
             m_deviceComboBox->addItem(deviceList[i], deviceList[i]);
-            if (outputSys->outputContext()->device() && deviceList[i] == outputSys->outputContext()->device()->name())
+            if (outputSys->outputContext()->device() && deviceList[i] == outputSys->outputContext()->device()->name()) {
+                currentIndexDetermined = true;
                 m_deviceComboBox->setCurrentIndex(i + 1);
+            }
         }
         if (!outputSys->outputContext()->device()) {
             m_deviceComboBox->addItem(tr("(Not working)"));
+            m_deviceComboBox->setCurrentIndex(m_deviceComboBox->count() - 1);
+        } else if (!currentIndexDetermined) {
+            m_deviceComboBox->addItem(outputSys->outputContext()->device()->name() + tr("(Not working)"));
             m_deviceComboBox->setCurrentIndex(m_deviceComboBox->count() - 1);
         }
 
