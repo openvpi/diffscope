@@ -206,6 +206,13 @@ namespace Audio::Internal {
         }
 
         void accept() {
+            m_cachedSynthConfig[m_oldSynthIndex].generator = d->m_cachedGenerator;
+            m_cachedSynthConfig[m_oldSynthIndex].amplitude = d->m_cachedAmplitude;
+            m_cachedSynthConfig[m_oldSynthIndex].attackMsec = d->m_cachedAttackMsec;
+            m_cachedSynthConfig[m_oldSynthIndex].decayMsec = d->m_cachedDecayMsec;
+            m_cachedSynthConfig[m_oldSynthIndex].decayRatio = d->m_cachedDecayRatio;
+            m_cachedSynthConfig[m_oldSynthIndex].releaseMsec = d->m_cachedReleaseMsec;
+
             for (int i = 0; i < 4; i++) {
                 AudioSettings::setPseudoSingerSynthGenerator(i, m_cachedSynthConfig[i].generator);
                 AudioSettings::setPseudoSingerSynthAmplitude(i, m_cachedSynthConfig[i].amplitude);
