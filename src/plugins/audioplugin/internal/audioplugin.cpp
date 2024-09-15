@@ -35,6 +35,10 @@
 #include <audioplugin/internal/pseudosingerpage.h>
 #include <audioplugin/internal/audioexportpage.h>
 
+#ifdef AUDIO_TEST
+#    include <audioplugin/internal/TestAudioExporterCalculateTemplate.h>
+#endif
+
 namespace Audio::Internal {
 
     AudioPlugin::AudioPlugin() {
@@ -48,6 +52,11 @@ namespace Audio::Internal {
         qDebug() << "Audio::AudioPlugin: initializing";
         auto splash = Core::InitRoutine::splash();
         splash->showMessage(tr("Initializing audio plugin..."));
+
+#ifdef AUDIO_TEST
+        auto iLoader = Core::ILoader::instance();
+        iLoader->addObject("debug.UnitTest", new TestAudioExporterCalculateTemplate);
+#endif
 
         auto settings = Core::ILoader::instance()->settings();
         if (!settings->contains("Audio"))
@@ -101,8 +110,8 @@ namespace Audio::Internal {
         new DeviceTester(iAudio->outputSystemInterface(true), iAudio->outputSystemInterface(true));
         new DeviceTester(iAudio->outputSystemInterface(false), iAudio->outputSystemInterface(false));
 
-//        AudioExportDialog dlg;
-//        dlg.exec();
+        AudioExportDialog dlg;
+        dlg.exec();
 
         return true;
     }

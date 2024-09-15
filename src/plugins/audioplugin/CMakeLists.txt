@@ -14,16 +14,18 @@ ck_add_plugin(${PROJECT_NAME}
     MACRO_PREFIX AUDIO
 )
 
-if(AUDIO_TEST)
+if (AUDIO_TEST)
     target_compile_definitions(${PROJECT_NAME} PRIVATE AUDIO_TEST)
+else()
+    list(FILTER _src EXCLUDE REGEX tests/)
 endif()
 
 # Configure target
 file(GLOB_RECURSE _src *.h *.cpp)
 qm_configure_target(${PROJECT_NAME}
     SOURCES ${_src}
-    QT_LINKS Core Gui Widgets
-    QT_INCLUDE_PRIVATE Core Gui Widgets
+    QT_LINKS Core Gui Widgets Test
+    QT_INCLUDE_PRIVATE Core Gui Widgets Test
     LINKS
         ChorusKit::AppCore
         svscraft::Widgets

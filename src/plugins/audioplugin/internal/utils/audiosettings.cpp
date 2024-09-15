@@ -115,5 +115,8 @@ namespace Audio::Internal {
     AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_1(vstPluginEditorUsesCustomTheme, setVstPluginEditorUsesCustomTheme)
     AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_2(vstPluginPort, setVstPluginPort, 28082)
     AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_QJSONVALUE(vstTheme, setVstTheme)
+
+    AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_QJSONVALUE(audioExporterPresets, setAudioExporterPresets)
+    AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_1(audioExporterClippingCheckEnabled, setAudioExporterClippingCheckEnabled)
     
 } // Audio

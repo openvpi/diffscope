@@ -11,7 +11,6 @@ namespace Core {
 namespace Audio {
 
     class AudioExporterConfigData;
-
     class AudioExporterPrivate;
 
     class AudioExporterConfig {
@@ -33,6 +32,9 @@ namespace Audio {
         };
         FileType fileType() const;
         void setFileType(FileType);
+
+        bool formatMono() const;
+        void setFormatMono(bool);
 
         int formatOption() const;
         void setFormatOption(int);
@@ -79,10 +81,33 @@ namespace Audio {
         QSharedDataPointer<AudioExporterConfigData> d;
     };
 
+    class AudioExporterListener {
+    public:
+        virtual bool willStartCallback(Core::IProjectWindow *window) = 0;
+        virtual void willFinishCallback(Core::IProjectWindow *window) = 0;
+    };
+
     class AudioExporter : public QObject {
         Q_OBJECT
         Q_DECLARE_PRIVATE(AudioExporter)
     public:
+
+        explicit AudioExporter(Core::IProjectWindow *window, QObject *parent = nullptr);
+        ~AudioExporter() override;
+
+        Core::IProjectWindow *windowHandle() const;
+
+        [[nodiscard]] static QStringList presets();
+        [[nodiscard]] static QList<QPair<QString, AudioExporterConfig>> predefinedPresets();
+        [[nodiscard]] static AudioExporterConfig preset(const QString &name);
+        static void addPreset(const QString &name, const AudioExporterConfig &config);
+        static bool removePreset(const QString &name);
+
+        static void registerListener(AudioExporterListener *listener);
+
+        void setConfig(const AudioExporterConfig &config);
+        AudioExporterConfig config() const;
+
         enum WarningFlag {
             W_NoFile = 0x0001,
             W_DuplicatedFile = 0x0002,
@@ -91,21 +116,9 @@ namespace Audio {
             W_LossyFormat = 0x00010,
         };
         Q_DECLARE_FLAGS(Warning, WarningFlag)
-
-        explicit AudioExporter(Core::IProjectWindow *window, QObject *parent = nullptr);
-        ~AudioExporter() override;
-
-        [[nodiscard]] static QStringList presets();
-        [[nodiscard]] static QList<QPair<QString, AudioExporterConfig>> predefinedPresets();
-        [[nodiscard]] static AudioExporterConfig preset(const QString &name);
-        static void addPreset(const QString &name, const AudioExporterConfig &config);
-        static bool removePreset(const QString &name);
-
-        void setConfig(const AudioExporterConfig &config);
-        AudioExporterConfig config() const;
-
         Warning warning() const;
         [[nodiscard]]static QStringList warningText(Warning warning);
+
         QStringList dryRun() const;
 
         enum Result {
@@ -113,7 +126,12 @@ namespace Audio {
             R_Fail,
             R_Abort,
         };
-        int exec();
+        Result exec();
+
+        void cancel(bool isFail = false);
+
+    signals:
+        void progressChanged(int sourceIndex, double progressRatio);
 
     private:
         QScopedPointer<AudioExporterPrivate> d_ptr;

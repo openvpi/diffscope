@@ -1,11 +1,19 @@
 #include "audioexporter.h"
 #include "audioexporter_p.h"
+#include "../../../coreplugin/windows/iprojectwindow.h"
 
+#include <QDir>
+#include <QFileInfo>
 #include <QVariant>
+#include <QRegularExpression>
+#include <QStandardPaths>
 
 #include <CoreApi/iloader.h>
 
+#include <audioplugin/internal/audiosettings.h>
+
 namespace Audio {
+    using namespace Internal;
 
     AudioExporterConfig::AudioExporterConfig() : d(new AudioExporterConfigData) {
     }
@@ -28,6 +36,12 @@ namespace Audio {
     }
     void AudioExporterConfig::setFileType(AudioExporterConfig::FileType a_) {
         d->fileType = a_;
+    }
+    bool AudioExporterConfig::formatMono() const {
+        return d->formatMono;
+    }
+    void AudioExporterConfig::setFormatMono(bool a_) {
+        d->formatMono = a_;
     }
     int AudioExporterConfig::formatOption() const {
         return d->formatOption;
@@ -83,6 +97,7 @@ namespace Audio {
             {"fileName", d->fileName},
             {"fileDirectory", d->fileDirectory},
             {"fileType", d->fileType},
+            {"formatMono", d->formatMono},
             {"formatOption", d->formatOption},
             {"formatQuality", d->formatQuality},
             {"formatSampleRate", d->formatSampleRate},
@@ -98,6 +113,7 @@ namespace Audio {
         config.d->fileName = map.value("fileName").toString();
         config.d->fileDirectory = map.value("fileDirectory").toString();
         config.d->fileType = static_cast<FileType>(map.value("fileType").toInt());
+        config.d->formatMono = map.value("formatMono").toBool();
         config.d->formatOption = map.value("formatOption").toInt();
         config.d->formatQuality = map.value("formatQuality").toInt();
         config.d->formatSampleRate = map.value("formatSampleRate").toDouble();
@@ -109,6 +125,91 @@ namespace Audio {
         return config;
     }
 
+    QString AudioExporterPrivate::projectName() const {
+        // project file's base name
+        return QFileInfo(windowHandle->doc()->filePath()).baseName();
+    }
+    QString AudioExporterPrivate::projectDirectory() const {
+        if (auto dir = QFileInfo(windowHandle->doc()->filePath()).dir(); dir.isRelative()) {
+            return QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first();
+        } else {
+            return dir.path();
+        }
+    }
+    QString AudioExporterPrivate::trackName(int trackIndex) const {
+        return windowHandle->doc()->dataModel().model()->tracks()->at(trackIndex)->trackName();
+    }
+    bool AudioExporterPrivate::calculateTemplate(QString &templateString) const {
+        return calculateTemplate(templateString, {}, -1);
+    }
+    bool AudioExporterPrivate::calculateTemplate(QString &templateString, const QString &trackName,
+                                                 int trackIndex) const {
+        static QRegularExpression re(R"re(\$\{(.*?)\})re");
+        bool allTemplatesMatch = true;
+        auto templateStringView = QStringView(templateString);
+        int pos = 0;
+        QString result;
+        for (auto matchIt = re.globalMatch(templateStringView); matchIt.hasNext(); matchIt.next()) {
+            auto match = matchIt.peekNext();
+            auto templateName = match.captured(1);
+            auto replacedText = match.captured(0);
+            if (templateName == "projectName") {
+                replacedText = projectName();
+            } else if (templateName == "sampleRate") {
+                replacedText = QString::number(config.formatSampleRate());
+            } else if (templateName == "today") {
+                replacedText = QDate::currentDate().toString("yyyyMMdd");
+            } else if (templateName == "$") {
+                replacedText = QStringLiteral("$");
+            } else if (trackIndex != -1) {
+                if (templateName == "trackName") {
+                    replacedText = trackName;
+                } else if (templateName == "trackIndex") {
+                    replacedText = QString::number(trackIndex + 1);
+                }
+            } else {
+                allTemplatesMatch = false;
+            }
+            result += templateStringView.mid(pos, match.capturedStart(0) - pos);
+            result += replacedText;
+            pos = match.capturedEnd(0);
+        }
+        result += templateStringView.right(templateStringView.length() - pos);
+        templateString = result;
+        return allTemplatesMatch;
+    }
+    void AudioExporterPrivate::updateFileListAndWarnings() {
+        warning = {};
+        if (config.fileType() == AudioExporterConfig::FT_Mp3 || config.fileType() == AudioExporterConfig::FT_OggVorbis)
+            warning |= AudioExporter::W_LossyFormat;
+        fileList.clear();
+        if (config.sourceOption() == AudioExporterConfig::SO_All) {
+            auto calculatedFileName = config.fileName();
+            if (!calculateTemplate(calculatedFileName))
+                warning |= AudioExporter::W_UnrecognizedTemplate;
+            auto fileInfo = QFileInfo(QDir(projectDirectory()).absoluteFilePath(calculatedFileName));
+            if (fileInfo.exists())
+                warning |= AudioExporter::W_WillOverwrite;
+            fileList.append(fileInfo.canonicalFilePath());
+        } else {
+            if (config.source().isEmpty())
+                warning |= AudioExporter::W_NoFile;
+            QSet<QString> fileSet;
+            for (auto index : config.source()) {
+                auto calculatedFileName = config.fileName();
+                if (!calculateTemplate(calculatedFileName, trackName(index), index))
+                    warning |= AudioExporter::W_UnrecognizedTemplate;
+                auto fileInfo = QFileInfo(QDir(projectDirectory()).absoluteFilePath(calculatedFileName));
+                if (fileInfo.exists())
+                    warning |= AudioExporter::W_WillOverwrite;
+                if (fileSet.contains(fileInfo.canonicalFilePath()))
+                    warning |= AudioExporter::W_DuplicatedFile;
+                fileSet.insert(fileInfo.canonicalFilePath());
+            }
+            fileList.append(fileSet.values());
+        }
+    }
+
     AudioExporter::AudioExporter(Core::IProjectWindow *window, QObject *parent) : QObject(parent), d_ptr(new AudioExporterPrivate) {
         Q_D(AudioExporter);
         d->q_ptr = this;
@@ -117,9 +218,7 @@ namespace Audio {
     AudioExporter::~AudioExporter() = default;
 
     QStringList AudioExporter::presets() {
-        auto &settings = *Core::ILoader::instance()->settings();
-        const auto obj = settings["Audio"].toObject();
-        return obj["audioExporterPresets"].toObject().keys();
+        return AudioSettings::audioExporterPresets().toObject().keys();
     }
 
     QList<QPair<QString, AudioExporterConfig>> AudioExporter::predefinedPresets() {
@@ -212,35 +311,34 @@ namespace Audio {
     }
 
     AudioExporterConfig AudioExporter::preset(const QString &name) {
-        auto &settings = *Core::ILoader::instance()->settings();
-        const auto obj = settings["Audio"].toObject();
-        return AudioExporterConfig::fromVariantMap(obj["audioExporterPresets"][name].toObject().toVariantMap());
+        return AudioExporterConfig::fromVariantMap(AudioSettings::audioExporterPresets()[name].toObject().toVariantMap());
     }
 
     void AudioExporter::addPreset(const QString &name, const AudioExporterConfig &config) {
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        auto presetsObj = obj["audioExporterPresets"].toObject();
+        auto presetsObj = AudioSettings::audioExporterPresets().toObject();
         presetsObj.insert(name, QJsonObject::fromVariantMap(config.toVariantMap()));
-        obj["audioExporterPresets"] = presetsObj;
-        settings["Audio"] = obj;
+        AudioSettings::setAudioExporterPresets(presetsObj);
     }
 
     bool AudioExporter::removePreset(const QString &name) {
-        auto &settings = *Core::ILoader::instance()->settings();
-        auto obj = settings["Audio"].toObject();
-        auto presetsObj = obj["audioExporterPresets"].toObject();
+        auto presetsObj = AudioSettings::audioExporterPresets().toObject();
         if (!presetsObj.contains(name))
             return false;
         presetsObj.remove(name);
-        obj["audioExporterPresets"] = presetsObj;
-        settings["Audio"] = obj;
+        AudioSettings::setAudioExporterPresets(presetsObj);
         return true;
+    }
+
+    static QList<AudioExporterListener *> m_listeners;
+
+    void AudioExporter::registerListener(AudioExporterListener *listener) {
+        m_listeners.append(listener);
     }
 
     void AudioExporter::setConfig(const AudioExporterConfig &config) {
         Q_D(AudioExporter);
         d->config = config;
+        d->updateFileListAndWarnings();
     }
     AudioExporterConfig AudioExporter::config() const {
         Q_D(const AudioExporter);
@@ -248,7 +346,8 @@ namespace Audio {
     }
 
     AudioExporter::Warning AudioExporter::warning() const {
-        return Audio::AudioExporter::Warning();
+        Q_D(const AudioExporter);
+        return d->warning;
     }
 
     QStringList AudioExporter::warningText(AudioExporter::Warning warning) {
@@ -272,10 +371,15 @@ namespace Audio {
     }
 
     QStringList AudioExporter::dryRun() const {
-        return QStringList();
+        Q_D(const AudioExporter);
+        return d->fileList;
     }
 
-    int AudioExporter::exec() {
-        return 0;
+    AudioExporter::Result AudioExporter::exec() {
+        return {};
+    }
+
+    void AudioExporter::cancel(bool isFail) {
+
     }
 } // Audio

@@ -27,6 +27,7 @@ namespace Audio::Internal {
         QLineEdit *m_fileDirectoryEdit;
         QLineEdit *m_fileNameEdit;
         QComboBox *m_fileTypeComboBox;
+        QComboBox *m_formatMonoComboBox;
         QComboBox *m_formatOptionComboBox;
         QSlider *m_vbrSlider;
         QComboBox *m_formatSampleRateComboBox;

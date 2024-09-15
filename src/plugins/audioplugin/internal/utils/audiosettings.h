@@ -49,6 +49,9 @@ namespace Audio::Internal {
         AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(vstPluginPort, setVstPluginPort, int)
         AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(vstTheme, setVstTheme, QJsonValue)
 
+        AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(audioExporterPresets, setAudioExporterPresets, QJsonValue)
+        AUDIO_AUDIO_SETTINGS_OPTION_DECLARATION(audioExporterClippingCheckEnabled, setAudioExporterClippingCheckEnabled, bool)
+
     };
 
 }

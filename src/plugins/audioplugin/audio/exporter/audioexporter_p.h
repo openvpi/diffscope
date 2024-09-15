@@ -12,6 +12,7 @@ namespace Audio {
         QString fileName;
         QString fileDirectory;
         AudioExporterConfig::FileType fileType;
+        bool formatMono;
         int formatOption;
         int formatQuality;
         double formatSampleRate;
@@ -28,6 +29,17 @@ namespace Audio {
         AudioExporter *q_ptr;
         AudioExporterConfig config;
         Core::IProjectWindow *windowHandle;
+
+        QString projectName() const;
+        QString projectDirectory() const;
+        QString trackName(int trackIndex) const;
+
+        bool calculateTemplate(QString &templateString) const;
+        bool calculateTemplate(QString &templateString, const QString &trackName, int trackIndex) const;
+
+        AudioExporter::Warning warning;
+        QStringList fileList;
+        void updateFileListAndWarnings();
     };
 }
 

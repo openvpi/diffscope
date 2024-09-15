@@ -1,5 +1,7 @@
 #include "audioexportdialog.h"
 
+#include <SVSCraftWidgets/expressionspinbox.h>
+
 #include <limits>
 
 #include <QBoxLayout>
@@ -13,6 +15,7 @@
 #include <QSpinBox>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QFileInfo>
 #include <QRadioButton>
 #include <QListWidget>
 #include <QLabel>
@@ -20,6 +23,7 @@
 namespace Audio::Internal {
     AudioExportDialog::AudioExportDialog(QWidget *parent) : QDialog(parent) {
         setWindowTitle(tr("Export Audio"));
+        setWindowFlag(Qt::WindowContextHelpButtonHint, false);
         auto mainLayout = new QVBoxLayout;
         
         auto presetLayout = new QFormLayout;
@@ -51,6 +55,26 @@ namespace Audio::Internal {
         fileNameTemplateButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarMenuButton));
         fileNameTemplateButton->setToolTip(tr("Template"));
         auto fileNameTemplateMenu = new QMenu(this);
+        fileNameTemplateMenu->addAction(QStringLiteral("${projectName}"), this, [=] {
+            QFileInfo fileInfo(m_fileNameEdit->text());
+            m_fileNameEdit->setText(fileInfo.baseName() + QStringLiteral("${projectName}.") + fileInfo.completeSuffix());
+        });
+        fileNameTemplateMenu->addAction(QStringLiteral("${sampleRate}"), this, [=] {
+            QFileInfo fileInfo(m_fileNameEdit->text());
+            m_fileNameEdit->setText(fileInfo.baseName() + QStringLiteral("${sampleRate}.") + fileInfo.completeSuffix());
+        });
+        fileNameTemplateMenu->addAction(QStringLiteral("${today}"), this, [=] {
+            QFileInfo fileInfo(m_fileNameEdit->text());
+            m_fileNameEdit->setText(fileInfo.baseName() + QStringLiteral("${today}.") + fileInfo.completeSuffix());
+        });
+        auto fileNameTemplateTrackNameAction = fileNameTemplateMenu->addAction(QStringLiteral("${trackName}"), this, [=] {
+            QFileInfo fileInfo(m_fileNameEdit->text());
+            m_fileNameEdit->setText(fileInfo.baseName() + QStringLiteral("${trackName}.") + fileInfo.completeSuffix());
+        });
+        auto fileNameTemplateTrackIndexAction = fileNameTemplateMenu->addAction(QStringLiteral("${trackIndex}"), this, [=] {
+            QFileInfo fileInfo(m_fileNameEdit->text());
+            m_fileNameEdit->setText(fileInfo.baseName() + QStringLiteral("${trackIndex}.") + fileInfo.completeSuffix());
+        });
         fileNameTemplateButton->setMenu(fileNameTemplateMenu);
         fileNameLayout->addWidget(fileNameTemplateButton);
         auto fileNameTemplateContextHelpButton = new QPushButton;
@@ -75,11 +99,9 @@ namespace Audio::Internal {
         pathLayout->addRow(nameLabel, fileNameLayout);
         m_fileDirectoryEdit = new QLineEdit;
         m_fileDirectoryEdit->setPlaceholderText(tr("(Project directory)"));
-        pathLayout->addRow(tr("&Directory"), m_fileDirectoryEdit);
+        pathLayout->addRow(tr("Dire&ctory"), m_fileDirectoryEdit);
         m_fileTypeComboBox = new QComboBox;
-
-        // TODO Audio formats
-
+        m_fileTypeComboBox->addItems({tr("WAV"), tr("FLAC"), tr("Ogg Vorbis"), tr("MP3")});
         pathLayout->addRow(tr("&Type"), m_fileTypeComboBox);
         pathGroupBox->setLayout(pathLayout);
         leftLayout->addWidget(pathGroupBox);
@@ -87,10 +109,23 @@ namespace Audio::Internal {
         auto formatGroupBox = new QGroupBox(tr("Format"));
         auto formatLayout = new QFormLayout;
 
+        m_formatMonoComboBox = new QComboBox;
+        m_formatMonoComboBox->addItems({tr("Mono"), tr("Stereo")});
+        formatLayout->addRow(tr("C&hannel"), m_formatMonoComboBox);
         m_formatOptionComboBox = new QComboBox;
         formatLayout->addRow(tr("&Option"), m_formatOptionComboBox);
+        auto vbrLayout = new QHBoxLayout;
         m_vbrSlider = new QSlider(Qt::Horizontal);
-        formatLayout->addRow(tr("&Quality"), m_vbrSlider);
+        m_vbrSlider->setRange(0, 100);
+        vbrLayout->addWidget(m_vbrSlider);
+        auto vbrSpinBox = new SVS::ExpressionSpinBox;
+        vbrSpinBox->setRange(0, 100);
+        vbrLayout->addWidget(vbrSpinBox);
+        connect(vbrSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), m_vbrSlider, &QSlider::valueChanged);
+        connect(m_vbrSlider, &QSlider::valueChanged, vbrSpinBox, &QSpinBox::setValue);
+        auto vbrLabel = new QLabel(tr("&Quality"));
+        vbrLabel->setBuddy(vbrSpinBox);
+        formatLayout->addRow(vbrLabel, vbrLayout);
         m_formatSampleRateComboBox = new QComboBox;
         m_formatSampleRateComboBox->setEditable(true);
         m_formatSampleRateComboBox->setValidator(new QDoubleValidator(0.01, std::numeric_limits<double>::max(), 2));
@@ -109,6 +144,8 @@ namespace Audio::Internal {
             tr("Separated"),
             tr("Separated (through master track)"),
         });
+        connect(m_mixingOptionComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), fileNameTemplateTrackNameAction, &QAction::setEnabled);
+        connect(m_mixingOptionComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), fileNameTemplateTrackIndexAction, &QAction::setEnabled);
         mixingLayout->addRow(tr("&Mixing Option"), m_mixingOptionComboBox);
         m_enableMuteSoloCheckBox = new QCheckBox(tr("Enable m&ute/solo"));
         m_enableMuteSoloCheckBox->setChecked(true);
@@ -129,7 +166,7 @@ namespace Audio::Internal {
 
         auto timeRangeGroupBox = new QGroupBox(tr("Time Range"));
         auto timeRangeLayout = new QVBoxLayout;
-        auto rangeOptionLayout = new QVBoxLayout;
+        auto rangeOptionLayout = new QHBoxLayout;
         m_rangeSelectAllRadio = new QRadioButton(tr("A&ll"));
         m_rangeSelectAllRadio->setChecked(true);
         rangeOptionLayout->addWidget(m_rangeSelectAllRadio);
@@ -169,6 +206,8 @@ namespace Audio::Internal {
         mainLayout->addLayout(buttonLayout);
 
         setLayout(mainLayout);
+
+        resize(600, 800);
     }
     AudioExportDialog::~AudioExportDialog() {
     }
