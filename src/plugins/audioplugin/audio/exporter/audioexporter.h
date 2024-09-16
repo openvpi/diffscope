@@ -4,11 +4,14 @@
 #include <QObject>
 #include <QSharedData>
 
+#include <TalcsCore/ErrorStringProvider.h>
+
 namespace Core {
     class IProjectWindow;
 }
 
 namespace Audio {
+    class AudioExporter;
 
     class AudioExporterConfigData;
     class AudioExporterPrivate;
@@ -83,11 +86,11 @@ namespace Audio {
 
     class AudioExporterListener {
     public:
-        virtual bool willStartCallback(Core::IProjectWindow *window) = 0;
-        virtual void willFinishCallback(Core::IProjectWindow *window) = 0;
+        virtual bool willStartCallback(AudioExporter *exporter) = 0;
+        virtual void willFinishCallback(AudioExporter *exporter) = 0;
     };
 
-    class AudioExporter : public QObject {
+    class AudioExporter : public QObject, public talcs::ErrorStringProvider {
         Q_OBJECT
         Q_DECLARE_PRIVATE(AudioExporter)
     public:
@@ -128,10 +131,11 @@ namespace Audio {
         };
         Result exec();
 
-        void cancel(bool isFail = false);
+        void cancel(bool isFail = false, const QString &message = {});
 
     signals:
-        void progressChanged(int sourceIndex, double progressRatio);
+        void progressChanged(double progressRatio, int sourceIndex);
+        void clippingDetected(int sourceIndex);
 
     private:
         QScopedPointer<AudioExporterPrivate> d_ptr;

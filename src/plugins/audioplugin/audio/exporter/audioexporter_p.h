@@ -5,6 +5,11 @@
 
 #include <QSharedData>
 
+namespace talcs {
+    class DspxProjectAudioExporter;
+    class DspxProjectContext;
+}
+
 namespace Audio {
 
     class AudioExporterConfigData : public QSharedData {
@@ -33,6 +38,9 @@ namespace Audio {
         QString projectName() const;
         QString projectDirectory() const;
         QString trackName(int trackIndex) const;
+        talcs::DspxProjectContext *projectContext() const;
+        QPair<int, int> calculateRange() const;
+        QList<int> selectedSources() const;
 
         bool calculateTemplate(QString &templateString) const;
         bool calculateTemplate(QString &templateString, const QString &trackName, int trackIndex) const;
@@ -40,6 +48,8 @@ namespace Audio {
         AudioExporter::Warning warning;
         QStringList fileList;
         void updateFileListAndWarnings();
+
+        talcs::DspxProjectAudioExporter *currentExporter = nullptr;
     };
 }
 

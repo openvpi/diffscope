@@ -30,6 +30,7 @@ namespace Audio::Internal {
     void ProjectAddOn::initialize() {
         auto iAudio = IAudio::instance();
         iAudio->outputSystemInterface(isVST())->preMixer()->addSource(m_projectContext->preMixer());
+        windowHandle()->addObject("Audio.ProjectAddOn", this);
         windowHandle()->addObject("Audio.AudioContextInterface", m_audioContextInterface);
         m_audioContextInterface->d_func()->init(this);
         m_audioContextInterface->outputSystemInterface()->preMixer()->addSource(m_projectContext->preMixer());
@@ -41,6 +42,10 @@ namespace Audio::Internal {
 
     bool ProjectAddOn::delayedInitialize() {
         return false;
+    }
+
+    ProjectAddOn *ProjectAddOn::get(Core::IProjectWindow *windowHandle) {
+        return static_cast<ProjectAddOn *>(windowHandle->getFirstObject("Audio.ProjectAddOn"));
     }
 
     bool ProjectAddOn::isVST() const {
@@ -58,12 +63,12 @@ namespace Audio::Internal {
     }
 
     void ProjectAddOn::setAudioClipToOpenFile(QDspx::AudioClipEntity *entity, const QString &selectedFilter) {
-        m_audioClipsToOpenFile->insert(entity, selectedFilter);
+        m_audioClipsToOpenFile.insert(entity, selectedFilter);
     }
     bool ProjectAddOn::checkAudioClipIsToOpenFile(QDspx::AudioClipEntity *entity, QString &selectedFilter) {
-        if (m_audioClipsToOpenFile->contains(entity)) {
-            selectedFilter = m_audioClipsToOpenFile->value(entity);
-            m_audioClipsToOpenFile->remove(entity);
+        if (m_audioClipsToOpenFile.contains(entity)) {
+            selectedFilter = m_audioClipsToOpenFile.value(entity);
+            m_audioClipsToOpenFile.remove(entity);
             return true;
         } else {
             return false;

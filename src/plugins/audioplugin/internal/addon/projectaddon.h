@@ -1,12 +1,13 @@
 #ifndef AUDIO_PROJECTADDON_H
 #define AUDIO_PROJECTADDON_H
 
-#include <TalcsCore/MetronomeAudioSource.h>
-#include <TalcsCore/BufferingAudioSource.h>
-
 #include <QMCore/qmchronomap.h>
 
 #include <CoreApi/iwindow.h>
+
+namespace Core {
+    class IProjectWindow;
+}
 
 namespace talcs {
     class DspxProjectContext;
@@ -34,6 +35,8 @@ namespace Audio::Internal {
         void extensionsInitialized() override;
         bool delayedInitialize() override;
 
+        static ProjectAddOn *get(Core::IProjectWindow *windowHandle);
+
         bool isVST() const;
 
         talcs::DspxProjectContext *projectContext() const;
@@ -51,7 +54,7 @@ namespace Audio::Internal {
         AudioContextInterface *m_audioContextInterface;
         talcs::DspxProjectContext *m_projectContext;
 
-        QHash<QDspx::AudioClipEntity *, QString> *m_audioClipsToOpenFile;
+        QHash<QDspx::AudioClipEntity *, QString> m_audioClipsToOpenFile;
 
         QList<QDspx::AudioClipEntity *> m_failedAudioClipsToAlert;
     };
