@@ -27,6 +27,7 @@ namespace Audio::Internal {
     };
 
     class WelcomePage : public QWizardPage {
+        Q_OBJECT
     public:
         explicit WelcomePage(AudioTroubleshootingDialog *parent = nullptr) : QWizardPage(parent) {
             setTitle(tr("<h3>Audio Troubleshooting Wizard</h3>"));
@@ -52,6 +53,7 @@ namespace Audio::Internal {
     };
 
     class TestPage : public QWizardPage {
+        Q_OBJECT
     public:
         explicit TestPage(AudioTroubleshootingDialog *parent = nullptr) : QWizardPage(parent) {
             setTitle(tr("<h3>Test Audio Device</h3>"));
@@ -63,6 +65,17 @@ namespace Audio::Internal {
             testButtonLayout->addWidget(testButton);
             testButtonLayout->addStretch();
             layout->addLayout(testButtonLayout);
+            auto noteLabel = new QLabel(tr("<p>Before testing, please ensure that the device you are monitoring is the one you selected "
+                                           "if your computer has multiple audio devices (e.g. speaker and headphone)</p>"
+                                           "<p>Did you muted the device or set the volume to zero? This may cause it to not play sound</p>"));
+            noteLabel->setWordWrap(true);
+            layout->addWidget(noteLabel);
+            auto line = new QFrame;
+            line->setFrameShape(QFrame::HLine);
+            line->setFrameShadow(QFrame::Sunken);
+            layout->addSpacing(16);
+            layout->addWidget(line);
+            layout->addSpacing(16);
             auto questionLabel = new QLabel(tr("Is any sound played after clicking the \"Test\" button?"));
             questionLabel->setWordWrap(true);
             layout->addWidget(questionLabel);
@@ -98,6 +111,7 @@ namespace Audio::Internal {
     };
 
     class ResultOkPage : public QWizardPage {
+        Q_OBJECT
     public:
         explicit ResultOkPage(AudioTroubleshootingDialog *parent = nullptr) : QWizardPage(parent) {
             setTitle(tr("<h3>Everything is OK</h3>"));
@@ -114,6 +128,7 @@ namespace Audio::Internal {
     };
 
     class ConfigurePage : public QWizardPage {
+        Q_OBJECT
     public:
         explicit ConfigurePage(AudioTroubleshootingDialog *parent = nullptr) : QWizardPage(parent) {
             setTitle(tr("<h3>Configure Audio Device</h3>"));
@@ -137,6 +152,17 @@ namespace Audio::Internal {
             testButtonLayout->addWidget(testButton);
             testButtonLayout->addStretch();
             layout->addLayout(testButtonLayout);
+            auto noteLabel = new QLabel(tr("<p>Before testing, please ensure that the device you are monitoring is the one you selected "
+                                           "if your computer has multiple audio devices (e.g. speaker and headphone)</p>"
+                                           "<p>Did you muted the device or set the volume to zero? This may cause it to not play sound</p>"));
+            noteLabel->setWordWrap(true);
+            layout->addWidget(noteLabel);
+            auto line = new QFrame;
+            line->setFrameShape(QFrame::HLine);
+            line->setFrameShadow(QFrame::Sunken);
+            layout->addSpacing(16);
+            layout->addWidget(line);
+            layout->addSpacing(16);
             auto questionLabel = new QLabel(tr("Have you selected a working audio device which plays sound after clicking the \"Test\" button?"));
             questionLabel->setWordWrap(true);
             layout->addWidget(questionLabel);
@@ -144,7 +170,7 @@ namespace Audio::Internal {
                 tr("&Yes"), tr("I have selected a working audio device"));
             layout->addWidget(yesButton);
             auto noButton = new QCommandLinkButton(
-                tr("&No"), tr("All devices on my computers are either not available or not able to play sound"));
+                tr("&No"), tr("The device I want to use is either not available or not able to play sound"));
             layout->addWidget(noButton);
             setLayout(layout);
 
@@ -172,10 +198,11 @@ namespace Audio::Internal {
     };
 
     class ExternalCheckPage : public QWizardPage {
+        Q_OBJECT
     public:
         explicit ExternalCheckPage(AudioTroubleshootingDialog *parent = nullptr) : QWizardPage(parent) {
             setTitle("<h3>Check Your System Audio Settings</h3>");
-            setSubTitle(tr("Please ensure the audio devices are configured properly in the settings of your system"));
+            setSubTitle(tr("Please ensure the audio devices have been connected to your computer and configured properly in the settings of your system"));
             auto layout = new QVBoxLayout;
             auto goToSettingsButtonLayout = new QHBoxLayout;
             auto goToSettingsButton = new QPushButton(
@@ -195,6 +222,12 @@ namespace Audio::Internal {
                                            "in which case the audio device can only be used by that one program.</p>"));
             hintLabel->setWordWrap(true);
             layout->addWidget(hintLabel);
+            auto line = new QFrame;
+            line->setFrameShape(QFrame::HLine);
+            line->setFrameShadow(QFrame::Sunken);
+            layout->addSpacing(16);
+            layout->addWidget(line);
+            layout->addSpacing(16);
             auto questionLabel = new QLabel(tr("Are audio devices configured properly and able to be played by other applications?"));
             questionLabel->setWordWrap(true);
             layout->addWidget(questionLabel);
@@ -249,6 +282,7 @@ namespace Audio::Internal {
     };
 
     class ResultFailPage : public QWizardPage {
+        Q_OBJECT
     public:
         explicit ResultFailPage(AudioTroubleshootingDialog *parent = nullptr) : QWizardPage(parent) {
             setTitle("<h3>Cannot Resolve the Problem with Audio Output</h3>");
@@ -258,7 +292,7 @@ namespace Audio::Internal {
             textEdit->setReadOnly(true);
             layout->addWidget(textEdit);
             auto noteLabel = new QLabel(tr("The message contains the names of audio devices on your computer "
-                                           "and does not contain sensitive information (e.g. your username)."));
+                                           "and does not contain sensitive information (e.g. your username)"));
             noteLabel->setWordWrap(true);
             layout->addWidget(noteLabel);
             setLayout(layout);
@@ -286,4 +320,6 @@ namespace Audio::Internal {
     }
     AudioTroubleshootingDialog::~AudioTroubleshootingDialog() = default;
 
-} // Audio
+}
+
+#include "audiotroubleshootingdialog.moc"
