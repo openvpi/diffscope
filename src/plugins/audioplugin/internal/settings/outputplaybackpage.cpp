@@ -31,6 +31,7 @@
 #include <audioplugin/internal/devicetester.h>
 #include <audioplugin/internal/vstconnectionsystem.h>
 #include <audioplugin/internal/audiosettings.h>
+#include <audioplugin/internal/audiotroubleshootingdialog.h>
 
 namespace Audio::Internal {
 
@@ -126,6 +127,13 @@ namespace Audio::Internal {
             fileLayout->addRow(tr("&File reading buffer size (samples)"), m_fileBufferingReadAheadSizeSpinBox);
             fileGroupBox->setLayout(fileLayout);
             mainLayout->addWidget(fileGroupBox);
+
+            auto troubleshootButtonLayout = new QHBoxLayout;
+            auto troubleshootButton = new QPushButton(tr("Tr&oubleshoot Audio Problems"));
+            troubleshootButtonLayout->addWidget(troubleshootButton);
+            troubleshootButtonLayout->addStretch();
+            mainLayout->addLayout(troubleshootButtonLayout);
+
             mainLayout->addStretch();
             setLayout(mainLayout);
 
@@ -169,6 +177,11 @@ namespace Audio::Internal {
             m_devicePanSpinBox->setValue(panToSliderValue(outputSys->outputContext()->controlMixer()->pan()));
             connect(m_devicePanSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int value) {
                 updatePan(sliderValueToPan(value));
+            });
+
+            connect(troubleshootButton, &QAbstractButton::clicked, this, [=] {
+                AudioTroubleshootingDialog dlg(this);
+                dlg.exec();
             });
 
             m_playHeadBehaviorComboBox->setCurrentIndex(AudioSettings::playheadBehavior());
