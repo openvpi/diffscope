@@ -61,11 +61,12 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('scripts/vcpkg-manifest/vcpkg.json', 'scripts/vcpkg/**') }}
         restore-keys: |
           ${{ runner.os }}-vcpkg-
 
     - name: Install vcpkg dependencies
+      if: steps.cache_vcpkg.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         if (!(Test-Path vcpkg)) {
@@ -97,6 +98,7 @@ runs:
         }
 
     - name: Save vcpkg to cache
+      if: steps.cache_vcpkg.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         path: ${{ github.workspace }}/vcpkg

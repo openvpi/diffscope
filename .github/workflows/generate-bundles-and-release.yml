@@ -63,6 +63,7 @@ jobs:
             -DCK_WIN_APPLOCAL_DEPS:BOOL=TRUE `
             -DTALCS_DEVICE_ENABLE_ASIO:BOOL=ON `
             -DTALCS_ASIOSDK_DIR=${{ env.ASIOSDK_DIR }} `
+            -DTALCS_REMOTE:BOOL=ON `
             -DTALCS_DSPX:BOOL=ON `
             -DCMAKE_INSTALL_PREFIX=installed
           cmake --build build --target all
