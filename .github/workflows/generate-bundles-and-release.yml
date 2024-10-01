@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-13]
     
     runs-on: ${{ matrix.os }}
 
@@ -131,7 +131,7 @@ jobs:
           Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.exe") >> $env:GITHUB_ENV
 
       - name: Create DMG bundle (macOS)
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-13'
         shell: pwsh
         run: |
           cd scripts/setup/macos

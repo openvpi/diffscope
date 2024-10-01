@@ -37,7 +37,7 @@ runs:
         Write-Output QT_ARCH=gcc_64 >> $env:GITHUB_ENV
 
     - name: Install build tools (macOS)
-      if: inputs.os == 'macos-latest'
+      if: inputs.os == 'macos-13'
       shell: pwsh
       env:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
