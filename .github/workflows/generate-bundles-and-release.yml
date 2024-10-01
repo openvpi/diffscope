@@ -12,7 +12,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-13]
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-13
     
     runs-on: ${{ matrix.os }}
 
@@ -145,6 +148,18 @@ jobs:
           npm install
           node create-dmg.js $env:DIFFSCOPE_INSTALLED_DIR/DiffScope.app 'DiffScope Bridge.pkg' "$env:BINARY_NAME.dmg"
           Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.dmg") >> $env:GITHUB_ENV
+
+      - name: Create Binary Archive (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        shell: pwsh
+        run: |
+          mv $env:DIFFSCOPE_INSTALLED_DIR DiffScope
+          mkdir "DiffScope Bridge"
+          Invoke-WebRequest -Uri "https://www.gnu.org/licenses/gpl-3.0.rtf" -OutFile "DiffScope Bridge/gpl-3.0.rtf"
+          mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/VST3/*.vst3 "DiffScope Bridge"
+          mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/LV2/*.lv2 "DiffScope Bridge"
+          tar --bzip2 -cf "$env:BINARY_NAME.tar.bz2" DiffScope "DiffScope Bridge"
+          Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.tar.bz2") >> $env:GITHUB_ENV
 
       - name: Upload release file
         uses: actions/upload-artifact@v4
