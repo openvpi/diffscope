@@ -1,5 +1,7 @@
 #include "devicetester.h"
 
+#include <cmath>
+
 #include <TalcsCore/MixerAudioSource.h>
 
 #include <audioplugin/outputsysteminterface.h>

@@ -31,7 +31,7 @@ runs:
       shell: pwsh
       run: |
         sudo apt update
-        sudo apt-get -y install ninja-build
+        sudo apt-get -y install ninja-build libasound2-dev libxrandr-dev libxinerama-dev libxrender-dev libxcomposite-dev libxcursor-dev
         Write-Output VCPKG_TRIPLET=x64-linux >> $env:GITHUB_ENV
         Write-Output VCPKG_TRIPLET_STATIC=x64-linux >> $env:GITHUB_ENV
         Write-Output QT_ARCH=gcc_64 >> $env:GITHUB_ENV
