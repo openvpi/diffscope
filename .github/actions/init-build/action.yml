@@ -56,27 +56,32 @@ runs:
         archives: ${{ inputs.os == 'ubuntu-latest' && 'icu qtbase' || 'qtbase' }} qtsvg qtdeclarative qtremoteobjects qttools
         cache: true
 
-    - name: Restore vcpkg from cache
+    - name: Prepare vcpkg
+      shell: pwsh
+      run: |
+        Write-Output VCPKG_REPO_REF=$((Get-Content scripts/vcpkg-manifest/vcpkg.json | ConvertFrom-Json).'builtin-baseline') >> $env:GITHUB_ENV
+        Write-Output VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_archives >> $env:GITHUB_ENV
+        Write-Output VCPKG_CACHE_HASH=${{ hashFiles('scripts/vcpkg-manifest/vcpkg.json', 'scripts/vcpkg/**') }} >> $env:GITHUB_ENV
+
+    - name: Restore vcpkg binary cache from cache
       id: cache_vcpkg
       uses: actions/cache/restore@v4
       with:
-        path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-vcpkg-${{ hashFiles('scripts/vcpkg-manifest/vcpkg.json', 'scripts/vcpkg/**') }}
+        path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+        key: ${{ runner.os }}-vcpkg-${{ env.VCPKG_REPO_REF }}-${{ env.VCPKG_CACHE_HASH }}
         restore-keys: |
-          ${{ runner.os }}-vcpkg-
+          ${{ runner.os }}-vcpkg-${{ env.VCPKG_REPO_REF }}-
 
     - name: Install vcpkg dependencies
-      if: steps.cache_vcpkg.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        if (!(Test-Path vcpkg)) {
-          git clone https://github.com/microsoft/vcpkg.git
-          cd vcpkg
-          ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
-        } else {
-          cd vcpkg
-          git pull origin master
+        if (!(Test-Path $env:VCPKG_DEFAULT_BINARY_CACHE)) {
+          mkdir $env:VCPKG_DEFAULT_BINARY_CACHE
         }
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
+        git checkout $env:VCPKG_REPO_REF
         $env:QT_DIR="$env:Qt5_DIR/lib/cmake/Qt5"
         $env:Qt5_DIR=$env:QT_DIR
         $env:VCPKG_KEEP_ENV_VARS="QT_DIR;Qt5_DIR"
@@ -91,45 +96,21 @@ runs:
           --x-manifest-root=${{ github.workspace }}/scripts/setup/diffscope-bridge `
           --x-install-root=./bridge_installed `
           --triplet=${{ env.VCPKG_TRIPLET_STATIC }}
-        if (Test-Path -Path buildtrees) {
-          Remove-Item -Path buildtrees -Recurse -Force
-        }
-        if (Test-Path -Path downloads) {
-          Remove-Item -Path downloads -Recurse -Force
-        }
-        if (Test-Path -Path packages) {
-          Remove-Item -Path packages -Recurse -Force
-        }
 
     - name: Save vcpkg to cache
       if: steps.cache_vcpkg.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
-        path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
-
-    - name: Restore ASIO SDK from cache
-      id: cache_asiosdk
-      if: inputs.os == 'windows-latest'
-      uses: actions/cache/restore@v4
-      with:
-        path: ${{github.workspace}}/asiosdk
-        key: asiosdk
+        path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+        key: ${{ runner.os }}-vcpkg-${{ env.VCPKG_REPO_REF }}-${{ env.VCPKG_CACHE_HASH }}
 
     - name: Get ASIO SDK
-      if: inputs.os == 'windows-latest' && steps.cache_asiosdk.outputs.cache-hit != 'true'
+      if: inputs.os == 'windows-latest'
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/asiosdk_2.3.3_2019-06-14.zip" -OutFile $env:RUNNER_TEMP/asiosdk.zip
         Expand-Archive -Path $env:RUNNER_TEMP/asiosdk.zip -DestinationPath $env:GITHUB_WORKSPACE
         Rename-Item -Path asiosdk_2.3.3_2019-06-14 -NewName asiosdk
-
-    - name: Save ASIO SDK to cache
-      if: inputs.os == 'windows-latest' && steps.cache_asiosdk.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
-      with:
-        path: ${{github.workspace}}/asiosdk
-        key: asiosdk
 
     - name: Set directory variables
       shell: pwsh
