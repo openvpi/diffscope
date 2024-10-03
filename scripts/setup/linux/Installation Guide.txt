@@ -1,0 +1,25 @@
+DiffScope Installation Guide
+============================
+
+Read in other languages / 以其它语言阅读 / 以其它語言閱讀 / 他の言語で読みます:
+<https://github.com/openvpi/diffscope/blob/main/docs/linux-installation-guide.md>
+
+Install DiffScope
+-----------------
+
+1. Unpack this archive and move the "DiffScope" directory to where you wish to install it ("/opt" is suggested).
+
+2. Execute "DiffScope/bin/DiffScope" to start DiffScope.
+
+Create Desktop Entry
+--------------------
+
+Run "DiffScope/create-desktop-entry.sh" to create a desktop entry of DiffScope.
+
+Run "DiffScope/remove-desktop-entry.sh" to remove it later.
+
+Install DiffScope Bridge [optional]
+-----------------------------------
+
+DiffScope Bridge is provided in VST3 and LV2 format in the "DiffScope Bridge" directory. To install, please unpack this
+archive and move these plugin bundles to the plugin location.

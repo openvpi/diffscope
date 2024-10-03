@@ -162,12 +162,15 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         shell: pwsh
         run: |
+          cd scripts/setup/linux
           mv $env:DIFFSCOPE_INSTALLED_DIR DiffScope
           mkdir "DiffScope Bridge"
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/gpl-3.0.rtf" -OutFile "DiffScope Bridge/gpl-3.0.rtf"
           mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/VST3/*.vst3 "DiffScope Bridge"
           mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/LV2/*.lv2 "DiffScope Bridge"
-          tar --bzip2 -cf "$env:BINARY_NAME.tar.bz2" DiffScope "DiffScope Bridge"
+          mv create-desktop-entry.sh DiffScope
+          mv remove-desktop-entry.sh DiffScope
+          tar --bzip2 -cf "$env:BINARY_NAME.tar.bz2" DiffScope "DiffScope Bridge" "Installation Guide.txt"
           Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.tar.bz2") >> $env:GITHUB_ENV
 
       - name: Upload release file
