@@ -108,7 +108,7 @@ jobs:
         run: |
           Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/jrsoftware/issrc/f59a90485af28067626e60ef7e42336e00ae7472/Files/Languages/Unofficial/ChineseSimplified.isl' -OutFile ChineseSimplified.isl
           Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/jrsoftware/issrc/e5e138e67bacd650650eac489fa861274a4b81ce/Files/Languages/Unofficial/ChineseTraditional.isl' -OutFile ChineseTraditional.isl
-          Invoke-WebRequest -Uri "https://www.gnu.org/licenses/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
           
           $content = Get-Content build/CMakeCache.txt
           $variableValues = @{}
@@ -138,11 +138,11 @@ jobs:
         shell: pwsh
         run: |
           cd scripts/setup/macos
-          Invoke-WebRequest -Uri "http://s.sudre.free.fr/Software/files/Packages.dmg" -OutFile Packages.dmg
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/Packages.dmg" -OutFile Packages.dmg
           mkdir Packages
           hdiutil attach -mountpoint Packages Packages.dmg
           sudo installer -pkg 'Packages/Install Packages.pkg' -target /
-          Invoke-WebRequest -Uri "https://www.gnu.org/licenses/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
           ln -s $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR diffscope-bridge-artefacts
           packagesbuild diffscope-bridge-dist.pkgproj
           npm install
@@ -155,7 +155,7 @@ jobs:
         run: |
           mv $env:DIFFSCOPE_INSTALLED_DIR DiffScope
           mkdir "DiffScope Bridge"
-          Invoke-WebRequest -Uri "https://www.gnu.org/licenses/gpl-3.0.rtf" -OutFile "DiffScope Bridge/gpl-3.0.rtf"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/gpl-3.0.rtf" -OutFile "DiffScope Bridge/gpl-3.0.rtf"
           mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/VST3/*.vst3 "DiffScope Bridge"
           mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/LV2/*.lv2 "DiffScope Bridge"
           tar --bzip2 -cf "$env:BINARY_NAME.tar.bz2" DiffScope "DiffScope Bridge"

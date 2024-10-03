@@ -77,7 +77,8 @@ runs:
           cd vcpkg
           git pull origin master
         }
-        $env:QT_DIR=$env:Qt5_DIR
+        $env:QT_DIR="$env:Qt5_DIR/lib/cmake/Qt5"
+        $env:Qt5_DIR=$env:QT_DIR
         $env:VCPKG_KEEP_ENV_VARS="QT_DIR;Qt5_DIR"
         ./vcpkg install `
           --x-manifest-root=${{ github.workspace }}/scripts/vcpkg-manifest `
@@ -119,7 +120,7 @@ runs:
       if: inputs.os == 'windows-latest' && steps.cache_asiosdk.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip -OutFile $env:RUNNER_TEMP/asiosdk.zip
+        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/asiosdk_2.3.3_2019-06-14.zip" -OutFile $env:RUNNER_TEMP/asiosdk.zip
         Expand-Archive -Path $env:RUNNER_TEMP/asiosdk.zip -DestinationPath $env:GITHUB_WORKSPACE
         Rename-Item -Path asiosdk_2.3.3_2019-06-14 -NewName asiosdk
 
