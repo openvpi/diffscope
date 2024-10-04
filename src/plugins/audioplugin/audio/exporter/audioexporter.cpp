@@ -1,6 +1,7 @@
 #include "audioexporter.h"
 #include "audioexporter_p.h"
 
+#include <QApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QVariant>
@@ -51,6 +52,41 @@ namespace Audio {
     void AudioExporterConfig::setFormatMono(bool a_) {
         d->formatMono = a_;
     }
+    QStringList AudioExporterConfig::formatOptionsOfType(FileType type) {
+        switch (type) {
+            case FT_Wav:
+                return {
+                    QApplication::translate("Audio::AudioExporterConfig",
+                                            "32-bit float (IEEE 754)"),
+                    QApplication::translate("Audio::AudioExporterConfig", "24-bit PCM"),
+                    QApplication::translate("Audio::AudioExporterConfig", "16-bit PCM"),
+                    QApplication::translate("Audio::AudioExporterConfig", "Unsigned 8-bit PCM"),
+                };
+            case FT_Flac:
+                return {
+                    QApplication::translate("Audio::AudioExporterConfig", "24-bit PCM"),
+                    QApplication::translate("Audio::AudioExporterConfig", "16-bit PCM"),
+                    QApplication::translate("Audio::AudioExporterConfig", "8-bit PCM"),
+                };
+            default:
+                return {};
+        }
+    }
+
+    QString AudioExporterConfig::extensionOfType(FileType type) {
+        switch (type) {
+            case FT_Wav:
+                return QStringLiteral("wav");
+            case FT_Flac:
+                return QStringLiteral("flac");
+            case FT_OggVorbis:
+                return QStringLiteral("ogg");
+            case FT_Mp3:
+                return QStringLiteral("mp3");
+        }
+        return {};
+    }
+
     int AudioExporterConfig::formatOption() const {
         return d->formatOption;
     }
@@ -132,6 +168,19 @@ namespace Audio {
         config.d->timeRange = static_cast<TimeRange>(map.value("timeRange").toInt());
         return config;
     }
+    bool AudioExporterConfig::operator==(const AudioExporterConfig &other) const {
+        return d->fileName == other.d->fileName
+            && d->fileDirectory == other.d->fileDirectory
+            && d->fileType == other.d->fileType
+            && d->formatMono == other.d->formatMono
+            && d->formatOption == other.d->formatOption
+            && d->formatQuality == other.d->formatQuality
+            && d->formatSampleRate == other.d->formatSampleRate
+            && d->mixingOption == other.d->mixingOption
+            && d->isMuteSoloEnabled == other.d->isMuteSoloEnabled
+            && d->sourceOption == other.d->sourceOption
+            && d->timeRange == other.d->timeRange;
+    }
 
     QString AudioExporterPrivate::projectName() const {
         // project file's base name
@@ -173,7 +222,7 @@ namespace Audio {
             if (templateName == "projectName") {
                 replacedText = projectName();
             } else if (templateName == "sampleRate") {
-                replacedText = QString::number(config.formatSampleRate());
+                replacedText = QString::number(config.formatSampleRate()).replace('.', '_');
             } else if (templateName == "today") {
                 replacedText = QDate::currentDate().toString("yyyyMMdd");
             } else if (templateName == "$") {
@@ -183,6 +232,8 @@ namespace Audio {
                     replacedText = trackName;
                 } else if (templateName == "trackIndex") {
                     replacedText = QString::number(trackIndex + 1);
+                } else {
+                    allTemplatesMatch = false;
                 }
             } else {
                 allTemplatesMatch = false;
@@ -195,19 +246,64 @@ namespace Audio {
         templateString = result;
         return allTemplatesMatch;
     }
+
+    int AudioExporterPrivate::calculateFormat() const {
+        int format = 0;
+        switch (config.fileType()) {
+            case AudioExporterConfig::FT_Wav:
+                format |= talcs::AudioFormatIO::WAV;
+                switch (config.formatOption()) {
+                    case 0:
+                        format |= talcs::AudioFormatIO::FLOAT;
+                        return format;
+                    case 1:
+                        format |= talcs::AudioFormatIO::PCM_24;
+                        return format;
+                    case 2:
+                        format |= talcs::AudioFormatIO::PCM_16;
+                        return format;
+                    case 3:
+                        format |= talcs::AudioFormatIO::PCM_U8;
+                        return format;
+                }
+                break;
+            case AudioExporterConfig::FT_Flac:
+                format |= talcs::AudioFormatIO::FLAC;
+                switch (config.formatOption()) {
+                    case 0:
+                        format |= talcs::AudioFormatIO::PCM_24;
+                        return format;
+                    case 1:
+                        format |= talcs::AudioFormatIO::PCM_16;
+                        return format;
+                    case 2:
+                        format |= talcs::AudioFormatIO::PCM_S8;
+                        return format;
+                }
+                break;
+            case AudioExporterConfig::FT_OggVorbis:
+                format |= (talcs::AudioFormatIO::OGG | talcs::AudioFormatIO::VORBIS);
+                return format;
+            case AudioExporterConfig::FT_Mp3:
+                format |= (talcs::AudioFormatIO::MPEG | talcs::AudioFormatIO::MPEG_LAYER_III);
+                return format;
+        }
+        return 0;
+    }
+
     void AudioExporterPrivate::updateFileListAndWarnings() {
         warning = {};
         if (config.fileType() == AudioExporterConfig::FT_Mp3 || config.fileType() == AudioExporterConfig::FT_OggVorbis)
             warning |= AudioExporter::W_LossyFormat;
         fileList.clear();
-        if (config.sourceOption() == AudioExporterConfig::SO_All) {
+        if (config.mixingOption() == AudioExporterConfig::MO_Mixed) {
             auto calculatedFileName = config.fileName();
             if (!calculateTemplate(calculatedFileName))
                 warning |= AudioExporter::W_UnrecognizedTemplate;
-            auto fileInfo = QFileInfo(QDir(projectDirectory()).absoluteFilePath(calculatedFileName));
+            auto fileInfo = QFileInfo(QDir(QDir(projectDirectory()).absoluteFilePath(config.fileDirectory())).absoluteFilePath(calculatedFileName));
             if (fileInfo.exists())
                 warning |= AudioExporter::W_WillOverwrite;
-            fileList.append(fileInfo.canonicalFilePath());
+            fileList.append(fileInfo.absoluteFilePath());
         } else {
             if (config.source().isEmpty())
                 warning |= AudioExporter::W_NoFile;
@@ -216,13 +312,13 @@ namespace Audio {
                 auto calculatedFileName = config.fileName();
                 if (!calculateTemplate(calculatedFileName, trackName(index), index))
                     warning |= AudioExporter::W_UnrecognizedTemplate;
-                auto fileInfo = QFileInfo(QDir(projectDirectory()).absoluteFilePath(calculatedFileName));
+                auto fileInfo = QFileInfo(QDir(QDir(projectDirectory()).absoluteFilePath(config.fileDirectory())).absoluteFilePath(calculatedFileName));
                 if (fileInfo.exists())
                     warning |= AudioExporter::W_WillOverwrite;
-                if (fileSet.contains(fileInfo.canonicalFilePath()))
+                if (fileSet.contains(fileInfo.absoluteFilePath()))
                     warning |= AudioExporter::W_DuplicatedFile;
-                fileSet.insert(fileInfo.canonicalFilePath());
-                fileList.append(fileInfo.canonicalFilePath());
+                fileSet.insert(fileInfo.absoluteFilePath());
+                fileList.append(fileInfo.absoluteFilePath());
             }
         }
     }
@@ -233,6 +329,11 @@ namespace Audio {
         d->windowHandle = window;
     }
     AudioExporter::~AudioExporter() = default;
+
+    Core::IProjectWindow *AudioExporter::windowHandle() const {
+        Q_D(const AudioExporter);
+        return d->windowHandle;
+    }
 
     QStringList AudioExporter::presets() {
         return AudioSettings::audioExporterPresets().toObject().keys();
@@ -261,7 +362,7 @@ namespace Audio {
             {"formatOption", 0},
             {"formatQuality", 100},
             {"formatSampleRate", 48000},
-            {"mixingOption", AudioExporterConfig::MO_Separated},
+            {"mixingOption", AudioExporterConfig::MO_SeparatedThruMaster},
             {"isMuteSoloEnabled", true},
             {"sourceOption", AudioExporterConfig::SO_All},
             {"source", {}},
@@ -289,7 +390,7 @@ namespace Audio {
             {"formatOption", 0},
             {"formatQuality", 100},
             {"formatSampleRate", 48000},
-            {"mixingOption", AudioExporterConfig::MO_Separated},
+            {"mixingOption", AudioExporterConfig::MO_SeparatedThruMaster},
             {"isMuteSoloEnabled", true},
             {"sourceOption", AudioExporterConfig::SO_All},
             {"source", {}},
@@ -317,7 +418,7 @@ namespace Audio {
             {"formatOption", 0},
             {"formatQuality", 100},
             {"formatSampleRate", 48000},
-            {"mixingOption", AudioExporterConfig::MO_Separated},
+            {"mixingOption", AudioExporterConfig::MO_SeparatedThruMaster},
             {"isMuteSoloEnabled", true},
             {"sourceOption", AudioExporterConfig::SO_All},
             {"source", {}},
@@ -382,13 +483,13 @@ namespace Audio {
             list.append(tr("The files to be exported contain files with duplicate names. Please check if the file name template is unique for each source."));
         }
         if (warning & W_WillOverwrite) {
-            list.append(tr("The files to be exported contain files with the same name as existing files."));
+            list.append(tr("The files to be exported contain files with the same name as existing files. If continue, the existing files will be overwritten."));
         }
         if (warning & W_UnrecognizedTemplate) {
             list.append(tr("Unrecognized file name template. Please check the syntax of the file name template."));
         }
         if (warning & W_LossyFormat) {
-            list.append(tr("Currently selected file type is a lossy format. Please use WAV or FLAC format to avoid loss of sound quality."));
+            list.append(tr("The currently selected file type is a lossy format. To avoid loss of sound quality, please use WAV or FLAC format."));
         }
         return list;
     }
@@ -419,18 +520,18 @@ namespace Audio {
             io.setStream(file);
             io.setSampleRate(config.formatSampleRate());
             io.setChannelCount(config.formatMono() ? 1 : 2);
-            io.setFormat(talcs::AudioFormatIO::WAV | talcs::AudioFormatIO::FLOAT); // TODO calculte AudioFormatIO format from config
-            io.setCompressionLevel(0.01 * (100 - config.formatQuality()));
+            io.setFormat(d->calculateFormat());
             if (!io.open(talcs::AbstractAudioFormatIO::Write)) {
                 setErrorString(tr("Format not supported: %1").arg(io.errorString()));
                 return R_Fail;
             }
+            io.setCompressionLevel(0.01 * (100 - config.formatQuality()));
         }
 
         // create and configure talcs::DspxProjectAudioExporter
         talcs::DspxProjectAudioExporter exporter(projectContext);
         auto cleanup = [=](void *) {d->currentExporter = nullptr;};
-        std::unique_ptr<void, decltype(cleanup)> _1(nullptr, cleanup);
+        std::unique_ptr<void, decltype(cleanup)> _1(this, cleanup);
         d->currentExporter = &exporter;
         exporter.setMonoChannel(config.formatMono());
         exporter.setThruMaster(config.mixingOption() == AudioExporterConfig::MO_SeparatedThruMaster);
@@ -471,16 +572,26 @@ namespace Audio {
             if (!projectContext->preMixer()->open(currentBufferSize, currentSampleRate))
                 qDebug() << "AudioExporter: Cannot reopen pre-mixer after exported";
         };
-        std::unique_ptr<void, decltype(reopenMixer)> _2(nullptr, reopenMixer);
+        std::unique_ptr<void, decltype(reopenMixer)> _2(this, reopenMixer);
         if (!projectContext->preMixer()->open(1024, config.formatSampleRate())) { // TODO let user configure buffer size in settings
             setErrorString(tr("Cannot start audio exporting"));
             return R_Fail;
         }
 
         // call listeners
+        QList<AudioExporterListener *> listenerToCallFinishList;
+        auto callFinish = [&](void *) {
+            for (auto listener : listenerToCallFinishList) {
+                listener->willFinishCallback(this);
+            }
+        };
+        std::unique_ptr<void, decltype(callFinish)> _3(this, callFinish);
+        // Note: order of destruction: call AudioExporterListener::willFinish after mixer reopened
+        std::unique_ptr<void, decltype(reopenMixer)> _4 = std::move(_2);
         for (auto listener : m_listeners) {
             if (!listener->willStartCallback(this))
                 return R_Fail;
+            listenerToCallFinishList.prepend(listener);
         }
 
         // start exporting
@@ -491,9 +602,9 @@ namespace Audio {
             emit clippingDetected(sourceIndexMap.value(track));
         });
         auto ret = exporter.exec();
-        if (ret & talcs::DspxProjectAudioExporter::OK)
+        if (ret == talcs::DspxProjectAudioExporter::OK)
             return R_OK;
-        if (ret & talcs::DspxProjectAudioExporter::Interrupted)
+        if (ret == talcs::DspxProjectAudioExporter::Interrupted)
             return R_Abort;
 
         if (errorString().isEmpty())
@@ -508,5 +619,9 @@ namespace Audio {
         if (isFail)
             setErrorString(message.isEmpty() ? tr("Unknown error") : message);
         d->currentExporter->interrupt(isFail);
+    }
+
+    void AudioExporter::addWarning(const QString &message, int sourceIndex) {
+        emit warningAdded(message, sourceIndex);
     }
 } // Audio

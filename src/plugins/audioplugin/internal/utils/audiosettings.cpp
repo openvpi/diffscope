@@ -117,6 +117,8 @@ namespace Audio::Internal {
     AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_QJSONVALUE(vstTheme, setVstTheme)
 
     AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_QJSONVALUE(audioExporterPresets, setAudioExporterPresets)
-    AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_1(audioExporterClippingCheckEnabled, setAudioExporterClippingCheckEnabled)
+    AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_2(audioExporterClippingCheckEnabled, setAudioExporterClippingCheckEnabled, true)
+    AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_QJSONVALUE(audioExporterCurrentPreset, setAudioExporterCurrentPreset)
+    AUDIO_AUDIO_SETTINGS_OPTION_IMPLEMENTATION_1(audioExporterIgnoredWarningFlag, setAudioExporterIgnoredWarningFlag)
     
 } // Audio

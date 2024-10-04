@@ -11,6 +11,12 @@ namespace Core {
 }
 
 namespace Audio {
+
+
+    namespace Internal {
+        class AudioExportDialog;
+    }
+
     class AudioExporter;
 
     class AudioExporterConfigData;
@@ -38,6 +44,9 @@ namespace Audio {
 
         bool formatMono() const;
         void setFormatMono(bool);
+
+        [[nodiscard]] static QStringList formatOptionsOfType(FileType type);
+        [[nodiscard]] static QString extensionOfType(FileType type);
 
         int formatOption() const;
         void setFormatOption(int);
@@ -80,6 +89,8 @@ namespace Audio {
         QVariantMap toVariantMap() const;
         [[nodiscard]] static AudioExporterConfig fromVariantMap(const QVariantMap &map);
 
+        bool operator==(const AudioExporterConfig &other) const;
+
     private:
         QSharedDataPointer<AudioExporterConfigData> d;
     };
@@ -93,6 +104,7 @@ namespace Audio {
     class AudioExporter : public QObject, public talcs::ErrorStringProvider {
         Q_OBJECT
         Q_DECLARE_PRIVATE(AudioExporter)
+        friend class Internal::AudioExportDialog;
     public:
 
         explicit AudioExporter(Core::IProjectWindow *window, QObject *parent = nullptr);
@@ -132,10 +144,12 @@ namespace Audio {
         Result exec();
 
         void cancel(bool isFail = false, const QString &message = {});
+        void addWarning(const QString &message, int sourceIndex = -1);
 
     signals:
         void progressChanged(double progressRatio, int sourceIndex);
         void clippingDetected(int sourceIndex);
+        void warningAdded(const QString &message, int sourceIndex);
 
     private:
         QScopedPointer<AudioExporterPrivate> d_ptr;

@@ -4,8 +4,9 @@
 #include <QFormLayout>
 #include <QThread>
 #include <QLabel>
+#include <QPushButton>
 
-#include <SVSCraftWidgets/expressionspinbox.h>
+#include <audioplugin/internal/audiosettings.h>
 
 namespace Audio::Internal {
 
@@ -16,20 +17,32 @@ namespace Audio::Internal {
             auto mainLayout = new QFormLayout;
             auto enableClippingCheckCheckBox = new QCheckBox(tr("Enable &clipping check"));
             mainLayout->addRow(enableClippingCheckCheckBox);
-            auto threadCountSpinBox = new SVS::ExpressionSpinBox;
-            threadCountSpinBox->setRange(0, QThread::idealThreadCount());
-            threadCountSpinBox->setSpecialValueText(tr("Auto"));
-            mainLayout->addRow(tr("Number of &threads for exporting"), threadCountSpinBox);
-            auto multiThreadLabel = new QLabel(tr("Audio exporting will be multi-threaded when the mixing option is \"separated\""));
-            multiThreadLabel->setWordWrap(true);
-            multiThreadLabel->setAlignment(Qt::AlignTop);
-            mainLayout->addWidget(multiThreadLabel);
+            auto resetWarningDialogsLayout = new QHBoxLayout;
+            auto resetWarningDialogsButton = new QPushButton(tr("Reset &Warning Dialogs"));
+            resetWarningDialogsLayout->addWidget(resetWarningDialogsButton);
+            auto resetLabel = new QLabel;
+            resetWarningDialogsLayout->addWidget(resetLabel);
+            resetWarningDialogsLayout->addStretch();
+            mainLayout->addRow(resetWarningDialogsLayout);
             setLayout(mainLayout);
+
+            enableClippingCheckCheckBox->setChecked(m_clippingCheckEnabled = AudioSettings::audioExporterClippingCheckEnabled());
+            connect(enableClippingCheckCheckBox, &QAbstractButton::clicked, this, [=](bool checked) {
+                m_clippingCheckEnabled = checked;
+            });
+            connect(resetWarningDialogsButton, &QAbstractButton::clicked, this, [=] {
+                AudioSettings::setAudioExporterIgnoredWarningFlag(0);
+                resetWarningDialogsButton->setDisabled(true);
+                resetLabel->setText(tr("Warning dialogs have been reset"));
+            });
         }
 
         void accept() {
-
+            AudioSettings::setAudioExporterClippingCheckEnabled(m_clippingCheckEnabled);
         }
+
+    private:
+        bool m_clippingCheckEnabled;
     };
 
     AudioExportPage::AudioExportPage(QObject *parent) : Core::ISettingPage("audio.AudioExport", parent) {

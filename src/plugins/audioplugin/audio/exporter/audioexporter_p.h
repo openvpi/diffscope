@@ -45,6 +45,8 @@ namespace Audio {
         bool calculateTemplate(QString &templateString) const;
         bool calculateTemplate(QString &templateString, const QString &trackName, int trackIndex) const;
 
+        int calculateFormat() const;
+
         AudioExporter::Warning warning;
         QStringList fileList;
         void updateFileListAndWarnings();

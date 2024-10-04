@@ -110,9 +110,6 @@ namespace Audio::Internal {
         new DeviceTester(iAudio->outputSystemInterface(true), iAudio->outputSystemInterface(true));
         new DeviceTester(iAudio->outputSystemInterface(false), iAudio->outputSystemInterface(false));
 
-        AudioExportDialog dlg;
-        dlg.exec();
-
         return true;
     }
     void AudioPlugin::extensionsInitialized() {

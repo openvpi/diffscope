@@ -83,4 +83,13 @@ namespace Audio::Internal {
         m_failedAudioClipsToAlert.clear();
         return ret;
     }
+    void ProjectAddOn::setData(const QString &key, const QVariant &value) {
+        m_dataDict.insert(key, value);
+    }
+    QVariant ProjectAddOn::data(const QString &key) const {
+        return m_dataDict.value(key);
+    }
+    bool ProjectAddOn::hasData(const QString &key) const {
+        return m_dataDict.contains(key);
+    }
 }

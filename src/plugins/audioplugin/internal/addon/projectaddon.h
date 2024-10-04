@@ -50,6 +50,10 @@ namespace Audio::Internal {
         void addFailedAudioClipToAlert(QDspx::AudioClipEntity *entity);
         QList<QDspx::AudioClipEntity *> takeFailedAudioClipsToAlert();
 
+        void setData(const QString &key, const QVariant &value);
+        QVariant data(const QString &key) const;
+        bool hasData(const QString &key) const;
+
     private:
         AudioContextInterface *m_audioContextInterface;
         talcs::DspxProjectContext *m_projectContext;
@@ -57,6 +61,8 @@ namespace Audio::Internal {
         QHash<QDspx::AudioClipEntity *, QString> m_audioClipsToOpenFile;
 
         QList<QDspx::AudioClipEntity *> m_failedAudioClipsToAlert;
+
+        QHash<QString, QVariant> m_dataDict;
     };
 
 }
