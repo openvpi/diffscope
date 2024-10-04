@@ -36,7 +36,11 @@ elseif(APPLE)
     )
 else()
     # Linux
-    set(_)
+    list(APPEND _plugins
+        platforms/qxcb
+        platforminputcontexts/*
+        xcbglintegrations/*
+    )
 endif()
 
 if(WIN32)
