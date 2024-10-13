@@ -16,6 +16,10 @@ on:
       - 'README.md'
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: pwsh
+
 jobs:
   Build:
     strategy:
@@ -34,8 +38,7 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Get DiffScope Bridge Target
-        shell: pwsh
+      - name: Get DiffScope Bridge target
         run: |
           $target = (Get-Content scripts/setup/modules.json | ConvertFrom-Json).'diffscope-bridge'
           Write-Output DIFFSCOPE_BRIDGE_REPO=$($target.repository) >> $env:GITHUB_ENV
@@ -57,16 +60,13 @@ jobs:
           path: scripts/setup/diffscope-bridge
           submodules: recursive
 
-      - name: Initialize Building Environment
+      - name: Initialize building environment
         uses: ./.github/actions/init-build
-        with:
-          os: ${{ matrix.os }}
 
       - name: Build DiffScope
-        shell: pwsh
         run: |
           cmake -B build -G Ninja `
-            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo `
             -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT_DIR }}/scripts/buildsystems/vcpkg.cmake" `
             -DVCPKG_APPLOCAL_DEPS:BOOL=FALSE `
             -DQMSETUP_APPLOCAL_DEPS_PATHS_DEBUG="${{ env.VCPKG_ROOT_DIR }}/installed/${{ env.VCPKG_TRIPLET }}/debug/${{ matrix.os == 'windows-latest' && 'bin' || 'lib' }}" `
@@ -83,12 +83,11 @@ jobs:
           Write-Output DIFFSCOPE_INSTALLED_DIR=$(Resolve-Path -Path installed) >> $env:GITHUB_ENV
 
       - name: Build DiffScope Bridge
-        shell: pwsh
         if: steps.cache_diffscope_bridge.outputs.cache-hit != 'true'
         run: |
-          cd scripts/setup/diffscope-bridge
+          Set-Location scripts/setup/diffscope-bridge
           cmake -B build -G Ninja `
-            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo `
             -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT_DIR }}/scripts/buildsystems/vcpkg.cmake" `
             -DVCPKG_INSTALLED_DIR="${{ env.VCPKG_ROOT_DIR }}/bridge_installed" `
             -DVCPKG_MANIFEST_MODE:BOOL=OFF `
@@ -96,9 +95,8 @@ jobs:
           cmake --build build --target all
           
       - name: Store DiffScope Bridge artefacts directory
-        shell: pwsh
         run: |
-          Write-Output DIFFSCOPE_BRIDGE_ARTEFACTS_DIR=$(Resolve-Path -Path scripts/setup/diffscope-bridge/build/DiffScopeBridge_artefacts/Release) >> $env:GITHUB_ENV
+          Write-Output DIFFSCOPE_BRIDGE_ARTEFACTS_DIR=$(Resolve-Path -Path scripts/setup/diffscope-bridge/build/DiffScopeBridge_artefacts/RelWithDebInfo) >> $env:GITHUB_ENV
 
       - name: Save DiffScope Bridge to cache
         uses: actions/cache/save@v4
@@ -107,92 +105,27 @@ jobs:
           key: ${{ runner.os }}-diffscope-bridge-${{ env.DIFFSCOPE_BRIDGE_REPO }}-${{ env.DIFFSCOPE_BRIDGE_REF }}
 
       - name: Set binary name
-        shell: pwsh
         run: |
           Write-Output BINARY_NAME=diffscope-$('${{ env.VCPKG_TRIPLET }}'.replace('osx', 'macos'))-${{ github.ref_type == 'tag' && github.ref_name || github.sha }} >> $env:GITHUB_ENV
 
-      - name: Create installer (Windows)
-        if: matrix.os == 'windows-latest'
-        shell: pwsh
-        run: |
-          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/jrsoftware/issrc/f59a90485af28067626e60ef7e42336e00ae7472/Files/Languages/Unofficial/ChineseSimplified.isl' -OutFile ChineseSimplified.isl
-          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/jrsoftware/issrc/e5e138e67bacd650650eac489fa861274a4b81ce/Files/Languages/Unofficial/ChineseTraditional.isl' -OutFile ChineseTraditional.isl
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
-          
-          $content = Get-Content build/CMakeCache.txt
-          $variableValues = @{}
-          foreach ($line in $content) {
-              $pattern = "^\s*(.*):(.*)=(.*)$"
-              if ($line -Match $pattern) {
-                  $key = $matches[1].Trim()
-                  $value = $matches[3].Trim()
-                  $variableValues[$key] = $value
-              }
-          }
+      - name: Collect symbol files
+        uses: ./.github/actions/symbol-file
 
-          $env:SETUP_APP_NAME = $variableValues.CMAKE_PROJECT_NAME
-          $env:SETUP_APP_VERSION = $variableValues.CMAKE_PROJECT_VERSION
-          $env:SETUP_APP_INSTALLED_DIR = $env:DIFFSCOPE_INSTALLED_DIR
-          $env:SETUP_APP_BRIDGE_ARTEFACTS_DIR = $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR
-          $env:SETUP_MESSAGE_FILES_DIR = Resolve-Path .
-          $env:SETUP_OUTPUT_DIR = Resolve-Path .
-          $env:SETUP_OUTPUT_FILE_BASE = $env:BINARY_NAME
-          $env:GPL3_LICENSE_PATH = Resolve-Path -Path gpl-3.0.rtf
+      - name: Create package for release
+        uses: ./.github/actions/pack
 
-          ISCC.exe scripts/setup/windows/setup.iss
-          Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.exe") >> $env:GITHUB_ENV
-
-      - name: Create DMG bundle (macOS)
-        if: matrix.os == 'macos-13'
-        shell: pwsh
-        run: |
-          cd scripts/setup/macos
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/Packages.dmg" -OutFile Packages.dmg
-          mkdir Packages
-          hdiutil attach -mountpoint Packages Packages.dmg
-          sudo installer -pkg 'Packages/Install Packages.pkg' -target /
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/gpl-3.0.rtf" -OutFile gpl-3.0.rtf
-          ln -s $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR diffscope-bridge-artefacts
-          packagesbuild diffscope-bridge-dist.pkgproj
-          npm install
-          node create-dmg.js $env:DIFFSCOPE_INSTALLED_DIR/DiffScope.app 'DiffScope Bridge.pkg' "$env:BINARY_NAME.dmg"
-          Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.dmg") >> $env:GITHUB_ENV
-
-      - name: Create Binary Archive (Ubuntu)
-        if: matrix.os == 'ubuntu-latest'
-        shell: pwsh
-        run: |
-          cd scripts/setup/linux
-          mv $env:DIFFSCOPE_INSTALLED_DIR DiffScope
-          
-          Push-Location DiffScope/lib
-          # Just steal the exclude list of dynamic libraries from AppImage
-          $excludeListUrl = "https://raw.githubusercontent.com/AppImageCommunity/pkg2appimage/04af461f471a2bf49671057408e0313f1f731d4b/excludelist"
-          $excludeList = (Invoke-WebRequest $excludeListUrl).Content.split("`n")
-          if ($excludeList.Count -eq 0) {
-            exit 1
-          }
-          foreach ($file in ($excludeList | ForEach-Object { ($_ -replace '\s*#.*$', '').Trim() } | Where-Object { $_ -ne "" })) {
-            if (Test-Path $file) {
-              Remove-Item $file
-            }
-          }
-          Pop-Location
-          
-          mkdir "DiffScope Bridge"
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/gpl-3.0.rtf" -OutFile "DiffScope Bridge/gpl-3.0.rtf"
-          mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/VST3/*.vst3 "DiffScope Bridge"
-          mv $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/LV2/*.lv2 "DiffScope Bridge"
-          mv create-desktop-entry.sh DiffScope
-          mv remove-desktop-entry.sh DiffScope
-          tar --bzip2 -cf "$env:BINARY_NAME.tar.bz2" DiffScope "DiffScope Bridge" "Installation Guide.txt"
-          Write-Output PACKAGE_PATH=$(Resolve-Path -Path "$env:BINARY_NAME.tar.bz2") >> $env:GITHUB_ENV
-
-      - name: Upload release file
+      - name: Upload package
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.BINARY_NAME }}
           path: ${{ env.PACKAGE_PATH }}
+
+      - name: Upload symbol files
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BINARY_NAME }}-symbol_files
+          path: ${{ env.SYMBOL_FILES_PATH }}
+
   Release:
     runs-on: ubuntu-latest
     needs: Build

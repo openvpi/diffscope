@@ -1,19 +1,15 @@
-name: Initialize Building Environment
-description: Initialize Building Environment
-inputs:
-  os:
-    description: OS
-    required: true
+name: Initialize building environment
+description: Initialize building environment
 
 runs:
   using: "composite"
   steps:
     - name: Setup devcmd
-      if: inputs.os == 'windows-latest'
+      if: runner.os == 'Windows'
       uses: ilammy/msvc-dev-cmd@v1
 
     - name: Install build tools (Windows)
-      if: inputs.os == 'windows-latest'
+      if: runner.os == 'Windows'
       shell: pwsh
       run: |
         if ((Get-Command "ninja.exe" -ErrorAction SilentlyContinue) -eq $null)
@@ -27,7 +23,7 @@ runs:
         Write-Output QT_ARCH=win64_msvc2019_64 >> $env:GITHUB_ENV
 
     - name: Install build tools (Ubuntu)
-      if: inputs.os == 'ubuntu-latest'
+      if: runner.os == 'Linux'
       shell: pwsh
       run: |
         sudo apt update
@@ -41,7 +37,7 @@ runs:
         Write-Output QT_ARCH=gcc_64 >> $env:GITHUB_ENV
 
     - name: Install build tools (macOS)
-      if: inputs.os == 'macos-13'
+      if: runner.os == 'macOS'
       shell: pwsh
       env:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
@@ -57,7 +53,7 @@ runs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '5.15.2'
-        archives: ${{ inputs.os == 'ubuntu-latest' && 'icu qtbase' || 'qtbase' }} qtsvg qtdeclarative qtremoteobjects qttools
+        archives: ${{ runner.os == 'Linux' && 'icu qtbase' || 'qtbase' }} qtsvg qtdeclarative qtremoteobjects qttools
         cache: true
 
     - name: Prepare vcpkg
@@ -65,6 +61,7 @@ runs:
       run: |
         Write-Output VCPKG_REPO_REF=$((Get-Content scripts/vcpkg-manifest/vcpkg.json | ConvertFrom-Json).'builtin-baseline') >> $env:GITHUB_ENV
         Write-Output VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_archives >> $env:GITHUB_ENV
+        Write-Output "VCPKG_BUILDTREES=$(Resolve-Path .)/vcpkg/buildtrees" >> $env:GITHUB_ENV
         Write-Output VCPKG_CACHE_HASH=${{ hashFiles('scripts/vcpkg-manifest/vcpkg.json', 'scripts/vcpkg/**') }} >> $env:GITHUB_ENV
 
     - name: Restore vcpkg binary cache from cache
@@ -76,19 +73,31 @@ runs:
         restore-keys: |
           ${{ runner.os }}-vcpkg-${{ env.VCPKG_REPO_REF }}-
 
+    - name: Restore vcpkg buildtrees from cache
+      id: cache_vcpkg_buildtrees
+      if: runner.os == 'macOS'
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ env.VCPKG_BUILDTREES }}
+        key: ${{ runner.os }}-vcpkg-buildtrees-${{ env.VCPKG_REPO_REF }}-${{ env.VCPKG_CACHE_HASH }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-buildtrees-${{ env.VCPKG_REPO_REF }}-
+
     - name: Install vcpkg dependencies
       shell: pwsh
       run: |
         if (!(Test-Path $env:VCPKG_DEFAULT_BINARY_CACHE)) {
-          mkdir $env:VCPKG_DEFAULT_BINARY_CACHE
+          New-Item $env:VCPKG_DEFAULT_BINARY_CACHE -ItemType directory
         }
         git clone https://github.com/microsoft/vcpkg.git
-        cd vcpkg
-        ${{ inputs.os == 'windows-latest' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
+        Set-Location vcpkg
+        ${{ runner.os == 'Windows' && './bootstrap-vcpkg.bat' || 'sh ./bootstrap-vcpkg.sh' }}
         git checkout $env:VCPKG_REPO_REF
+        
         $env:QT_DIR="$env:Qt5_DIR/lib/cmake/Qt5"
         $env:Qt5_DIR=$env:QT_DIR
-        $env:VCPKG_KEEP_ENV_VARS="QT_DIR;Qt5_DIR"
+        $env:VCPKG_CMAKE_RELEASE_BUILD_TYPE="RelWithDebInfo"
+        $env:VCPKG_KEEP_ENV_VARS="QT_DIR;Qt5_DIR;VCPKG_CMAKE_RELEASE_BUILD_TYPE"
         ./vcpkg install `
           --x-manifest-root=${{ github.workspace }}/scripts/vcpkg-manifest `
           --x-install-root=./installed `
@@ -101,15 +110,22 @@ runs:
           --x-install-root=./bridge_installed `
           --triplet=${{ env.VCPKG_TRIPLET_STATIC }}
 
-    - name: Save vcpkg to cache
+    - name: Save vcpkg binary cache to cache
       if: steps.cache_vcpkg.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
         key: ${{ runner.os }}-vcpkg-${{ env.VCPKG_REPO_REF }}-${{ env.VCPKG_CACHE_HASH }}
 
+    - name: Save vcpkg buildtrees to cache
+      if: runner.os == 'macOS' && steps.cache_vcpkg_buildtrees.outputs.cache_hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.VCPKG_BUILDTREES }}
+        key: ${{ runner.os }}-vcpkg-buildtrees-${{ env.VCPKG_REPO_REF }}-${{ env.VCPKG_CACHE_HASH }}
+
     - name: Get ASIO SDK
-      if: inputs.os == 'windows-latest'
+      if: runner.os == 'Windows'
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrSjimo/diffscope-ci-tools-mirror/refs/heads/main/asiosdk_2.3.3_2019-06-14.zip" -OutFile $env:RUNNER_TEMP/asiosdk.zip
@@ -122,14 +138,14 @@ runs:
         Write-Output VCPKG_ROOT_DIR=$(Resolve-Path -Path ./vcpkg) >> $env:GITHUB_ENV
 
     - name: Set ASIO SDK directory variable (Windows)
-      if: inputs.os == 'windows-latest'
+      if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        mv asiosdk ..
+        Move-Item asiosdk ..
         Write-Output ASIOSDK_DIR=$(Resolve-Path -Path ../asiosdk) >> $env:GITHUB_ENV
 
     - name: Set ASIO SDK directory variable (Non-Windows)
-      if: inputs.os != 'windows-latest'
+      if: runner.os != 'Windows'
       shell: pwsh
       run: |
         Write-Output ASIOSDK_DIR= >> $env:GITHUB_ENV

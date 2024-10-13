@@ -1,0 +1,149 @@
+name: Symbol file
+description: Collect symbol files
+
+runs:
+  using: "composite"
+  steps:
+    - name: Collect symbol files (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $PATTERN = "PDB file found at.*'(.*)'"
+        $env:_NT_ALT_SYMBOL_PATH = "${{ env.VCPKG_ROOT_DIR }}/installed/${{ env.VCPKG_TRIPLET }}/bin"
+        
+        #Step 1: Collect DiffScope's pdb files
+        New-Item symbol_files/DiffScope -ItemType directory
+        $symbolFilesDirectory = Resolve-Path symbol_files
+        Push-Location $env:DIFFSCOPE_INSTALLED_DIR
+        $dllFiles = Get-ChildItem -Path . -Recurse | Where-Object { $_.Extension -eq '.exe' -or $_.Extension -eq '.dll' }
+        foreach ($dllFile in $dllFiles) {
+          dumpbin /PDBPATH:VERBOSE $dllFile.FullName
+          $dumpbinOutput = dumpbin /PDBPATH $dllFile.FullName
+          $matches = [regex]::Matches($dumpbinOutput, $PATTERN)
+          if ($matches.Count -gt 0) {
+            $pdbPath = $matches.Groups[1].Value
+            Write-Output "$dllFile -> $pdbPath"
+            $pdbTargetDirectory = "$symbolFilesDirectory/DiffScope/$(Split-Path $(Resolve-Path $dllFile.FullName -Relative))"
+            if (!(Test-Path $pdbTargetDirectory)) {
+              New-Item $pdbTargetDirectory -ItemType directory
+            }
+            Copy-Item $pdbPath $pdbTargetDirectory
+          } else {
+            Write-Output "No PDB file: $dllFile"
+          }
+        }
+        Pop-Location
+        
+        #Step 2: Collect pdb files of DiffScope Bridge VST3
+        New-Item "symbol_files/DiffScope Bridge/VST3" -ItemType directory
+        Push-Location $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/VST3
+        Move-Item -Path (Get-ChildItem -Path . -Recurse -Filter *.pdb).FullName -Destination "$symbolFilesDirectory/DiffScope Bridge/VST3"
+        Remove-Item -Path (Get-ChildItem -Path . -Recurse -Filter *.ilk).FullName
+        Pop-Location
+        
+        #Step 3: Collect pdb files of DiffScope Bridge LV2
+        New-Item "symbol_files/DiffScope Bridge/LV2" -ItemType directory
+        Push-Location $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/LV2
+        Move-Item -Path (Get-ChildItem -Path . -Recurse -Filter *.pdb).FullName -Destination "$symbolFilesDirectory/DiffScope Bridge/LV2"
+        Remove-Item -Path (Get-ChildItem -Path . -Recurse -Filter *.ilk).FullName
+        Pop-Location
+        
+        Compress-Archive -Path "symbol_files/DiffScope", "symbol_files/DiffScope Bridge" -DestinationPath symbol_files.zip
+        Write-Output SYMBOL_FILES_PATH=$(Resolve-Path symbol_files.zip) >> $env:GITHUB_ENV
+
+    - name: Collect symbol files (Linux)
+      if: runner.os == 'Linux'
+      shell: pwsh
+      run: |
+        #Step 1: Collect DiffScope's debug info files
+        New-Item symbol_files/DiffScope -ItemType directory
+        $symbolFilesDirectory = Resolve-Path symbol_files
+        Push-Location $env:DIFFSCOPE_INSTALLED_DIR
+        $dllFiles = Get-ChildItem -Path . -Recurse | Where-Object { (file $_) -match "ELF 64-bit" }
+        foreach ($dllFile in $dllFiles) {
+          file $dllFile.FullName
+          $fileOutput = file $dllFile.FullName
+          if ($fileOutput -match "with debug_info") {
+            Write-Output "Copy and strip debug_info: $dllFile"
+            $pdbTargetDirectory = "$symbolFilesDirectory/DiffScope/$(Split-Path $(Resolve-Path $dllFile.FullName -Relative))"
+            if (!(Test-Path $pdbTargetDirectory)) {
+              New-Item $pdbTargetDirectory -ItemType directory
+            }
+            objcopy --only-keep-debug $dllFile.FullName "$pdbTargetDirectory/$($dllFile.Name).debug"
+            strip --strip-debug $dllFile.FullName
+          } else {
+            Write-Output "Skip: $dllFile"
+          }
+        }
+        Pop-Location
+        
+        #Step 2: Collect debug info files of DiffScope Bridge VST3
+        New-Item "symbol_files/DiffScope Bridge/VST3" -ItemType directory
+        Push-Location $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/VST3
+        $vst3File = (Get-ChildItem -Path . -Recurse -Filter *.so)[0]
+        objcopy --only-keep-debug $vst3File.FullName "$symbolFilesDirectory/DiffScope Bridge/VST3/$($vst3File.Name).debug"
+        strip --strip-debug $vst3File.FullName
+        Pop-Location
+        
+        #Step 3: Collect debug info files of DiffScope Bridge LV2
+        New-Item "symbol_files/DiffScope Bridge/LV2" -ItemType directory
+        Push-Location $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/LV2
+        $lv2File = (Get-ChildItem -Path . -Recurse -Filter *.so)[0]
+        objcopy --only-keep-debug $lv2File.FullName "$symbolFilesDirectory/DiffScope Bridge/VST3/$($lv2File.Name).debug"
+        strip --strip-debug $lv2File.FullName
+        Pop-Location
+        
+        Compress-Archive -Path "symbol_files/DiffScope", "symbol_files/DiffScope Bridge" -DestinationPath symbol_files.zip
+        Write-Output SYMBOL_FILES_PATH=$(Resolve-Path symbol_files.zip) >> $env:GITHUB_ENV
+
+    - name: Collect symbol files (macOS)
+      if: runner.os == 'macOS'
+      shell: pwsh
+      run: |
+        #Step 1: Collect DiffScope's debug info files
+        New-Item symbol_files/DiffScope -ItemType directory
+        $symbolFilesDirectory = Resolve-Path symbol_files
+        Push-Location $env:DIFFSCOPE_INSTALLED_DIR
+        $dllFiles = Get-ChildItem -Path . -Recurse | Where-Object { (file $_) -match "Mach-O 64-bit" }
+        foreach ($dllFile in $dllFiles) {
+          $dsymutilOutput = dsymutil -s $dllFile.FullName
+          if ($dsymutilOutput -match "N_OSO") {
+            Write-Output "Copy and strip debug_info: $dllFile"
+            $pdbTargetDirectory = "$symbolFilesDirectory/DiffScope/$(Split-Path $(Resolve-Path $dllFile.FullName -Relative))"
+            if (!(Test-Path $pdbTargetDirectory)) {
+              New-Item $pdbTargetDirectory -ItemType directory
+            }
+            dsymutil $dllFile.FullName -o "$pdbTargetDirectory/$($dllFile.Name).dSYM"
+            strip -S $dllFile.FullName
+          } else {
+            Write-Output "Skip: $dllFile"
+          }
+        }
+        Pop-Location
+
+        #Step 2: Collect debug info files of DiffScope Bridge VST3
+        New-Item "symbol_files/DiffScope Bridge/VST3" -ItemType directory
+        Push-Location $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/VST3
+        $vst3File = (Get-ChildItem -Path . -Recurse -Filter "DiffScope Bridge")[0]
+        dsymutil $vst3File.FullName -o "$symbolFilesDirectory/DiffScope Bridge/VST3/$($vst3File.Name).dSYM"
+        strip -S $vst3File.FullName
+        Pop-Location
+
+        #Step 3: Collect debug info files of DiffScope Bridge LV2
+        New-Item "symbol_files/DiffScope Bridge/LV2" -ItemType directory
+        Push-Location $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/LV2
+        $lv2File = (Get-ChildItem -Path . -Recurse -Filter *.so)[0]
+        dsymutil $lv2File.FullName "$symbolFilesDirectory/DiffScope Bridge/LV2/$($lv2File.Name).dSYM"
+        strip -S $lv2File.FullName
+        Pop-Location
+        
+        #Step 4: Collect debug info files of DiffScope Bridge AU
+        New-Item "symbol_files/DiffScope Bridge/AU" -ItemType directory
+        Push-Location $env:DIFFSCOPE_BRIDGE_ARTEFACTS_DIR/AU
+        $auFile = (Get-ChildItem -Path . -Recurse -Filter "DiffScope Bridge")[0]
+        dsymutil $auFile.FullName "$symbolFilesDirectory/DiffScope Bridge/AU/$($auFile.Name).dSYM"
+        strip -S $auFile.FullName
+        Pop-Location
+
+        Compress-Archive -Path "symbol_files/DiffScope", "symbol_files/DiffScope Bridge" -DestinationPath symbol_files.zip
+        Write-Output SYMBOL_FILES_PATH=$(Resolve-Path symbol_files.zip) >> $env:GITHUB_ENV
