@@ -82,22 +82,22 @@ namespace Core {
 
             {
                 auto addActionAction = toolbar->addAction(style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Add &Action"), this, &MenuToolbarPageWidget::handleAddAction);
-                addActionAction->setShortcut(Qt::ALT + Qt::Key_Insert);
+                addActionAction->setShortcut(Qt::ALT | Qt::Key_Insert);
                 addActionAction->setDisabled(true);
                 auto addSeparatorAction = toolbar->addAction(style()->standardIcon(QStyle::SP_DialogYesButton), tr("Add &Separator"), this, &MenuToolbarPageWidget::handleAddSeparator);
-                addSeparatorAction->setShortcut(Qt::ALT + Qt::SHIFT + Qt::Key_Insert);
+                addSeparatorAction->setShortcut(Qt::ALT | Qt::SHIFT | Qt::Key_Insert);
                 addSeparatorAction->setDisabled(true);
                 auto removeAction = toolbar->addAction(style()->standardIcon(QStyle::SP_DialogDiscardButton), tr("&Remove"), this, &MenuToolbarPageWidget::handleRemove);
-                removeAction->setShortcut(Qt::ALT + Qt::Key_Delete);
+                removeAction->setShortcut(Qt::ALT | Qt::Key_Delete);
                 removeAction->setDisabled(true);
                 auto editIconAction = toolbar->addAction(style()->standardIcon(QStyle::SP_DialogResetButton), tr("&Edit Icon"), this, &MenuToolbarPageWidget::handleEditIcon);
                 editIconAction->setShortcut(Qt::Key_F4);
                 editIconAction->setDisabled(true);
                 auto moveUpAction = toolbar->addAction(style()->standardIcon(QStyle::SP_ArrowUp), tr("Move &Up"), this, &MenuToolbarPageWidget::handleMoveUp);
-                moveUpAction->setShortcut(Qt::ALT + Qt::Key_Up);
+                moveUpAction->setShortcut(Qt::ALT | Qt::Key_Up);
                 moveUpAction->setDisabled(true);
                 auto moveDownAction = toolbar->addAction(style()->standardIcon(QStyle::SP_ArrowDown), tr("Move &Down"), this, &MenuToolbarPageWidget::handleMoveDown);
-                moveDownAction->setShortcut(Qt::ALT + Qt::Key_Down);
+                moveDownAction->setShortcut(Qt::ALT | Qt::Key_Down);
                 moveDownAction->setDisabled(true);
                 toolbar->addSeparator();
                 auto searchLineEdit = new QLineEdit;

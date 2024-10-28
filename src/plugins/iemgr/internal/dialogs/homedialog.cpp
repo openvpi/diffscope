@@ -23,7 +23,7 @@ namespace IEMgr::Internal {
 
         // Left
         leftLayout = new QVBoxLayout();
-        leftLayout->setMargin(0);
+        leftLayout->setContentsMargins(0, 0, 0, 0);
         leftLayout->setSpacing(0);
 
         buttonGroup = new QButtonGroup(this);
@@ -43,7 +43,7 @@ namespace IEMgr::Internal {
         browseButton = new QPushButton(tr("Browse"));
 
         textButtonLayout = new QHBoxLayout();
-        textButtonLayout->setMargin(0);
+        textButtonLayout->setContentsMargins(0, 0, 0, 0);
         textButtonLayout->setSpacing(0);
 
         hintLabel = new QLabel();
@@ -53,7 +53,7 @@ namespace IEMgr::Internal {
         textButtonLayout->addWidget(browseButton);
 
         rightLayout = new QVBoxLayout();
-        rightLayout->setMargin(0);
+        rightLayout->setContentsMargins(0, 0, 0, 0);
         rightLayout->setSpacing(0);
         rightLayout->addLayout(textButtonLayout);
         rightLayout->addWidget(hintLabel);

@@ -1,5 +1,7 @@
 #include "lyricinfo.h"
 
+#include <QStringList>
+
 namespace LyricTool {
 
     class LyricInfoData : public QSharedData {

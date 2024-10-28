@@ -28,7 +28,7 @@ namespace Core::Internal {
         AppExtra::autoPolishPopupMenu(searchBox);
 
         topLayout = new QMEqualBoxLayout(QBoxLayout::LeftToRight);
-        topLayout->setMargin(0);
+        topLayout->setContentsMargins(0, 0, 0, 0);
         topLayout->setSpacing(0);
         topLayout->addWidget(searchBox);
         setLayout(topLayout);
@@ -67,7 +67,7 @@ namespace Core::Internal {
         emptyLabel->setObjectName("empty-label");
 
         bottomLayout = new QVBoxLayout();
-        bottomLayout->setMargin(0);
+        bottomLayout->setContentsMargins(0, 0, 0, 0);
         bottomLayout->setSpacing(0);
 
         bottomLayout->addWidget(fileWidget);

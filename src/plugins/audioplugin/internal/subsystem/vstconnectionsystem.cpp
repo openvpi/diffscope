@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFile>
 
 #include <TalcsCore/MixerAudioSource.h>
 #include <TalcsCore/NoteSynthesizer.h>
