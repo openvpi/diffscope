@@ -19,6 +19,8 @@ add_subdirectory(jetbrains-docking-system)
 
 add_subdirectory(substate)
 
+set(TALCS_DSPX ON)
+set(TALCS_REMOTE ON)
 add_subdirectory(talcs)
 
 add_subdirectory(idecore)
